@@ -1,0 +1,20 @@
+data:
+  features_path: data/processed/features.parquet
+  state_path: data/state/dashboard_state.json
+portfolio:
+  top_k: 25
+  min_holdings: 20
+  max_stock_weight: 0.05
+  turnover_cap: 0.40
+  rebalance_threshold: 0.01
+  weighting: equal_weight
+learning:
+  temperature: 1.0
+  hedge_eta: 0.03
+  min_agent_weight: 0.05
+  max_agent_weight: 0.50
+backtest:
+  frequency: weekly
+  min_rebalances: 3
+risk:
+  max_drawdown_limit: -0.25

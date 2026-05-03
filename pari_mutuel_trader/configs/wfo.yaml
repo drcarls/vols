@@ -1,0 +1,8 @@
+base_config: configs/default.yaml
+wfo:
+  train_years: 3
+  test_months: 6
+  step_months: 6
+  top_k_grid: [20, 25, 30]
+  temperature_grid: [0.8, 1.0, 1.2]
+  hedge_eta_grid: [0.02, 0.03, 0.05]
