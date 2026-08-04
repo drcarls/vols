@@ -58,19 +58,40 @@ python src/analyze.py data/milk_prices_*.csv --out data/summary.csv
 This prints price-by-cohort, a price index vs the cheapest cohort, price-by-ZIP,
 and a same-product-across-cohorts table.
 
-## IMPORTANT: making the cohorts defensible
+## Making the cohorts defensible (South Carolina)
 
-The `cohort_label` column in `config/zips.csv` is a **placeholder** — every value
-ends in `_VERIFY`. For the output to mean anything in a disparate-impact context
-you must replace these with cohorts grounded in real demographic data, not
-assumptions:
+`config/zips.csv` ships with a hand-picked **placeholder** SC set whose
+`cohort_label`s end in `_VERIFY`. Before the output carries any evidentiary
+weight, regenerate that file from real Census data:
 
-- Join each ZIP (ZCTA) to U.S. Census **ACS** tables — e.g. `B03002` (race/
-  ethnicity) and `B19013` (median household income) — and define cohorts from
-  the actual figures.
-- Keep the raw price observations; let counsel / a statistician handle the
-  significance testing and interpretation. This tool produces **descriptive
-  evidence**, not a legal conclusion.
+```bash
+python src/census_enrich.py                 # -> rewrites config/zips.csv for all of SC
+python src/census_enrich.py --min-pop 500   # drop very small ZCTAs
+python src/census_enrich.py --cohort income # cohort by income instead of minority share
+```
+
+What it does:
+
+- Pulls U.S. Census **ACS 5-year** estimates at the ZCTA level:
+  `B03002` (race/ethnicity) and `B19013` (median household income).
+- Keeps South Carolina (the only state using ZIP prefixes 290–299, so ZIPs are
+  identified by code alone — no fragile crosswalk).
+- Computes `minority_pct = (total − non-Hispanic-white-alone) / total` and sorts
+  ZIPs into **terciles** for both minority share and income.
+- Writes real numbers per ZIP (`total_pop`, `nh_white_pct`, `minority_pct`,
+  `median_hh_income`) alongside `minority_tercile`, `income_tercile`, and the
+  chosen `cohort_label`.
+
+Keeping the raw demographic numbers in the file means a statistician/expert can
+re-cohort or run significance tests however the case requires. **This tooling
+produces descriptive evidence, not a legal conclusion** — the significance
+testing and interpretation belong to counsel / an expert witness.
+
+> `api.census.gov` must be reachable where you run `census_enrich.py`. Some
+> locked-down environments block it (403 at the egress proxy); run it from a
+> machine with normal outbound access. `city`/`county` are left blank by the
+> generator (not in the ACS ZCTA response); the scraper tolerates blank values,
+> and a ZCTA→place crosswalk can fill them later if you want readable labels.
 
 ## Legal / compliance note
 
