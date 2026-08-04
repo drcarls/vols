@@ -1,0 +1,16 @@
+zip,city,county,region,cohort_label
+29810,Allendale,Allendale,SC I-95 Corridor,rural_high_minority_VERIFY
+29003,Bamberg,Bamberg,SC I-95 Corridor,rural_high_minority_VERIFY
+29115,Orangeburg,Orangeburg,SC Midlands,rural_high_minority_VERIFY
+29556,Kingstree,Williamsburg,SC Pee Dee,rural_high_minority_VERIFY
+29536,Dillon,Dillon,SC Pee Dee,rural_high_minority_VERIFY
+29571,Marion,Marion,SC Pee Dee,rural_high_minority_VERIFY
+29203,Columbia,Richland,SC Midlands,urban_core_VERIFY
+29403,Charleston,Charleston,SC Lowcountry,urban_core_VERIFY
+29601,Greenville,Greenville,SC Upstate,urban_core_VERIFY
+29730,Rock Hill,York,SC Upstate,urban_core_VERIFY
+29464,Mount Pleasant,Charleston,SC Lowcountry,suburban_higher_income_VERIFY
+29063,Irmo,Richland,SC Midlands,suburban_higher_income_VERIFY
+29650,Greer,Greenville,SC Upstate,suburban_higher_income_VERIFY
+29910,Bluffton,Beaufort,SC Lowcountry,suburban_higher_income_VERIFY
+29577,Myrtle Beach,Horry,SC Grand Strand,coastal_VERIFY

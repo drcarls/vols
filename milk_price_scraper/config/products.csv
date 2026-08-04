@@ -1,0 +1,9 @@
+query,category,notes
+milk gallon whole,milk,Whole milk 1 gallon - core staple comparison
+milk gallon 2%,milk,2% reduced-fat milk 1 gallon
+milk gallon 1%,milk,1% lowfat milk 1 gallon
+milk gallon skim,milk,Skim/fat-free milk 1 gallon
+milk half gallon whole,milk,Whole milk half gallon
+store brand milk gallon,milk,Private-label/store-brand gallon (price-floor signal)
+horizon organic milk,milk,Branded organic reference product for cross-store parity
+lactaid milk,milk,Lactose-free reference product
