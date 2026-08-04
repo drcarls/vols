@@ -30,6 +30,7 @@ import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
+from urllib.parse import quote_plus
 
 # Make src/ importable whether run from repo root or from milk_price_scraper/.
 HERE = Path(__file__).resolve().parent
@@ -93,7 +94,7 @@ def run_unlocker(
         for p in products:
             scraped_at = utc_now()
             query = p["query"]
-            url = f"https://www.instacart.com/store/s?k={query.replace(' ', '%20')}"
+            url = f"https://www.instacart.com/store/s?k={quote_plus(query)}"
             print(f"[unlocker] {z['zip']} :: {query}")
             try:
                 html = client.unlock(url)
@@ -133,6 +134,10 @@ def main() -> int:
     parser.add_argument("--max-products", type=int, default=None)
     parser.add_argument("--poll-interval", type=int, default=10)
     parser.add_argument("--max-wait", type=int, default=1800)
+    parser.add_argument("--dry-run", action="store_true",
+                        help="Print the input JSON that would be sent to Bright Data "
+                             "(dataset strategy) or the URLs (unlocker) and exit. "
+                             "Makes no API calls and spends no credits.")
     args = parser.parse_args()
 
     zips = load_csv(Path(args.zips))
@@ -146,6 +151,23 @@ def main() -> int:
     if not zips or not products:
         print("No zips or products loaded -- check config CSVs.", file=sys.stderr)
         return 2
+
+    if args.dry_run:
+        import json
+        if args.strategy == "dataset":
+            inputs = ic.build_dataset_inputs(zips, products, retailers)
+            print(f"[dry-run] {len(inputs)} dataset input rows "
+                  f"({len(zips)} zips x {len(products)} products). "
+                  f"Verify these field names match your dataset's input schema:\n")
+            print(json.dumps(inputs[:5], indent=2))
+            if len(inputs) > 5:
+                print(f"... and {len(inputs) - 5} more.")
+        else:
+            for z in zips:
+                for p in products:
+                    q = quote_plus(p["query"])
+                    print(f"{z['zip']}  https://www.instacart.com/store/s?k={q}")
+        return 0
 
     try:
         client = BrightDataClient()

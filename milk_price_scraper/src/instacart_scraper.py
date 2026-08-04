@@ -15,6 +15,7 @@ import json
 import re
 from dataclasses import dataclass, asdict
 from typing import Any, Iterable
+from urllib.parse import quote_plus
 
 from brightdata_client import BrightDataClient, BrightDataError
 
@@ -110,7 +111,7 @@ def build_dataset_inputs(
     for z in zips:
         for p in products:
             query = p["query"]
-            search_url = f"https://www.instacart.com/store/s?k={query.replace(' ', '%20')}"
+            search_url = f"https://www.instacart.com/store/s?k={quote_plus(query)}"
             record: dict[str, Any] = {
                 "url": search_url,
                 "keyword": query,
