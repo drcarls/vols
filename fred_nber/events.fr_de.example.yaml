@@ -1,0 +1,31 @@
+# Crisis spec limited to the powers the open FRED/NBER data covers (France,
+# Germany). Onset dates are the thesis defaults (crisis_lag.events); only the
+# binding-power->series mapping is narrowed to what this source can measure.
+# Russia/Austria crises need the IMM (see ../imm_yale) and are omitted here
+# rather than silently mapped to a series that does not exist.
+#
+#   fred-nber pull --out spreads_long.csv
+#   crisis-lag run spreads_long.csv --events events.fr_de.example.yaml
+
+events:
+  - name: Morocco_1905
+    onset: "1905-03-31"        # Kaiser at Tangier; France's Moroccan position challenged
+    series: france
+    binding_power: "France (First Moroccan Crisis)"
+
+  - name: Agadir_1911
+    onset: "1911-07-01"        # Panther at Agadir
+    series: germany
+    binding_power: "Germany (illiquid)"
+
+  - name: Agadir_1911_FR
+    onset: "1911-07-01"        # same crisis, French leg
+    series: france
+    binding_power: "France (Agadir)"
+
+  - name: July_1914
+    onset: "1914-07-23"        # Austrian ultimatum
+    series: france             # nearest measurable proxy; Austria absent from NBER
+    binding_power: "July 1914 (proxy: France)"
+    measurable: false          # bourses closed late July -> peak censored
+    decision_window_days: 5

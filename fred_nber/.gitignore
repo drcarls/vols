@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+*.egg-info/
+.venv/
+# Note: data/ is intentionally tracked — it holds the committed first-real-run
+# artifacts (fred_spreads_long.csv, crisis_lag_verdict*.txt). Ad-hoc outputs
+# elsewhere are not:
+/spreads_long.csv

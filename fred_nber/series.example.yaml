@@ -1,0 +1,23 @@
+# FRED/NBER series catalog — which series carries each power's yield.
+#
+# All are NBER Macrohistory (ch.13, Interest Rates) series on FRED, pulled keyless
+# via https://fred.stlouisfed.org/graph/fredgraph.csv?id=<fred_id>. series ids
+# match crisis_lag.events. Add russia/austria_hungary here if you locate open
+# bond-yield series for them (NBER has their discount rates, not bond yields).
+
+benchmark:
+  series: benchmark
+  fred_id: M1341CGB40000M156NNBR
+  label: England Yield of Consols
+  coverage: "1888-03..1938-12"
+
+issuers:
+  - series: france
+    fred_id: M13027FRM156NNBR
+    label: France Security Yields
+    coverage: "1898-01..1939-07"
+
+  - series: germany
+    fred_id: M1328ADEM193NNBR
+    label: Germany Bond Yields
+    coverage: "1870-01..1913-12"
