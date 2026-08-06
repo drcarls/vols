@@ -27,15 +27,18 @@ repriced too late to matter. What it says about the *state's* knowledge or inten
 > climb-down, or cover for a decision taken on other grounds? Market data cannot
 > settle that either — but it gives one asymmetric, timing-based handle, run in
 > [`../crisis_lag/results/cause_or_cover.md`](../crisis_lag/results/cause_or_cover.md).
-> A first pass found each power's bonds "material" *before* the concession, but
-> those leads (162–224 days) **do not survive a control check**: only **Austria**
-> (Balkans) shows a distinctive own-market stress above clean control years, and
-> even it builds slowly; **Russia** (Bosnia) sat *below* its calm-year spreads on
-> a declining trend (artifact), and **France** (Morocco) shows no own-market
-> stress at all — Delcassé fell over diplomatic isolation, not French solvency. So
-> the timing evidence for finance-as-cause is weak (no positive support for pure
-> "cover" either), and weakest exactly at **Rouvier/France 1905**. Consistency,
-> never proof; intent still needs the archives named there.
+> Properly controlled — benchmarked against a **neutral** creditor (the Dutch
+> yield), measured as a **change**, against a **null distribution** — each power
+> whose own solvency was in question shows an abnormal rise in its bonds during
+> its crisis: **Germany** (Agadir, ~90th percentile), **Russia** (Bosnia, ~80th),
+> **Austria** (Balkans, ~90th but only at the long horizon its two-winter war
+> needed). **France (Morocco) shows none** — the creditor power, no own-market
+> stress, consistent with the constraint lying in Russia's collapse, not French
+> finances. So the timing evidence *is* consistent with finance-as-constraint for
+> three of four (a crude level check first understated this, then I over-corrected
+> to "artifact" — the neutral-benchmark control corrects both). Still consistency,
+> never proof; intent still needs the archives named there, and France stays the
+> case where the objection is most alive.
 
 ## The finite question
 

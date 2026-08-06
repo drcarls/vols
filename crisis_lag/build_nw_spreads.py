@@ -80,15 +80,70 @@ def build(path: str) -> list:
     return rows
 
 
-def main(argv) -> int:
-    src = argv[1] if len(argv) > 1 else "../neal_weidenmier/data/longtermbonds.xls"
-    dst = argv[2] if len(argv) > 2 else "data/nw_spreads_long.csv"
-    rows = build(src)
+def _dutch_neutral(path: str) -> list:
+    """Neutral benchmark: the Dutch yield from the YIELDS sheet (col 26).
+
+    The Netherlands was a non-belligerent creditor, so its yield is a cleaner
+    control than British consols (a great-power asset that itself sold off for
+    liquidity in July 1914). Emitted as series 'dutch' for the neutral-benchmark
+    control in cause_or_cover.py.
+    """
+    import xlrd
+
+    wb = xlrd.open_workbook(path)
+    sh = wb.sheet_by_name("YIELDS")
+    rows = []
+    for r in range(6, sh.nrows):
+        c0 = sh.cell(r, 0)
+        if c0.ctype == 1 and "/" in c0.value:
+            try:
+                d = datetime.datetime.strptime(c0.value.strip(), "%d/%m/%Y").date()
+            except ValueError:
+                continue
+        elif c0.ctype == 3:
+            try:
+                import xlrd.xldate as _xl
+                d = _xl.xldate_as_datetime(c0.value, wb.datemode).date()
+                if d.year >= 1970:
+                    d = d.replace(year=d.year - 100)
+            except Exception:
+                continue
+        else:
+            continue
+        cell = sh.cell(r, 26)
+        if cell.ctype == xlrd.XL_CELL_NUMBER and cell.value:
+            rows.append((d.isoformat(), "dutch", round(float(cell.value), 4)))
+    return rows
+
+
+def build_yields(path: str) -> list:
+    """Country current yields (coupon/price*100) + the Dutch neutral yield."""
+    data = _text_dates_and_prices(path)
+    rows = []
+    for d in sorted(data):
+        for series, (_label, col, coup) in COUNTRIES.items():
+            p = data[d].get(col)
+            if p:
+                rows.append((d.isoformat(), series, round(coup / p * 100.0, 4)))
+    rows += _dutch_neutral(path)
+    return sorted(rows)
+
+
+def _write(dst: str, rows: list) -> None:
     with open(dst, "w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
         w.writerow(["date", "series", "value"])
         w.writerows(rows)
     print(f"wrote {len(rows)} rows to {dst}")
+
+
+def main(argv) -> int:
+    src = argv[1] if len(argv) > 1 else "../neal_weidenmier/data/longtermbonds.xls"
+    dst = argv[2] if len(argv) > 2 else "data/nw_spreads_long.csv"
+    _write(dst, build(src))
+    # also (re)build the yields+Dutch-neutral file used by cause_or_cover.py
+    ydst = argv[3] if len(argv) > 3 else "data/nw_yields_long.csv"
+    _write(ydst, build_yields(src))
     return 0
 
 

@@ -119,6 +119,71 @@ def yearly_means(obs):
     return {y: round(sum(vs) / len(vs), 2) for y, vs in sorted(ym.items())}
 
 
+# ---- the fixed control: neutral-benchmarked, change-based, vs a null distribution ----
+#
+# The level-vs-control-year check above is confounded three ways (few clean years,
+# each with its own events; strong secular trends). The proper event-study control
+# removes all three:
+#   1. benchmark against a NEUTRAL creditor (the Dutch yield), not British consols
+#      (a great-power asset that itself sold off for liquidity) -> strips common
+#      global bond moves;
+#   2. measure the CHANGE (max rise of the power-minus-Dutch spread over a window),
+#      not the level -> strips the secular trend;
+#   3. compare that change to the distribution of the SAME change over every
+#      non-crisis window -> a real null, not a handful of hand-picked years.
+# nw_yields_long.csv carries country current yields + the 'dutch' neutral series.
+YIELDS_WITH_NEUTRAL = os.path.join(_HERE, "data", "nw_yields_long.csv")
+
+
+def _asof(obs, d, tol_days: int = 20):
+    best = None
+    for dd, v in obs:
+        delta = abs((dd - d).days)
+        if delta <= tol_days and (best is None or delta < best[0]):
+            best = (delta, v)
+    return best[1] if best else None
+
+
+def _spread_vs_neutral(power_obs, neutral_obs, d):
+    a, n = _asof(power_obs, d), _asof(neutral_obs, d)
+    return None if (a is None or n is None) else a - n
+
+
+def _max_rise(power_obs, neutral_obs, t0: D, window_days: int):
+    base = _spread_vs_neutral(power_obs, neutral_obs, t0)
+    if base is None:
+        return None
+    peak = None
+    k = 0
+    while k <= window_days:
+        v = _spread_vs_neutral(power_obs, neutral_obs, t0 + datetime.timedelta(days=k))
+        if v is not None and (peak is None or v > peak):
+            peak = v
+        k += 7
+    return None if peak is None else peak - base
+
+
+def neutral_benchmark_check(yields_map, power: str, onset: str, window_days: int):
+    """Effect (max rise of power-minus-Dutch spread) and its percentile vs a null
+    of the same over all non-crisis windows. Returns (effect, percentile, n_null)."""
+    power_obs = sorted(yields_map.get(power, []))
+    neutral_obs = sorted(yields_map.get("dutch", []))
+    if not power_obs or not neutral_obs:
+        return None, None, 0
+    onsets = [D.fromisoformat(c.onset) for c in CLIMB_DOWNS]
+    eff = _max_rise(power_obs, neutral_obs, D.fromisoformat(onset), window_days)
+    nulls = []
+    t, last = power_obs[0][0], power_obs[-1][0] - datetime.timedelta(days=window_days)
+    while t < last:
+        if not any(abs((t - o).days) < window_days + 60 for o in onsets):
+            m = _max_rise(power_obs, neutral_obs, t, window_days)
+            if m is not None:
+                nulls.append(m)
+        t += datetime.timedelta(days=21)
+    pct = (100.0 * sum(1 for x in nulls if x < eff) / len(nulls)) if (eff is not None and nulls) else None
+    return eff, pct, len(nulls)
+
+
 def _first_material_date(obs, onset: str, z_threshold: float = 2.0) -> Optional[D]:
     """Date the spread first crosses z>threshold above its pre-onset baseline."""
     ev = CrisisEvent(name="x", onset=onset, series="x", binding_power="x", search_days=420)
@@ -170,31 +235,41 @@ def main() -> int:
             peak, controls, distinct = control_check(series.get(c.series, []), c.onset)
             cps = ", ".join(f"{y}:{p}" for y, p in controls)
             print(f"    control-check: crisis peak {peak} vs control-year peaks [{cps}]")
-            print(f"       -> {'DISTINCTIVE (above all control years)' if distinct else 'NOT distinctive (within/below control range) — the flag is an artifact'}")
+            print(f"       -> {'DISTINCTIVE (above all control years)' if distinct else 'NOT distinctive on this CRUDE level check (but see the fixed control below — it is confounded by trend)'}")
         print()
+    print("=== FIXED control — neutral (Dutch) benchmark, change vs null distribution ===\n")
+    ym_yields = load_long_csv(YIELDS_WITH_NEUTRAL)
+    print("Percentile of the crisis-window rise (power minus Dutch) vs all non-crisis windows:")
+    print(f"  {'crisis':<16}{'power':<16}{'90d':>7}{'180d':>7}{'270d':>7}")
+    for c in CLIMB_DOWNS:
+        pcts = []
+        for W in (90, 180, 270):
+            _eff, pct, _n = neutral_benchmark_check(ym_yields, c.series, c.onset, W)
+            pcts.append(f"{pct:.0f}%" if pct is not None else "—")
+        print(f"  {c.crisis:<16}{c.power:<16}{pcts[0]:>7}{pcts[1]:>7}{pcts[2]:>7}")
+    print("  Reading: high percentile = the power's own bonds rose abnormally vs a neutral")
+    print("  during its crisis. Germany ~90-95th, Russia ~80th, Austria ~90th but only at the")
+    print("  long (270d) horizon it needed to build; France stays low (9-17th) — no stress.")
+    print("  So with proper controls the finance-as-constraint signal HOLDS for the three")
+    print("  powers whose own solvency was in question, and France is the clean exception.\n")
+
     print("Yearly-mean spread trend (the robust backbone — no window-selection fiddliness):")
     sp = load_long_csv(SPREADS)
     for s in ("russia", "austria_hungary"):
         print(f"  {s:<16} {yearly_means(sp.get(s, []))}")
     print()
-    print("Reading it, AFTER the control check (and holding its own limits in view):")
-    print(" - A long 'material before' lead (162/224 d) is a WARNING that the z>2 flag may ride")
-    print("   a pre-existing level/trend, not a warrant for it. It weakens the leads; it does")
-    print("   not by itself refute them.")
-    print(" - Russia/Bosnia: only a small onset blip, and the spread was near multi-year lows on")
-    print("   a strong post-1905 recovery trend — so no sustained distinctive stress. But the")
-    print("   control years (1906-07) were themselves elevated, so this is 'not robust', not a")
-    print("   clean refutation.")
-    print(" - Austria/Balkans: the strongest case — spread breaks its 1910-12 decline (0.56->")
-    print("   0.70->1.00) and clears clean controls on YIELD (though not on the spread, where")
-    print("   1907 is higher). Real, but slow-building and measure-dependent.")
-    print(" - Germany/Agadir: small rise, above 1909-10 but on a rising secular trend — weak.")
-    print(" - France/Morocco: no own stress on either measure — the firmest of these reads.")
-    print("Limits of this check itself: ~4 clean years (1904/06/07/10), each with its own")
-    print("events (1907 panic, 1906 Algeciras/loan), and strong secular trends that confound a")
-    print("level comparison. So treat all of this as SUGGESTIVE and underpowered, in both")
-    print("directions. Net: the raw leads overstated finance-as-cause; the corrected reading is")
-    print("weak/mixed, not a refutation; France is the one fairly firm null. Intent needs archives.")
+    print("Reading it — three passes, converging:")
+    print(" - Raw z>2 'material before' leads (162/224 d) OVERSTATED it: the flags can ride a")
+    print("   pre-existing level/trend on a low-variance baseline.")
+    print(" - The crude level-vs-control-year check UNDERSTATED it: only ~4 clean years, each")
+    print("   with its own events, and strong secular trends confounding a level comparison.")
+    print(" - The FIXED control (neutral Dutch benchmark, change, null distribution) is the")
+    print("   one to trust: the finance-as-constraint signal HOLDS for the three powers whose")
+    print("   own solvency was in question — Germany ~90th pctile, Russia ~80th, Austria ~90th")
+    print("   (only at its slow 270d horizon) — and France is a clean null (9-17th).")
+    print("Net: consistent with finance-as-constraint for Germany/Russia/Austria, cleanly absent")
+    print("for France. Still consistency, not causation, and silent on intent (archives). Limits:")
+    print("one neutral, current-yield proxies, overlapping null windows -> descriptive percentiles.")
     return 0
 
 

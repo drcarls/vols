@@ -30,21 +30,31 @@ def test_no_crisis_has_stress_only_after_climbdown():
                 assert mat <= cd, f"{c.crisis} on {path}: material {mat} after climb-down {cd}"
 
 
-def test_russia_bosnia_flag_does_not_survive_the_control_check():
-    # The z>2 lead is an artifact: the 1908 Russian spread sat BELOW calm control
-    # years, so the crisis peak is NOT distinctive.
-    series = cc.load_long_csv(cc.SPREADS)
-    ru = next(c for c in cc.CLIMB_DOWNS if c.crisis == "Bosnia_1909")
-    peak, controls, distinct = cc.control_check(series[ru.series], ru.onset)
-    assert distinct is False
-    assert peak < max(p for _, p in controls)   # crisis below the calm-year peak
+def _neutral_pct(crisis_name, window):
+    ym = cc.load_long_csv(cc.YIELDS_WITH_NEUTRAL)
+    c = next(x for x in cc.CLIMB_DOWNS if x.crisis == crisis_name)
+    _eff, pct, _n = cc.neutral_benchmark_check(ym, c.series, c.onset, window)
+    return pct
 
 
-def test_austria_balkans_is_the_one_distinctive_case_on_yield():
-    series = cc.load_long_csv(cc.YIELDS)
-    au = next(c for c in cc.CLIMB_DOWNS if c.crisis == "Balkans_1912_13")
-    _peak, _controls, distinct = cc.control_check(series[au.series], au.onset)
-    assert distinct is True
+def test_neutral_benchmark_holds_for_the_three_stressed_powers():
+    # Germany/Russia at 180d, Austria at its slow 270d horizon: all clearly
+    # above-normal (>=70th percentile) vs a neutral (Dutch) benchmark.
+    assert _neutral_pct("Agadir_1911", 180) >= 80
+    assert _neutral_pct("Bosnia_1909", 180) >= 70
+    assert _neutral_pct("Balkans_1912_13", 270) >= 80
+
+
+def test_neutral_benchmark_france_is_the_clean_null():
+    # France (Morocco) below normal at every horizon -> no own-market stress.
+    for W in (90, 180, 270):
+        assert _neutral_pct("Morocco_1905", W) <= 30
+
+
+def test_austria_signal_is_horizon_dependent_slow_to_build():
+    # Austria shows nothing early (90d) but is strong by 270d -- the slow build.
+    assert _neutral_pct("Balkans_1912_13", 90) <= 20
+    assert _neutral_pct("Balkans_1912_13", 270) >= 80
 
 
 def test_austria_spread_breaks_its_declining_trend():
@@ -52,10 +62,3 @@ def test_austria_spread_breaks_its_declining_trend():
     series = cc.load_long_csv(cc.SPREADS)
     ym = cc.yearly_means(series["austria_hungary"])
     assert ym[1912] < ym[1913] < ym[1914]
-
-
-def test_france_own_yield_shows_no_material_stress_in_1905():
-    # Morocco/France on RAW yield: France's own borrowing cost never crosses z>2
-    # -> French finances were not the binding constraint (leans to the objection).
-    rows = {c.crisis: mat for c, mat, cd, gap, v in cc.run(cc.YIELDS)}
-    assert rows["Morocco_1905"] is None

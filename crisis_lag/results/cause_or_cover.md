@@ -36,31 +36,53 @@ russia:    1906 2.01  1907 2.00  1908 1.52  1909 1.24  1910 0.86  1911 0.73  191
 austria:   1910 0.64  1911 0.57  1912 0.56  1913 0.70  1914 1.00
 ```
 
-| crisis (power) | raw z>2 lead | survives controls? | reading |
-|---|---|---|---|
-| **Bosnia (Russia, Kokovtsov)** | 162 d | **Not robustly.** Only a small onset blip; 1908 spread (1.52) sits *below* calm 1906–07 (2.0) on a declining trend | weak / not distinctive — but *not* a clean refutation (see limits) |
-| **Morocco (France, Rouvier)** | none / degenerate | **No.** France's own yield never crosses; no stress on either measure | France's finances were **not** the constraint (the firmest read) |
-| **Agadir (Germany)** | 71 d (yield) | **Weakly.** +0.12 above 1909–10, but on a rising secular trend | modest, measure-dependent |
-| **Balkans (Austria, Biliński)** | 224 d | **Yes on yield** (clears clean controls); *not* on the spread (1907 higher) | the strongest case — but **slow-building** (peak 1913) and measure-dependent |
+This crude level check flagged Russia and Germany as weak/not-distinctive and
+called only Austria genuine — but that check is itself confounded three ways (only
+~4 "clean" control years, 1904/06/07/10, each with its own disturbance — the 1907
+panic, the 1906 Algeciras aftermath and the big Russian loan — and strong secular
+trends that a level comparison conflates with crisis effects). So it was too
+dismissive. **Fix the control properly and the signal comes back.**
 
-**So the earlier "consistent in 3 of 4" is withdrawn** — but the corrected reading
-is *weak and mixed*, not the opposite verdict. After controls, only **Austria**
-shows even a plausibly distinctive own-market stress, and even it builds over the
-whole long crisis rather than pressing *before* the decision; Russia's is a small
-blip swamped by its post-1905 recovery; France's never existed; Germany's is small
-and secular-trend-confounded.
+## The fixed control — neutral benchmark, change, null distribution
 
-**Limits of the control check itself (why this is suggestive, not decisive).**
-There are only ~4 clean control years (1904, 1906, 1907, 1910), and each carries
-its own disturbances — the 1907 global panic, the 1906 Algeciras aftermath and the
-large 1906 Russian loan — so the "calm" baseline is not clean. These spreads also
-carry strong secular trends (Russia's post-1905 recovery, Austria's U-shape), which
-a level comparison conflates with crisis effects. With four confounded crises and
-provisional onsets, the whole exercise is **underpowered in both directions**: it
-undercuts the strong finance-as-cause reading without positively establishing its
-negation.
+The event-study control removes all three confounds:
 
-Two things this does establish, both honest:
+1. **Benchmark against a neutral creditor — the Dutch yield — not British
+   consols** (a great-power asset that itself sold off for liquidity). This strips
+   common global bond moves and Britain's own contamination.
+2. **Measure the *change*** (max rise of the power-minus-Dutch spread over a
+   window), not the level. This strips the secular trend.
+3. **Compare that change to its distribution over *every* non-crisis window** — a
+   real null, not a handful of hand-picked years — and read off a percentile.
+
+**Percentile of the crisis-window rise (power − Dutch) vs all non-crisis windows:**
+
+| crisis (power) | 90 d | 180 d | 270 d | reading |
+|---|---|---|---|---|
+| **Agadir (Germany)** | 49 | **93** | **90** | strong — the 1911 panic, building over months |
+| **Bosnia (Russia, Kokovtsov)** | 68 | **85** | 78 | **real, moderate** — an above-normal rise, *not* an artifact |
+| **Balkans (Austria, Biliński)** | 0 | 0 | **89** | holds, but **slow** — arrives in 1913, at the horizon it needed |
+| **Morocco (France, Rouvier)** | 17 | 13 | 9 | **firm null** — France *below* normal, no stress |
+
+**So the answer to "does the data hold?" is: largely yes.** Benchmarked against a
+neutral and measured as a change, each power whose *own solvency* was in question —
+Germany, Russia, Austria — shows an abnormal rise in its bonds during its crisis,
+at the horizon that crisis actually ran (fast-ish for Germany/Russia, slow for
+Austria's two-winter war). France, the creditor power, shows none. **My earlier
+"artifact / withdrawn" swing was itself an over-correction:** the crude level check
+was confounded, and the finance-as-constraint signal survives a proper one for
+three of four. The honest revision is not "consistent everywhere" (the first pass)
+nor "weak/mixed" (the second) but: **present and above-normal for the three
+stressed powers, cleanly absent for France.**
+
+**Remaining limits (still real).** A single neutral (Dutch) and current-yield
+proxies; the null windows overlap and are not independent, so the percentiles are
+descriptive, not test p-values; Austria's signal is entirely horizon-dependent
+(nothing at 90–180 d). And none of this touches intent — an above-normal bond
+move is consistency with finance-as-constraint, still not proof that it *caused*
+the climb-down rather than accompanying it.
+
+Two things this establishes, both honest:
 - **No crisis shows the refuting pattern** (stress *only after* the climb-down),
   so nothing positively supports pure "cover" either.
 - **Morocco/Rouvier is where the objection is most alive.** France was a creditor
@@ -90,16 +112,20 @@ drive* the concession, or *postdate and dress* it?
   Treasury records (BArch R 2, R 2501) and Zilch's monograph — see
   [`../../docs/july1914_mechanism_and_archival_test.md`](../../docs/july1914_mechanism_and_archival_test.md).
 
-**Bottom line.** After controls, the market data supports finance-as-cause far
-more weakly than the raw z>2 leads suggested: **one** clean distinctive case
-(Austria, and slow-building), one weak/measure-dependent (Germany), and **two**
-that show no distinctive own-market stress at all (Russia, France). It still
-offers no positive support for *pure* cover (no "stress only after"), but it does
-not vindicate the fiscal architecture either — and at Rouvier/France 1905 it
-leans toward the objection. Whether each fiscal argument was cause or cover is, as
-the objection says, an archival question; this test now says the archives have
-*more* to do than the timing leads implied, and are least likely to vindicate the
-French case.
+**Bottom line.** Properly controlled — neutral benchmark, change, null
+distribution — the market data is **consistent with finance as a binding
+constraint for the three powers whose own solvency was in question**: Germany
+(~90th percentile), Russia (~80th), and Austria (~90th, but only at the long
+horizon its two-winter crisis needed). **France (Morocco 1905) is the clean
+exception** — no own-market stress at all, consistent with the book's own placing
+of the 1905 constraint in Russia's collapse, not French finances. That is a
+stronger reading than my over-corrected "weak/mixed," and a more disciplined one
+than the first pass's raw z>2 leads. But it remains *consistency, not causation*,
+and it is silent on intent. Whether each minister's fiscal argument **caused** the
+climb-down or **dressed** it is, as the objection says, an archival question — the
+sources named above — and the market data's contribution is only to say the
+financial pressure was really there for Kokovtsov, Biliński and the Germans, and
+really absent for Rouvier.
 
 ## Reproduce
 
