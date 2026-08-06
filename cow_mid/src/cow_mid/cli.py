@@ -69,6 +69,25 @@ def _cmd_show(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_warrisk(args: argparse.Namespace) -> int:
+    import datetime
+
+    from .warrisk import war_risk_series, write_long_csv
+
+    disputes = _disputes(args)
+    start = datetime.date(args.start, 1, 1)
+    end = datetime.date(args.end, 12, 31)
+    pts = war_risk_series(disputes, start, end, step_days=args.step,
+                          both_sides=not args.any_side)
+    if args.out:
+        n = write_long_csv(pts, args.out)
+        print(f"wrote {n} rows ({len(pts)} weeks) -> {args.out}", file=sys.stderr)
+    lit = [p for p in pts if p.max_hostlev > 0]
+    print(f"weeks with active great-power confrontation: {len(lit)}/{len(pts)}",
+          file=sys.stderr)
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
         prog="cow-mid",
@@ -86,6 +105,16 @@ def build_parser() -> argparse.ArgumentParser:
 
     sh = sub.add_parser("show", parents=[common], help="list mapped disputes")
     sh.set_defaults(func=_cmd_show)
+
+    wr = sub.add_parser("warrisk", parents=[common],
+                        help="emit a continuous great-power war-risk series")
+    wr.add_argument("--out", help="output tidy long CSV")
+    wr.add_argument("--start", type=int, default=1900)
+    wr.add_argument("--end", type=int, default=1914)
+    wr.add_argument("--step", type=int, default=7, help="grid step in days (default weekly)")
+    wr.add_argument("--any-side", action="store_true",
+                    help="count any dispute a great power is in (default: great power BOTH sides)")
+    wr.set_defaults(func=_cmd_warrisk)
     return p
 
 

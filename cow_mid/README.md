@@ -62,6 +62,50 @@ checked in. COW MID is a discrete war-*event* dataset — it objectifies the
 spread carries each crisis) remains the thesis's choice, constrained here to a
 plausible actor and documented per crisis in `crises.py`.
 
+## Continuous war-risk series — `cow-mid warrisk`
+
+Beyond the five crisis windows, this builds an objective **great-power war-risk
+index over every week of 1900–1914**. At each week `value` is the maximum
+hostility level (0–5) of any MID active that week that is a **great-power
+confrontation** — a great power (UK, France, Germany, Austria-Hungary, Italy,
+Russia) on *each* side. That "both sides" rule is what makes it a proxy for
+*great-power* war rather than colonial policing: it is quiet (0) in normal weeks
+and lights up only at real stand-offs.
+
+```bash
+cow-mid warrisk --out warrisk_long.csv          # weekly, 1900-1914
+```
+
+Over 1900–1914 it flags **50 of 783 weeks**, rising at 1904 (Dogger Bank,
+Russia–UK), 1911 (Agadir), 1912 (Austria–Russia over Serbia) and to **war (5) in
+late July 1914**. Bosnia 1908 does **not** light up — Russia backed down without a
+great-power militarized dispute, matching the mapping's finding. The CSV carries
+two series (`war_risk`, the 0–5 intensity, and `war_risk_pprob`, an
+illustrative-only pseudo-probability) in the same schema as the financial legs, so
+they stack.
+
+**Honest naming:** this is a war-risk *intensity* index, **not** a market-implied
+*probability* — no traded war contract existed for 1914, so an ex-ante
+probability is not recoverable (`warrisk.py` says so). The pseudo-probability
+column is a labelled illustration, not an estimate.
+
+### Whole-period stress-vs-risk coupling (exploratory)
+
+Correlating each power's weekly money-market spread (`hfs_rates`) with the war-risk
+index across all of 1900–1914, at leads and lags:
+
+- The coupling is **weak** (|r| ≤ 0.16) and **positive** (more war-risk ↔ wider
+  spreads) — war-risk explains little of the spreads, which are dominated by
+  seasonality and the rate cycle.
+- The peak correlation sits at a **negative lag** for all three powers (war-risk
+  *leads* the spread by ~2–8 weeks): spreads widened *after* risk rose, not
+  before.
+
+Read as exploratory, not a result: war-risk is sparse (50 lit weeks, a handful of
+episodes), the index is a single *global* series (not power-specific), and
+hostility is ordinal. Still, a weak, *lagging* link is consistent with the wider
+finding — the money market was not a prompt barometer of great-power war risk.
+
 ## Data & attribution
 
 Source: **Correlates of War, Militarized Interstate Disputes v5.0** —
