@@ -64,16 +64,22 @@ The event-study control removes all three confounds:
 | **Balkans (Austria, Biliński)** | 0 | 0 | **89** | holds, but **slow** — arrives in 1913, at the horizon it needed |
 | **Morocco (France, Rouvier)** | 17 | 13 | 9 | **firm null** — France *below* normal, no stress |
 
-**So the answer to "does the data hold?" is: largely yes.** Benchmarked against a
-neutral and measured as a change, each power whose *own solvency* was in question —
-Germany, Russia, Austria — shows an abnormal rise in its bonds during its crisis,
-at the horizon that crisis actually ran (fast-ish for Germany/Russia, slow for
-Austria's two-winter war). France, the creditor power, shows none. **My earlier
-"artifact / withdrawn" swing was itself an over-correction:** the crude level check
-was confounded, and the finance-as-constraint signal survives a proper one for
-three of four. The honest revision is not "consistent everywhere" (the first pass)
-nor "weak/mixed" (the second) but: **present and above-normal for the three
-stressed powers, cleanly absent for France.**
+Benchmarked against the Dutch neutral, each power whose own solvency was in
+question (Germany, Russia, Austria) showed an abnormal rise and France none — which
+looked like "largely holds for three of four."
+
+> **Correction — it does not survive a *far* neutral (see
+> [`neutral_robustness.md`](neutral_robustness.md)).** The Netherlands borders
+> Germany and prices invasion risk; genuine far neutrals are the US, Sweden,
+> Switzerland. Re-run against those, the per-country percentiles **scatter** (Russia
+> 21–89, Germany 26–70, Austria 28–94 across neutrals) — the "three of four" was
+> **Dutch-specific and is withdrawn.** With four confounded crises and small/noisy
+> neutral markets the country-specific signal is at the noise floor. Only two
+> things survive every neutral: **France was calm in the money market** (0–10th
+> percentile everywhere → the 1905 constraint lay in the ally, Russia, not French
+> finances), and **Austrian debt repriced through the Balkan Wars** (89–100th vs
+> every bond neutral). Russia and Germany cannot be claimed per country from these
+> bond/bill prices.
 
 **Remaining limits (still real).** A single neutral (Dutch) and current-yield
 proxies; the null windows overlap and are not independent, so the percentiles are

@@ -12,10 +12,13 @@ British consols were risk-free is fragile.**
 - **The Rigobon-Sack war-risk premia reproduce.** Full-sample city coefficients
   match closely (Paris 0.11, Amsterdam 0.09, Copenhagen 0.14, Berlin 0.35, NY
   negative = safe haven). The method and the headline result are sound.
-- **Finance was a binding constraint for the powers whose own solvency was in
-  question — Germany, Russia, Austria** — but *not* for France in 1905. Their own
-  bonds/bills rose abnormally against a neutral during their crises; France's did
-  not (see §2, cause-vs-cover).
+- **Two country-specific market facts survive every neutral benchmark** (US,
+  Sweden, Switzerland, Netherlands): **France's short-term finances were calm in
+  1905** (so the 1905 constraint lay in the ally, Russia, not French solvency), and
+  **Austrian debt repriced through the Balkan Wars.** The broader "finance bound
+  Germany/Russia/Austria too" was **Dutch-benchmark-specific and does not survive a
+  far neutral** — see §2e and `neutral_robustness.md`. The per-country brake beyond
+  those two facts is at the noise floor of this data.
 - **Kokovtsov's 1914 dismissal was priced as a palace reshuffle, not a credit
   event** — Russian bonds flat, the French rente firmed. A clean illustration that
   the market distinguished political noise from fiscal-regime change.
@@ -56,15 +59,20 @@ those moves. Re-benchmarking to a neutral (Netherlands) collapses Morocco's bond
 lag from 16 weeks to 3 — a 13-week swing from the benchmark alone. **Add a neutral-
 basis robustness appendix; ideally re-estimate the core premia against Amsterdam.**
 
-**e. State cause-vs-cover as consistency, differentiated by country — never proof.**
-The market evidence shows finance was really binding for Germany/Russia/Austria and
-absent for France 1905 (Delcassé fell over diplomatic isolation; the 1905
-constraint was Russia's collapse, an alliance-transmission mechanism, not French
-insolvency). So do **not** claim uniform financial causation. The defensible claim:
-finance operated *directly* where a power's own solvency was in question and
-*indirectly* (via the ally) for France in 1905 — and whether each minister's fiscal
-argument *caused* or *dressed* the climb-down is an archival question the bond
-prices cannot answer.
+**e. Cause-vs-cover: claim only what survives a far neutral — which is very
+little.** Benchmarked against the Dutch yield the market data seemed to show
+finance binding Germany/Russia/Austria and not France; but re-run against genuine
+far neutrals (US, Sweden, Switzerland) the per-country percentiles **scatter**
+(`neutral_robustness.md`), so that reading was benchmark-specific and does not
+survive. Only two country facts hold against *every* neutral: **France's short-term
+finances were calm in 1905** (so the 1905 constraint lay in the ally, Russia, not
+French solvency — an alliance-transmission mechanism) and **Austrian debt repriced
+through the Balkan Wars.** Beyond those, the per-country brake is at the noise floor
+of this data. So do **not** make per-country financial-causation claims from bond/
+bill prices; whether each minister's fiscal argument *caused* or *dressed* the
+climb-down is an archival question. The lesson to state in the book: a
+country-specific war-risk-constraint signal is not robustly recoverable from these
+spreads once you stop assuming any one market is a clean neutral.
 
 **f. Frame the data gaps as scope conditions, not weaknesses.** Russia has no
 open-market rate after 1900 (only the administered, sticky bank rate); July 1914's
