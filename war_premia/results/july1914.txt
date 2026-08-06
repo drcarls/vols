@@ -1,0 +1,11 @@
+[short-term rates] estimable=False: data ends 1914-06-27, before the July war weeks; only 1 boundary war-week and no crisis response
+[long-term bonds] estimable=False: monthly with a 63-day gap 1914-06-03->1914-08-05 across the crisis; a single observation spans it — no variance regime
+
+One observable: sovereign long-bond price change across the closure (1914-06-03 -> 1914-08-05) — a distorted lower bound, not a premium:
+  UK Consols 3%            75.000 ->   74.750   -0.3%
+  French 3% rentes         88.400 ->   86.800   -1.8%
+  Russian 4% (ser. II)     89.000 ->   87.000   -2.2%
+  Russian 1822 5%         123.000 ->  120.000   -2.4%
+  Austrian Gold 4%         85.000 ->   84.000   -1.2%
+  German Imperial 3%       79.000 ->   77.500   -1.9%
+  Prussian Consols 3.5%    87.500 ->   87.000   -0.6%
