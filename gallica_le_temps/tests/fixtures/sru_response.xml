@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<srw:searchRetrieveResponse xmlns:srw="http://www.loc.gov/zing/srw/">
+  <srw:version>1.2</srw:version>
+  <srw:numberOfRecords>1</srw:numberOfRecords>
+  <srw:records>
+    <srw:record>
+      <srw:recordSchema>info:srw/schema/1/dc-v1.1</srw:recordSchema>
+      <srw:recordPacking>xml</srw:recordPacking>
+      <srw:recordData>
+        <oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+                   xmlns:dc="http://purl.org/dc/elements/1.1/">
+          <dc:title>Le Temps</dc:title>
+          <dc:date>1914-07-28</dc:date>
+          <dc:identifier>https://gallica.bnf.fr/ark:/12148/bpt6k239abcd</dc:identifier>
+          <dc:type>fascicule</dc:type>
+        </oai_dc:dc>
+      </srw:recordData>
+      <srw:extraRecordData>
+        <ocrQuality>95.36</ocrQuality>
+        <nqamoyen>95.36</nqamoyen>
+      </srw:extraRecordData>
+    </srw:record>
+  </srw:records>
+</srw:searchRetrieveResponse>

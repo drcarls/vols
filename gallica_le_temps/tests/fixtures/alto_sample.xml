@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<alto xmlns="http://www.loc.gov/standards/alto/ns-v2#">
+  <Description>
+    <MeasurementUnit>pixel</MeasurementUnit>
+  </Description>
+  <Layout>
+    <Page ID="P1" PHYSICAL_IMG_NR="1" WIDTH="2500" HEIGHT="4000">
+      <PrintSpace HPOS="0" VPOS="0" WIDTH="2500" HEIGHT="4000">
+        <TextBlock ID="B1">
+          <TextLine ID="L1" HPOS="100" VPOS="200" WIDTH="640" HEIGHT="40">
+            <String ID="w1" CONTENT="Banque" HPOS="100" VPOS="200" WIDTH="180" HEIGHT="40"/>
+            <SP/>
+            <String ID="w2" CONTENT="de" HPOS="300" VPOS="200" WIDTH="50" HEIGHT="40"/>
+            <SP/>
+            <String ID="w3" CONTENT="France" HPOS="370" VPOS="200" WIDTH="170" HEIGHT="40"/>
+            <SP/>
+            <String ID="w4" CONTENT="84,25" HPOS="600" VPOS="200" WIDTH="120" HEIGHT="40"/>
+          </TextLine>
+        </TextBlock>
+        <TextBlock ID="B2">
+          <TextLine ID="L2" HPOS="100" VPOS="300" WIDTH="630" HEIGHT="40">
+            <String ID="w5" CONTENT="3" HPOS="100" VPOS="300" WIDTH="40" HEIGHT="40"/>
+            <SP/>
+            <String ID="w6" CONTENT="0/0" HPOS="160" VPOS="300" WIDTH="90" HEIGHT="40"/>
+            <SP/>
+            <String ID="w7" CONTENT="83,50" HPOS="600" VPOS="300" WIDTH="130" HEIGHT="40"/>
+          </TextLine>
+        </TextBlock>
+        <TextBlock ID="B3">
+          <!-- Deliberately out of document order to exercise vertical sorting. -->
+          <TextLine ID="L0" HPOS="100" VPOS="120" WIDTH="400" HEIGHT="40">
+            <String ID="w0" CONTENT="COURS" HPOS="100" VPOS="120" WIDTH="400" HEIGHT="40"/>
+          </TextLine>
+        </TextBlock>
+      </PrintSpace>
+    </Page>
+  </Layout>
+</alto>

@@ -1,0 +1,50 @@
+# Example run config for the Le Temps extraction pipeline.
+#
+# Everything here is data — no dates or securities are baked into the package,
+# so copy this file and edit the window/targets for whatever crisis you study.
+# The window below (late July 1914, the outbreak of WWI and the suspension of
+# the Paris bourse) is only an illustration.
+
+date_start: "1914-07-25"
+date_end: "1914-08-05"
+
+# ARK of the Le Temps title notice (ark:/12148/cb34431794k). Change only to
+# extract a different periodical.
+title_ark: "cb34431794k"
+
+# Keep only issues whose mean OCR quality (0-100) clears this floor. Set to
+# null to disable the filter.
+min_ocr_quality: 80
+
+# IIIF crop rendering size: "full" = native resolution of the crop; "600," =
+# 600px wide, etc.
+iiif_size: "full"
+
+output_path: "le_temps_1914.csv"
+
+targets:
+  - name: "rente_3pct"
+    notes: "3% French rente (perpetual), Paris bourse quotation."
+    anchors:
+      - "3 0/0"          # period notation for '3 per cent'
+      - "3 %"
+    page: 3               # the 'Bourse de Paris' page — verify per issue
+    max_tokens: 1
+    unit: "FRF"
+
+  - name: "banque_de_france"
+    notes: "Banque de France share price."
+    anchors:
+      - "Banque de France"
+    page: 3
+    max_tokens: 1
+    unit: "FRF"
+
+  - name: "change_londres"
+    notes: "Sterling exchange rate quoted in Paris (change sur Londres)."
+    anchors:
+      - "Londres"
+      - "Change sur Londres"
+    page: 3
+    max_tokens: 1
+    unit: "FRF/GBP"

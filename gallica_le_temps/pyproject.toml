@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gallica-le-temps"
+version = "0.1.0"
+description = "Locate-with-text, read-from-image extraction of French rates and Paris bourse quotations from Le Temps (Gallica / BnF)."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+dependencies = [
+    "requests>=2.28",
+    "PyYAML>=6.0",
+]
+
+[project.optional-dependencies]
+# OCR of the cropped IIIF regions. Optional so the pure locate/crop pipeline
+# runs without a Tesseract install.
+ocr = ["pytesseract>=0.3.10", "Pillow>=9.0"]
+dev = ["pytest>=7.0"]
+
+[project.scripts]
+gallica-le-temps = "gallica_le_temps.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
