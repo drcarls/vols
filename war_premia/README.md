@@ -92,6 +92,20 @@ identified. Two findings (see `results/july_aug_1914_money.md`):
   (see the audit above). The *war premium* is unobservable: the market shut
   mid-repricing.
 
+### NYC bonds, 1914: the closure and the reopening
+
+`data/nyc_1914_bonds.csv` + `results/nyc_1914_bonds.md` (sourced to the *Chronicle*,
+via FRASER/Wayback) cover the New York case, which ran on a **different mechanism**.
+The US was a *debtor*: at the outbreak Europe dumped American securities for gold
+($41.85M engaged in the first week), so the NYSE closed 31 July to stop the selling
+and the gold drain — the US defending its gold, not a belligerent its debt. The
+Aug–Nov closure quotes are minimum-price floors (excluded). The genuine, observable
+reaction is the **28 Nov 1914 bond reopening**, and it was **firm**: trading resumed
+"without a hitch," high grades near par — US Steel 5s 99¾–100¼ (the week's most
+active), US Rubber 6s above par, short high grades ~99–100¼. NYC bonds did not
+crash; the crash was pre-empted by closure, and US credit was, if anything, a war
+beneficiary.
+
 ## St. Petersburg (Russia) — a series the original couldn't include
 
 The paper reported the Russian market rate as unavailable. The NW short-rate file
