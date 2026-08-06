@@ -77,6 +77,21 @@ support operations froze quoted prices):
   that is, in absolute terms, trivial. This confirms Ferguson; it does not refute
   him.
 
+### The money market through July–August 1914 (descriptive)
+
+The NW short rates end 1914-06-27; `data/july_aug_1914_money.csv` fills the war
+weeks from the **Commercial and Financial Chronicle** (public domain, via FRASER /
+Wayback), each figure carrying its OCR source quote. It is descriptive, not
+identified. Two findings (see `results/july_aug_1914_money.md`):
+
+- **No anticipation.** London 3-month bills drift ~1.9%→2.4% through July — an
+  ordinary summer firming, no war being priced — then the market froze (LSE closed
+  31 July). Ferguson again, in the short rates.
+- **A money-market convulsion, not a bond one.** When war came the Bank of England
+  rate went **3 → 4 → 8 → 10%** in a week and NY call money to 7%, while sovereign
+  bonds moved ~2% and then stopped trading. The shock hit *liquidity*, instantly;
+  the *war premium* never materialised because the market shut before it could.
+
 ## St. Petersburg (Russia) — a series the original couldn't include
 
 The paper reported the Russian market rate as unavailable. The NW short-rate file

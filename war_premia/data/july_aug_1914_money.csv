@@ -1,0 +1,14 @@
+series,week_ending,value,unit,source_quote,issue
+london_3mo_bank_bills,1914-07-04,1.9375,pct,"advance from 1 13-16@1 7/8% for short and 1 15-16 [3-month] (prior-week figure quoted in the 07-11 issue)",cfc_19140711
+london_3mo_bank_bills,1914-07-11,2.375,pct,"discount rates in Lombard Street closed at 2% for short bills and 2 3/8% for three months' bills. This is an advance",cfc_19140711
+london_3mo_bank_bills,1914-07-18,2.28,pct,"prior-week figure '2 3/8@2 3-16%' quoted in the 07-25 issue (midpoint ~2.28)",cfc_19140725
+london_3mo_bank_bills,1914-07-25,2.34,pct,"2% for short bills ... and 2%@2 11-16% for three months' bills, against 2 3/8@2 3-16% (midpoint ~2.34)",cfc_19140725
+london_3mo_bank_bills,1914-08-01,,pct,"market froze: London Stock Exchange closed Friday 31 July; three-month bills effectively unquotable",cfc_19140801
+bank_of_england_rate,1914-07-25,3.0,pct,"Bank of England rate had stood at 3% (fixed 29 Jan 1914), unchanged through July",cfc_19140801
+bank_of_england_rate,1914-07-30,4.0,pct,"The Bank of England rate was raised on Thursday to 4% from 3%",cfc_19140801
+bank_of_england_rate,1914-08-01,8.0,pct,"... and on Friday to 8%",cfc_19140801
+bank_of_england_rate,1914-08-03,10.0,pct,"peak: reduced 'from 10 to 6 per cent' per the 08-08 issue implies a 10% peak (1 Aug bank holiday extension, 3 Aug)",cfc_19140808
+bank_of_england_rate,1914-08-06,6.0,pct,"the Bank of England had reduced its discount rate from 10 to 6 per cent",cfc_19140808
+ny_call_money_high,1914-08-01,7.0,pct,"Call rates have this week covered a range of 2@7% ... Friday the Stock Exchange was closed",cfc_19140801
+ny_call_money_low,1914-08-01,2.0,pct,"Call rates have this week covered a range of 2@7%",cfc_19140801
+paris_3mo,1914-07-25,2.5,pct,"In Paris 2 1/2% is still the quotation",cfc_19140725
