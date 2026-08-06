@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+*.egg-info/
+.venv/
+# The raw HFS workbook is NOT redistributed (HFS restricts database
+# redistribution); it is downloaded on demand.
+*.xlsb
+# Ad-hoc pull output; the committed derived series lives under data/.
+/weekly_long.csv
+data/*.csv

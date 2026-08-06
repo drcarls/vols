@@ -1,0 +1,14 @@
+crisis            series          onset       status     peak         lag(wk)  material(wk)
+-------------------------------------------------------------------------------------------
+Morocco_1905      france          1905-03-31  ok         1905-07-15      15.1             -
+Agadir_1911       germany         1911-07-01  ok         1911-11-18      20.0             -
+Balkans_1912_13   austria_hungary 1912-10-08  ok         1913-05-24      32.6          26.6
+July_1914         austria_hungary 1914-07-23  censored   window 0.7wk       -             -
+
+VERDICT: INCONCLUSIVE
+  comparators measured : 3
+  lags (weeks)         : 15.1, 20.0, 32.6
+  mean / min lag       : 22.6 / 15.1 wk
+  in 6-10 wk band  : 0/3
+  July 1914 window     : 0.7 wk
+  Lags cleared the 2-week floor but were not tight in the 6-10 band (0/3 in band). Suggestive, not demonstrated — widen the comparator set or sharpen resolution in the crisis weeks.

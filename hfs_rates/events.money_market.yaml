@@ -1,0 +1,36 @@
+# Weekly money-market event spec — crises mapped to the powers HFS covers weekly
+# (France, Germany, Austria). Thesis onset dates unchanged; the pre-registered
+# band/floor are NOT moved. Russia's crises (Bosnia 1908) stay on russia and read
+# no_data here — HFS's St Petersburg market rate ends in 1900.
+#
+#   hfs-rates pull --out weekly_long.csv
+#   crisis-lag run weekly_long.csv --events events.money_market.yaml
+#
+# NB the value is a money-market (open-market) rate spread over London, not a
+# sovereign-bond spread. Money markets carry strong autumn seasonality; the
+# London spread differences out the common part but not all of it, so late-autumn
+# peaks (e.g. Agadir) are partly seasonal. Read alongside fred_nber's bond spreads.
+
+events:
+  - name: Morocco_1905
+    onset: "1905-03-31"        # Kaiser at Tangier; First Moroccan Crisis
+    series: france
+    binding_power: "France (Paris money market)"
+
+  - name: Agadir_1911
+    onset: "1911-07-01"        # Panther at Agadir
+    series: germany
+    binding_power: "Germany (Berlin money market)"
+
+  - name: Balkans_1912_13
+    onset: "1912-10-08"        # First Balkan War opens
+    series: austria_hungary
+    binding_power: "Austria-Hungary (Vienna money market)"
+    search_days: 300           # the crisis ran through two winters
+
+  - name: July_1914
+    onset: "1914-07-23"        # Austrian ultimatum
+    series: austria_hungary
+    binding_power: "Austria-Hungary (Vienna)"
+    measurable: false          # bourses closed late July -> peak censored
+    decision_window_days: 5
