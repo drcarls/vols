@@ -9,6 +9,12 @@ Not Afford, 1905–1914*.
 > so, the financial brake did not fail in 1914; it was given a fifth of the time
 > it needed. This package measures those lags and adjudicates the claim.
 
+**"Brake" means the *market's* capacity to react in time — mechanism, not motive.**
+No one is claimed to have timed the crisis to defeat the money market; the July
+tempo's documented motives are diplomatic. The financial *effect* (a market that
+could not price what it could not see) does not require financial *intent*. See
+[`../docs/july1914_mechanism_and_archival_test.md`](../docs/july1914_mechanism_and_archival_test.md).
+
 ## ⚠️ Status: no real data has been run
 
 The only dataset exercised so far is **synthetic** — series with peaks injected
