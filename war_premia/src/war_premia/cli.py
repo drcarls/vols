@@ -78,6 +78,14 @@ def _cmd_russia(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_kokovtsov(args: argparse.Namespace) -> int:
+    """Did Russian short rates move around Kokovtsov's dismissal (Feb 1914)?"""
+    from .kokovtsov import format_result, kokovtsov_test
+
+    print(format_result(kokovtsov_test(args.short or SHORT)))
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="war-premia", description="Reproduce/extend Carls (2005).")
     p.add_argument("--short", help="path to stinterestrates.xls")
@@ -86,6 +94,7 @@ def build_parser() -> argparse.ArgumentParser:
     sub.add_parser("reproduce", help="Tables 3-7").set_defaults(func=_cmd_reproduce)
     sub.add_parser("july1914", help="the extension").set_defaults(func=_cmd_july1914)
     sub.add_parser("russia", help="St Petersburg bank-rate premium").set_defaults(func=_cmd_russia)
+    sub.add_parser("kokovtsov", help="the Kokovtsov dismissal event test (Feb 1914)").set_defaults(func=_cmd_kokovtsov)
     return p
 
 

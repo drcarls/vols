@@ -121,6 +121,25 @@ limitation of the Russian series, not evidence that Russia bore no war risk; onl
 its market (open-market) rate would show it, and that is the series NW lacks after
 1900.
 
+### The Kokovtsov event test — a test the paper couldn't run (`war-premia kokovtsov`)
+
+A sharp, datable probe of that limitation. **Vladimir Kokovtsov** — Russia's
+finance minister and premier, who anchored Russian credit in Paris — was
+dismissed in late Jan 1914 (O.S.); his cabinet ended **12 Feb 1914 (N.S.)**. If
+any Russian rate should price political risk, it is this. Run on the recovered
+St Petersburg column (`results/kokovtsov_1914.md`):
+
+- The **bank rate did not move** — it sat at 5.5% for a **73-week plateau**
+  (2 Nov 1912 → 28 Mar 1914) straddling the dismissal; the next change was a
+  *cut* to 5.0% seven weeks later (opposite sign to stress).
+- The **market rate ends 20 Oct 1900** — no 1914 observation; no ruble exchange
+  series either.
+
+An informative **null**: the event is real and runnable, but the data can't see
+it. The administered rate is silent by construction, and the market rate that
+would carry the signal is the one NW loses after 1900. It turns the paper's
+general "Russia unavailable" caveat into a specific, dated demonstration.
+
 ## Tests
 
 ```bash
