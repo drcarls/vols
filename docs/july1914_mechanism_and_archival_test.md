@@ -39,54 +39,69 @@ calm*?
 
 It is a binary question with a findable answer.
 
-## Evidence state (audited)
+## The two sources that settle it
+
+- **Reinhold Zilch, *Die Reichsbank und die finanzielle Kriegsvorbereitung von
+  1907 bis 1914*** (diss. 1976; Forschungen zur Wirtschaftsgeschichte, Berlin
+  1987) — *the* archival monograph on Reichsbank financial war preparation, built
+  on the Reichsbank and Treasury records. It is what would confirm or deny a
+  quiet-weeks step.
+- **The Reichsbank's own 1914 *Verwaltungsbericht*** — a day-by-day account of the
+  bank's 1914 operations (discount policy, gold movements, note issue). The
+  primary public record of *when* the Reichsbank actually moved.
+
+## Evidence state (audited against the scholarship that cites Zilch and BArch R 2)
 
 **Established (documented):**
-- A decade-long program under Finance Minister Wermuth and Reichsbank President
-  Havenstein to accumulate gold and reduce dependence on foreign creditors —
-  *structural*, pre-1914, not a July step.
-- The war-finance apparatus (Darlehnskassen loan banks; suspension of the
-  Reichsbank's one-third gold-cover requirement; emergency treasury/loan-bank
-  notes) was **pre-drafted "in every detail"** and notes were **printed in
-  advance**, so the laws could pass unanimously and 100+ loan-bank offices open
-  the day after. Readiness is not in doubt.
+- The financial-mobilization **framework is old — 1891**: the Reichsbank as fiscal
+  agent, loan-bank (Darlehnskassen) creation, and *draft war-finance laws to be
+  enacted in case of war*, with "details added in later years." Refined by the
+  Wermuth/Havenstein gold-accumulation program to 1914. **Readiness is a 23-year
+  contingency plan, not a July 1914 initiative.**
 - Operational steps are dated to the **crisis, not the quiet weeks**: specie
   payments suspended **31 July**; the imperial gold reserve (Kriegsschatz, 240 M
-  ℳ) transferred to the Reichsbank **2 August**; the bank laws enacted **4 August**.
+  ℳ) transferred to the Reichsbank **2 August** (BArch **R 2/41134**); the bank
+  laws enacted **4 August**.
+- The plan was built **for a short, victorious war** ("the departure from the gold
+  standard was only temporary"). The state's *own* financial design shared the
+  short-war assumption that mispriced the actual conflict — **readiness was not
+  foresight.**
 
-**Not established in the accessible literature:**
+**Not established:**
 - Any concrete Reichsbank/Treasury action dated **5–23 July 1914**. The
-  authoritative *1914-1918-Online* "War Finance (Germany)" article jumps from the
-  decade-long program to the 4 August laws with nothing in the window, and cites
-  **no archive** for *when* the contingency laws were finalized. "Drafted in
-  advance" is documented; "acted upon in the quiet weeks" is not.
+  authoritative *1914-1918-Online* synthesis — which *does* cite Zilch and even
+  gives BArch R 2 signatures for the August steps — reports **no** discount-rate
+  or gold-policy change before ~31 July, and nothing in the blank-cheque-to-
+  ultimatum window. The public central bank was calm because it *was* calm.
 
-**Unreliable (do not use without primary corroboration):**
-- A popular claim that Havenstein "demanded on 18 June 1914 that all banks hand
-  over all their gold" because "war was coming" (a Mises Institute op-ed). This
-  conflates the multi-year gold-centralization campaign with a war-specific June
-  step and supplies the very *intent* framing to be avoided.
+**Unreliable (do not use):**
+- The popular "Havenstein demanded all banks' gold on 18 June 1914" line (Mises
+  op-ed) — conflates the multi-year campaign and supplies the *intent* framing to
+  be avoided.
 
-**Conclusion:** state *readiness* is documented; a state *action* in the 5–23 July
-window is not. The question is open, and it is exactly the kind the market-side
-data cannot answer.
+## Provisional verdict — and it leans *against* the smoking gun
 
-## The target
+On the currently documented evidence, the **asymmetric-information version is not
+supported**: the Reichsbank did not act ahead of the market in the quiet weeks. It
+held a long-standing plan and *activated it at the crisis* — 31 July onward,
+roughly when the market itself woke up; in the last days it was even reacting to a
+gold run, not front-running one. So the mechanism reduces to its honest core:
+**the market could not react in time to a diplomatic tempo — not that the state
+knew and moved first.** And the sharper irony is that the state's readiness was
+calibrated to the *wrong* war (short, victorious), the same misjudgment the market
+made about pricing one at all.
 
-- **BArch R 2** — Reichsfinanzministerium / Reichsschatzamt (Reich Treasury):
-  minutes, internal correspondence, and dated revisions of the draft war-finance
-  laws. The primary place a 5–23 July step would leave a trace.
-- **BArch R 43** — Reichskanzlei, for cross-referencing any Treasury/Chancellery
-  coordination in the same window.
-- Reichsbank records (Bundesbank historical archive) for the discount-policy and
-  gold-movement diaries of early-to-mid July 1914.
+This is *provisional* because it rests on the English-language synthesis of Zilch,
+not a line-by-line read of Zilch's German text or the 1914 *Verwaltungsbericht* —
+either of which could surface a finer mid-July detail. But the burden has shifted:
+the default reading is now **no privileged state action in the quiet weeks**, and
+it would take a positive find in those two sources to overturn it.
 
-Finding aid: the Bundesarchiv catalogue (*invenio*) lists R 2 file titles but not
-contents. **This note does not report an archival finding — none has been read
-here.** It defines the test, audits what secondary scholarship already settles
-(readiness) and leaves open (a quiet-weeks action), and names where the binary
-answer lives. Anyone — including a future version of this analysis — must read the
-files before asserting the result.
+**This note reports no archival finding of my own** — I have not read Zilch or the
+1914 report directly. It names the two sources that decide the question, records
+what the scholarship citing them already shows (a 1891 framework, no 5–23 July
+step, a short-war premise), and states which way the evidence now points. Read the
+two sources before asserting more.
 
 ## Sources
 
