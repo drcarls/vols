@@ -19,31 +19,45 @@ baseline in its sovereign spread / yield) at the moment it climbed down?
 
 So the test can partially refute, never confirm (`cause_or_cover.py`).
 
-## Result — differentiated, and it does not support pure "cover"
+## The raw "material before" flags do not survive a control check
 
-| crisis (climbing-down power) | own bonds material *before* climb-down? | reading |
-|---|---|---|
-| **Bosnia 1909 (Russia, Kokovtsov)** | **Yes**, 162 days before — both measures | finance-as-constraint consistent |
-| **Balkans 1912–13 (Austria, Biliński)** | **Yes**, 224 days before — both measures | finance-as-constraint consistent |
-| **Agadir 1911 (Germany)** | **Yes on yield** (71 days, the 1911 bourse panic); **no on spread** (consols sold off too) | consistent on the affordability measure |
-| **Morocco 1905 (France, Rouvier)** | **No** on France's own yield; spread "material" only degenerately, at onset | France's *own* finances were **not** the binding constraint |
+A first pass found each climbing-down power's bonds "material" (z>2) *before* the
+concession — Russia 162 days before, Austria 224. **But those leads are long
+enough to be suspicious, and they do not survive controls.** A z>2 crossing is
+only crisis stress if the crisis-window level actually *exceeds* what the same
+bond did in the same calendar window in **clean (non-crisis) years**; otherwise it
+is a low-variance-baseline artifact riding a pre-existing level or trend. Checked
+two ways — matched clean-year control windows, and the yearly-mean trend
+(`cause_or_cover.py`):
 
-No crisis shows the refuting pattern (stress only *after* the climb-down), so the
-data does **not** support the pure "decoration" thesis. But two honest
-qualifications:
+**Yearly-mean spread (over British consols):**
+```
+russia:    1906 2.01  1907 2.00  1908 1.52  1909 1.24  1910 0.86  1911 0.73  1912 0.70
+austria:   1910 0.64  1911 0.57  1912 0.56  1913 0.70  1914 1.00
+```
 
-- **Agadir is measure-dependent.** Germany's *absolute* borrowing cost spiked in
-  Aug–Sept 1911 (the classic finance-forced-settlement case), but the *spread*
-  over British consols did not — because consols sold off with it. The
-  finance-as-cause reading rides on using the affordability level, not the spread.
-- **Morocco 1905 is the case that leans toward the objection — and the book knows
-  it.** France's own yield shows no material stress; France was a creditor power.
-  Delcassé fell over **diplomatic isolation** (Britain's commitment uncertain,
-  Russia crippled by Japan and revolution), not French insolvency. The book's own
-  mapping puts the binding constraint not in French finances but in **Russia's
-  collapse** — an alliance-transmission mechanism, not "France could not pay." So
-  for *Rouvier specifically*, finance-as-direct-cause is the weakest, and the
-  fiscal-justification-as-cover worry is most alive.
+| crisis (power) | raw z>2 lead | survives controls? | reading |
+|---|---|---|---|
+| **Bosnia (Russia, Kokovtsov)** | 162 d | **No.** 1908 spread (1.52) sits *below* calm 1906–07 (2.0); the series *declines* through the crisis | the flag is an **artifact** — no distinctive stress |
+| **Morocco (France, Rouvier)** | none / degenerate | **No.** France's own yield never crosses; no stress | France's finances were **not** the constraint |
+| **Agadir (Germany)** | 71 d (yield) | **Weakly.** +0.12 above 1909–10, but on a rising secular trend | modest, measure-dependent |
+| **Balkans (Austria, Biliński)** | 224 d | **Yes.** Spread breaks its 1910–12 decline (0.56→0.70→1.00) and clears clean controls on yield | genuine — but **slow-building**, peak 1913 |
+
+**So the earlier "consistent in 3 of 4" is withdrawn.** After controls, only
+**Austria** shows a distinctive own-market crisis stress — and even it builds over
+the whole long crisis rather than pressing *before* the decision. Russia's signal
+dissolves (the spread was near multi-year lows, falling through Bosnia); France's
+never existed; Germany's is weak and secular-trend-confounded.
+
+Two things this does establish, both honest:
+- **No crisis shows the refuting pattern** (stress *only after* the climb-down),
+  so nothing positively supports pure "cover" either.
+- **Morocco/Rouvier is where the objection is most alive.** France was a creditor
+  power under no market stress; Delcassé fell over **diplomatic isolation**
+  (Britain's commitment uncertain, Russia crippled by Japan and revolution). The
+  book itself locates the constraint not in French finances but in **Russia's
+  collapse** — an alliance mechanism, not "France could not pay." A fiscal
+  justification there would be closest to decoration.
 
 ## What this leaves for the archives
 
@@ -65,13 +79,16 @@ drive* the concession, or *postdate and dress* it?
   Treasury records (BArch R 2, R 2501) and Zilch's monograph — see
   [`../../docs/july1914_mechanism_and_archival_test.md`](../../docs/july1914_mechanism_and_archival_test.md).
 
-**Bottom line.** The market data is *consistent* with finance as a binding
-constraint in three of four crises and offers no support for pure cover — but it
-is silent on intent, and in the one case built on a named minister's own solvency
-(Rouvier/France 1905) it actively fails to find French financial stress. Whether
-the fiscal argument was cause or cover is, as the objection says, an archival
-question; this test says only where the archives are most and least likely to
-vindicate it.
+**Bottom line.** After controls, the market data supports finance-as-cause far
+more weakly than the raw z>2 leads suggested: **one** clean distinctive case
+(Austria, and slow-building), one weak/measure-dependent (Germany), and **two**
+that show no distinctive own-market stress at all (Russia, France). It still
+offers no positive support for *pure* cover (no "stress only after"), but it does
+not vindicate the fiscal architecture either — and at Rouvier/France 1905 it
+leans toward the objection. Whether each fiscal argument was cause or cover is, as
+the objection says, an archival question; this test now says the archives have
+*more* to do than the timing leads implied, and are least likely to vindicate the
+French case.
 
 ## Reproduce
 

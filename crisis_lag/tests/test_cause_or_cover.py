@@ -30,11 +30,28 @@ def test_no_crisis_has_stress_only_after_climbdown():
                 assert mat <= cd, f"{c.crisis} on {path}: material {mat} after climb-down {cd}"
 
 
-def test_russia_and_austria_materially_stressed_before_climbdown():
-    rows = {c.crisis: (mat, cd) for c, mat, cd, gap, v in cc.run(cc.SPREADS)}
-    for name in ("Bosnia_1909", "Balkans_1912_13"):
-        mat, cd = rows[name]
-        assert mat is not None and mat < cd
+def test_russia_bosnia_flag_does_not_survive_the_control_check():
+    # The z>2 lead is an artifact: the 1908 Russian spread sat BELOW calm control
+    # years, so the crisis peak is NOT distinctive.
+    series = cc.load_long_csv(cc.SPREADS)
+    ru = next(c for c in cc.CLIMB_DOWNS if c.crisis == "Bosnia_1909")
+    peak, controls, distinct = cc.control_check(series[ru.series], ru.onset)
+    assert distinct is False
+    assert peak < max(p for _, p in controls)   # crisis below the calm-year peak
+
+
+def test_austria_balkans_is_the_one_distinctive_case_on_yield():
+    series = cc.load_long_csv(cc.YIELDS)
+    au = next(c for c in cc.CLIMB_DOWNS if c.crisis == "Balkans_1912_13")
+    _peak, _controls, distinct = cc.control_check(series[au.series], au.onset)
+    assert distinct is True
+
+
+def test_austria_spread_breaks_its_declining_trend():
+    # The robust backbone: Austria bottoms in 1912 then rises 1913 -> 1914.
+    series = cc.load_long_csv(cc.SPREADS)
+    ym = cc.yearly_means(series["austria_hungary"])
+    assert ym[1912] < ym[1913] < ym[1914]
 
 
 def test_france_own_yield_shows_no_material_stress_in_1905():

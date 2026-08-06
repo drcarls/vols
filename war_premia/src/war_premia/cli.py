@@ -67,6 +67,12 @@ def _cmd_july1914(args: argparse.Namespace) -> int:
     print("The whole European sovereign complex fell ~2.5-6% in the final trading weeks — a\n"
           "broad war repricing, visible until the market shut. The IDENTIFIED premium is what's\n"
           "unestimable (regime truncated by closure), not the reaction, which is right here.")
+    print("\nCAVEAT — read the LEVEL, not the ORDERING. That Consols (the safest sovereign\n"
+          "credit on earth) fell as hard as the belligerents is FLIGHT TO LIQUIDITY, not\n"
+          "British war risk: in a cash scramble you sell what has a bid, and Consols were the\n"
+          "most marketable asset there was, so they went first. The cross-section ranks\n"
+          "marketability, NOT relative war risk — do not read 'Consols fell more than the\n"
+          "rente' as 'Britain was the bigger war risk.' Only the aggregate move is a war signal.")
     return 0
 
 

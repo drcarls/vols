@@ -27,11 +27,15 @@ repriced too late to matter. What it says about the *state's* knowledge or inten
 > climb-down, or cover for a decision taken on other grounds? Market data cannot
 > settle that either — but it gives one asymmetric, timing-based handle, run in
 > [`../crisis_lag/results/cause_or_cover.md`](../crisis_lag/results/cause_or_cover.md).
-> It finds each climbing-down power's own bonds materially stressed *before* the
-> concession in three of four crises (no support for pure "cover"), but in the
-> one case built on a named minister's own solvency — **Rouvier/France 1905** —
-> French borrowing costs show *no* material stress, so there the objection is most
-> alive. Consistency, never proof; intent still needs the archives named there.
+> A first pass found each power's bonds "material" *before* the concession, but
+> those leads (162–224 days) **do not survive a control check**: only **Austria**
+> (Balkans) shows a distinctive own-market stress above clean control years, and
+> even it builds slowly; **Russia** (Bosnia) sat *below* its calm-year spreads on
+> a declining trend (artifact), and **France** (Morocco) shows no own-market
+> stress at all — Delcassé fell over diplomatic isolation, not French solvency. So
+> the timing evidence for finance-as-cause is weak (no positive support for pure
+> "cover" either), and weakest exactly at **Rouvier/France 1905**. Consistency,
+> never proof; intent still needs the archives named there.
 
 ## The finite question
 

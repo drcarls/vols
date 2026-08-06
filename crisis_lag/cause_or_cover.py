@@ -67,6 +67,58 @@ CLIMB_DOWNS = [
 ]
 
 
+def _window_peak(obs, lo: D, hi: D) -> Optional[float]:
+    vals = [v for d, v in obs if lo <= d <= hi]
+    return max(vals) if vals else None
+
+
+# Years contaminated by a coded crisis for SOME great power — unusable as clean
+# controls (Bosnia 1908-09 stressed Austria too; Morocco 1905; Agadir 1911;
+# Balkans 1912-13; July 1914). Leaves 1904/1906/1907/1910 as the calm set.
+CRISIS_YEARS = {1905, 1908, 1909, 1911, 1912, 1913, 1914}
+
+
+def control_check(obs, onset: str, span_days: int = 300, span_years: int = 5):
+    """Is the crisis-window peak DISTINCTIVE vs matched *clean* control windows?
+
+    A long 'material stress before the climb-down' lead is only evidence of crisis
+    stress if the crisis-window level actually exceeds what the same bond did in
+    the same calendar window in NON-crisis years. Otherwise the z>2 flag is a
+    low-variance-baseline artifact on a pre-existing level/trend. Crisis years are
+    excluded from controls. NOTE these spreads carry strong secular trends (Russia
+    declining post-1905, Austria U-shaped), so distant controls conflate trend
+    with crisis — read this together with the yearly-mean trend, not alone.
+    """
+    o = D.fromisoformat(onset)
+    hi = o + datetime.timedelta(days=span_days)
+    crisis_peak = _window_peak(obs, o, hi)
+    controls = []
+    for dy in range(-span_years, span_years + 1):
+        y = o.year + dy
+        if dy == 0 or y in CRISIS_YEARS:
+            continue
+        try:
+            lo_c, hi_c = o.replace(year=y), hi.replace(year=hi.year + dy)
+        except ValueError:
+            continue
+        p = _window_peak(obs, lo_c, hi_c)
+        if p is not None:
+            controls.append((y, round(p, 3)))
+    distinctive = (
+        crisis_peak is not None and controls
+        and crisis_peak > max(p for _, p in controls)
+    )
+    return crisis_peak, controls, distinctive
+
+
+def yearly_means(obs):
+    import collections
+    ym = collections.defaultdict(list)
+    for d, v in obs:
+        ym[d.year].append(v)
+    return {y: round(sum(vs) / len(vs), 2) for y, vs in sorted(ym.items())}
+
+
 def _first_material_date(obs, onset: str, z_threshold: float = 2.0) -> Optional[D]:
     """Date the spread first crosses z>threshold above its pre-onset baseline."""
     ev = CrisisEvent(name="x", onset=onset, series="x", binding_power="x", search_days=420)
@@ -109,19 +161,34 @@ def run(path: str = SPREADS):
 def main() -> int:
     for label, path in (("SPREAD over British consols", SPREADS), ("RAW country yield", YIELDS)):
         print(f"=== Cause-or-cover timing test — measure: {label} ===\n")
+        series = load_long_csv(path)
         for c, mat, cd, gap, verdict in run(path):
             g = f"({gap} days before)" if gap is not None else ""
             print(f"{c.crisis:<17}{c.power:<16} climb-down {cd}  material {str(mat):<12} {g}")
             print(f"    -> {verdict}")
+            # control-window check: is the crisis peak distinctive vs calm years?
+            peak, controls, distinct = control_check(series.get(c.series, []), c.onset)
+            cps = ", ".join(f"{y}:{p}" for y, p in controls)
+            print(f"    control-check: crisis peak {peak} vs control-year peaks [{cps}]")
+            print(f"       -> {'DISTINCTIVE (above all control years)' if distinct else 'NOT distinctive (within/below control range) — the flag is an artifact'}")
         print()
-    print("Reading it: 'material before' is CONSISTENCY with finance-as-cause, never proof —")
-    print("a government can climb down on diplomatic grounds while its bonds happen to be")
-    print("stressed. Only 'material only after' would REFUTE finance-as-cause, and no crisis")
-    print("shows that. Measure matters: Agadir/Germany crosses on raw yield (~8 wk, the 1911")
-    print("bourse panic) but NOT on the spread — British consols sold off with it. Morocco/")
-    print("France is 'material at onset' (degenerate) and confounded by the 1905 revolution.")
-    print("Bottom line: the data is consistent with finance-as-constraint and does not support")
-    print("pure 'cover', but it CANNOT establish intent. That is an archival question.")
+    print("Yearly-mean spread trend (the robust backbone — no window-selection fiddliness):")
+    sp = load_long_csv(SPREADS)
+    for s in ("russia", "austria_hungary"):
+        print(f"  {s:<16} {yearly_means(sp.get(s, []))}")
+    print()
+    print("Reading it, AFTER the control check:")
+    print(" - 'material before' is only meaningful if the crisis peak EXCEEDS matched control")
+    print("   years; otherwise the z>2 flag is a low-variance-baseline artifact on a pre-existing")
+    print("   level/trend. A long lead (162/224 days) is a warning sign, not evidence.")
+    print(" - Austria/Balkans is the one DISTINCTIVE case (spread rose above every control autumn).")
+    print(" - Russia/Bosnia is NOT distinctive — its 1908 spread sat BELOW the calm 1906-07 years,")
+    print("   on a declining post-1905 trend; the 'material' flag is an artifact. Objection lives.")
+    print(" - Germany/Agadir is weak (small rise, above 1909-10 but on a secular uptrend).")
+    print(" - France/Morocco shows no own-yield stress at all.")
+    print("Bottom line: after controls, only ONE of four is a clean crisis signal, and even it")
+    print("builds slowly. The data does not support pure 'cover' but it is far weaker evidence")
+    print("for finance-as-cause than the raw leads suggested — and it CANNOT establish intent.")
     return 0
 
 

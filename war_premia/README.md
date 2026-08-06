@@ -100,6 +100,17 @@ themselves are nominal (see the audit above). Ex-dividend/footnote discipline is
 applied: the clean decline stops at the last unflagged quote, so neither a coupon
 (Jun-3 xd) nor the footnoted 31 Jul Russian print inflates it.
 
+> **Read the level, not the ordering — flight to liquidity, not from British
+> risk.** That **UK Consols fell as hard as the belligerents** (−5.8%, second only
+> to Austria) is the tell: Consols were the *safest* sovereign credit and the
+> *most liquid* asset on earth, so in a cash scramble they were sold first —
+> because they had a bid. The cross-section ranks **marketability, not relative
+> war risk**; "Consols fell more than the rente" does **not** mean Britain was the
+> bigger war risk. Only the *aggregate* fall (everything down together) is a war
+> signal; the ordering is a liquidity artifact. This is the July-1914 counterpart
+> of the closure itself — the market's plumbing, not its risk assessment, drove
+> the cross-section.
+
 ### The money market through July–August 1914 (descriptive)
 
 The NW short rates end 1914-06-27; `data/july_aug_1914_money.csv` fills the war
