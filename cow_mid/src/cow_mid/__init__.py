@@ -12,6 +12,7 @@ from __future__ import annotations
 from .client import download_mid5
 from .crises import CRISIS_MAPPINGS, CrisisMapping, build_events, unmapped
 from .parse import Dispute, join_disputes, load_disputes
+from .capability import capability_series, parse_nmc
 from .warrisk import GREAT_POWERS, RiskPoint, war_risk_series
 
 __all__ = [
@@ -19,6 +20,7 @@ __all__ = [
     "CRISIS_MAPPINGS", "CrisisMapping", "build_events", "unmapped",
     "Dispute", "join_disputes", "load_disputes",
     "GREAT_POWERS", "RiskPoint", "war_risk_series",
+    "capability_series", "parse_nmc",
 ]
 
 __version__ = "0.1.0"

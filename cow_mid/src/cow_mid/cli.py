@@ -88,6 +88,27 @@ def _cmd_warrisk(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_capratio(args: argparse.Namespace) -> int:
+    from .capability import capability_series, milex_ratio, parse_nmc, write_long_csv
+    from .client import download_nmc
+
+    path = args.nmc or download_nmc(args.cache)
+    nmc = parse_nmc(path)
+    series = capability_series(nmc, args.start, args.end, exclude_italy=args.exclude_italy)
+    print(f"year  capratio(A/E)  parity  alliance_share  milex_Ger/UK   [Italy "
+          f"{'excluded' if args.exclude_italy else 'included'}]", file=sys.stderr)
+    for cy in series:
+        mg = milex_ratio(nmc, 255, 200, cy.year)
+        print(f"{cy.year}   {cy.capratio:.3f}          {cy.parity:.3f}   "
+              f"{cy.alliance_share:.3f}           "
+              f"{mg:.3f}" if mg else f"{cy.year}   {cy.capratio:.3f}", file=sys.stderr)
+    if args.out:
+        n = write_long_csv(nmc, args.out, start=args.start, end=args.end,
+                           exclude_italy=args.exclude_italy)
+        print(f"wrote {n} rows -> {args.out}", file=sys.stderr)
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
         prog="cow-mid",
@@ -115,6 +136,16 @@ def build_parser() -> argparse.ArgumentParser:
     wr.add_argument("--any-side", action="store_true",
                     help="count any dispute a great power is in (default: great power BOTH sides)")
     wr.set_defaults(func=_cmd_warrisk)
+
+    cr = sub.add_parser("capratio", help="Entente/Alliance capability ratio from NMC")
+    cr.add_argument("--nmc", help="path to NMC abridged CSV (else downloaded)")
+    cr.add_argument("--cache", default=".", help="dir to cache the NMC CSV")
+    cr.add_argument("--out", help="output tidy long CSV")
+    cr.add_argument("--start", type=int, default=1900)
+    cr.add_argument("--end", type=int, default=1914)
+    cr.add_argument("--exclude-italy", action="store_true",
+                    help="drop Italy from the Alliance (it stayed neutral in 1914)")
+    cr.set_defaults(func=_cmd_capratio)
     return p
 
 

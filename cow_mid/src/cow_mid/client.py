@@ -71,3 +71,43 @@ def download_mid5(cache_dir: str = ".", *, timeout: float = 120.0) -> Tuple[str,
         for member in (MIDA_NAME, MIDB_NAME):
             z.extract(member, cache_dir)
     return mida, midb
+
+
+NMC_URL = "https://correlatesofwar.org/wp-content/uploads/NMCv7.zip"
+
+
+def download_nmc(cache_dir: str = ".", *, timeout: float = 120.0) -> str:
+    """Ensure the NMC abridged CSV is present in ``cache_dir``; return its path.
+
+    NMCv7 ships as a zip-of-zips (outer NMCv7.zip -> NMC-v7-abridged.zip -> csv);
+    this unwraps both layers and caches the CSV.
+    """
+    import glob
+    import io
+
+    existing = glob.glob(os.path.join(cache_dir, "NMC-*-abridged.csv"))
+    if existing:
+        return existing[0]
+
+    os.makedirs(cache_dir, exist_ok=True)
+    zip_path = os.path.join(cache_dir, "nmc7.zip")
+    ok = False
+    for transport in (_curl, _urllib):
+        try:
+            if transport(NMC_URL, zip_path, timeout):
+                ok = True
+                break
+        except Exception:
+            continue
+    if not ok:
+        raise RuntimeError(f"could not download NMC from {NMC_URL}")
+
+    with zipfile.ZipFile(zip_path) as outer:
+        inner_name = next(n for n in outer.namelist() if n.endswith("abridged.zip"))
+        inner_bytes = outer.read(inner_name)
+    with zipfile.ZipFile(io.BytesIO(inner_bytes)) as inner:
+        csv_name = next(n for n in inner.namelist() if n.lower().endswith(".csv"))
+        target = os.path.join(cache_dir, os.path.basename(csv_name))
+        with inner.open(csv_name) as src, open(target, "wb") as dst:
+            dst.write(src.read())
+    return target

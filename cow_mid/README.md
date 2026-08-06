@@ -106,13 +106,48 @@ episodes), the index is a single *global* series (not power-specific), and
 hostility is ordinal. Still, a weak, *lagging* link is consistent with the wider
 finding — the money market was not a prompt barometer of great-power war risk.
 
+## Capability balance — `cow-mid capratio`
+
+The *structural* dimension, from COW **National Material Capabilities** (CINC): the
+material-capability ratio between the alliance blocs, annually 1900–1914.
+Power-transition theory reads approaching **parity** as raising war risk.
+
+```bash
+cow-mid capratio --out capability_long.csv                 # Triple Alliance vs Triple Entente
+cow-mid capratio --exclude-italy                           # the blocs that actually fought
+```
+
+Blocs: **Entente** = France, Russia, UK; **Alliance** = Germany, Austria-Hungary,
+Italy (Italy `--exclude-italy`-able, since it stayed neutral in 1914). What it
+shows across 1900–1914:
+
+| series | 1900 → 1914 | reading |
+|---|---|---|
+| `capratio_alliance_entente` (Alliance CINC ÷ Entente CINC) | **0.56 → 0.78** | the Alliance steadily closed the gap |
+| `bloc_parity` (min/max) | 0.56 → 0.78 | **approaching parity** — the classic rising-war-risk structural signal |
+| `milex_germany_uk` (German ÷ UK military spend) | **0.33 → ~1.0–1.3** | the Anglo-German arms race: Germany caught and overtook Britain's budget by ~1908–1913 |
+
+The CSV is annual (dated `YYYY-01-01`) in the same tidy schema as the other legs.
+
+**Honest framing:** these are **structural covariates / context**, not a fitted
+probability of war. With 15 years and a single war, no probability model is
+identified — combining hostility (`warrisk`), capability parity (`capratio`) and
+alliance structure into an estimated escalation probability would be
+pseudo-precision, so the tool reports the components and leaves the modelling
+claim unmade.
+
 ## Data & attribution
 
-Source: **Correlates of War, Militarized Interstate Disputes v5.0** —
-Palmer et al.; <https://correlatesofwar.org/data-sets/MIDs/>. Downloaded openly
-from COW (same data as ICPSR study 24386, no login). The raw MID files are **not
-vendored** (downloaded on demand); only the tiny derived event spec is committed.
-Cite COW MID if you use it.
+Sources, both downloaded openly from COW (same data as the ICPSR studies, no
+login):
+- **Militarized Interstate Disputes v5.0** — Palmer et al.;
+  <https://correlatesofwar.org/data-sets/MIDs/> (onsets, hostility, war-risk).
+- **National Material Capabilities v7.0** — Singer et al.;
+  <https://correlatesofwar.org/data-sets/national-material-capabilities/> (CINC).
+
+The raw MID/NMC files are **not vendored** (downloaded on demand); only the small
+derived series (event spec, war-risk, capability) are committed. Cite COW if you
+use them.
 
 ## Tests
 

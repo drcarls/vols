@@ -7,3 +7,6 @@ __pycache__/
 MIDA*.csv
 MIDB*.csv
 MIDI*.csv
+NMC*.csv
+NMC*.zip
+nmc*.zip
