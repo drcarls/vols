@@ -1,0 +1,37 @@
+events:
+- name: Bosnia_1908
+  onset: '1908-10-06'
+  series: russia
+  binding_power: Russia (backed Serbia; climbed down)
+  search_days: 210
+  notes: 'COW MID 30: use of force; sideA=[''Serbia''] sideB=[''Austria-Hungary''].
+    MID 30 (1908-10-06, Serbia vs Austria-Hungary, use of force). Russia is the binding
+    power but was NOT a militarized participant — it backed down below the threshold.'
+- name: Agadir_1911
+  onset: '1911-07-01'
+  series: germany
+  binding_power: Germany (illiquid)
+  search_days: 180
+  notes: 'COW MID 315: display of force; sideA=[''Germany''] sideB=[''France'', ''UK''].
+    MID 315 (1911-07-01, Germany vs France+UK, display of force). Onset matches the
+    hand-coded Agadir date.'
+- name: Balkans_1912_13
+  onset: '1912-11-21'
+  series: austria_hungary
+  binding_power: Austria-Hungary (Bilinski)
+  search_days: 300
+  notes: 'COW MID 21: display of force; sideA=[''Austria-Hungary''] sideB=[''Russia'',
+    ''Serbia'']. MID 21 (1912-11-21, Austria-Hungary vs Russia+Serbia, display of
+    force) — Austria''s militarized onset, later than the First Balkan War''s opening.'
+- name: July_1914
+  onset: '1914-07-23'
+  series: austria_hungary
+  binding_power: Austria, underwritten from Berlin
+  search_days: 180
+  notes: 'COW MID 257: war; sideA=[''Bulgaria'', ''Ottoman Empire'', ''Austria-Hungary'',
+    ''Germany''] sideB=[''Serbia'', ''UK'', ''Russia'', ''Italy'', ''Portugal'', ''Japan'',
+    ''USA'', ''Greece'', ''France'', ''Belgium'', ''Romania'']. MID 257 (1914-07-23,
+    war; Central Powers vs Entente). Onset matches the Austrian ultimatum; peak censored
+    (bourses closed).'
+  measurable: false
+  decision_window_days: 5

@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+*.egg-info/
+.venv/
+# Raw COW MID files are downloaded on demand, not vendored.
+*.zip
+MIDA*.csv
+MIDB*.csv
+MIDI*.csv

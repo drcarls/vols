@@ -1,0 +1,14 @@
+crisis            series          onset       status     peak         lag(wk)  material(wk)
+-------------------------------------------------------------------------------------------
+Bosnia_1908       russia          1908-10-06  no_data    -                  -             -
+Agadir_1911       germany         1911-07-01  ok         1911-11-01      17.6             -
+Balkans_1912_13   austria_hungary 1912-11-21  no_data    -                  -             -
+July_1914         austria_hungary 1914-07-23  censored   window 0.7wk       -             -
+
+VERDICT: INCONCLUSIVE
+  comparators measured : 1
+  lags (weeks)         : 17.6
+  mean / min lag       : 17.6 / 17.6 wk
+  in 6-10 wk band  : 0/1
+  July 1914 window     : 0.7 wk
+  Lags cleared the 2-week floor but were not tight in the 6-10 band (0/1 in band). Suggestive, not demonstrated — widen the comparator set or sharpen resolution in the crisis weeks.
