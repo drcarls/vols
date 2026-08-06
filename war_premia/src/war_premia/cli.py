@@ -82,7 +82,7 @@ def _cmd_kokovtsov(args: argparse.Namespace) -> int:
     """Did Russian short rates move around Kokovtsov's dismissal (Feb 1914)?"""
     from .kokovtsov import format_result, kokovtsov_test
 
-    print(format_result(kokovtsov_test(args.short or SHORT)))
+    print(format_result(kokovtsov_test(args.short or SHORT, args.bonds or BONDS)))
     return 0
 
 

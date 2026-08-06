@@ -126,19 +126,27 @@ its market (open-market) rate would show it, and that is the series NW lacks aft
 A sharp, datable probe of that limitation. **Vladimir Kokovtsov** — Russia's
 finance minister and premier, who anchored Russian credit in Paris — was
 dismissed in late Jan 1914 (O.S.); his cabinet ended **12 Feb 1914 (N.S.)**. If
-any Russian rate should price political risk, it is this. Run on the recovered
-St Petersburg column (`results/kokovtsov_1914.md`):
+any Russian asset should price political risk, it is this. The recovered data
+runs it two ways (`results/kokovtsov_1914.md`):
 
-- The **bank rate did not move** — it sat at 5.5% for a **73-week plateau**
-  (2 Nov 1912 → 28 Mar 1914) straddling the dismissal; the next change was a
-  *cut* to 5.0% seven weeks later (opposite sign to stress).
-- The **market rate ends 20 Oct 1900** — no 1914 observation; no ruble exchange
-  series either.
+- **Administered short rate — silent by construction.** The bank rate did not
+  move: 5.5% for a **73-week plateau** (2 Nov 1912 → 28 Mar 1914) straddling the
+  dismissal; the next change was a *cut* seven weeks later. The open-market rate
+  that would carry a signal is the series NW loses after 1900 (ends 20 Oct 1900);
+  no ruble exchange series either.
+- **Market-priced debt — quoted weekly, and flat across the event.** The bond
+  file *does* supply a market-priced Russian series: the **Russian New 4% and
+  1822 5%, quoted weekly in London**. Both are flat across 12 Feb 1914 — bracket
+  move **+0.0%**, the New 4% holding 89.0 for four straight weeks, against normal
+  weekly variation of 0.6%. No repricing.
 
-An informative **null**: the event is real and runnable, but the data can't see
-it. The administered rate is silent by construction, and the market rate that
-would carry the signal is the one NW loses after 1900. It turns the paper's
-general "Russia unavailable" caveat into a specific, dated demonstration.
+So it is not a pure data-blindness null: at **weekly** resolution the market
+*did* have a chance to reprice Russian debt at Kokovtsov's fall and **did not** —
+apt, since his successor Bark kept the same fiscal and Franco-Russian borrowing
+policy. It turns the paper's general "Russia unavailable" caveat into a specific,
+dated test on a genuine market-priced instrument. (A St Petersburg open-market
+rate or ruble quote — *The Economist*'s weekly "Foreign Bourses", paywalled —
+would add a Russia-specific read, but the London bonds already answer it.)
 
 ## Tests
 
