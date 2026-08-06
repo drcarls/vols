@@ -9,9 +9,12 @@ British consols were risk-free is fragile.**
 
 ## 1. What holds (survives instrument + benchmark)
 
-- **The Rigobon-Sack war-risk premia reproduce.** Full-sample city coefficients
-  match closely (Paris 0.11, Amsterdam 0.09, Copenhagen 0.14, Berlin 0.35, NY
-  negative = safe haven). The method and the headline result are sound.
+- **The Rigobon-Sack estimator reproduces** the paper's coefficients — but only
+  **Berlin's premium (0.34–0.35) survives scrutiny** (§2g): it is robust to a Swiss
+  (neutral) basis, not just the London one, and it clearly clears the ~0.10 floor
+  that *genuine neutrals* (Amsterdam, Geneva, Stockholm) themselves show. Paris
+  (0.11) and Vienna (0.13) sit *at* that neutral floor, so they cannot be cleanly
+  separated from money-market integration. The one clean country result is Germany.
 - **Two country-specific market facts survive every neutral benchmark** (US,
   Sweden, Switzerland, Netherlands): **France's short-term finances were calm in
   1905** (so the 1905 constraint lay in the ally, Russia, not French solvency), and
@@ -79,6 +82,20 @@ open-market rate after 1900 (only the administered, sticky bank rate); July 1914
 short rates end 27 June, before the seizure; several crisis→power series are
 confounded (Morocco→Russia by the Russo-Japanese war and 1905 revolution). Stating
 these plainly is more persuasive than a false uniformity.
+
+**g. Add a neutral placebo, and report premia against the neutral floor — not
+zero.** Re-estimating the premia against neutral bases (Amsterdam, Switzerland,
+Sweden, US) and placebo-testing the neutrals themselves
+(`../war_premia/results/basis_robustness.md`) shows: **Berlin (0.34–0.35) is
+robust to a Swiss basis and clearly exceeds the ~0.10 premium that genuine neutrals
+(Amsterdam 0.09, Geneva 0.09, Stockholm 0.12) carry against London; Paris and
+Vienna sit at that neutral floor.** So the Rigobon premium against a war-sensitive
+money-market basis partly measures war-week money-market *integration*, which every
+European market shares, not pure country war risk. Two things for the book: (i) the
+German result is *not* an artifact of the contaminated London basis — a Swiss basis
+reproduces it, a genuine robustness win; (ii) present the other premia as a cluster
+around the neutral floor that the method cannot cleanly rank by war risk, with the
+neutral placebo shown as the yardstick.
 
 ## 3. What is still open (needs archives or new data)
 

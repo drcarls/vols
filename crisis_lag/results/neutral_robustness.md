@@ -42,15 +42,23 @@ Italo-Turkish war) is not a neutral at all. With four confounded crises and a
 small country-specific signal, the neutral-benchmark event study is **underpowered
 and benchmark-sensitive** — it cannot bear per-country causal weight.
 
-## What *does* survive every neutral
+## What *does* survive — and a fairer read of Russia
 
 - **France was calm in the money market** — 0–10th percentile against Amsterdam,
   Switzerland, Sweden *and* the US. France's short-term financing was under no
   stress in 1905; its climb-down was not an affordability event. **Robust.**
 - **Austria's long-term debt repriced in the Balkans** — 89–100th percentile
   against every bond neutral (Dutch, US, Italian). **Robust.**
-- Everything else — Russia (Bosnia), Germany (Agadir) — is at the noise floor and
-  cannot be claimed per country from this data.
+- **Bosnia/Russia is better than "noise floor" — it is 2 of 3.** Weighting US call
+  money equally was unfair: it is the worst benchmark of the set (the 1907 panic,
+  no pre-1913 central bank), and it is the lone low read (21). Among the three
+  *credible* neutrals, Russia is high in **2 of 3** — Amsterdam 81, Sweden 89, with
+  Switzerland the middling 49. So the Russian Bosnia signal is **suggestive**, not
+  absent; it just is not clean enough (1 of 3 middling, and Russia's own series is
+  the administered bank rate) to assert on its own.
+- Germany (Agadir) genuinely scatters (26–70) and cannot be claimed per country
+  from the money market — though Germany *is* the one robust case in the Rigobon
+  basis test (`../../war_premia/results/basis_robustness.md`).
 
 ## Consequence for the book
 

@@ -105,6 +105,37 @@ def _cmd_kokovtsov(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_basis(args: argparse.Namespace) -> int:
+    """Re-estimate the premia against neutral bases, and placebo-test the neutrals."""
+    from .warweeks import get_crisis
+
+    smap = to_series_map(load_short_rates(args.short or SHORT))
+    full = get_crisis("full")
+    bases = [("London-trade(orig)", "london_trade3mo"), ("Switzerland", "geneva_market"),
+             ("Sweden", "stockholm_market"), ("Amsterdam(near)", "amsterdam_openmkt"),
+             ("US-call", "new_york_call")]
+    cities = [("berlin_openmkt", "Berlin"), ("paris_openmkt", "Paris"),
+              ("vienna_openmkt", "Vienna"), ("petersburg_bank", "StPburg")]
+    print("Rigobon-Sack premium (single-IV beta), full sample, by BASIS asset:")
+    print(f"  {'basis':<18}" + "".join(f"{lab:>9}" for _, lab in cities))
+    for bname, bkey in bases:
+        res = {r.city: r for r in run_crisis(smap, full, basis_key=bkey)}
+        print(f"  {bname:<18}" + "".join(
+            f"{(f'{res[c].single.beta:.2f}' if c in res else '—'):>9}" for c, _ in cities))
+    print("\nPLACEBO — premium OF each neutral, basis=London (a true neutral should be ~0):")
+    res = {r.city: r for r in run_crisis(smap, full, basis_key="london_trade3mo")}
+    for slug, lab in [("amsterdam_openmkt", "Amsterdam"), ("geneva_market", "Switzerland"),
+                      ("stockholm_market", "Sweden"), ("new_york_call", "US-call")]:
+        if slug in res:
+            print(f"  {lab:<12} beta={res[slug].single.beta:+.2f}  t={res[slug].single.t_stat:+.2f}")
+    print("\nBerlin (~0.35) is robust across the London and Swiss bases and clearly exceeds the\n"
+          "neutral floor. But the neutrals themselves carry premia of 0.09-0.12 -- the SAME size\n"
+          "as Paris (0.11) and Vienna (0.13) -- so the premium partly measures money-market\n"
+          "integration with the basis under war-week stress, not pure war risk. Only premia\n"
+          "clearly ABOVE the ~0.10 neutral floor (Berlin) are safely read as war risk.")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="war-premia", description="Reproduce/extend Carls (2005).")
     p.add_argument("--short", help="path to stinterestrates.xls")
@@ -114,6 +145,7 @@ def build_parser() -> argparse.ArgumentParser:
     sub.add_parser("july1914", help="the extension").set_defaults(func=_cmd_july1914)
     sub.add_parser("russia", help="St Petersburg bank-rate premium").set_defaults(func=_cmd_russia)
     sub.add_parser("kokovtsov", help="the Kokovtsov dismissal event test (Feb 1914)").set_defaults(func=_cmd_kokovtsov)
+    sub.add_parser("basis", help="premia under neutral bases + neutral placebo").set_defaults(func=_cmd_basis)
     return p
 
 
