@@ -152,6 +152,36 @@ def _cmd_basis(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_grid(args: argparse.Namespace) -> int:
+    """Per-crisis, per-country premia re-estimated against each neutral basis."""
+    from .warweeks import CRISES
+
+    smap = to_series_map(load_short_rates(args.short or SHORT))
+    bases = [("London", "london_trade3mo"), ("Amsterdam", "amsterdam_openmkt"),
+             ("Swiss", "geneva_market"), ("Swedish", "stockholm_market")]
+    countries = [("berlin_openmkt", "Germany"), ("paris_openmkt", "France"),
+                 ("vienna_openmkt", "Austria"), ("petersburg_bank", "Russia*"),
+                 ("brussels_openmkt", "Belgium")]
+    cr = {c.key: c for c in CRISES}
+    for ck in ("morocco1", "bosnia", "morocco2", "balkans", "full"):
+        c = cr[ck]
+        n = "small-n, weakly identified" if ck in ("morocco2", "bosnia", "balkans", "morocco1") else "n=485"
+        print(f"=== {c.label} ({ck}; {n}) ===")
+        print(f"  {'country':<10}" + "".join(f"{b:>10}" for b, _ in bases))
+        rbb = {b: {r.city: r for r in run_crisis(smap, c, basis_key=k)} for b, k in bases}
+        for slug, name in countries:
+            print(f"  {name:<10}" + "".join(
+                f"{(f'{rbb[b][slug].single.beta:+.2f}' if slug in rbb[b] else '—'):>10}" for b, _ in bases))
+        print()
+    print("Read: only the FULL sub-sample is well-identified. Per-crisis estimates swing wildly")
+    print("across bases and blow up at small n (Agadir n=22: Belgium +5.75) -- not interpretable.")
+    print("Robust across neutral bases (full sample): Germany ~0.30 (3/4 bases; Amsterdam the")
+    print("outlier), Belgium ~0.17 (all 4). France ~0.10 sits at the neutral floor; Austria is")
+    print("unstable; Russia ~0 is the administered bank rate (a data gap, not a finding).")
+    print("* Russia = administered bank rate (sticky); no open-market rate exists.")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="war-premia", description="Reproduce/extend Carls (2005).")
     p.add_argument("--short", help="path to stinterestrates.xls")
@@ -162,6 +192,7 @@ def build_parser() -> argparse.ArgumentParser:
     sub.add_parser("russia", help="St Petersburg bank-rate premium").set_defaults(func=_cmd_russia)
     sub.add_parser("kokovtsov", help="the Kokovtsov dismissal event test (Feb 1914)").set_defaults(func=_cmd_kokovtsov)
     sub.add_parser("basis", help="premia under neutral bases + neutral placebo").set_defaults(func=_cmd_basis)
+    sub.add_parser("grid", help="per-crisis per-country premia across neutral bases").set_defaults(func=_cmd_grid)
     return p
 
 

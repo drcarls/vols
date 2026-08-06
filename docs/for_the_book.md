@@ -10,11 +10,14 @@ British consols were risk-free is fragile.**
 ## 1. What holds (survives instrument + benchmark)
 
 - **The Rigobon-Sack estimator reproduces** the paper's coefficients — but only
-  **Berlin's premium (0.34–0.35) survives scrutiny** (§2g): it is robust to a Swiss
-  (neutral) basis, not just the London one, and it clearly clears the ~0.10 floor
-  that *genuine neutrals* (Amsterdam, Geneva, Stockholm) themselves show. Paris
-  (0.11) and Vienna (0.13) sit *at* that neutral floor, so they cannot be cleanly
-  separated from money-market integration. The one clean country result is Germany.
+  **Germany's premium (~0.30) survives scrutiny** (§2g): robust to a Swiss basis,
+  not just London, and clearly above the ~0.10 floor that *genuine neutrals*
+  (Amsterdam, Geneva, Stockholm) themselves show. **Belgium (~0.17) is a smaller,
+  stable second**; France (~0.10) sits at the neutral floor. And **the per-conflict
+  premia are not reliably identified** — re-estimated by crisis they swing across
+  bases, flip sign, and blow up at small n (Agadir n=22: Belgium +5.75), so no
+  single country-in-conflict premium is robust (`../war_premia/results/premia_by_conflict.md`).
+  The one clean country result is Germany, pooled over the whole period.
 - **Two country-specific market facts survive every neutral benchmark** (US,
   Sweden, Switzerland, Netherlands): **France's short-term finances were calm in
   1905** (so the 1905 constraint lay in the ally, Russia, not French solvency), and

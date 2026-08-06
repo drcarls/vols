@@ -55,3 +55,22 @@ def test_london_itself_is_belligerent_grade_war_sensitive():
     # asymmetry: neutrals show only ~0.10 against London, London shows >0.2 vs them
     neutral_vs_london = _betas("london_trade3mo")["stockholm_market"].single.beta
     assert lon > neutral_vs_london + 0.1
+
+
+def test_per_conflict_estimates_are_not_robust_but_full_sample_germany_is():
+    from war_premia.warweeks import CRISES
+    cr = {c.key: c for c in CRISES}
+    # Full-sample Germany is robust across London/Swiss/Swedish (>0.2), Amsterdam aside.
+    full_swiss = _betas("geneva_market")
+    full_swede = _betas("stockholm_market")
+    assert full_swiss["berlin_openmkt"].single.beta > 0.2
+    assert full_swede["berlin_openmkt"].single.beta > 0.2
+    # A small-n crisis (Agadir, n=22) is NOT robust: the London vs Amsterdam Germany
+    # premium differs by more than a full point (noise).
+    from neal_weidenmier.load import load_short_rates, to_series_map
+    from war_premia.run import run_crisis
+    smap = to_series_map(load_short_rates(SHORT))
+    ag = cr["morocco2"]
+    lon = {r.city: r for r in run_crisis(smap, ag, basis_key="london_trade3mo")}
+    ams = {r.city: r for r in run_crisis(smap, ag, basis_key="amsterdam_openmkt")}
+    assert abs(lon["berlin_openmkt"].single.beta - ams["berlin_openmkt"].single.beta) > 1.0
