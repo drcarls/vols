@@ -41,16 +41,19 @@ Two things, and they reinforce the bond-market reading:
    — three-month bills drift from ~1.9% to ~2.4%, an ordinary summer firming. The
    market gave no sign of pricing a European war until the very last week. This is
    Ferguson again, in the short rates: the markets were caught off guard.
-2. **Then a convulsion — in the money market, not the bond market.** When war
-   came, the Bank of England rate went **3 → 4 → 8 → 10%** in a week and call
-   money to 7%, while sovereign *bond* prices moved ~2% (and then trading stopped).
-   The shock hit **liquidity**, violently and instantly, not the priced *war
-   premium*, which never materialised because the market closed before it could.
+2. **Then a convulsion — and then the data goes dark.** When war came, the Bank of
+   England rate went **3 → 4 → 8 → 10%** in a week and call money to 7%. The bond
+   market was routing in the same days — the London French rente fell ~4.4% in the
+   final trading week — but then the exchanges closed, and the bond quotes that
+   survive are nominal, not trades (an earlier ~2% "cross-section" here was an
+   artifact of an ex-dividend baseline and those stale quotes, and is withdrawn —
+   see `july1914.py`). The shock hit **liquidity** violently and instantly; the
+   priced *war premium* is simply unobservable, because the market shut
+   mid-repricing.
 
 So the extension does not add a fifth war-premium estimate — it shows why one
-cannot exist for 1914, and distinguishes the two things that happened: a bond
-market that never priced the war (Ferguson), and a money market that seized only
-at the moment of outbreak.
+cannot exist for 1914. What is visible before the data goes dark is a market
+beginning to rout (money rates and the French rente both), not a placid one.
 
 ## Sources
 

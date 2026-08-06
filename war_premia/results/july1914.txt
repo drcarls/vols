@@ -1,16 +1,16 @@
-[short-term rates] estimable=False: data ends 1914-06-27, before the July war weeks; only 1 boundary war-week and no crisis response
-[long-term bonds] estimable=False: monthly with a 63-day gap 1914-06-03->1914-08-05 across the crisis; a single observation spans it — no variance regime
+[short-term rates] estimable=False: data ends 1914-06-27, before the July war weeks; 1 boundary war-week, no crisis response
+[long-term bonds] estimable=False: monthly with a 63-day gap 1914-06-02->1914-08-05 across the crisis; and the post-closure quotes are nominal, not trades (see bond_quote_audit)
 
-One observable: sovereign long-bond price change across the closure (1914-06-03 -> 1914-08-05) — a distorted lower bound, not a premium:
-  UK Consols 3%            75.000 ->   74.750   -0.3%
-  French 3% rentes         88.400 ->   86.800   -1.8%
-  Russian 4% (ser. II)     89.000 ->   87.000   -2.2%
-  Russian 1822 5%         123.000 ->  120.000   -2.4%
-  Austrian Gold 4%         85.000 ->   84.000   -1.2%
-  German Imperial 3%       79.000 ->   77.500   -1.9%
-  Prussian Consols 3.5%    87.500 ->   87.000   -0.6%
+Raw bond-quote audit across the closure (prices, points of par):
+  sovereign                  Jun2   Jun3   Aug5   Sep1  flags
+  UK Consols 3%             76.75  75.00  74.75  71.88  Jun3=EX-DIV
+  French 3% rente (Paris)   87.30  88.40  86.80  86.20  
+  Russian New 4%            90.00  89.00  87.00  88.50  post-closure NOT genuine (belligerent bond RISES 87.0->88.5 Aug->Sep 1914)
+  Russian 1822 5%          125.00 123.00 120.00 125.00  Jun3=EX-DIV; post-closure NOT genuine (belligerent bond RISES 120.0->125.0 Aug->Sep 1914)
+  Austrian Gold 4%          90.00  85.00  84.00  89.00  post-closure NOT genuine (belligerent bond RISES 84.0->89.0 Aug->Sep 1914)
+  German Imperial 3%        79.00  79.00  77.50  76.00  
+  Prussian Consols 3.5%     87.00  87.50  87.00  84.00  
 
-Two readings, both required:
-  ORDERING (smaller point): belligerents fall most, Consols least (-0.3%) — the paper's haven cross-section.
-  MAGNITUDE (larger point, Ferguson): the worst fall is only -2.4% — on the outbreak of a world war, almost nothing.
-  The market did not price the war. The ordering rides on a trivially small shock.
+Verdict: the cross-section is UNINTERPRETABLE — the June-3 baseline is ex-dividend and the post-closure quotes are nominal (belligerent bonds 'rise' during the war). The earlier ~2% reading is withdrawn.
+The one genuine pre-closure signal:
+  French 3% rente (London): 80.0 -> 76.5 by 30 July 1914 (~-4.4% in the final trading week), per the workbook NOTES sheet — a rout beginning as the market shut.

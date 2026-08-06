@@ -14,8 +14,9 @@ from typing import List, Optional
 from neal_weidenmier.load import load_short_rates, to_series_map
 
 from .july1914 import (
+    GENUINE_SIGNAL,
     bond_feasibility,
-    crisis_bond_change,
+    bond_quote_audit,
     short_rate_feasibility,
 )
 from .run import format_table, run_crisis
@@ -37,18 +38,23 @@ def _cmd_reproduce(args: argparse.Namespace) -> int:
 def _cmd_july1914(args: argparse.Namespace) -> int:
     for feas in (short_rate_feasibility(args.short or SHORT), bond_feasibility(args.bonds or BONDS)):
         print(f"[{feas.asset}] estimable={feas.estimable}: {feas.reason}")
-    print("\nOne observable: sovereign long-bond price change across the closure "
-          "(1914-06-03 -> 1914-08-05) — a distorted lower bound, not a premium:")
-    changes = crisis_bond_change(args.bonds or BONDS)
-    for ch in changes:
-        print(f"  {ch.label:<22} {ch.pre:8.3f} -> {ch.post:8.3f}   {ch.pct:+.1f}%")
-    worst = min((c.pct for c in changes), default=float("nan"))
-    print("\nTwo readings, both required:")
-    print("  ORDERING (smaller point): belligerents fall most, Consols least "
-          "(-0.3%) — the paper's haven cross-section.")
-    print(f"  MAGNITUDE (larger point, Ferguson): the worst fall is only {worst:+.1f}% "
-          "— on the outbreak of a world war, almost nothing.")
-    print("  The market did not price the war. The ordering rides on a trivially small shock.")
+    print("\nRaw bond-quote audit across the closure (prices, points of par):")
+    print(f"  {'sovereign':<24}{'Jun2':>7}{'Jun3':>7}{'Aug5':>7}{'Sep1':>7}  flags")
+    for a in bond_quote_audit(args.bonds or BONDS):
+        flags = []
+        if a.exdiv_flag:
+            flags.append("Jun3=EX-DIV")
+        if not a.genuine:
+            flags.append("post-closure NOT genuine (" + a.reason.split("—")[0].strip() + ")")
+        def f(x):
+            return f"{x:.2f}" if x is not None else "—"
+        print(f"  {a.sovereign:<24}{f(a.clean_pre):>7}{f(a.exdiv_pre):>7}"
+              f"{f(a.post_stale):>7}{f(a.post_sept):>7}  {'; '.join(flags)}")
+    print("\nVerdict: the cross-section is UNINTERPRETABLE — the June-3 baseline is "
+          "ex-dividend and the post-closure quotes are nominal (belligerent bonds "
+          "'rise' during the war). The earlier ~2% reading is withdrawn.")
+    print("The one genuine pre-closure signal:")
+    print(f"  {GENUINE_SIGNAL}")
     return 0
 
 

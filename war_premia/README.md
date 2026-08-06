@@ -53,29 +53,27 @@ This is not a coding gap; it is the central empirical fact. The event that would
 have revealed whether markets had finally stopped "crying wolf" is the one where
 the markets stopped trading.
 
-### What is observable — and its two readings
+### The bond cross-section is uninterpretable (a withdrawn result)
 
-The single bond change spanning the closure (a raw event change, **not** a
-heteroskedasticity premium, and a **distorted lower bound** — the closure and
-support operations froze quoted prices):
+An earlier version reported a June-3 → Aug-5 bond "cross-section" (Consols −0.3%,
+French −1.8%, …) and read it as a trivially small, Ferguson-flat move. **That is
+withdrawn.** Auditing the raw column (`war-premia july1914`, `bond_quote_audit`):
 
-| sovereign | 1914-06-03 → 1914-08-05 |
-|---|---|
-| UK Consols 3% | −0.3% |
-| Austrian Gold 4% | −1.2% |
-| French 3% rentes | −1.8% |
-| German Imperial 3% | −1.9% |
-| Russian 4% / 5% | −2.2% / −2.4% |
+- The quotes are **prices** (points of par), not yields.
+- The **June-3 baseline is ex-dividend** — Consols 76.75 (Jun 2) → 75.0 `xd`
+  (Jun 3), a mechanical coupon drop, not a market move (same for the Russian 1822).
+- The **post-closure quotes are not genuine trades**: Russian and Austrian bonds
+  *rise* Aug→Sep 1914 (Austrian Gold 84→89, Russian 1822 120→125) — impossible for
+  belligerent debt at war. They are nominal quotes carried through the closure.
 
-**Both readings must be stated, and the second is the headline:**
+Comparing a stale August quote to an ex-dividend June baseline manufactured the
+spurious ~2%. The cross-section can't be interpreted at all.
 
-- **Ordering (the smaller point, mine):** belligerents fell most, British Consols
-  least — the paper's belligerent-vs-haven cross-section, at the moment war came.
-- **Magnitude (the larger point, Ferguson's):** a ~2% fall on the *outbreak of a
-  world war* is almost nothing. The bond market **did not price the war**, even as
-  it began — markets were caught off guard. The ordering rides on top of a shock
-  that is, in absolute terms, trivial. This confirms Ferguson; it does not refute
-  him.
+**The one genuine signal** (from the workbook's own NOTES sheet): the London price
+of the **French 3% rente fell 80 → 76.5 on 30 July 1914 — ~−4.4% in the final
+trading week**, and accelerating. With the money market seizing the same week
+(Bank of England 3 → 4 → 8 → 10%), that is a market **routing as it shut**, not a
+flat one. The full war shock is unobservable: trading stopped mid-repricing.
 
 ### The money market through July–August 1914 (descriptive)
 
@@ -87,10 +85,12 @@ identified. Two findings (see `results/july_aug_1914_money.md`):
 - **No anticipation.** London 3-month bills drift ~1.9%→2.4% through July — an
   ordinary summer firming, no war being priced — then the market froze (LSE closed
   31 July). Ferguson again, in the short rates.
-- **A money-market convulsion, not a bond one.** When war came the Bank of England
-  rate went **3 → 4 → 8 → 10%** in a week and NY call money to 7%, while sovereign
-  bonds moved ~2% and then stopped trading. The shock hit *liquidity*, instantly;
-  the *war premium* never materialised because the market shut before it could.
+- **A convulsion, then the data goes dark.** When war came the Bank of England
+  rate went **3 → 4 → 8 → 10%** in a week and NY call money to 7%. The bond market
+  was routing too — the London French rente fell ~4.4% in the final trading week —
+  but then trading stopped, and its post-closure quotes are nominal, not real
+  (see the audit above). The *war premium* is unobservable: the market shut
+  mid-repricing.
 
 ## St. Petersburg (Russia) — a series the original couldn't include
 
