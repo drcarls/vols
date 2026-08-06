@@ -21,6 +21,18 @@ What the market-side evidence here establishes: markets were surprised and
 repriced too late to matter. What it says about the *state's* knowledge or intent:
 **nothing.** That is a separate, archival question.
 
+> **The parallel across the earlier crises — cause or cover?** The same
+> intent-vs-mechanism split applies to Rouvier (1905), Kokovtsov (1908–09) and
+> Biliński (1912–13): were their *fiscal* justifications the cause of each
+> climb-down, or cover for a decision taken on other grounds? Market data cannot
+> settle that either — but it gives one asymmetric, timing-based handle, run in
+> [`../crisis_lag/results/cause_or_cover.md`](../crisis_lag/results/cause_or_cover.md).
+> It finds each climbing-down power's own bonds materially stressed *before* the
+> concession in three of four crises (no support for pure "cover"), but in the
+> one case built on a named minister's own solvency — **Rouvier/France 1905** —
+> French borrowing costs show *no* material stress, so there the objection is most
+> alive. Consistency, never proof; intent still needs the archives named there.
+
 ## The finite question
 
 Did the Reichsbank or the Reich Treasury (Reichsschatzamt) take a **concrete
