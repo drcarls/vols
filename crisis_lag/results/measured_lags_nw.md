@@ -79,9 +79,18 @@ crisis-lag run data/nw_spreads_long.csv                 # peak measure (headline
 crisis-lag run data/nw_spreads_long.csv --measure material
 ```
 
+> **Instrument matters (see [`money_market_vs_bonds.md`](money_market_vs_bonds.md)).**
+> These lags are on long *bonds* — a solvency proxy. Re-run on **commercial paper**
+> (money-market rates), the instrument the brake actually runs through, the stress
+> arrives faster: Austria is abnormal within ~13 weeks on the money market vs only
+> ~38 on bonds. So part of the "16–37 week" bond lag is the slowness of the *bond*
+> instrument, not the transmission — which pulls the honest figure back toward the
+> draft's 6–10 for the clearest case.
+
 **Bottom line:** run on the data we have, a single "6–10 weeks" is not robustly
 recovered — peak lags run 16–37 weeks while material-onset lags run 1–15 — so the
-draft should say *which* lag it means rather than assert one figure throughout.
+draft should say *which* lag it means, and on *which* instrument (bonds vs
+commercial paper), rather than assert one figure throughout.
 This doesn't rescue July 1914 for the sceptic either: 0.7 weeks is shorter than
 every measured lag on both operationalizations. The defensible claim is the
 directional one (July 1914 truncated the process almost at t0), stated with the
