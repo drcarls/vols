@@ -68,11 +68,12 @@ def _cmd_july1914(args: argparse.Namespace) -> int:
           "broad war repricing, visible until the market shut. The IDENTIFIED premium is what's\n"
           "unestimable (regime truncated by closure), not the reaction, which is right here.")
     print("\nCAVEAT — read the LEVEL, not the ORDERING. That Consols (the safest sovereign\n"
-          "credit on earth) fell as hard as the belligerents is FLIGHT TO LIQUIDITY, not\n"
-          "British war risk: in a cash scramble you sell what has a bid, and Consols were the\n"
-          "most marketable asset there was, so they went first. The cross-section ranks\n"
-          "marketability, NOT relative war risk — do not read 'Consols fell more than the\n"
-          "rente' as 'Britain was the bigger war risk.' Only the aggregate move is a war signal.")
+          "credit on earth) fell as hard as the belligerents is a strong FLIGHT-TO-LIQUIDITY\n"
+          "confound: in a cash scramble you sell what has a bid, and Consols were the most\n"
+          "marketable asset there was, so they went first. So the cross-sectional ordering is\n"
+          "dominated by marketability and can't be read as a clean war-risk ranking — don't\n"
+          "infer 'Britain was the bigger war risk' from it. The aggregate fall is the war\n"
+          "signal; whatever war-risk content the ordering holds is entangled with liquidity.")
     return 0
 
 

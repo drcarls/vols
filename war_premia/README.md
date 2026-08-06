@@ -100,16 +100,16 @@ themselves are nominal (see the audit above). Ex-dividend/footnote discipline is
 applied: the clean decline stops at the last unflagged quote, so neither a coupon
 (Jun-3 xd) nor the footnoted 31 Jul Russian print inflates it.
 
-> **Read the level, not the ordering — flight to liquidity, not from British
-> risk.** That **UK Consols fell as hard as the belligerents** (−5.8%, second only
-> to Austria) is the tell: Consols were the *safest* sovereign credit and the
-> *most liquid* asset on earth, so in a cash scramble they were sold first —
-> because they had a bid. The cross-section ranks **marketability, not relative
-> war risk**; "Consols fell more than the rente" does **not** mean Britain was the
-> bigger war risk. Only the *aggregate* fall (everything down together) is a war
-> signal; the ordering is a liquidity artifact. This is the July-1914 counterpart
-> of the closure itself — the market's plumbing, not its risk assessment, drove
-> the cross-section.
+> **Read the level, not the ordering — a strong flight-to-liquidity confound.**
+> That **UK Consols fell as hard as the belligerents** (−5.8%, second only to
+> Austria) is the tell: Consols were the *safest* sovereign credit and the *most
+> liquid* asset on earth, so in a cash scramble they were sold first — because they
+> had a bid. So the cross-sectional ordering is **dominated by marketability** and
+> can't be read as a clean war-risk ranking; "Consols fell more than the rente"
+> does **not** license "Britain was the bigger war risk." The *aggregate* fall
+> (everything down together) is the war signal; whatever war-risk content the
+> ordering carries is entangled with liquidity and can't be cleanly separated
+> here. The plumbing, not just the risk assessment, drove the cross-section.
 
 ### The money market through July–August 1914 (descriptive)
 

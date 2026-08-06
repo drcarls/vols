@@ -30,14 +30,14 @@ mirrored Neal-Weidenmier weekly bonds (`build_nw_spreads.py` →
 | Balkans 1912–13 (austria) | 37.4 wk | 1.4 wk |
 | **July 1914** | censored | window **0.7 wk** |
 
-**Peak-stress lags are 16–37 weeks — 2–4× the asserted 6–10, none in the band**
-(verdict INCONCLUSIVE; robust to using raw yields instead of spreads). So the
-specific "6–10 weeks" figure is not what the data show. The *directional*
-argument survives — July 1914's 0.7-week window is dwarfed by any of these lags —
-but the honest mechanism is "peak stress took **months**, and 1914 truncated it
-at t0," with the fast *material* onsets (Bosnia, Balkans ~1.4 wk) acknowledged.
-Caveats (provisional onsets; Morocco→russia confounded by the 1905 revolution) in
-the write-up. The earlier synthetic tests remain, as instrument checks.
+A single "6–10 weeks" is **not robustly recovered — the lag is
+operationalization-dependent**: onset→peak is 16–37 wk (2–4× the claim, 0/4 in
+band), onset→material is 1–15 wk (which *brackets* 6–10). Robust to raw yields vs
+spreads. So the draft should say *which* lag it means, not assert one figure. The
+*directional* argument survives regardless — July 1914's 0.7-week window is shorter
+than every measured lag on both measures. Caveats (provisional onsets;
+Morocco→russia confounded by the 1905 revolution; peaks catch late-crisis drift)
+in the write-up. The earlier synthetic tests remain, as instrument checks.
 
 ## What it does
 

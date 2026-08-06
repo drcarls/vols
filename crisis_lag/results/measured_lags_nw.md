@@ -22,17 +22,26 @@ July_1914         austria_hungary 1914-07-23  window 0.7 wk    -         -
 VERDICT: INCONCLUSIVE — lags 16.0/16.4/16.9/37.4; 0/4 in the 6–10 wk band.
 ```
 
-## The measured lag does **not** support the 6–10 week clock
+## The measured lag depends entirely on which lag you mean
 
-- **Peak-stress lag is 16–37 weeks, not 6–10** — roughly **2–4× the asserted
-  figure**, 0 of 4 comparators in the band. As a literal number, "6–10 weeks" is
-  not what the sovereign spreads show; the peaks come much later. Robust to the
-  benchmark: raw country yields (no consol subtraction) give the same 16–37 week
-  peaks (`data/nw_yields_long.csv`).
-- **"Material" onset is bimodal and often fast:** stress first crosses z>2 in
-  ~1.4 weeks in Bosnia and the Balkans, but 8–15 weeks in Morocco/Agadir. So
-  *significant* stress can arrive within days, even though the *peak* is months
-  out.
+The "6–10 weeks" is not robustly recovered — but the honest finding is that the
+answer is **operationalization-dependent**, not simply "longer":
+
+- **Onset→peak lag is 16–37 weeks** — 2–4× the asserted figure, 0 of 4 in the
+  band, robust to spreads vs raw yields. On *this* measure the claim is not
+  supported. But a peak searched over a 6–10 month window can be set by
+  late-crisis or non-crisis drift (the Balkans peak is June 1913, mid-Second-
+  Balkan-War), so it is arguably not the right operationalization of "the brake
+  bit."
+- **Onset→material lag (first z>2) is 1–15 weeks** — ~1.4 wk (Bosnia, Balkans),
+  8–15 wk (Morocco, Agadir). This *brackets* the 6–10 week claim rather than
+  refuting it: significant stress can arrive within days in some crises and take
+  months in others.
+
+So the number is not so much *wrong* as *underdetermined*: a single "6–10 weeks"
+compresses a lag that is fast-to-material in some crises, slow-to-peak in all, and
+sensitive to onset dates, the search window, and (per the control check in
+`cause_or_cover.md`) whether the "stress" is distinctive at all.
 
 ## What this does — and does not — do to the argument
 
@@ -70,9 +79,11 @@ crisis-lag run data/nw_spreads_long.csv                 # peak measure (headline
 crisis-lag run data/nw_spreads_long.csv --measure material
 ```
 
-**Bottom line:** run on the data we have, the 6–10 week transmission lag is *not*
-corroborated — peak lags are 2–4× longer. That doesn't rescue July 1914 for the
-sceptic (0.7 weeks is dwarfed by any of these lags), but the specific number in
-the draft is wrong, and the mechanism should be stated as "peak stress took
-months; 1914 cut it off at the start," with the fast material-onset cases
-(Bosnia, Balkans ~1.4 wk) acknowledged rather than buried.
+**Bottom line:** run on the data we have, a single "6–10 weeks" is not robustly
+recovered — peak lags run 16–37 weeks while material-onset lags run 1–15 — so the
+draft should say *which* lag it means rather than assert one figure throughout.
+This doesn't rescue July 1914 for the sceptic either: 0.7 weeks is shorter than
+every measured lag on both operationalizations. The defensible claim is the
+directional one (July 1914 truncated the process almost at t0), stated with the
+lag's real spread and confounds (provisional onsets; Morocco→russia and the 1905
+revolution) on the table, not a point estimate.

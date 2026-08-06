@@ -38,16 +38,27 @@ austria:   1910 0.64  1911 0.57  1912 0.56  1913 0.70  1914 1.00
 
 | crisis (power) | raw z>2 lead | survives controls? | reading |
 |---|---|---|---|
-| **Bosnia (Russia, Kokovtsov)** | 162 d | **No.** 1908 spread (1.52) sits *below* calm 1906–07 (2.0); the series *declines* through the crisis | the flag is an **artifact** — no distinctive stress |
-| **Morocco (France, Rouvier)** | none / degenerate | **No.** France's own yield never crosses; no stress | France's finances were **not** the constraint |
+| **Bosnia (Russia, Kokovtsov)** | 162 d | **Not robustly.** Only a small onset blip; 1908 spread (1.52) sits *below* calm 1906–07 (2.0) on a declining trend | weak / not distinctive — but *not* a clean refutation (see limits) |
+| **Morocco (France, Rouvier)** | none / degenerate | **No.** France's own yield never crosses; no stress on either measure | France's finances were **not** the constraint (the firmest read) |
 | **Agadir (Germany)** | 71 d (yield) | **Weakly.** +0.12 above 1909–10, but on a rising secular trend | modest, measure-dependent |
-| **Balkans (Austria, Biliński)** | 224 d | **Yes.** Spread breaks its 1910–12 decline (0.56→0.70→1.00) and clears clean controls on yield | genuine — but **slow-building**, peak 1913 |
+| **Balkans (Austria, Biliński)** | 224 d | **Yes on yield** (clears clean controls); *not* on the spread (1907 higher) | the strongest case — but **slow-building** (peak 1913) and measure-dependent |
 
-**So the earlier "consistent in 3 of 4" is withdrawn.** After controls, only
-**Austria** shows a distinctive own-market crisis stress — and even it builds over
-the whole long crisis rather than pressing *before* the decision. Russia's signal
-dissolves (the spread was near multi-year lows, falling through Bosnia); France's
-never existed; Germany's is weak and secular-trend-confounded.
+**So the earlier "consistent in 3 of 4" is withdrawn** — but the corrected reading
+is *weak and mixed*, not the opposite verdict. After controls, only **Austria**
+shows even a plausibly distinctive own-market stress, and even it builds over the
+whole long crisis rather than pressing *before* the decision; Russia's is a small
+blip swamped by its post-1905 recovery; France's never existed; Germany's is small
+and secular-trend-confounded.
+
+**Limits of the control check itself (why this is suggestive, not decisive).**
+There are only ~4 clean control years (1904, 1906, 1907, 1910), and each carries
+its own disturbances — the 1907 global panic, the 1906 Algeciras aftermath and the
+large 1906 Russian loan — so the "calm" baseline is not clean. These spreads also
+carry strong secular trends (Russia's post-1905 recovery, Austria's U-shape), which
+a level comparison conflates with crisis effects. With four confounded crises and
+provisional onsets, the whole exercise is **underpowered in both directions**: it
+undercuts the strong finance-as-cause reading without positively establishing its
+negation.
 
 Two things this does establish, both honest:
 - **No crisis shows the refuting pattern** (stress *only after* the climb-down),
