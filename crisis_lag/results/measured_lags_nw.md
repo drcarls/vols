@@ -67,6 +67,12 @@ sensitive to onset dates, the search window, and (per the control check in
   is not cleanly a Morocco signal. Balkans→Austria peaking in June 1913 (37 wk)
   reflects sustained war-and-mobilisation strain across two Balkan wars, not a
   single onset.
+- **Contaminated benchmark.** These spreads are `country − British consol`, but
+  the UK itself moves (Agadir involvement; the 1909 naval/budget crisis; the
+  July-1914 liquidity flight — see [`uk_benchmark_check.md`](uk_benchmark_check.md)).
+  Re-benchmarking to the neutral Dutch yield leaves most lags unchanged but
+  collapses **Morocco 16 wk → 3 wk** — so prefer the Dutch-benchmarked reading
+  where the two disagree.
 - **Peak over a long window can catch non-crisis drift.** The `material` measure
   is more onset-local but variance-sensitive (see the package README).
 
