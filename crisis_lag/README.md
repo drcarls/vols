@@ -15,15 +15,29 @@ tempo's documented motives are diplomatic. The financial *effect* (a market that
 could not price what it could not see) does not require financial *intent*. See
 [`../docs/july1914_mechanism_and_archival_test.md`](../docs/july1914_mechanism_and_archival_test.md).
 
-## ⚠️ Status: no real data has been run
+## Status: run on real data — and it does **not** support the 6–10 week clock
 
-The only dataset exercised so far is **synthetic** — series with peaks injected
-at known lags, used to prove the instrument recovers them (`tests/`). **No
-verdict here reflects real history.** The real run needs the sovereign spread
-series (Investor's Monthly Manual, Yale ICF; *Commercial and Financial
-Chronicle*, FRASER), which is blocked by this environment's egress policy and
-must be pulled from a network that can reach those hosts. Until then this is a
-loaded, tested instrument with an empty chamber.
+The instrument has now been run on real sovereign spreads, built from the
+mirrored Neal-Weidenmier weekly bonds (`build_nw_spreads.py` →
+`data/nw_spreads_long.csv`). The measured result (full write-up:
+[`results/measured_lags_nw.md`](results/measured_lags_nw.md)):
+
+| crisis | onset→peak lag | onset→material |
+|---|---|---|
+| Morocco 1905 (russia) | 16.0 wk | 15.0 wk |
+| Bosnia 1908 (russia) | 16.4 wk | 1.4 wk |
+| Agadir 1911 (germany) | 16.9 wk | — |
+| Balkans 1912–13 (austria) | 37.4 wk | 1.4 wk |
+| **July 1914** | censored | window **0.7 wk** |
+
+**Peak-stress lags are 16–37 weeks — 2–4× the asserted 6–10, none in the band**
+(verdict INCONCLUSIVE; robust to using raw yields instead of spreads). So the
+specific "6–10 weeks" figure is not what the data show. The *directional*
+argument survives — July 1914's 0.7-week window is dwarfed by any of these lags —
+but the honest mechanism is "peak stress took **months**, and 1914 truncated it
+at t0," with the fast *material* onsets (Bosnia, Balkans ~1.4 wk) acknowledged.
+Caveats (provisional onsets; Morocco→russia confounded by the 1905 revolution) in
+the write-up. The earlier synthetic tests remain, as instrument checks.
 
 ## What it does
 
