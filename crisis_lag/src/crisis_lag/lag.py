@@ -138,12 +138,30 @@ def measure_lag(
 
 
 def measure_all(
-    series_map, events: List[CrisisEvent], *, z_threshold: float = 2.0
+    series_map,
+    events: List[CrisisEvent],
+    *,
+    z_threshold: float = 2.0,
+    seasonal: bool = False,
+    seasonal_unit: str = "month",
 ) -> List[LagResult]:
-    """Measure lag for every event against its series in ``series_map``."""
+    """Measure lag for every event against its series in ``series_map``.
+
+    With ``seasonal=True`` each series is deseasonalised against a control-year
+    norm (the calendar-unit mean over years with *no* coded crisis) before the
+    baseline/peak measurement — so autumn seasonality can't masquerade as crisis
+    stress (see :mod:`crisis_lag.seasonal`).
+    """
+    from .seasonal import crisis_years, deseasonalize, seasonal_index
+
+    exclude = frozenset(crisis_years(ev.onset for ev in events)) if seasonal else frozenset()
+
     results: List[LagResult] = []
     for ev in events:
         obs = series_map.get(ev.series, [])
+        if seasonal and obs:
+            index = seasonal_index(obs, exclude_years=exclude, unit=seasonal_unit)
+            obs = deseasonalize(obs, index, unit=seasonal_unit)
         if not obs and ev.measurable:
             results.append(
                 LagResult(

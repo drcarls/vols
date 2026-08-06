@@ -23,7 +23,10 @@ from .series import load_long_csv
 def _cmd_run(args: argparse.Namespace) -> int:
     events = load_events(args.events) if args.events else DEFAULT_EVENTS
     series = load_long_csv(args.data)
-    results = measure_all(series, events, z_threshold=args.z)
+    results = measure_all(
+        series, events, z_threshold=args.z,
+        seasonal=args.seasonal, seasonal_unit=args.seasonal_unit,
+    )
     verdict = adjudicate(
         results,
         band_lo_weeks=args.band[0],
@@ -31,6 +34,9 @@ def _cmd_run(args: argparse.Namespace) -> int:
         falsify_floor_weeks=args.floor,
         lag_measure=args.measure,
     )
+    if args.seasonal:
+        print(f"[seasonal baseline on: control-year norm by {args.seasonal_unit}, "
+              "crisis years excluded]")
     print(format_table(results, lag_measure=args.measure))
     print()
     print(format_verdict(verdict))
@@ -53,6 +59,14 @@ def build_parser() -> argparse.ArgumentParser:
         metavar=("LO", "HI"), help="predicted lag band in weeks",
     )
     r.add_argument("--floor", type=float, default=2.0, help="falsification floor (weeks)")
+    r.add_argument(
+        "--seasonal", action="store_true",
+        help="deseasonalise each series against a control-year norm before measuring",
+    )
+    r.add_argument(
+        "--seasonal-unit", choices=["month", "week"], default="month",
+        help="calendar unit for the seasonal norm (default: month)",
+    )
     r.set_defaults(func=_cmd_run)
     return p
 

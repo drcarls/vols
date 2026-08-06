@@ -16,9 +16,12 @@ from .events import CrisisEvent, DEFAULT_EVENTS, load_events
 from .lag import LagResult, measure_all, measure_lag
 from .report import Verdict, adjudicate, format_table, format_verdict
 from .series import load_long_csv, rows_to_series
+from .seasonal import deseasonalize, seasonal_index
 from .stress import Baseline, baseline_for, stress_series
 
 __all__ = [
+    "seasonal_index",
+    "deseasonalize",
     "CrisisEvent",
     "DEFAULT_EVENTS",
     "load_events",

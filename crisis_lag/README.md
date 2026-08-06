@@ -89,11 +89,44 @@ Defaults (all overridable): Morocco 1905-03-31 (France/Russia), Bosnia 1908-10-0
 (Russia), Agadir 1911-07-01 (Germany), Balkans 1912-10-08 (Austria-Hungary),
 July 1914 1914-07-23 (Austria, censored).
 
+## Seasonal (control-year) baseline — `--seasonal`
+
+Money-market rates tighten every autumn. Since a summer onset is baselined on the
+calm spring and its peak is searched into the autumn, that seasonal tightening can
+masquerade as crisis stress (the raw Berlin rate "spiked" into September 1911, but
+rose *more* in the calm year 1910 — pure seasonality). `--seasonal` removes it:
+
+```bash
+crisis-lag run weekly_long.csv --events events.yaml --seasonal            # by month
+crisis-lag run weekly_long.csv --events events.yaml --seasonal-unit week  # finer
+```
+
+It estimates a normal value for each calendar unit from the years with **no coded
+crisis**, subtracts it, then runs the usual baseline/peak machinery on the
+residual. Because the pre-onset baseline is then computed on the residual, the
+crisis year's own level offset is differenced out too — a difference-in-differences
+(`crisis_lag.seasonal`). It is a strict generalisation: flat seasonality ⇒ the
+plain method.
+
+**What it shows, and a caveat that matters.** On the real legs the **peak** lag is
+robust to it (Agadir ~20 wk, Balkans ~26 wk — verdict stays INCONCLUSIVE, nothing
+falsified). But deseasonalising **shrinks the baseline variance**, so the z-based
+**`material`** measure gets more sensitive: with the objective (mid-crisis) Balkans
+onset, Austria's spread reads "material" within ~0.3 wk — which flips a
+`--measure material` run to FALSIFIED. That is *not* a clean refutation: the
+objective onset (1912-11-21) sits mid-crisis, so stress had already built before
+it, and a tiny post-deseasonalisation baseline sd inflates z. Read the **peak**
+measure as the robust headline; treat seasonal + `material` together as a
+sensitivity probe, not a verdict.
+
 ## Known limits (state them, don't paper over them)
 
 - **n is small.** Four comparators is a range check, not a powered test. Widen it
   (Fashoda 1898, Liman von Sanders 1913, the two Balkan Wars separately) to give
   the band any power.
+- **The `material` measure is variance-sensitive**, especially with `--seasonal`
+  (which shrinks the baseline sd): a small, stable pre-onset window can make an
+  ordinary move cross the z threshold early. Prefer `peak` for the headline.
 - **Monthly resolution can't see a 5-day window.** The IMM is monthly; it
   establishes the cross-crisis regularity but cannot characterise 1914 — that is
   what the weekly *Chronicle* and daily *Le Temps* sources are for.
@@ -103,5 +136,5 @@ July 1914 1914-07-23 (Austria, censored).
 ## Tests
 
 ```bash
-python -m pytest -q      # 21 tests, no network
+python -m pytest -q      # 27 tests, no network
 ```
