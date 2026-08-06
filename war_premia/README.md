@@ -46,12 +46,20 @@ The estimator needs a **war-week variance regime**. July 1914 denies it one on
 
 - **Short-term rates end 1914-06-27**, the eve of Sarajevo (28 June). Every
   July-1914 war event is after the data — one boundary week, no crisis response.
-- **Long-term bonds are monthly with a 63-day gap, 1914-06-03 → 1914-08-05**,
-  straight across the crisis. One observation spans it — no regime to identify.
+- **Long-term bonds are quoted ~weekly through 1914-07-31** (the last LSE trading
+  day), then a **5-day *closure* gap** to the 5 Aug nominal quote — the real gap is
+  the closure, not a data gap. The heteroskedasticity-**identified** premium is
+  still unestimable (the war-week variance regime is truncated by the closure, and
+  post-closure quotes are nominal), but that is the *only* thing the closure denies.
 
-This is not a coding gap; it is the central empirical fact. The event that would
-have revealed whether markets had finally stopped "crying wolf" is the one where
-the markets stopped trading.
+This is the central empirical fact: the event that would have revealed whether
+markets had finally stopped "crying wolf" is the one where the markets stopped
+trading. But what they did *before* stopping is right there in the weekly data.
+
+> **Correction (parse bug).** An earlier version read only the ~300 Excel-serial
+> date cells and so mis-saw the bonds as "monthly, with a 63-day Jun-3→Aug-5 gap."
+> The RAW date column is mostly **text** (`d/m/yyyy`); once parsed, the series is
+> weekly through the closure, and the pre-closure war repricing is observable.
 
 ### The bond cross-section is uninterpretable (a withdrawn result)
 
@@ -69,11 +77,28 @@ withdrawn.** Auditing the raw column (`war-premia july1914`, `bond_quote_audit`)
 Comparing a stale August quote to an ex-dividend June baseline manufactured the
 spurious ~2%. The cross-section can't be interpreted at all.
 
-**The one genuine signal** (from the workbook's own NOTES sheet): the London price
-of the **French 3% rente fell 80 → 76.5 on 30 July 1914 — ~−4.4% in the final
-trading week**, and accelerating. With the money market seizing the same week
-(Bank of England 3 → 4 → 8 → 10%), that is a market **routing as it shut**, not a
-flat one. The full war shock is unobservable: trading stopped mid-repricing.
+**What *is* observable — the pre-closure war repricing** (`war-premia july1914`,
+`war_week_bond_decline`, weekly text vintage, 15 Jun → 31 Jul, clean = to last
+unflagged quote): the **whole European sovereign complex fell ~2.5–6%** in the
+final trading weeks —
+
+| sovereign | 15 Jun → 31 Jul (clean) | note |
+|---|---|---|
+| UK Consols 3% | **−5.8%** | 75.1 (24 Jul) → 70.5 on the last day |
+| German Imperial 3% | −5.2% | |
+| Prussian Consols 3.5% | −5.7% | |
+| Austrian Gold 4% | −6.0% | |
+| Russian New 4% | −4.5% (to 24 Jul) | 31 Jul 79.0 footnoted, further down |
+| French 3% rente (Paris) | −2.5% | |
+| Russian 1822 5% | −2.5% | thin, pegged at 121 then 118 |
+
+With the money market seizing the same week (Bank of England 3 → 4 → 8 → 10%),
+that is a market **routing as it shut**. So the reaction is *not* unobservable —
+it is broad and sizable in the weekly data. What the closure denies is only the
+*identified* premium (no post-closure variance regime); the post-closure quotes
+themselves are nominal (see the audit above). Ex-dividend/footnote discipline is
+applied: the clean decline stops at the last unflagged quote, so neither a coupon
+(Jun-3 xd) nor the footnoted 31 Jul Russian print inflates it.
 
 ### The money market through July–August 1914 (descriptive)
 
@@ -87,10 +112,10 @@ identified. Two findings (see `results/july_aug_1914_money.md`):
   31 July). Ferguson again, in the short rates.
 - **A convulsion, then the data goes dark.** When war came the Bank of England
   rate went **3 → 4 → 8 → 10%** in a week and NY call money to 7%. The bond market
-  was routing too — the London French rente fell ~4.4% in the final trading week —
-  but then trading stopped, and its post-closure quotes are nominal, not real
-  (see the audit above). The *war premium* is unobservable: the market shut
-  mid-repricing.
+  was routing too — the European sovereign complex fell ~2.5–6% in the final
+  trading weeks (see the pre-closure decline above) — before trading stopped and
+  the post-closure quotes went nominal. The *identified war premium* is what's
+  unobservable (no post-closure variance regime); the reaction itself is not.
 
 ### NYC bonds, 1914: the closure and the reopening
 

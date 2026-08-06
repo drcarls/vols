@@ -88,6 +88,17 @@ class BondAudit:
 
 
 def _raw(path: str):
+    """Map every dated RAW row to its index.
+
+    The RAW date column carries TWO encodings and BOTH matter here: ~300
+    Excel-serial cells (which hold the sparse Jun 2/Jun 3 and Aug 5/Sep 1 quotes
+    the audit compares) and ~1500 text 'd/m/yyyy' cells (the ~weekly series that
+    runs through the last trading day, 31 July 1914). An earlier version read
+    only the serial cells and so mis-saw the bonds as "monthly with a 63-day
+    gap"; both encodings are needed to see the real weekly cadence and the true
+    31 Jul -> 5 Aug closure gap. For 1914 the two vintages are disjoint in date,
+    so merging introduces no collisions.
+    """
     import xlrd
 
     wb = xlrd.open_workbook(path)
@@ -95,8 +106,13 @@ def _raw(path: str):
     rows: Dict[D, int] = {}
     for r in range(6, sh.nrows):
         c = sh.cell(r, 0)
-        if c.ctype == 3:
+        if c.ctype == 3:  # Excel serial
             rows[true_date(xlrd.xldate.xldate_as_datetime(c.value, wb.datemode).date())] = r
+        elif c.ctype == 1 and "/" in c.value:  # text 'd/m/yyyy'
+            try:
+                rows[datetime.datetime.strptime(c.value.strip(), "%d/%m/%Y").date()] = r
+            except ValueError:
+                continue
     return wb, sh, rows
 
 
@@ -165,14 +181,88 @@ def short_rate_feasibility(short_path: str) -> Feasibility:
 def bond_feasibility(bonds_path: str) -> Feasibility:
     _wb, _sh, rows = _raw(bonds_path)
     ds = sorted(rows)
-    gap = None
-    for i in range(1, len(ds)):
-        if ds[i] >= POST_STALE and ds[i - 1] < POST_STALE:
-            gap = (ds[i] - ds[i - 1]).days   # last pre-closure quote -> first post
-            break
+    # Last genuine pre-closure quote -> first post-closure quote. The LSE closed
+    # 31 July 1914; the real gap is that closure (~5 days to the 5 Aug nominal
+    # quote), NOT a data gap. Find the last quote strictly before the closure.
+    pre = [d for d in ds if d <= LAST_PRE_CLOSURE]
+    post = [d for d in ds if d > LAST_PRE_CLOSURE]
+    gap = (post[0] - pre[-1]).days if (pre and post) else None
     return Feasibility(
         asset="long-term bonds", n_obs=len(ds), n_war_weeks=0,
         last_obs=ds[-1] if ds else None, gap_across_crisis_days=gap, estimable=False,
-        reason=(f"monthly with a {gap}-day gap {CLEAN_PRE}->{POST_STALE} across the crisis; "
-                "and the post-closure quotes are nominal, not trades (see bond_quote_audit)"),
+        reason=(f"quoted ~weekly through {pre[-1] if pre else '—'} (the last LSE trading "
+                f"day), then a {gap}-day CLOSURE gap to the {post[0] if post else '—'} "
+                "nominal quote — not a data gap. A heteroskedasticity-identified premium "
+                "is still unestimable: the war-week variance regime is truncated by the "
+                "closure, and the post-closure quotes are nominal (see bond_quote_audit). "
+                "But the pre-closure decline IS observable (see war_week_bond_decline)."),
     )
+
+
+LAST_PRE_CLOSURE = D(1914, 7, 31)   # last LSE trading day before the closure
+
+
+@dataclass(frozen=True)
+class WarWeekDecline:
+    sovereign: str
+    quotes: List[Tuple[D, float, bool]]   # (date, price, is_flagged: xd or footnote)
+    first_date: Optional[D]
+    last_clean_date: Optional[D]          # last UNflagged quote (clean endpoint)
+    pct_clean: Optional[float]            # clean decline first -> last unflagged quote
+    final_flagged: bool                   # is the 31 Jul print flagged (xd/footnote)?
+    final_price: Optional[float]          # the 31 Jul print itself (read with caution if flagged)
+
+
+def war_week_bond_decline(bonds_path: str,
+                          lo: D = D(1914, 6, 15), hi: D = LAST_PRE_CLOSURE
+                          ) -> List[WarWeekDecline]:
+    """The observable pre-closure war-week decline, on the weekly (text) vintage.
+
+    Restricting to [15 Jun, 31 Jul] selects the weekly text quotes (the sparse
+    serial Jun-2/Jun-3 pair is excluded), so this is one internally-consistent
+    vintage. The clean decline is measured to the last UNFLAGGED quote. A quote
+    is flagged if its xd/footnote column is non-empty: this catches both true
+    ex-dividend marks (text "xd", e.g. the Jun-3 baseline) and the numeric
+    footnote on the 31 July print (col 14 = 1.0 for the Russian New 4% -- a
+    last-trading-day "nominal quote" marker, not a coupon). So neither a coupon
+    drop nor a footnoted closure print can inflate the measured decline; the
+    footnoted 31 July level is reported separately, to be read with caution.
+    """
+    import xlrd
+
+    _wb, sh, rows = _raw(bonds_path)
+
+    def num(r: int, col: Optional[int]) -> Optional[float]:
+        if col is None:
+            return None
+        cell = sh.cell(r, col)
+        return float(cell.value) if cell.ctype == xlrd.XL_CELL_NUMBER else None
+
+    def flagged(r: int, col: Optional[int]) -> bool:
+        if col is None:
+            return False
+        return str(sh.cell(r, col).value).strip() != ""
+
+    out: List[WarWeekDecline] = []
+    for name, (pc, xc) in SOVEREIGN_COLS.items():
+        quotes: List[Tuple[D, float, bool]] = []
+        for d in sorted(rows):
+            if not (lo <= d <= hi):
+                continue
+            p = num(rows[d], pc)
+            if p is None:
+                continue
+            quotes.append((d, p, flagged(rows[d], xc)))
+        clean = [(d, p) for d, p, fl in quotes if not fl]
+        first = quotes[0] if quotes else None
+        pct = (100.0 * (clean[-1][1] - first[1]) / first[1]) if (first and clean) else None
+        out.append(WarWeekDecline(
+            sovereign=name,
+            quotes=quotes,
+            first_date=first[0] if first else None,
+            last_clean_date=clean[-1][0] if clean else None,
+            pct_clean=pct,
+            final_flagged=bool(quotes and quotes[-1][2]),
+            final_price=quotes[-1][1] if quotes else None,
+        ))
+    return out

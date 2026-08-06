@@ -14,7 +14,6 @@ from typing import List, Optional
 from neal_weidenmier.load import load_short_rates, to_series_map
 
 from .july1914 import (
-    GENUINE_SIGNAL,
     bond_feasibility,
     bond_quote_audit,
     short_rate_feasibility,
@@ -50,11 +49,24 @@ def _cmd_july1914(args: argparse.Namespace) -> int:
             return f"{x:.2f}" if x is not None else "—"
         print(f"  {a.sovereign:<24}{f(a.clean_pre):>7}{f(a.exdiv_pre):>7}"
               f"{f(a.post_stale):>7}{f(a.post_sept):>7}  {'; '.join(flags)}")
-    print("\nVerdict: the cross-section is UNINTERPRETABLE — the June-3 baseline is "
-          "ex-dividend and the post-closure quotes are nominal (belligerent bonds "
-          "'rise' during the war). The earlier ~2% reading is withdrawn.")
-    print("The one genuine pre-closure signal:")
-    print(f"  {GENUINE_SIGNAL}")
+    print("\nVerdict: the Jun2/Jun3-vs-Aug5/Sep1 cross-section is UNINTERPRETABLE — the "
+          "June-3 baseline is ex-dividend and the post-closure quotes are nominal "
+          "(belligerent bonds 'rise' during the war). The earlier ~2% reading is withdrawn.")
+    print("\nBut the pre-closure decline IS observable — the weekly (text) vintage, "
+          "15 Jun -> 31 Jul 1914 (clean = to last unflagged quote):")
+    from .july1914 import war_week_bond_decline
+    for w in war_week_bond_decline(args.bonds or BONDS):
+        if not w.quotes:
+            continue
+        q = " ".join(f"{d.strftime('%m-%d')}={p:.1f}{'*' if fl else ''}" for d, p, fl in w.quotes)
+        tail = f"  ->{w.pct_clean:+.1f}%" if w.pct_clean is not None else ""
+        if w.final_flagged and w.final_price is not None:
+            tail += f" [31Jul {w.final_price:.1f} footnoted]"
+        print(f"  {w.sovereign:<22}{q}{tail}")
+    print("  (* = flagged: ex-dividend or footnote; clean decline stops at the last unflagged quote)")
+    print("The whole European sovereign complex fell ~2.5-6% in the final trading weeks — a\n"
+          "broad war repricing, visible until the market shut. The IDENTIFIED premium is what's\n"
+          "unestimable (regime truncated by closure), not the reaction, which is right here.")
     return 0
 
 
