@@ -50,6 +50,36 @@ It is a binary question with a findable answer.
   bank's 1914 operations (discount policy, gold movements, note issue). The
   primary public record of *when* the Reichsbank actually moved.
 
+### Where they're digitized (access map)
+
+Searched Aug 2026. Both are *located*; neither could be pulled from this
+repo's locked-down environment (curl-with-CA egress only — no browser that can
+tunnel the agent proxy, Google Books API rate-limited, and every delivery
+surface below is a JavaScript viewer or Cloudflare-gated). On an unrestricted
+network the public-domain report opens in one click at the first two.
+
+**Reichsbank 1914 *Verwaltungsbericht* (Berlin, 1915) — public domain, digitized:**
+- **MDZ / Bayerische Staatsbibliothek**, digitized serial run, **ZDB-ID
+  520775-7** (via the K10plus union catalogue). Delivery is the
+  digitale-sammlungen.de SPA; IIIF base `api.digitale-sammlungen.de/iiif/
+  presentation/v2/{bsbID}/manifest` is live but the per-year `bsb` ID is only
+  exposed through the SPA.
+- **HathiTrust**, catalogue **Record 100598111** (full-view for the pre-1929
+  volumes). Behind a Cloudflare bot challenge.
+- **Bundesarchiv R 2501** (Reichsbank records), harvested to DDB /
+  Archivportal-D — but the DDB harvest of this series **skips the 1914
+  business year** (it carries 1889–1908 and 1919–1941 scattered, no 1914 item),
+  so BArch likely holds the 1914 volume un-harvested. Delivery is the invenio
+  session viewer.
+- German National Library serial record: `d-nb.info/01026602X`.
+
+**Zilch (1987) — in copyright, no open-access full text.** The Akademie-Verlag
+original (Forschungen zur Wirtschaftsgeschichte Bd. 20, from the 1976
+dissertation) was reissued by De Gruyter in 2022 (ISBN 978-3-11-277326-0) and
+sells commercially. An interlibrary-loan / purchase item, held at major
+research libraries; not a free download. (DigiZeitschriften, one possible
+route, was discontinued 31 Dec 2025.)
+
 ## Evidence state (audited against the scholarship that cites Zilch and BArch R 2)
 
 **Established (documented):**
