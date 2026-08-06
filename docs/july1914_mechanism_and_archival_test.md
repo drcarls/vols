@@ -59,19 +59,24 @@ surface below is a JavaScript viewer or Cloudflare-gated). On an unrestricted
 network the public-domain report opens in one click at the first two.
 
 **Reichsbank 1914 *Verwaltungsbericht* (Berlin, 1915) — public domain, digitized:**
-- **MDZ / Bayerische Staatsbibliothek**, digitized serial run, **ZDB-ID
-  520775-7** (via the K10plus union catalogue). Delivery is the
-  digitale-sammlungen.de SPA; IIIF base `api.digitale-sammlungen.de/iiif/
-  presentation/v2/{bsbID}/manifest` is live but the per-year `bsb` ID is only
-  exposed through the SPA.
-- **HathiTrust**, catalogue **Record 100598111** (full-view for the pre-1929
-  volumes). Behind a Cloudflare bot challenge.
+- **HathiTrust**, catalogue **Record 100598111** — the one confirmed digital
+  run of the *Reichsbank* Verwaltungsbericht (full-view for the pre-1929
+  volumes). Whether the 1914 business-year volume is among HathiTrust's held
+  years could not be checked here (Cloudflare bot challenge blocks the catalogue
+  and the API). This is the primary download route.
+  <https://catalog.hathitrust.org/Record/100598111>
 - **Bundesarchiv R 2501** (Reichsbank records), harvested to DDB /
   Archivportal-D — but the DDB harvest of this series **skips the 1914
   business year** (it carries 1889–1908 and 1919–1941 scattered, no 1914 item),
   so BArch likely holds the 1914 volume un-harvested. Delivery is the invenio
   session viewer.
 - German National Library serial record: `d-nb.info/01026602X`.
+- **Correction:** an MDZ / Bayerische Staatsbibliothek digitization exists at
+  **ZDB-ID 520775-7**, but the K10plus union catalogue attaches that link to
+  the *Verwaltungsbericht der **Preussischen Bank*** — the Reichsbank's pre-1876
+  predecessor — **not** the Reichsbank report, and it does not cover 1914. The
+  three Reichsbank Verwaltungsbericht records in K10plus carry no digitization
+  link at all. Do not cite MDZ for the 1914 Reichsbank report.
 
 **Zilch (1987) — in copyright, no open-access full text.** The Akademie-Verlag
 original (Forschungen zur Wirtschaftsgeschichte Bd. 20, from the 1976
