@@ -53,7 +53,7 @@ This is not a coding gap; it is the central empirical fact. The event that would
 have revealed whether markets had finally stopped "crying wolf" is the one where
 the markets stopped trading.
 
-### What is observable
+### What is observable — and its two readings
 
 The single bond change spanning the closure (a raw event change, **not** a
 heteroskedasticity premium, and a **distorted lower bound** — the closure and
@@ -61,19 +61,36 @@ support operations froze quoted prices):
 
 | sovereign | 1914-06-03 → 1914-08-05 |
 |---|---|
-| UK Consols 3% | **−0.3%** (safe haven) |
+| UK Consols 3% | −0.3% |
 | Austrian Gold 4% | −1.2% |
 | French 3% rentes | −1.8% |
 | German Imperial 3% | −1.9% |
 | Russian 4% / 5% | −2.2% / −2.4% |
 
-The belligerents fell most; British Consols barely moved — the paper's
-belligerent-vs-safe-haven cross-section, at the moment war arrived.
+**Both readings must be stated, and the second is the headline:**
 
-## Data note
+- **Ordering (the smaller point, mine):** belligerents fell most, British Consols
+  least — the paper's belligerent-vs-haven cross-section, at the moment war came.
+- **Magnitude (the larger point, Ferguson's):** a ~2% fall on the *outbreak of a
+  world war* is almost nothing. The bond market **did not price the war**, even as
+  it began — markets were caught off guard. The ordering rides on top of a shock
+  that is, in absolute terms, trivial. This confirms Ferguson; it does not refute
+  him.
 
-The short-term rates include a **St. Petersburg (Russia)** column the paper
-reported as unavailable — available here for a fuller re-run.
+## St. Petersburg (Russia) — a series the original couldn't include
+
+The paper reported the Russian market rate as unavailable. The NW short-rate file
+carries a **St. Petersburg *bank* rate** (the Russian State Bank discount rate),
+populated weekly across 1904–1914 — so Russia can enter the estimation for the
+first time. `war-premia russia` reports it.
+
+The finding is itself informative: the St. Petersburg bank-rate premium is ≈ 0,
+against Berlin 0.21 and Paris 0.05 (full-sample, *bank* rates). Russia's rate was
+**administered and sticky** — the State Bank held it through crises where the
+Reichsbank moved — so it carries almost no war-risk signal. That is a real
+limitation of the Russian series, not evidence that Russia bore no war risk; only
+its market (open-market) rate would show it, and that is the series NW lacks after
+1900.
 
 ## Tests
 

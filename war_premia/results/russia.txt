@@ -1,0 +1,9 @@
+Full-sample war-risk premium on the BANK (official discount) rate:
+capital             beta      t
+St Petersburg      -0.00  -0.00
+Berlin              0.21   5.26
+Paris               0.05   3.95
+Vienna              0.03   1.12
+London              0.53  15.21
+
+Russia (St Petersburg) is available here for the first time — the paper lacked it. Its premium is ~0 because the State Bank rate was administered and sticky, unlike the Reichsbank's; only a market rate would carry the signal, and NW's St Petersburg open-market series ends in 1900.

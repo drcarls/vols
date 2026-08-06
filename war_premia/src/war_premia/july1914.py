@@ -12,10 +12,17 @@ that, on both assets, because the markets closed exactly when war came:
 
 What *is* observable is that one bond change across the gap. It is not a
 heteroskedasticity premium and it is a **distorted lower bound** (closure and
-support operations froze quoted prices), but it shows the cross-section: in the
-one quote after war began, the belligerents' bonds fell most while British Consols
-barely moved — the paper's belligerent-vs-safe-haven pattern, at the moment war
-arrived.
+support operations froze quoted prices). It carries **two readings, and both must
+be stated**:
+
+* **Ordering (the smaller point):** the belligerents' bonds fell most (French,
+  German, Russian ~2%) while British Consols barely moved (−0.3%) — the paper's
+  belligerent-vs-safe-haven cross-section, at the moment war came.
+* **Magnitude (the larger point — Ferguson's):** a ~2% fall on the *outbreak of a
+  world war* is almost nothing. The bond market did not price the war, even as it
+  began. This is Ferguson's finding — the markets were caught off guard — and it
+  is the headline, not a refutation of it. The ordering rides on top of a shock
+  that is, in absolute terms, trivially small.
 """
 
 from __future__ import annotations

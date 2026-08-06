@@ -9,3 +9,8 @@ One observable: sovereign long-bond price change across the closure (1914-06-03 
   Austrian Gold 4%         85.000 ->   84.000   -1.2%
   German Imperial 3%       79.000 ->   77.500   -1.9%
   Prussian Consols 3.5%    87.500 ->   87.000   -0.6%
+
+Two readings, both required:
+  ORDERING (smaller point): belligerents fall most, Consols least (-0.3%) — the paper's haven cross-section.
+  MAGNITUDE (larger point, Ferguson): the worst fall is only -2.4% — on the outbreak of a world war, almost nothing.
+  The market did not price the war. The ordering rides on a trivially small shock.
