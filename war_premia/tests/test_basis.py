@@ -42,3 +42,16 @@ def test_neutrals_carry_a_premium_so_it_is_not_cleanly_war_risk():
     neutral_floor = max(res[s].single.beta for s in
                         ("amsterdam_openmkt", "geneva_market", "stockholm_market"))
     assert res["berlin_openmkt"].single.beta > neutral_floor + 0.1
+
+
+def test_london_itself_is_belligerent_grade_war_sensitive():
+    # London (the paper's basis) carries a large premium vs neutral bases -- as big
+    # as Berlin -- so it is not a war-neutral reference.
+    swiss = _betas("geneva_market")
+    swede = _betas("stockholm_market")
+    lon = max(swiss["london_trade3mo"].single.beta, swede["london_trade3mo"].single.beta)
+    assert lon > 0.2                                   # London is strongly war-sensitive
+    assert lon >= swiss["berlin_openmkt"].single.beta - 0.05   # comparable to Berlin
+    # asymmetry: neutrals show only ~0.10 against London, London shows >0.2 vs them
+    neutral_vs_london = _betas("london_trade3mo")["stockholm_market"].single.beta
+    assert lon > neutral_vs_london + 0.1

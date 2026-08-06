@@ -54,13 +54,17 @@ were the most marketable, so don't rank war risk by the size of the drop; (ii) t
 honest sentence: the brake was seizing in the money market, and the exchange
 closed before the bond repricing could complete.
 
-**d. Fix the benchmark — and flag it as a limit of the original identification.**
-Britain is a great power whose assets move with its own involvement (Agadir), its
-own fiscal politics (the 1909 naval scare + People's Budget), and liquidity flight
-(July 1914). Spreading against British consols or the London trade bill imports
-those moves. Re-benchmarking to a neutral (Netherlands) collapses Morocco's bond
-lag from 16 weeks to 3 — a 13-week swing from the benchmark alone. **Add a neutral-
-basis robustness appendix; ideally re-estimate the core premia against Amsterdam.**
+**d. Fix the benchmark — the basis asset is itself belligerent-grade.** Britain's
+assets move with its own involvement (Agadir), fiscal politics (the 1909 naval
+scare + People's Budget), and liquidity flight (July 1914). Worse than "contaminated":
+measured against neutral bases, **London's own money-market war premium is 0.22–0.42
+— as large as Berlin's** (§2g, `../war_premia/results/basis_robustness.md`). So the
+Rigobon-Sack *basis* is one of the two most war-sensitive markets, not a neutral
+reference; every city premium is differenced against a war-moving asset, which
+compresses the premia and distorts the ranking. Re-benchmarking to a neutral also
+swings real numbers (Morocco's bond lag 16 wk → 3 wk). **Re-estimate the core
+premia against a neutral basis, and state plainly that the London basis biases the
+original results.**
 
 **e. Cause-vs-cover: claim only what survives a far neutral — which is very
 little.** Benchmarked against the Dutch yield the market data seemed to show

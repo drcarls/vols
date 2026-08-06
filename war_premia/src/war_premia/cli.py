@@ -133,6 +133,22 @@ def _cmd_basis(args: argparse.Namespace) -> int:
           "as Paris (0.11) and Vienna (0.13) -- so the premium partly measures money-market\n"
           "integration with the basis under war-week stress, not pure war risk. Only premia\n"
           "clearly ABOVE the ~0.10 neutral floor (Berlin) are safely read as war risk.")
+    print("\nAnd LONDON itself -- the paper's 'basis' -- carries a large premium vs neutral bases:")
+    lon = [("london_bank", "London BoE rate"), ("london_trade3mo", "London 3mo trade bill"),
+           ("london_bank_bills_90_days_bid", "London 90d bank bills")]
+    print(f"  {'London rate':<24}" + "".join(f"{b:>12}" for b, _ in
+          [("Amsterdam", 0), ("Switzerland", 0), ("Sweden", 0)]))
+    for lslug, llab in lon:
+        row = []
+        for bkey in ("amsterdam_openmkt", "geneva_market", "stockholm_market"):
+            res = {r.city: r for r in run_crisis(smap, full, basis_key=bkey)}
+            row.append(f"{res[lslug].single.beta:+.2f}" if lslug in res else "—")
+        print(f"  {llab:<24}" + "".join(f"{x:>12}" for x in row))
+    print("London's premium vs Switzerland/Sweden (0.22-0.42) MATCHES Berlin's -- so London is\n"
+          "not a war-neutral basis, it is one of the two MOST war-sensitive money markets (the\n"
+          "global bill/acceptance/gold centre, frozen hardest in July 1914). Using it as the\n"
+          "basis differences every other city against a war-moving reference -- the core reason\n"
+          "the premia are compressed and their ranking distorted. A neutral basis is required.")
     return 0
 
 

@@ -43,6 +43,27 @@ is genuine partial exposure (Amsterdam borders Germany; Switzerland is landlocke
 among powers; Sweden sits on the Baltic) or a pure method artifact, the practical
 consequence is the same.
 
+## London itself is not a neutral basis — it is belligerent-grade
+
+Swap the roles: measure **London** as the city against neutral bases.
+
+| London rate | vs Amsterdam | vs Switzerland | vs Sweden |
+|---|---|---|---|
+| BoE rate | +0.17 | +0.23 | +0.38 |
+| 3-mo trade bill | +0.13 | +0.22 | +0.38 |
+| 90-day bank bills | +0.09 | +0.28 | +0.42 |
+
+Against Switzerland and Sweden, **London's premium (0.22–0.42) matches Berlin's**
+(0.26–0.34 against the same neutrals). So London is one of the **two most
+war-sensitive** money markets, not a war-neutral reference — historically exact, as
+London was the global bill/acceptance/gold centre and froze hardest in July 1914
+(BoE to 10%, the acceptance market seized, the Exchange closed). This is the
+strongest form of the benchmark critique: **the paper's basis asset is itself
+belligerent-grade war-sensitive**, so every city premium measured against it is
+differenced against a war-moving reference — which compresses the premia and
+distorts their ranking. The asymmetry seals it: neutrals show only ~0.10 against
+London, but London shows 0.22–0.42 against neutrals.
+
 ## What survives
 
 - **Berlin's premium is the one that clearly clears the ~0.10 neutral floor** and
