@@ -76,19 +76,49 @@ targets:
 # Find the issue for a date (prints ark + OCR quality)
 gallica-le-temps search 1914-07-28 --min-ocr-quality 80
 
-# Run the whole pipeline; writes a CSV of crop URLs (and OCR values with --ocr)
-gallica-le-temps run config.example.yaml --output le_temps_1914.csv
-gallica-le-temps run config.example.yaml --ocr
+# Run the whole pipeline. --ocr reads the value off each crop (needs Tesseract).
+gallica-le-temps run config.example.yaml --ocr --output le_temps_1914.csv
 
 # Debug: build a IIIF crop URL from raw pixel coords
 gallica-le-temps crop-url bpt6k239abcd 3 1200 400 240 80
 ```
 
-The output CSV has one row per (date, target) with `status`, `ark`,
-`ocr_quality`, the IIIF `region`, the `crop_url` (so a human can eyeball every
-figure), and — with `--ocr` — the read `value`. `status` is one of `ok`,
-`no_issue`, `low_quality`, `not_found`, or `no_value`, so gaps are explicit
-rather than silent.
+## Output formats
+
+`run --format` chooses the CSV shape; the default is the tidy series so the
+output is ready to align with other sources.
+
+- **`long`** (default) — one row per `(date, series)` with a `source` column and
+  full provenance (`ark`, `page`, `ocr_quality`, `region`, `crop_url`, `status`).
+  This is the canonical **join target**: stack this Gallica series with a weekly
+  (or any other) first source using a plain concat keyed on `(date, series)`.
+  Set the label with `--source` (default `le_temps`).
+
+  ```
+  date,series,value,unit,source,status,ark,page,ocr_quality,region,crop_url
+  1914-07-28,rente_3pct,84.25,FRF,le_temps,ok,bpt6k…,3,95.4,1200,400,…,https://…
+  ```
+
+- **`wide`** — one row per date, one column per series, built on a **complete
+  daily date spine** across the config window. Every calendar day is present;
+  market-closed / missing days are explicit empty cells, so this is a genuine
+  gap-free **daily** series ready to resample or align against a weekly one.
+
+  ```
+  date,rente_3pct,banque_de_france,change_londres
+  1914-07-27,,,
+  1914-07-28,84.25,4100,25.30
+  1914-07-29,,,
+  ```
+
+- **`raw`** — the underlying one-row-per-(date,target) provenance dump (all
+  `ExtractionResult` fields), for debugging.
+
+`status` is one of `ok`, `no_issue`, `low_quality`, `not_found`, or `no_value`,
+so gaps are always explicit rather than silent. The `value` column is populated
+only when `--ocr` ran; without it, use the long form and read each figure from
+its `crop_url`. The Python API mirrors this: `to_long()`, `to_wide()`,
+`write_long_csv()`, `write_wide_csv()` in `gallica_le_temps.series`.
 
 ## Tuning targets
 

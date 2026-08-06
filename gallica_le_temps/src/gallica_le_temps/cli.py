@@ -21,6 +21,7 @@ from .client import GallicaClient
 from .config import load_config
 from .iiif import PixelRegion, crop_url
 from .pipeline import Pipeline, collect, write_csv
+from .series import write_long_csv, write_wide_csv
 from .sru import build_issue_query, build_sru_params, parse_sru_response, SRU_ENDPOINT
 
 
@@ -51,8 +52,16 @@ def _cmd_run(args: argparse.Namespace) -> int:
 
     out = args.output or config.output_path
     if out:
-        write_csv(rows, out)
-        print(f"wrote {len(rows)} rows -> {out}")
+        if args.format == "long":
+            n = write_long_csv(rows, out, source=args.source)
+            print(f"wrote {n} rows (long/tidy) -> {out}")
+        elif args.format == "wide":
+            # Complete daily spine across the config window.
+            n = write_wide_csv(rows, out, dates=config.dates())
+            print(f"wrote {n} daily rows (wide) -> {out}")
+        else:
+            write_csv(rows, out)
+            print(f"wrote {len(rows)} rows (raw) -> {out}")
     else:
         for row in rows:
             val = row.value if row.value is not None else ""
@@ -87,6 +96,17 @@ def build_parser() -> argparse.ArgumentParser:
     p_run = sub.add_parser("run", help="run the full pipeline from a YAML config")
     p_run.add_argument("config", help="path to a YAML run config")
     p_run.add_argument("--output", help="CSV output path (overrides config)")
+    p_run.add_argument(
+        "--format",
+        choices=["long", "wide", "raw"],
+        default="long",
+        help="CSV shape: long/tidy series (default), wide daily matrix, or raw provenance rows",
+    )
+    p_run.add_argument(
+        "--source",
+        default="le_temps",
+        help="value for the 'source' column in the long/tidy output",
+    )
     p_run.add_argument(
         "--ocr", action="store_true", help="OCR the crops (needs Tesseract)"
     )

@@ -19,6 +19,7 @@ against fixtures without touching the network.
 from .alto import WordBox, parse_alto
 from .config import RunConfig, TargetSpec, load_config
 from .iiif import PixelRegion, crop_url, scale_region
+from .series import SeriesPoint, to_long, to_wide
 from .sru import IssueRecord, build_issue_query, parse_sru_response
 
 __all__ = [
@@ -33,6 +34,9 @@ __all__ = [
     "IssueRecord",
     "build_issue_query",
     "parse_sru_response",
+    "SeriesPoint",
+    "to_long",
+    "to_wide",
 ]
 
 __version__ = "0.1.0"
