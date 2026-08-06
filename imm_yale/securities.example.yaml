@@ -1,0 +1,37 @@
+# IMM securities catalogue — which sovereign issue carries each power's spread.
+#
+# PROVISIONAL. The series ids match crisis_lag.events (france / germany / russia /
+# austria_hungary); reconcile the specific issues and, once known, the numeric
+# `security_id`s against the original thesis dataset before trusting a verdict.
+#
+# `name_query` is used as an EXACT company-name search when no `security_id` is
+# given. A numeric `security_id` (from the IMM finder) is more precise — prefer
+# it once you have it.
+
+benchmark:
+  series: benchmark
+  label: "UK Consols 2.5%"
+  name_query: "Consols"
+  # security_id: "10xxx"
+  notes: "Risk-free reference; the spread is taken over this yield."
+
+issuers:
+  - series: france
+    label: "French 3% Rente"
+    name_query: "French Rentes"
+    notes: "Perpetual 3% rente."
+
+  - series: germany
+    label: "German 3% Imperial Loan"
+    name_query: "German Imperial"
+    notes: "Fiscally-binding power in Agadir 1911."
+
+  - series: russia
+    label: "Russian 4% Government Loan"
+    name_query: "Russian Government"
+    notes: "Post-1906 state loan placed largely in Paris."
+
+  - series: austria_hungary
+    label: "Austrian 4% Gold Rente"
+    name_query: "Austrian Gold"
+    notes: "Binding power in the Balkan Wars and July 1914."
