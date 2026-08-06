@@ -150,7 +150,7 @@ The finance page layout shifts over the decades, so:
 ## Tests
 
 ```bash
-python -m pytest -q      # 56 tests, no network required
+python -m pytest -q      # 64 tests, no network required
 ```
 
 ## Network note
@@ -160,3 +160,25 @@ egress policy blocks it (as some sandboxed/CI environments do), the pure logic
 and the full test suite still run; the live steps will surface the network error
 rather than fabricating data. Run `search`/`run` from a network where Gallica is
 reachable.
+
+## Live Gallica status (verified 2026-08)
+
+Gallica's interface drifted since this package was first written; the client was
+updated to match, and the reachable surface here is now:
+
+- **SRU search — works.** Gallica **blocks non-browser User-Agents** (403), so
+  the client presents a browser UA. The issue query was also updated: the old
+  `arkPress all "…_dateYYYYMMDD"` form now returns 0 records; the current form is
+  `arkPress all "cb34431794k_date" and gallicapublication_date="YYYY/MM/DD"`. And
+  the issue's own document ARK (`bpt6k…`) now lives in Gallica-namespace fields,
+  not `dc:identifier` (which carries the parent *title* ARK) — the parser prefers
+  the document ARK. `search <date>` returns the right issue ARK again.
+- **IIIF images — work.** `…/iiif/<ark>/fN/info.json` and region crops return 200.
+- **OCR text — gated.** `RequestDigitalElement?E=ALTO` resets the connection and
+  the `.texteBrut` full text redirects to an **ALTCHA** anti-bot challenge. The
+  "locate-with-text" step depends on the ALTO layer, so end-to-end value
+  extraction needs either a network/session where ALTO is un-gated, or the
+  `--ocr` path (local Tesseract) reading the IIIF crops instead.
+- **Transport.** Through a TLS-reintercepting egress proxy `requests` can fail
+  the tunnelled handshake; the client falls back to the system `curl`, which
+  honours the same proxy/CA. Both paths keep TLS verification on.

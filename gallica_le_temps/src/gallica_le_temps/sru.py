@@ -14,12 +14,17 @@ record's ``extraRecordData`` which we parse for post-filtering.
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from datetime import date as _date
 from typing import List, Optional
 from xml.etree import ElementTree as ET
 
 from .xmlutil import find_local, iter_local, local_name
+
+# A Gallica *document* ARK (an issue/volume, e.g. bpt6k…), as opposed to the
+# parent title/catalogue ARK (cb…). Matches bare ids and those inside URLs.
+_DOC_ARK_RE = re.compile(r"\b(bpt6k[0-9a-z]+)")
 
 SRU_ENDPOINT = "https://gallica.bnf.fr/SRU"
 
@@ -53,8 +58,13 @@ def build_issue_query(
         parsed = _date.fromisoformat(date)
     except ValueError as exc:
         raise ValueError(f"date must be YYYY-MM-DD, got {date!r}") from exc
-    compact = parsed.strftime("%Y%m%d")
-    clause = f'arkPress all "{title_ark}_date{compact}"'
+    # Current Gallica SRU matches a periodical issue by a gallicapublication_date
+    # clause (YYYY/MM/DD); the older "_dateYYYYMMDD" ark suffix now returns 0.
+    published = parsed.strftime("%Y/%m/%d")
+    clause = (
+        f'arkPress all "{title_ark}_date" '
+        f'and gallicapublication_date="{published}"'
+    )
     if min_ocr_quality is not None:
         clause += f' and ocrquality > "{format_ocr_threshold(min_ocr_quality)}"'
     return clause
@@ -127,6 +137,7 @@ def parse_sru_response(xml_text: str) -> List[IssueRecord]:
     for record in iter_local(root, "record"):
         # Dublin-Core payload lives under recordData.
         identifier_url: Optional[str] = None
+        issue_ark: Optional[str] = None
         date: Optional[str] = None
         title: Optional[str] = None
         for child in record.iter():
@@ -142,7 +153,15 @@ def parse_sru_response(xml_text: str) -> List[IssueRecord]:
                 date = text
             elif name == "title" and title is None:
                 title = text
-        ark = _ark_id_from_identifier(identifier_url or "")
+            # The issue's own ARK (bpt6k…) lives in Gallica-namespace fields
+            # (uri, highres/lowres/… URLs), not in dc:identifier — which now
+            # carries the parent *title* ARK (cb…). Prefer the document ARK.
+            if issue_ark is None:
+                m = _DOC_ARK_RE.search(text)
+                if m:
+                    issue_ark = m.group(1)
+        # Document ARK wins; fall back to whatever the dc:identifier yields.
+        ark = issue_ark or _ark_id_from_identifier(identifier_url or "")
         if ark is None:
             continue
         records.append(

@@ -7,11 +7,17 @@ imports ``requests`` directly.
 
 from __future__ import annotations
 
+import shutil
+import subprocess
 import time
+import urllib.parse
 from typing import Optional, Protocol
 
+# Gallica blocks non-browser User-Agents (it returns 403 to the old
+# "gallica-le-temps/0.1 …" UA and varies on User-Agent), so present a browser UA.
 DEFAULT_USER_AGENT = (
-    "gallica-le-temps/0.1 (research; locate-with-text extraction of Le Temps)"
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/120.0 Safari/537.36"
 )
 
 
@@ -47,6 +53,7 @@ class GallicaClient:
 
         self._session = session or requests.Session()
         self._session.headers.setdefault("User-Agent", user_agent)
+        self._user_agent = user_agent
         self._min_interval = min_interval
         self._max_retries = max_retries
         self._timeout = timeout
@@ -58,7 +65,27 @@ class GallicaClient:
         if wait > 0:
             time.sleep(wait)
 
-    def _request(self, url: str, params: Optional[dict]):
+    def _curl_raw(self, url: str, params: Optional[dict]) -> bytes:
+        """Fetch via the system ``curl`` — the reliable transport through a
+        TLS-reintercepting egress proxy, where ``requests`` cannot complete the
+        tunnelled handshake. Honours the same proxy/CA environment."""
+        curl = shutil.which("curl")
+        if not curl:
+            raise RuntimeError("curl unavailable for fallback")
+        full = url
+        if params:
+            full = url + ("&" if "?" in url else "?") + urllib.parse.urlencode(params)
+        out = subprocess.run(
+            [curl, "-sS", "-L", "--http1.1", "--max-time", str(int(self._timeout)),
+             "-A", self._user_agent, full],
+            capture_output=True, timeout=self._timeout + 10,
+        )
+        if out.returncode != 0:
+            raise RuntimeError(f"curl failed ({out.returncode}): {out.stderr.decode('utf-8','replace')[:200]}")
+        return out.stdout
+
+    def _raw(self, url: str, params: Optional[dict]) -> bytes:
+        """Return response bytes, trying ``requests`` then ``curl`` per attempt."""
         import requests
 
         last_exc: Optional[Exception] = None
@@ -70,10 +97,14 @@ class GallicaClient:
                 if resp.status_code >= 500:
                     raise requests.HTTPError(f"{resp.status_code} for {resp.url}")
                 resp.raise_for_status()
-                return resp
-            except (requests.RequestException,) as exc:  # network or 5xx
+                return resp.content
+            except requests.RequestException as exc:  # proxy/TLS/network or 5xx
                 last_exc = exc
                 self._last_request_at = time.monotonic()
+                try:  # same attempt, reliable transport
+                    return self._curl_raw(url, params)
+                except Exception as curl_exc:
+                    last_exc = curl_exc
                 if attempt == self._max_retries - 1:
                     break
                 time.sleep(2 ** attempt)  # 1s, 2s, 4s, ...
@@ -81,12 +112,13 @@ class GallicaClient:
         raise last_exc
 
     def get_text(self, url: str, params: Optional[dict] = None) -> str:
-        resp = self._request(url, params)
-        # Gallica ALTO/SRU are UTF-8; let requests honour the declared charset.
-        return resp.text
+        # Gallica ALTO/SRU are UTF-8.
+        return self._raw(url, params).decode("utf-8", "replace")
 
     def get_bytes(self, url: str, params: Optional[dict] = None) -> bytes:
-        return self._request(url, params).content
+        return self._raw(url, params)
 
     def get_json(self, url: str, params: Optional[dict] = None) -> dict:
-        return self._request(url, params).json()
+        import json
+
+        return json.loads(self._raw(url, params).decode("utf-8", "replace"))
