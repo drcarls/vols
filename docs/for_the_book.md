@@ -1,0 +1,110 @@
+# What the reanalysis changes — and what to put in the book
+
+A synthesis of the war_premia / crisis_lag / neal_weidenmier work. Organised as:
+what holds, what to revise, what's still open, and what to run next. The guiding
+lesson from the reanalysis: **the defensible claims are the ones that survive the
+choice of instrument (bonds vs commercial paper) and the choice of benchmark
+(British consols vs a neutral); any single point estimate that silently assumed
+British consols were risk-free is fragile.**
+
+## 1. What holds (survives instrument + benchmark)
+
+- **The Rigobon-Sack war-risk premia reproduce.** Full-sample city coefficients
+  match closely (Paris 0.11, Amsterdam 0.09, Copenhagen 0.14, Berlin 0.35, NY
+  negative = safe haven). The method and the headline result are sound.
+- **Finance was a binding constraint for the powers whose own solvency was in
+  question — Germany, Russia, Austria** — but *not* for France in 1905. Their own
+  bonds/bills rose abnormally against a neutral during their crises; France's did
+  not (see §2, cause-vs-cover).
+- **Kokovtsov's 1914 dismissal was priced as a palace reshuffle, not a credit
+  event** — Russian bonds flat, the French rente firmed. A clean illustration that
+  the market distinguished political noise from fiscal-regime change.
+- **July 1914's brake was a money-market seizure** (Bank of England 3→4→8→10% in a
+  week), and it came exactly as trading stopped.
+
+## 2. What to revise in the book
+
+**a. Drop the single "6–10 week" transmission figure; state it by instrument.**
+The lag is not one number. On long *bonds* (a solvency proxy) onset→peak is
+16–37 weeks; on *commercial paper* (the instrument the brake actually runs
+through) the clearest case, Austria, is abnormal within ~13 weeks; and time-to-
+*material* is 1–15 weeks. Say which lag and which instrument. This is more
+defensible **and** stronger: it locates the brake in the money market and stops a
+reviewer from falsifying a number you didn't need.
+
+**b. Make the bonds-vs-commercial-paper distinction explicit — it is a genuine
+contribution.** Bonds price *solvency*; commercial paper prices the *immediate
+cost of financing mobilisation*. The brake is a mobilisation-finance mechanism, so
+it bites first in the money market — which is why July 1914 shows a discount-rate
+seizure while bonds merely slid. Run the war-risk premia and the lag on the money
+market as primary, bonds as the solvency complement.
+
+**c. Rewrite the July 1914 passage — neither "flat" nor "crash".** The pre-closure
+reaction *is* observable (the European sovereign complex fell ~2.5–6% in the final
+trading weeks), but two disciplines apply: (i) the cross-sectional *ordering* is
+flight-to-liquidity, not a war-risk ranking — Consols fell hardest *because* they
+were the most marketable, so don't rank war risk by the size of the drop; (ii) the
+*identified* premium is unestimable because the market shut mid-repricing. The
+honest sentence: the brake was seizing in the money market, and the exchange
+closed before the bond repricing could complete.
+
+**d. Fix the benchmark — and flag it as a limit of the original identification.**
+Britain is a great power whose assets move with its own involvement (Agadir), its
+own fiscal politics (the 1909 naval scare + People's Budget), and liquidity flight
+(July 1914). Spreading against British consols or the London trade bill imports
+those moves. Re-benchmarking to a neutral (Netherlands) collapses Morocco's bond
+lag from 16 weeks to 3 — a 13-week swing from the benchmark alone. **Add a neutral-
+basis robustness appendix; ideally re-estimate the core premia against Amsterdam.**
+
+**e. State cause-vs-cover as consistency, differentiated by country — never proof.**
+The market evidence shows finance was really binding for Germany/Russia/Austria and
+absent for France 1905 (Delcassé fell over diplomatic isolation; the 1905
+constraint was Russia's collapse, an alliance-transmission mechanism, not French
+insolvency). So do **not** claim uniform financial causation. The defensible claim:
+finance operated *directly* where a power's own solvency was in question and
+*indirectly* (via the ally) for France in 1905 — and whether each minister's fiscal
+argument *caused* or *dressed* the climb-down is an archival question the bond
+prices cannot answer.
+
+**f. Frame the data gaps as scope conditions, not weaknesses.** Russia has no
+open-market rate after 1900 (only the administered, sticky bank rate); July 1914's
+short rates end 27 June, before the seizure; several crisis→power series are
+confounded (Morocco→Russia by the Russo-Japanese war and 1905 revolution). Stating
+these plainly is more persuasive than a false uniformity.
+
+## 3. What is still open (needs archives or new data)
+
+- **Intent / cause-vs-cover** for Rouvier, Kokovtsov, Biliński, and Germany — the
+  cabinet and finance-ministry records. See
+  [`july1914_mechanism_and_archival_test.md`](july1914_mechanism_and_archival_test.md)
+  and the sources named in
+  [`../crisis_lag/results/cause_or_cover.md`](../crisis_lag/results/cause_or_cover.md).
+- **The German 5–23 July 1914 "quiet weeks"** — did the Reichsbank/Treasury act
+  before the ultimatum? (Zilch; the Reichsbank 1914 *Verwaltungsbericht*.)
+- **The acute July-1914 money-market brake** is censored in NW — document it from
+  the *Chronicle* / *Economist* weekly rates (partly done, descriptively).
+
+## 4. What to run next (ranked)
+
+1. **Re-estimate the core Rigobon-Sack premia against a neutral basis (Amsterdam)**
+   instead of the London trade bill. This is the highest-value check — the
+   UK-benchmark finding puts a question mark over the current basis, and if the
+   premia survive a neutral basis it is a major credibility win.
+2. **Obtain the archival sources** (Zilch, Reichsbank 1914 report, French/Austrian
+   cabinet records) — the only route to intent and the German quiet-weeks question.
+3. **Extend the July–August 1914 money-market series** from the *Chronicle* /
+   *Economist* so the acute brake is documented even though it is not
+   Rigobon-Sack-estimable.
+4. **Find a St Petersburg open-market rate** (the *Economist* "Foreign Bourses"
+   column) to close the Russia data gap and let Russia enter on a market rate.
+5. **Widen the comparator set** (Fashoda 1898, Liman von Sanders 1913, the two
+   Balkan wars separately) to give the lag band statistical power — four
+   confounded crises is a range check, not a test.
+
+## One-line version
+
+Keep the core thesis — finance was a real brake and July 1914 gave it no time —
+but state the lag by instrument (money market, not one number), fix the benchmark
+(neutral, not Britain), and concede that *which* powers were bound by their own
+finances (Germany/Russia/Austria) differs from *how* France was bound (via
+Russia), with intent left to the archives.
