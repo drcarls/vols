@@ -70,3 +70,12 @@ def test_the_new_4pct_holds_89_across_four_weeks():
     for day in (datetime.date(1914, 1, 30), datetime.date(1914, 2, 13),
                 datetime.date(1914, 2, 20), datetime.date(1914, 2, 27)):
         assert wk[day] == 89.0
+
+
+def test_french_rente_did_not_fall_no_contagion():
+    fr = _res().french
+    assert fr, "French rente transmission series not loaded"
+    rente = fr[0]
+    assert rente.pct is not None
+    assert rente.pct > 0            # France, Russia's banker, firmed — did not fall
+    assert rente.within_normal is True

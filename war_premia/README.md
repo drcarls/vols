@@ -139,6 +139,10 @@ runs it two ways (`results/kokovtsov_1914.md`):
   1822 5%, quoted weekly in London**. Both are flat across 12 Feb 1914 — bracket
   move **+0.0%**, the New 4% holding 89.0 for four straight weeks, against normal
   weekly variation of 0.6%. No repricing.
+- **Transmission — France, Russia's banker, did not reprice either.** Paris had
+  placed billions of francs of Russian loans with French savers, so a Russian
+  credit scare should surface in the **French 3% rente**. It didn't: the rente
+  *rose* ~+1.3% across the dismissal (85.95 → 87.10) and held. No contagion.
 
 So it is not a pure data-blindness null: at **weekly** resolution the market
 *did* have a chance to reprice Russian debt at Kokovtsov's fall and **did not** —

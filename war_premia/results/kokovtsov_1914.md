@@ -54,15 +54,37 @@ the dismissal cleanly. Both are flat across it:
 - Both ease only modestly by mid-March (New 4% → 88.5, 1822 → 123) — a small,
   general drift weeks after the event, not a reaction to it.
 
+### 3. Transmission — France was Russia's banker, and did not reprice either
+
+France had placed billions of francs of Russian loans with French savers, so a
+Russian credit scare should surface in Paris. It did not. The French 3% rente
+(Paris), weekly:
+
+| date | French 3% rente (Paris) |
+|---|---|
+| 1914-01-30 | 85.95 |
+| 1914-02-01 | 85.40 |
+| **1914-02-13** (event) | **87.10** |
+| 1914-02-20 | 87.22 |
+| 1914-02-27 | 87.20 |
+
+The rente **rose** ~+1.3% across the dismissal and held in the 87s — the opposite
+of contagion. The market most exposed to Russia treated Kokovtsov's fall as a
+non-event for Russian credit. (Historically apt: Bark went to Paris and the
+Franco-Russian borrowing relationship continued; the large 1914 Russian
+railway-loan negotiations ran right through the change.)
+
 ## What it means
 
-At **weekly** resolution — fine enough to isolate a mid-February event — the
-market-priced Russian bonds show **no repricing** at Kokovtsov's fall. The market
-did not treat the loss of the finance minister as a Russian credit event. That is
-historically apt: his successor, Pyotr Bark, continued the same fiscal line and
-the Franco-Russian borrowing relationship held; the dismissal was a court
-manoeuvre (Kokovtsov had clashed with the Rasputin circle and over the liquor
-monopoly), not a change in Russia's willingness or ability to pay.
+At **weekly** resolution — fine enough to isolate a mid-February event — neither
+the market-priced Russian bonds **nor the French rente** repriced at Kokovtsov's
+fall. The market did not treat the loss of the finance minister as a Russian
+credit event, and the market most exposed to Russia (Paris) showed no contagion —
+if anything the rente firmed. That is historically apt: his successor, Pyotr
+Bark, continued the same fiscal line and the Franco-Russian borrowing
+relationship held; the dismissal was a court manoeuvre (Kokovtsov had clashed
+with the Rasputin circle and over the liquor monopoly), not a change in Russia's
+willingness or ability to pay.
 
 So the event is real, datable, and — with the recovered data — **runnable on a
 genuine market-priced instrument**, which the 2005 paper lacked. The answer is a

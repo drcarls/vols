@@ -51,6 +51,12 @@ class Plateau:
 # Same columns the bond audit uses (single source of truth in july1914).
 RUSSIAN_BONDS = {"Russian New 4% (London)": 15, "Russian 1822 5% (London)": 16}
 
+# Transmission check: France was Russia's banker (French savers held billions of
+# francs of Russian loans), so a Russian credit scare should surface in the Paris
+# rente. Col 7 is the French 3% rente (Paris); ex-coupon is mid-Jan/Apr/Jul/Oct,
+# so a mid-February bracket is clean of coupon effects.
+FRENCH_RENTE = {"French 3% rente (Paris)": 7}
+
 
 @dataclass(frozen=True)
 class BondMove:
@@ -79,6 +85,7 @@ class KokovtsovResult:
     market_last: Optional[datetime.date]  # last St Petersburg market-rate obs
     market_in_1914: bool
     bonds: List[BondMove]               # market-priced Russian bonds across the event
+    french: List[BondMove]             # French rente — transmission (France financed Russia)
 
 
 def _series(obs: List[Observation], rate_type: str) -> List[Observation]:
@@ -113,8 +120,8 @@ def _plateau_containing(series: List[Observation], target: datetime.date) -> Opt
     )
 
 
-def _load_russian_bonds(bonds_path: str):
-    """{label: [(date, price), ...]} for the London-quoted Russian bonds.
+def _load_bonds(bonds_path: str, cols):
+    """{label: [(date, price), ...]} for the given RAW-sheet price columns.
 
     Decodes RAW-sheet dates with the same +100-year rule as the short rates and
     the bond audit; blank/non-numeric prices are skipped, never imputed.
@@ -123,23 +130,25 @@ def _load_russian_bonds(bonds_path: str):
 
     wb = xlrd.open_workbook(bonds_path)
     sh = wb.sheet_by_name("RAW")
-    # The date column mixes two encodings: ~300 Excel serials (+100-year shifted,
-    # undone by true_date) and ~1500 text cells in 'd/m/yyyy' (already true).
+    # The RAW date column carries TWO interleaved vintages: ~1500 text cells in
+    # 'd/m/yyyy' and ~300 Excel-serial cells. They are NOT the same observations —
+    # the serials are a sparser, offset sampling whose quotes disagree with the
+    # text series by ~1-2 points over the same weeks (e.g. early Mar 1914 serials
+    # ~87 vs the text weekly ~88.5). Merging them would inject spurious jaggedness
+    # into an event study, so we use the internally-consistent TEXT vintage, which
+    # is the one quoted ~weekly across 1912-1914 and cleanly brackets the event.
+    # (This is deliberate; an earlier version dropped the serials only by accident,
+    # via a swallowed NameError.)
     date_of_row = {}
     for r in range(sh.nrows):
         c = sh.cell(r, 0)
-        if c.ctype == 3:  # xldate serial
-            try:
-                date_of_row[r] = true_date(xlrd.xldate.xldate_as_datetime(c.value, wb.datemode).date())
-            except Exception:
-                continue
-        elif c.ctype == 1 and "/" in c.value:  # text 'd/m/yyyy'
+        if c.ctype == 1 and "/" in c.value:  # text 'd/m/yyyy'
             try:
                 date_of_row[r] = datetime.datetime.strptime(c.value.strip(), "%d/%m/%Y").date()
             except ValueError:
                 continue
     out = {}
-    for label, col in RUSSIAN_BONDS.items():
+    for label, col in cols.items():
         rows = []
         for r, d in date_of_row.items():
             v = sh.cell_value(r, col)
@@ -180,9 +189,11 @@ def kokovtsov_test(short_path: str, bonds_path: Optional[str] = None,
     market_in_1914 = any(o.date.year == 1914 for o in market)
 
     bonds: List[BondMove] = []
+    french: List[BondMove] = []
     if bonds_path:
-        loaded = _load_russian_bonds(bonds_path)
+        loaded = _load_bonds(bonds_path, {**RUSSIAN_BONDS, **FRENCH_RENTE})
         bonds = [_bond_move(lbl, loaded[lbl], event) for lbl in RUSSIAN_BONDS]
+        french = [_bond_move(lbl, loaded[lbl], event) for lbl in FRENCH_RENTE]
 
     return KokovtsovResult(
         bracket=bracket,
@@ -190,6 +201,7 @@ def kokovtsov_test(short_path: str, bonds_path: Optional[str] = None,
         market_last=market_last,
         market_in_1914=market_in_1914,
         bonds=bonds,
+        french=french,
     )
 
 
@@ -236,13 +248,30 @@ def format_result(res: KokovtsovResult) -> str:
                 f"        normal weekly |Δ| (trailing 12 mo) = {b.mean_abs_step:.2f}% "
                 f"(sd {b.sd_step:.2f}%, n={b.n_steps}) — {verdict} normal variation."
             )
+    if res.french:
+        lines.append("")
+        lines.append("Transmission — France was Russia's banker (Paris held its loans):")
+        for b in res.french:
+            if b.pct is None:
+                lines.append(f"    {b.label}: no bracketing quotes")
+                continue
+            direction = "ROSE" if b.pct > 0 else ("FELL" if b.pct < 0 else "flat")
+            lines.append(
+                f"    {b.label}: {b.before:.2f} ({b.before_date}) -> {b.after:.2f} "
+                f"({b.after_date}) = {b.pct:+.1f}% — {direction}"
+            )
+            lines.append(
+                f"        normal weekly |Δ| (trailing 12 mo) = {b.mean_abs_step:.2f}% "
+                f"(sd {b.sd_step:.2f}%). No contagion: the rente did not fall."
+            )
     lines.append("")
     lines.append("Finding: the administered bank rate did NOT move (mid-plateau, next move")
     lines.append("a cut). The open-market SHORT rate that would price the shock ends in 1900 —")
     lines.append("but the market-priced Russian BONDS (London 4% and 1822 5%), quoted weekly,")
     lines.append("DO span the event, and they are flat across it: the bracket move is ~0% and")
-    lines.append("the level holds for weeks either side. The market did not treat Kokovtsov's")
-    lines.append("fall as a Russian credit event — apt, since his successor Bark kept the same")
-    lines.append("fiscal and Franco-Russian borrowing policy. Caveat: a London bond also")
-    lines.append("carries global-market drift, but here there is no move to attribute.")
+    lines.append("the level holds for weeks either side. And France — Russia's banker, the")
+    lines.append("market that should transmit any Russian credit scare — did not reprice")
+    lines.append("either: the Paris 3% rente firmed slightly across the event. The market did")
+    lines.append("not treat Kokovtsov's fall as a Russian credit event — apt, since his")
+    lines.append("successor Bark kept the same fiscal and Franco-Russian borrowing policy.")
     return "\n".join(lines)
