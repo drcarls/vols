@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="500" viewBox="0 0 860 500" font-family="Helvetica,Arial,sans-serif">
+<rect width="860" height="500" fill="#ffffff"/>
+<text x="70" y="24" font-size="16" font-weight="bold">Does New York tighten with Agadir? Deviation from each city's own seasonal baseline, 1911</text>
+<text x="70" y="42" font-size="11" fill="#555">Weekly open-market rate minus mean of 1909/1910/1912/1913 same-week rate (1907 excluded). Positive = tighter than a normal Jun-Nov.</text>
+<line x1="70" y1="440.0" x2="650" y2="440.0" stroke="#e8e8e8" stroke-width="1"/>
+<text x="64" y="443.0" font-size="10" fill="#555" text-anchor="end">-3</text>
+<line x1="70" y1="343.5" x2="650" y2="343.5" stroke="#e8e8e8" stroke-width="1"/>
+<text x="64" y="346.5" font-size="10" fill="#555" text-anchor="end">-2</text>
+<line x1="70" y1="247.0" x2="650" y2="247.0" stroke="#e8e8e8" stroke-width="1"/>
+<text x="64" y="250.0" font-size="10" fill="#555" text-anchor="end">-1</text>
+<line x1="70" y1="150.5" x2="650" y2="150.5" stroke="#888" stroke-width="1.2"/>
+<text x="64" y="153.5" font-size="10" fill="#555" text-anchor="end">+0</text>
+<line x1="70" y1="54.0" x2="650" y2="54.0" stroke="#e8e8e8" stroke-width="1"/>
+<text x="64" y="57.0" font-size="10" fill="#555" text-anchor="end">+1</text>
+<text x="16" y="247" font-size="11" fill="#555" transform="rotate(-90 16 247)" text-anchor="middle">deviation from seasonal norm (pts)</text>
+<line x1="70.0" y1="54" x2="70.0" y2="440" stroke="#e8e8e8"/>
+<text x="70.0" y="456" font-size="10" fill="#555" text-anchor="middle">Jun</text>
+<line x1="162.8" y1="54" x2="162.8" y2="440" stroke="#e8e8e8"/>
+<text x="162.8" y="456" font-size="10" fill="#555" text-anchor="middle">Jul</text>
+<line x1="278.8" y1="54" x2="278.8" y2="440" stroke="#e8e8e8"/>
+<text x="278.8" y="456" font-size="10" fill="#555" text-anchor="middle">Aug</text>
+<line x1="371.6" y1="54" x2="371.6" y2="440" stroke="#e8e8e8"/>
+<text x="371.6" y="456" font-size="10" fill="#555" text-anchor="middle">Sep</text>
+<line x1="487.6" y1="54" x2="487.6" y2="440" stroke="#e8e8e8"/>
+<text x="487.6" y="456" font-size="10" fill="#555" text-anchor="middle">Oct</text>
+<line x1="580.4" y1="54" x2="580.4" y2="440" stroke="#e8e8e8"/>
+<text x="580.4" y="456" font-size="10" fill="#555" text-anchor="middle">Nov</text>
+<line x1="162.8" y1="54" x2="162.8" y2="440" stroke="#999" stroke-width="1.2" stroke-dasharray="5,4"/>
+<text x="162.8" y="48" font-size="9.5" fill="#666" text-anchor="middle">Panther -> Agadir (1 Jul)</text>
+<line x1="580.4" y1="54" x2="580.4" y2="440" stroke="#999" stroke-width="1.2" stroke-dasharray="5,4"/>
+<text x="580.4" y="48" font-size="9.5" fill="#666" text-anchor="middle">Convention (4 Nov)</text>
+<polyline points="70.0,156.6 93.2,186.7 116.4,125.9 139.6,164.3 162.8,126.4 186.0,132.4 209.2,144.1 232.4,153.5 255.6,125.9 278.8,107.8 302.0,134.9 325.2,131.9 348.4,141.6 371.6,147.0 394.8,174.1 418.0,234.9 441.2,241.0 464.4,289.0 487.6,319.4 510.8,358.6 534.0,265.1 557.2,243.5 580.4,409.8 603.6,297.8 626.8,268.1 650.0,271.1" fill="none" stroke="#1a1a1a" stroke-width="2"/>
+<polyline points="70.0,194.6 93.2,214.2 116.4,207.9 139.6,198.9 162.8,183.8 186.0,223.0 209.2,259.2 232.4,250.3 255.6,222.5 278.8,189.9 302.0,198.8 325.2,204.5 348.4,204.3 371.6,183.8 394.8,168.6 418.0,180.2 441.2,126.0 464.4,123.4 487.6,141.6 510.8,144.6 534.0,144.6 557.2,135.1 580.4,159.8 603.6,175.8 626.8,156.2 650.0,162.6" fill="none" stroke="#c0392b" stroke-width="2"/>
+<polyline points="70.0,211.0 93.2,207.9 116.4,211.1 139.6,214.2 162.8,244.1 186.0,238.3 209.2,222.6 232.4,220.5 255.6,217.1 278.8,222.9 302.0,216.6 325.2,218.1 348.4,223.1 371.6,238.3 394.8,240.5 418.0,191.3 441.2,205.0 464.4,211.1 487.6,173.2 510.8,226.0 534.0,215.4 557.2,163.0 580.4,146.2 603.6,154.8 626.8,147.6 650.0,140.1" fill="none" stroke="#2980b9" stroke-width="2"/>
+<polyline points="70.0,146.3 93.2,192.5 116.4,192.5 139.6,195.4 162.8,201.4 186.0,165.1 209.2,177.3 232.4,156.0 255.6,176.7 278.8,159.1 302.0,177.2 325.2,177.2 348.4,165.6 371.6,153.0 394.8,126.6 418.0,114.4 441.2,102.4 464.4,93.3 487.6,99.4 510.8,108.5 534.0,114.3 557.2,117.4 580.4,132.6 603.6,129.4 626.8,156.7 650.0,150.5" fill="none" stroke="#27ae60" stroke-width="2"/>
+<line x1="664" y1="62" x2="684" y2="62" stroke="#1a1a1a" stroke-width="2.5"/>
+<text x="690" y="66" font-size="11" font-weight="bold">New York</text>
+<text x="690" y="77" font-size="8.5" fill="#666">control (call money -- NW </text>
+<line x1="664" y1="96" x2="684" y2="96" stroke="#c0392b" stroke-width="2.5"/>
+<text x="690" y="100" font-size="11" font-weight="bold">Berlin</text>
+<text x="690" y="111" font-size="8.5" fill="#666">said to have tightened dur</text>
+<line x1="664" y1="130" x2="684" y2="130" stroke="#2980b9" stroke-width="2.5"/>
+<text x="690" y="134" font-size="11" font-weight="bold">Amsterdam</text>
+<text x="690" y="145" font-size="8.5" fill="#666">neutral European reference</text>
+<line x1="664" y1="164" x2="684" y2="164" stroke="#27ae60" stroke-width="2.5"/>
+<text x="690" y="168" font-size="11" font-weight="bold">Paris</text>
+<text x="690" y="179" font-size="8.5" fill="#666">power opposed to Germany</text>
+</svg>
