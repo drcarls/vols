@@ -105,3 +105,19 @@ def test_berlin_significant_only_pooled_and_neutrals_significant_too():
     assert per["full"]["berlin_openmkt"].single.t_stat > 4.0
     assert per["full"]["copenhagen_market"].single.t_stat > 3.0
     assert per["full"]["stockholm_market"].single.t_stat > 3.0
+
+
+def test_scandinavian_neutrals_are_one_bloc_not_three_independent_checks():
+    # Stockholm/Copenhagen/Christiania co-move hugely (Scandinavian Monetary Union),
+    # while Amsterdam is far more independent of them.
+    stock = _betas("stockholm_market")     # basis = Stockholm
+    assert stock["copenhagen_market"].single.beta > 0.3
+    assert stock["christiana_market"].single.beta > 0.3
+    assert abs(stock["amsterdam_openmkt"].single.beta) < 0.2
+
+
+def test_berlin_clears_the_floor_against_most_neutral_bases():
+    # Robust against Geneva/Copenhagen/Stockholm; suppressed only vs Amsterdam.
+    for basis in ("geneva_market", "copenhagen_market", "stockholm_market"):
+        assert _betas(basis)["berlin_openmkt"].single.beta > 0.25
+    assert _betas("amsterdam_openmkt")["berlin_openmkt"].single.beta < 0.15

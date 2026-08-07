@@ -118,6 +118,48 @@ differenced against a war-moving reference — which compresses the premia and
 distorts their ranking. The asymmetry seals it: neutrals show only ~0.10 against
 London, but London shows 0.22–0.42 against neutrals.
 
+## How robust are the neutral premia? A Scandinavian bloc, not independent checks
+
+Belligerents against *each* neutral basis, and the neutrals against each other
+(`war-premia neutrals`, full sample). **Christiania = Oslo** (Norway's capital was
+named Christiania until 1925).
+
+**Belligerents' premium by neutral basis:**
+
+| country | Amsterdam | Geneva | Stockholm | Copenhagen | Christiania | NewYork |
+|---|---|---|---|---|---|---|
+| **Berlin** | +0.07 | **+0.34** | **+0.26** | **+0.30** | +0.16 | −0.01 |
+| Vienna | −0.04 | +0.08 | +0.21 | +0.12 | +0.05 | −0.00 |
+| Paris | +0.04 | +0.10 | +0.13 | +0.18 | +0.13 | −0.00 |
+| Brussels | +0.15 | +0.19 | +0.17 | +0.35 | +0.02 | −0.01 |
+
+Berlin clears ~0.26–0.34 against **3 of 5** credible neutrals (Geneva, Copenhagen,
+Stockholm); it is suppressed only against **Amsterdam** (the most Germany-integrated
+neutral) and noisy NY. Vienna/Paris/Brussels stay at the floor whichever neutral
+you pick.
+
+**Neutral (x) vs neutral (basis):**
+
+| x / basis | Amsterdam | Geneva | Stockholm | Copenhagen | Christiania |
+|---|---|---|---|---|---|
+| Amsterdam | — | 0.14 | 0.11 | 0.13 | 0.07 |
+| Geneva | 0.09 | — | 0.15 | 0.19 | 0.16 |
+| Stockholm | 0.05 | 0.11 | — | **0.54** | **0.61** |
+| Copenhagen | 0.05 | 0.13 | **0.47** | — | **0.40** |
+| Christiania | 0.02 | 0.09 | **0.43** | **0.33** | — |
+
+The **Scandinavian trio — Stockholm, Copenhagen, Christiania — co-moves enormously**
+(betas 0.33–0.61), because they *were* one market: the **Scandinavian Monetary
+Union** (Denmark, Norway, Sweden on a shared gold krone, 1873–1914). So Copenhagen,
+Stockholm and Christiania are **not three independent neutral checks — they are one
+bloc**; Amsterdam and Geneva are more independent (betas 0.07–0.19). This sharpens
+the robustness verdict: the neutral premia are a **common/bloc factor** (a
+Scandinavian bloc plus a looser Amsterdam/Geneva), not independent country-specific
+war risk — and the several significant "neutral premia" against London are closer
+to ~three independent observations than six. Berlin's premium is the more robust of
+the two sides (surviving 3 of 5 neutral bases), but it too leans on treating
+Amsterdam as compromised.
+
 ## What survives
 
 - **Berlin's premium is the one that clearly clears the ~0.10 neutral floor** and

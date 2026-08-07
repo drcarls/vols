@@ -208,7 +208,43 @@ def _cmd_matrix(args: argparse.Namespace) -> int:
     print("is a pooled artifact driven by specific periods, and a neutral can outscore a")
     print("belligerent -- the premium is not cleanly war risk. Only Berlin's full-sample ~0.35")
     print("stands clearly and consistently above the neutral cluster.")
-    print("* administered bank rate (sticky).")
+    print("* administered bank rate (sticky).  ~ Christiania = Oslo (Norway) -- name until 1925.")
+    return 0
+
+
+def _cmd_neutrals(args: argparse.Namespace) -> int:
+    """Belligerents vs each neutral basis, and how robust the neutral premia are."""
+    from .warweeks import get_crisis
+
+    smap = to_series_map(load_short_rates(args.short or SHORT))
+    full = get_crisis("full")
+    neut = [("amsterdam_openmkt", "Amsterdam"), ("geneva_market", "Geneva"),
+            ("stockholm_market", "Stockholm"), ("copenhagen_market", "Copenhagen"),
+            ("christiana_market", "Christiania"), ("new_york_call", "NewYork")]
+    bell = [("berlin_openmkt", "Berlin"), ("vienna_openmkt", "Vienna"),
+            ("paris_openmkt", "Paris"), ("brussels_openmkt", "Brussels")]
+    byb = {slug: {r.city: r for r in run_crisis(smap, full, basis_key=slug)} for slug, _ in neut}
+
+    def b(basis, x):
+        r = byb[basis].get(x)
+        return f"{r.single.beta:+.2f}" if r else "  -"
+
+    print("BELLIGERENTS' premium vs each NEUTRAL basis (full sample, beta):")
+    print("  country   " + "".join(f"{n:>11}" for _, n in neut))
+    for xs, xn in bell:
+        print(f"  {xn:<10}" + "".join(f"{b(bs, xs):>11}" for bs, _ in neut))
+    print("\nNEUTRAL (x) vs NEUTRAL (basis) -- do the neutrals differ from each other?")
+    print("  x / basis  " + "".join(f"{n[:9]:>10}" for _, n in neut))
+    for xs, xn in neut:
+        print(f"  {xn:<11}" + "".join(
+            (f"{'self':>10}" if bs == xs else f"{b(bs, xs):>10}") for bs, _ in neut))
+    print("\nChristiania = Oslo (Norway's capital was named Christiania until 1925).")
+    print("Reading: Berlin clears ~0.26-0.34 against 3 of 5 credible neutrals (Geneva, Copenhagen,")
+    print("Stockholm), suppressed only against Amsterdam (the most Germany-integrated neutral) and")
+    print("noisy NY. The Scandinavian trio co-moves hugely (Stockholm/Copenhagen/Christiania betas")
+    print("0.33-0.61) -- the Scandinavian Monetary Union (gold krone, 1873-1914) -- so they are ONE")
+    print("neutral bloc, not three independent checks. Amsterdam/Geneva are more independent. So")
+    print("the neutral premia are a common/bloc factor, not independent country-specific war risk.")
     return 0
 
 
@@ -224,6 +260,7 @@ def build_parser() -> argparse.ArgumentParser:
     sub.add_parser("basis", help="premia under neutral bases + neutral placebo").set_defaults(func=_cmd_basis)
     sub.add_parser("grid", help="per-crisis per-country premia across neutral bases").set_defaults(func=_cmd_grid)
     sub.add_parser("matrix", help="every city's premium in every crisis vs London (incl. neutrals)").set_defaults(func=_cmd_matrix)
+    sub.add_parser("neutrals", help="belligerents vs each neutral + neutral-vs-neutral robustness").set_defaults(func=_cmd_neutrals)
     return p
 
 
