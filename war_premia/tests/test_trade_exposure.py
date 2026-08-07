@@ -6,9 +6,11 @@ US is the negative-premium / high-trade break. Skips if the workbook is absent.
 """
 
 import os
+import sys
 
 import pytest
 
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 import trade_exposure as te
 
 pytestmark = pytest.mark.skipif(
