@@ -42,3 +42,29 @@ def test_every_figure_carries_a_source_quote():
     for r in sta.load():
         assert r["source_quote"].strip()             # no figure without its Chronicle quote
         assert r["issue"].startswith("cfc_1")
+
+
+@pytest.mark.skipif(not os.path.exists(sta.CRISES_CSV), reason="crises CSV absent")
+def test_gap_is_agadir_specific_across_crises():
+    rows = sta.load_crises()
+    berlin = {r["crisis"]: r for r in rows if r["centre"] == "Berlin"}
+    assert berlin["Agadir"]["gap"] == 0.5            # Berlin splits only in Agadir
+    assert berlin["Bosnian annexation"]["gap"] == 0.0
+    assert berlin["Balkan winter"]["gap"] == 0.0
+
+
+@pytest.mark.skipif(not os.path.exists(sta.CRISES_CSV), reason="crises CSV absent")
+def test_balkan_winter_is_tighter_yet_flat():
+    rows = sta.load_crises()
+    berlin = {r["crisis"]: r for r in rows if r["centre"] == "Berlin"}
+    # Dec-1912 Berlin was TIGHTER in level than Agadir yet showed no gap -> not a level effect
+    assert berlin["Balkan winter"]["spot"] > berlin["Agadir"]["spot"]
+    assert berlin["Balkan winter"]["gap"] == 0.0
+
+
+@pytest.mark.skipif(not os.path.exists(sta.CRISES_CSV), reason="crises CSV absent")
+def test_london_forward_premium_widest_in_agadir():
+    rows = sta.load_crises()
+    london = {r["crisis"]: r for r in rows if r["centre"] == "London"}
+    assert london["Agadir"]["gap"] > london["Balkan winter"]["gap"]
+    assert london["Agadir"]["gap"] > london["Bosnian annexation"]["gap"]

@@ -28,7 +28,9 @@ import os
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 CSV = os.path.join(_HERE, "data", "berlin_spot_to_arrive_autumn.csv")
+CRISES_CSV = os.path.join(_HERE, "data", "spot_to_arrive_crises.csv")
 CHART = os.path.join(_HERE, "results", "berlin_spot_to_arrive.svg")
+CHART_CRISES = os.path.join(_HERE, "results", "spot_to_arrive_crises.svg")
 
 
 def load():
@@ -128,11 +130,115 @@ def _svg(rows, path):
     return path
 
 
+def load_crises():
+    with open(CRISES_CSV, newline="", encoding="utf-8") as fh:
+        rows = list(csv.DictReader(fh))
+    for r in rows:
+        r["gap"] = float(r["gap_pp"]) if r["gap_pp"] else 0.0
+        r["spot"] = float(r["spot_pct"]) if r["spot_pct"] else None
+        r["to_arrive"] = float(r["to_arrive_pct"]) if r["to_arrive_pct"] else None
+    return rows
+
+
+def format_crises(rows):
+    """Does the Agadir gap generalize to other crises / other centres? No."""
+    out = []
+    out.append("Does it generalize? Spot-vs-to-arrive gap across war-scares and centres")
+    out.append("(gap = to-arrive minus spot, pp; source: C&F Chronicle crisis-week issues)")
+    out.append("")
+    out.append("%-20s | %-7s | %-8s | %-8s | %-6s" % ("crisis", "centre", "spot", "to-arr", "gap"))
+    out.append("-" * 62)
+    for r in rows:
+        spot = "%.4g%%" % r["spot"] if r["spot"] is not None else " --"
+        toa = "%.4g%%" % r["to_arrive"] if r["to_arrive"] is not None else " --"
+        flag = "  <==" if (r["centre"] == "Berlin" and r["gap"] >= 0.5) else ""
+        out.append("%-20s | %-7s | %-8s | %-8s | %+5.3f%s" % (
+            r["crisis"], r["centre"], spot, toa, r["gap"], flag))
+    out.append("")
+    out.append("Berlin split its bills in AGADIR ALONE (+0.5 pp). In the Bosnian crisis")
+    out.append("(Mar 1909, easy money) it quoted a single rate; in the Balkan winter crisis")
+    out.append("(Dec 1912) it was explicitly 'for both spot and to arrive' at 5 3/8-6% --")
+    out.append("TIGHTER than Agadir, yet no gap. So the gap is not a generic war-scare")
+    out.append("signature and not a rate-level effect. Among centres only London and Berlin")
+    out.append("split their bills at all (Paris/Amsterdam/Brussels/Vienna quote a single")
+    out.append("rate); London's forward premium was also WIDEST in Agadir (+0.25 vs +0.06 in")
+    out.append("the tighter Dec-1912 week). Agadir is the one crisis that reached into the")
+    out.append("great bill centres' forward pricing -- Berlin's most of all.")
+    return "\n".join(out)
+
+
+def _svg_crises(rows, path):
+    """Grouped bars: Berlin vs London spot/to-arrive gap in three crisis weeks."""
+    crises = ["Bosnian annexation", "Agadir", "Balkan winter"]
+    labels = {"Bosnian annexation": "Bosnia\nMar 1909", "Agadir": "Agadir\nOct 1911",
+              "Balkan winter": "Balkan winter\nDec 1912"}
+    by = {(r["crisis"], r["centre"]): r["gap"] for r in rows}
+    W, H, L, R, T, B = 620, 400, 55, 120, 60, 78
+    pw, ph = W - L - R, H - T - B
+    ymax = 0.6
+    n = len(crises)
+
+    def y(v):
+        return T + ph * (ymax - v) / ymax
+
+    s = ['<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d" viewBox="0 0 %d %d" '
+         'font-family="Helvetica,Arial,sans-serif">' % (W, H, W, H)]
+    s.append('<rect width="%d" height="%d" fill="#fff"/>' % (W, H))
+    s.append('<text x="%d" y="26" font-size="15" font-weight="bold">The gap is Agadir-specific, '
+             'not a war-scare signature</text>' % L)
+    s.append('<text x="%d" y="44" font-size="11" fill="#555">Spot-vs-to-arrive bill gap (points) '
+             'at three great-power war scares.</text>' % L)
+    for gv in (0, 0.25, 0.5):
+        s.append('<line x1="%d" y1="%.1f" x2="%d" y2="%.1f" stroke="%s"/>' % (
+            L, y(gv), L + pw, y(gv), "#888" if gv == 0 else "#ececec"))
+        s.append('<text x="%d" y="%.1f" font-size="10" fill="#555" text-anchor="end">%+.2f</text>' % (
+            L - 6, y(gv) + 3, gv))
+    gw = pw / n
+    pair = [("Berlin", "#c0392b"), ("London", "#2980b9")]
+    bw = gw / 3.2
+    for i, cr in enumerate(crises):
+        base = L + gw * (i + 0.5)
+        for k, (centre, col) in enumerate(pair):
+            cx = base + (k - 0.5) * bw * 1.15
+            gap = by.get((cr, centre), 0.0)
+            if gap > 0.001:
+                s.append('<rect x="%.1f" y="%.1f" width="%.1f" height="%.1f" fill="%s"/>' % (
+                    cx - bw / 2, y(gap), bw, y(0) - y(gap), col))
+            else:
+                s.append('<line x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f" stroke="%s" stroke-width="3"/>' % (
+                    cx - bw / 2, y(0), cx + bw / 2, y(0), col))
+            s.append('<text x="%.1f" y="%.1f" font-size="10" fill="%s" text-anchor="middle" '
+                     'font-weight="%s">%s</text>' % (cx, y(max(gap, 0)) - 5, col,
+                     "bold" if gap >= 0.5 else "normal", ("%+.2f" % gap) if gap > 0.001 else "0"))
+        for kk, part in enumerate(labels[cr].split("\n")):
+            s.append('<text x="%.1f" y="%d" font-size="10.5" fill="#333" text-anchor="middle" '
+                     'font-weight="%s">%s</text>' % (base, T + ph + 18 + kk * 14,
+                     "bold" if cr == "Agadir" else "normal", part))
+    ly = T + 8
+    for centre, col in pair:
+        s.append('<rect x="%d" y="%d" width="14" height="12" fill="%s"/>' % (L + pw + 22, ly, col))
+        s.append('<text x="%d" y="%d" font-size="11">%s</text>' % (L + pw + 40, ly + 11, centre))
+        ly += 22
+    s.append('<text x="%d" y="%d" font-size="8.5" fill="#666">Only these two</text>' % (L + pw + 22, ly + 6))
+    s.append('<text x="%d" y="%d" font-size="8.5" fill="#666">centres split their</text>' % (L + pw + 22, ly + 18))
+    s.append('<text x="%d" y="%d" font-size="8.5" fill="#666">bills at all.</text>' % (L + pw + 22, ly + 30))
+    s.append('</svg>')
+    with open(path, "w", encoding="utf-8") as fh:
+        fh.write("\n".join(s))
+    return path
+
+
 def main():
     rows = load()
     print(format_report(rows))
     _svg(rows, CHART)
     print("\nchart -> %s" % os.path.relpath(CHART, os.getcwd()))
+
+    print("\n" + "=" * 72 + "\n")
+    crises = load_crises()
+    print(format_crises(crises))
+    _svg_crises(crises, CHART_CRISES)
+    print("\nchart -> %s" % os.path.relpath(CHART_CRISES, os.getcwd()))
 
 
 if __name__ == "__main__":

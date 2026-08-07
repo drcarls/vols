@@ -70,11 +70,54 @@ comparison is not gap-size against a threshold but *a gap at all* against five a
 that show none — including a firmer one. Autumn 1911 is the year Berlin's forward bills
 detached from spot. The scene stays as written.
 
+## Does it generalize? Other centres, other crises — and why the answer sharpens the point
+
+Two natural follow-ups: did any *other* market show the gap in 1911, and did Berlin
+show it in the *other* pre-war war scares? I checked both against the Chronicle.
+
+**Other centres (Agadir, October 1911).** The spot-versus-to-arrive split is a feature
+of only the two great bill centres. Paris, Amsterdam, Brussels, and Vienna are quoted
+as *single* open-market rates throughout — they had no forward bill market deep enough
+to split. London *does* split its bills every week, and in the Agadir paragraph it
+carried a ¼-point forward premium at ninety days (spot 3¾%, to-arrive 4%). So within
+1911 the gap appears at the two centres one would expect, and Berlin's half-point was
+the wider of the two.
+
+**Other crises (Berlin).** This is the decisive comparison, and Berlin's answer is that
+the gap is *Agadir-specific*:
+
+| War scare | Berlin's quote | **Gap** |
+|---|---|---|
+| Bosnian annexation, 27 Mar 1909 | single rate, 2⅜% ("Berlin and Frankfort… 2⅜%") | **0** |
+| **Agadir, 7 Oct 1911** | **spot 4%, to-arrive 4½%** | **+0.5** |
+| Balkan winter crisis, 7 Dec 1912 | 60-day 5⅜%, 90-day 6%, *"for both spot and to arrive"* | **0** |
+
+Berlin split its bills in Agadir and in no other episode — not in the six calm autumns,
+not in the Bosnian crisis, not in the Balkan winter crisis. The Balkan-1912 case is the
+strongest control of all: Berlin money was *tighter* than in 1911 (6% versus 4%), the
+diplomatic war scare was acute (Austrian and Russian mobilization), and still the
+Chronicle records the rate as explicitly "for both spot and to arrive." So the gap is
+neither a generic war-scare signature nor a by-product of a high rate — a higher rate a
+year later, in a real war scare, produced none. London tells the same story from its
+continuous series: its forward premium was *widest* in Agadir (+0.25) and much smaller
+in the tighter December-1912 week (+0.06).
+
+**Why this sharpens Chapter III rather than diluting it.** The Bosnian and Balkan crises
+were Austro-Russian quarrels; whatever their diplomatic temperature, they did not force
+a scramble for forward cover in Berlin's own bill market. Agadir did — it was the one
+pre-war crisis that reached directly into Germany's financial position (the French
+withdrawal of some $150 million in balances, the "abnormal rates offered for foreign
+assistance," the war scare landing on the Oct-1 settlement). The gap's *uniqueness* is
+therefore the finding: it marks Agadir as the crisis that priced war risk in Berlin's
+forward money market itself, not merely in the diplomatic record.
+
 ## Sources & reproduce
 
 *Commercial & Financial Chronicle*, early-October issues 1908–1913 (FRASER, Federal
 Reserve Bank of St. Louis): `cfc_19081003`, `cfc_19091002`, `cfc_19101001`,
-`cfc_19111007`, `cfc_19121005`, `cfc_19131004`. Verbatim quotes in the CSV.
+`cfc_19111007`, `cfc_19121005`, `cfc_19131004`. Cross-crisis weeks: `cfc_19090327`
+(Bosnian), `cfc_19121207` (Balkan winter). Verbatim quotes in the two CSVs
+(`berlin_spot_to_arrive_autumn.csv`, `spot_to_arrive_crises.csv`).
 
 ```bash
 cd war_premia && python spot_to_arrive.py   # prints the table + verdict, writes the SVG

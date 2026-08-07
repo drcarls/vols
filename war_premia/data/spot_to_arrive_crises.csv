@@ -1,0 +1,7 @@
+crisis,week,issue,centre,maturity,spot_pct,to_arrive_pct,gap_pp,source_quote,note
+Bosnian annexation,1909-03-27,cfc_19090327,Berlin,open-market,2.375,2.375,0.0,"The open market rate at Paris is 1 7/8% and at Berlin and Frankfort it is 2 3/8%","single undivided rate; easy post-1907 money; no spot/to-arrive split at the war-scare climax (German ultimatum to Russia, ~21-23 Mar 1909)"
+Bosnian annexation,1909-03-27,cfc_19090327,London,~90-day,1.875,1.875,0.0,"sixty to ninety-day bank bills in London 1 7/8%","single short-bill rate; money too easy for a forward premium"
+Agadir,1911-10-07,cfc_19111007,Berlin,bills,4.0,4.5,0.5,"Berlin is now willing to accept spot bills at 4%, but for bills to arrive the terms are 4 1/2%","the ONLY crisis in which Berlin split its bills -- to-arrive dearer than spot"
+Agadir,1911-10-07,cfc_19111007,London,90-day,3.75,4.0,0.25,"the spot rates are 3 5/8% for sixty days and 3 3/4% for ninety days [vs] 4% for ninety-day bills to arrive","London's WIDEST forward premium of the three crisis weeks"
+Balkan winter,1912-12-07,cfc_19121207,Berlin,90-day,6.0,6.0,0.0,"In Berlin sixty-day bills closed at 5 3/8% and ninety-day bills 6%. These rates are for both spot and to arrive commitments","TIGHTER than Agadir (6% vs 4%) yet NO gap -- explicitly 'for both spot and to arrive'. Kills the rate-level explanation"
+Balkan winter,1912-12-07,cfc_19121207,London,short,4.375,4.4375,0.0625,"4 3/8% for spot bills and 4 3/8@4 1/2% for bills to arrive","a much smaller forward premium than Agadir, despite tighter money"
