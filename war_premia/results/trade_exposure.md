@@ -89,6 +89,25 @@ confirmation needs the direct instrument (marine war-risk insurance / freight ra
 and a cross-section large enough that no single basis choice or Scandinavian bloc can
 swing it.
 
+## Why no further test can harden this (where to stop)
+
+The two natural next instruments both fail for structural reasons, so this
+money-market cross-section is the best obtainable test — stop here:
+
+- **Bonds.** NW's long-bond file has only *two* European neutrals (Netherlands,
+  Italy); n≈2 can't test the hypothesis.
+- **Marine war-risk insurance / freight rates.** (i) *Global*, not country-specific
+  — a single series cannot run the cross-sectional exposure test; (ii)
+  *peacetime-uninformative* — war-risk cover only priced once war was imminent, so
+  the signal is the August-1914 spike (censored / descriptive), not the pre-war
+  crises, which resolved short of war and moved freight via the business cycle.
+  (Klovland's monthly indices exist but only inside paper appendices.)
+
+So: the direction is right and consistent (and the US break confirms it is
+disruptive *dependence*, not volume), but the magnitude is fragile and no obtainable
+data escapes the small-n / basis-sensitivity ceiling. The honest book claim is the
+*direction plus the US mechanism*, offered as suggestive evidence, not a coefficient.
+
 ## Sources
 
 - Trade: **Correlates of War Bilateral Trade v4.0** — Barbieri, Katherine, Omar M. G.

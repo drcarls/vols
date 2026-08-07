@@ -207,10 +207,40 @@ money column; the German papers). **Verdict:** worth it to settle "do per-crisis
 premia exist, or is the effect only pooled?" — start with Paris and London across
 the two Moroccan crises — but not to revive the per-country premium table.
 
+## Stop signal — the reanalysis is complete; write from this
+
+The market-data thread has hit diminishing returns and its data ceiling. **Do not
+chase more of it** — bonds (2 neutrals), freight/war-risk insurance (global +
+peacetime-uninformative + censored in 1914), and finer robustness all fail for
+structural reasons, not effort. What remains open is *archival* (intent, the German
+quiet weeks) and *daily-data* (per-crisis identification), both flagged above; the
+market cross-section is done.
+
+**The four robust market claims to build the book on** (everything else is
+fragile-once-pushed and should be presented as suggestive):
+1. **Germany carried the one distinct money-market war premium** (~0.35, above the
+   neutral floor, robust to a Swiss basis) — but significant only *pooled*, not in
+   any single crisis.
+2. **The premium is largely a common London-centred factor** (integration +
+   contagion) that neutrals load on too; the **US is the clean non-European,
+   non-alliance control** (R²≈0, negative/safe-haven).
+3. **France's 1905 short-term calm and Austria's Balkans bond repricing** survive
+   every neutral; the per-country/per-crisis premium table does not.
+4. **July 1914's brake was a money-market seizure**, censored at closure; the
+   bond reaction is observable and broad but ordered by liquidity, not war risk.
+
+**Trade exposure (your blockade point):** right in direction and mechanism —
+neutrals more dependent on Central-Powers trade paid more (r≈0.64, COW 1913), and
+the US (a war supplier) paid *less* despite high trade — but underpowered and
+measure-fragile. Put it in as **suggestive support for the mechanism, not a
+result**. It is as far as the data goes.
+
 ## One-line version
 
 Keep the core thesis — finance was a real brake and July 1914 gave it no time —
 but state the lag by instrument (money market, not one number), fix the benchmark
-(neutral, not Britain), and concede that *which* powers were bound by their own
-finances (Germany/Russia/Austria) differs from *how* France was bound (via
-Russia), with intent left to the archives.
+(neutral, not Britain), concede that *which* powers were bound by their own
+finances (Germany/Russia/Austria) differs from *how* France was bound (via Russia)
+with intent left to the archives, and frame the cross-country premium as a shared
+London-centred contagion factor with Germany's idiosyncratic excess and the US as
+the control — not a per-country scoreboard.
