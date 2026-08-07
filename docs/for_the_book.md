@@ -159,7 +159,13 @@ insurance and freight, mined Baltic/North Sea shipping — neutral Norway lost ~
 its fleet, financial contagion, adjacency) is economically real but **cannot be
 separated from financial contagion using money-market rates** — pricing that channel
 directly needs marine war-risk insurance/freight rates, neutral exchange rates, and
-trade-exposure scaling. That is the strongest single frame for the book: a shared
+trade-exposure scaling. (The trade-share version cannot be run on these premia:
+only five European money-market neutrals, three of them one Scandinavian
+monetary-union bloc, so n ≈ 3 — a scatter, not a test; it survives only at the
+coarse US-vs-Europe cut. The real instrument is marine war-risk insurance/freight,
+or a ~20-country sovereign-bond cross-section — see
+`../war_premia/results/common_and_idiosyncratic.md`.) That is the strongest single
+frame for the book: a shared
 European war-risk factor, Germany's idiosyncratic excess, and the US as the control.
 
 And name the common factor for what it most likely is: **contagion of war** — the

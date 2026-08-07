@@ -77,6 +77,43 @@ cannot fully separate them:
    **integration-intensifying-under-stress produces the same signature**, so this
    channel cannot be cleanly proven from money-market rates alone.
 
+## Testing the trade-exposure channel — design, and why it can't be done here
+
+**Design.** The blockade channel predicts: a neutral more dependent on
+**Central-Powers trade** (the trade the British blockade actually severed) carries a
+**higher** war premium. Test = regress each neutral's premium on its ~1913 share of
+trade with Germany/Austria, with the US as the low-exposure anchor.
+
+**Why it is not a real test with these premia (three reasons, the first fatal):**
+- **n ≈ 3.** There are five European money-market neutrals, but the three
+  Scandinavians are one monetary-union bloc (the SMU shows up in their 0.33–0.61
+  cross-betas), so ~3 independent points. A 3-point regression is a scatter, not a
+  test — no power, whatever the data.
+- **Wrong `y`.** The neutral premia are mostly the *common integration factor* (not
+  clean country war risk), noisy, and benchmark-dependent. Correlating them with
+  trade shares stacks noise on noise.
+- **Data.** Clean, comparable, sourced 1913 bilateral trade shares for the five
+  neutrals need Mitchell's *International Historical Statistics* / national year-
+  books; the open web (searched) gives only qualitative descriptions. Inventing
+  approximate shares to run a 3-point regression would violate this repo's sourcing
+  discipline **and** produce a meaningless coefficient — so it is not done here.
+
+**What survives (the coarse cut):** the **US** — low dependence on any single
+belligerent — has **R² ≈ 0** on the European factor and a *negative* (safe-haven)
+premium, while the European neutrals — all highly belligerent-trade-dependent —
+carry positive premia. So the trade-exposure prediction holds at the **US-vs-Europe**
+level (the outlier result), just not resolvably *within* the five European neutrals.
+
+**The real test needs a different instrument** — one that prices the channel
+directly instead of through five bloc-correlated money-market rates:
+- **Marine war-risk insurance and freight war-risk rates** (Lloyd's; the shipping
+  press) — the direct weekly price of the blockade/shipping channel, independent of
+  the noisy money-market premia. Neutral Norway losing ~half its fleet is *this*
+  series, quoted contemporaneously.
+- Or a **large sovereign-bond cross-section** (n ≈ 20) where trade exposure varies
+  independently of belligerent status — giving the power a 3-point neutral scatter
+  never can.
+
 ## What this settles, and what it doesn't
 
 - **Settles:** risk = common European factor (mostly integration) + idiosyncratic
