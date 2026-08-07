@@ -1,5 +1,13 @@
 # Rigobon-Sack under a neutral basis — and a placebo that bites
 
+> **Instrument: commercial paper, throughout.** Every premium here is on the
+> short-term **money-market** rates — city *open-market* discount rates (Berlin,
+> Paris, Vienna, Amsterdam), the Scandinavian and Swiss *market* rates, NY *call*
+> money, and the London *3-month trade bill* as the basis. Not bonds. (This is what
+> Carls's paper estimated, and the right instrument for the brake.) The Scandinavian
+> Monetary Union bloc below could *only* appear in commercial paper — NW's bond file
+> carries no Scandinavian series, and a currency union is a money-market phenomenon.
+
 The premia are estimated against the **London 3-mo trade bill** as the basis
 asset. But London is a great-power money market that itself moves with war (see
 `../../crisis_lag/results/uk_benchmark_check.md`). So re-estimate against neutral
