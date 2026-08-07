@@ -142,6 +142,29 @@ thesis is still interesting; the per-country/per-crisis premium table is not.
    Balkan wars separately) to give the lag band statistical power — four
    confounded crises is a range check, not a test.
 
+## On data frequency — would daily help?
+
+**Yes for identification and timing; no for the structural findings.** Each crisis
+carries only **5–9 war weeks** of identifying variation, and Rigobon-Sack works off
+the war-vs-non-war *variance contrast* — you cannot estimate a variance from 5–9
+points, which is exactly why every per-crisis premium is insignificant (Berlin
+per-crisis t < 1) and only the pooled sample identifies. **Daily data gives ~30–50
+war-days per crisis (5–6×), and daily is the method's native frequency** (Rigobon-
+Sack 2005 used daily); it is the one change most likely to make per-crisis premia
+estimable — or to *diagnose* whether the per-crisis nulls are a power problem
+(daily fixes) or genuine cross-crisis instability (daily confirms). It would also
+resolve the timing the weekly data blurs: the July-1914 ~5-day window, the 6–10 wk
+lag, the Kokovtsov event. What daily will **not** do: rescue the war-risk
+interpretation (neutrals load on the common London factor at any frequency — daily
+sharpens the reframe, not the label), make London a neutral basis, disentangle the
+confounded series (Morocco↔Russia), create a St Petersburg market rate, or
+un-censor July 1914 (the market closed). It also adds microstructure noise (bid-
+ask, day-of-week, call money) that weekly averages out. Not in NW — daily quotes
+are in the press (Le Temps, pipeline already built in `gallica_le_temps`; The Times
+money column; the German papers). **Verdict:** worth it to settle "do per-crisis
+premia exist, or is the effect only pooled?" — start with Paris and London across
+the two Moroccan crises — but not to revive the per-country premium table.
+
 ## One-line version
 
 Keep the core thesis — finance was a real brake and July 1914 gave it no time —
