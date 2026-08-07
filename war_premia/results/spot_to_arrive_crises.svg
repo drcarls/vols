@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="620" height="400" viewBox="0 0 620 400" font-family="Helvetica,Arial,sans-serif">
 <rect width="620" height="400" fill="#fff"/>
-<text x="55" y="26" font-size="15" font-weight="bold">The gap is Agadir-specific, not a war-scare signature</text>
-<text x="55" y="44" font-size="11" fill="#555">Spot-vs-to-arrive bill gap (points) at three great-power war scares.</text>
+<text x="55" y="26" font-size="15" font-weight="bold">Only London &amp; Berlin split; Vienna/Paris never do</text>
+<text x="55" y="44" font-size="11" fill="#555">Spot-vs-to-arrive gap at three crisis weeks (but see weekly panel: it is seasonal).</text>
 <line x1="55" y1="322.0" x2="500" y2="322.0" stroke="#888"/>
 <text x="49" y="325.0" font-size="10" fill="#555" text-anchor="end">+0.00</text>
 <line x1="55" y1="212.8" x2="500" y2="212.8" stroke="#ececec"/>

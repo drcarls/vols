@@ -1,124 +1,118 @@
 # Brief: was Berlin's spot-versus-to-arrive gap unusual in autumn 1911?
 
-**The question, and why it decides Chapter III.** The chapter's scene rests on one
-narrow empirical claim — that in the autumn of 1911, at the Agadir climax, Berlin's
-money market priced *bills to arrive* dearer than *spot* bills by an amount it did not
-price in ordinary autumns. If that gap was ordinary, the rates carry no weight and the
-chapter becomes an account of credit withdrawal and contemporary belief with the
-prices dropped out. If it was unusual, the scene stands — and it stands on a price, not
-a mood.
+> **Correction (this version).** An earlier draft of this brief, built on a *single*
+> quarter-end observation per autumn, concluded that Berlin drew a spot-versus-to-arrive
+> gap in 1911 alone and that the scene should stand. Pulling **four to six weekly
+> observations per autumn** overturns that. A war-free firm autumn — **1910** — carries
+> the *same* +0.5 gap in the weeks on either side of the one week I had sampled (which
+> happened to read "for both"). The gap is a **quarter-end forward premium that appears
+> whenever Berlin money is firm at the turn**, not an Agadir fingerprint. The claim that
+> "1910 was firmer yet flat" was a sampling artifact and is **retracted**. The weekly
+> evidence is below; it is the reason the upgrade was worth doing.
 
-**Why the mirrored data can't answer it.** The Neal–Weidenmier series carries a single
-open-market rate per city; it has no room for an intra-market spread between spot and
-forward bills. The gap therefore has to be read off the *Commercial & Financial
-Chronicle*'s weekly Berlin money paragraph — one figure per autumn. "Spot versus
-to-arrive" turns out to be the Chronicle's own wording, not a construct imposed on it:
-it quotes Berlin's rate "for spot bills" and, separately, "for bills to arrive."
+## The question, and why it decides Chapter III
 
-**Method.** I take each year's early-October issue — the Oct-1 quarter-end settlement
-week, the exact seasonal moment of the scene — for 1908 through 1913 (1907 excluded as
-the panic), and read Berlin's spot and to-arrive quotes. The gap is *to-arrive minus
-spot*; a positive gap means forward money dearer than spot. Every figure below carries
-its verbatim quote (`war_premia/data/berlin_spot_to_arrive_autumn.csv`).
+The chapter's scene rests on one narrow claim — that in the autumn of 1911, at the
+Agadir climax, Berlin priced *bills to arrive* dearer than *spot* bills by an amount it
+did not price in ordinary autumns. If the gap was ordinary, the rates carry no weight
+and the chapter becomes an account of credit withdrawal and contemporary belief with
+the prices dropped out. If it was unusual, the scene stands on a price. "Spot versus
+to-arrive" is the *Chronicle*'s own wording: it quotes Berlin's rate "for spot bills"
+and, separately, "for bills to arrive." The mirrored Neal–Weidenmier series carries a
+single rate per city and cannot see the spread; it has to be read off the *Chronicle*.
 
-## The six autumns
+## What one snapshot per autumn showed — and why it misled
 
-| Autumn | Spot | To-arrive | **Gap** | What the *Chronicle* actually drew |
+Taking each year's early-October (Oct-1 settlement) issue, 1908–1913:
+
+| Autumn | Spot | To-arrive | Gap | What the *Chronicle* drew (that week) |
 |---|---|---|---|---|
-| 1908 | 3% | 3% | **0** | one undivided rate ("at Berlin and Frankfort it is 3%") |
-| 1909 | ~3½%* | ~3½%* | **0** | one undivided rate (Berlin+Frankfort lumped) |
-| 1910 | 4½% | 4½% | **0** | *stated equal*: "4½% for **both** spot bills and bills to arrive" |
-| **1911** | **4%** | **4½%** | **+0.5** | **a gap**: "spot bills at 4%, **but** for bills to arrive the terms are 4½%" |
-| 1912 | 3¾% | 3¾% | **0** | *stated equal*: "the closing rate for **all maturities**… was 3¾%" |
-| 1913 | 4⅜–4½%† | — | **0** | a quotation *range*, not a spot/to-arrive split |
+| 1908 | 3% | 3% | 0 | one undivided rate |
+| 1909 | ~3½% | ~3½% | 0 | one undivided rate |
+| 1910 | 4½% | 4½% | 0 | "4½% for **both** spot bills and bills to arrive" |
+| **1911** | **4%** | **4½%** | **+0.5** | "spot bills at 4%, **but** for bills to arrive… 4½%" |
+| 1912 | 3¾% | 3¾% | 0 | "the closing rate for **all maturities**… 3¾%" |
+| 1913 | 4⅜–4½% | — | 0 | a quotation *range*, not a split |
 
-\* 1909 level OCR-uncertain; the point is that a *single* undivided rate was quoted, so
-the gap is 0 regardless. † 1913 gives a bid–ask range (width ⅛), not a spot/forward
-distinction.
+Read alone, this looks decisive: 1911 the only gap. The **objection a reviewer raises
+first** is that a gap could have opened and closed inside another autumn *between*
+snapshots — and that is exactly what happened.
 
-## Verdict: unusual. Keep the scene.
+## The weekly panel — 1910 tracks 1911
 
-Berlin drew a spot-versus-to-arrive gap in **exactly one of the six autumns — 1911**,
-and it drew it in the source's own words ("spot bills at 4%, *but* for bills to arrive
-4½%"). In every other autumn it either stated the two were equal (1910, 1912) or quoted
-a single undivided rate (1908, 1909, 1913). Three points make the result more than a
-one-off number:
+Berlin's gap, week by week (verbatim quotes in `data/spot_to_arrive_weekly.csv`):
 
-1. **1910 is the control that kills the obvious objection.** Autumn 1910 was *firmer*
-   than 1911 in level — the Reichsbank had just put its official rate to 5% and private
-   discounts stood at 4½%, above 1911's 4% spot — yet spot and to-arrive were quoted
-   *equal*. So the 1911 gap is not a by-product of a high rate or a tight autumn; a
-   tighter autumn a year earlier produced no gap at all. The gap is specific to 1911.
+| Week | Berlin spot | to-arrive | Gap |
+|---|---|---|---|
+| **1910** — 17 Sep | ~3⅜% | "higher than the 4% Bank rate" | **≈ +0.6** |
+| **1910** — 1 Oct | 4½% | 4½% | 0 *(the week I had sampled)* |
+| **1910** — 15 Oct | 4% | 4½% | **+0.5** |
+| **1911** — 2 Sep | 3⅜% | higher | +~0.4 |
+| **1911** — 16 Sep | 4% | 4¼% | +0.25 |
+| **1911** — 23 Sep | 4¼% | 4¾% | **+0.5** |
+| **1911** — 30 Sep | 4¾% | higher | +~0.25 |
+| **1911** — 7 Oct | 4% | 4½% | **+0.5** |
+| **1911** — 14 Oct | ~4½–4¾% | ~4½–4¾% | ~0 (fading) |
+| 1912 — 5 Oct | 3¾% | 3¾% | 0 |
+| 1912 — 19 Oct | 4¾% | +⅛% | +0.125 |
 
-2. **The 1911 figure is conservative.** It is the 7 October quote, taken *after* the
-   quarter-end strain had already broken — the same issue notes the spot rate "has
-   fallen to 4%" from the abnormal settlement-week levels. The peak gap, a few days
-   earlier, was if anything wider; +0.5 is the residual after the worst had passed.
+**Maximum gap observed each autumn:** 1908 → 0; 1909 → 0; **1910 → +0.6**; **1911 →
++0.5**; 1912 → +0.125; 1913 → unobservable (Berlin quoted as a single private rate all
+autumn). 1910 and 1911 are the same size. The gap opens as money firms toward the
+Oct-1 turn and closes after it, in *both* years.
 
-3. **The direction is the tell.** To-arrive dearer than spot means the market was
-   pricing money to be *tighter going forward* — a forward premium for continued
-   Agadir/fourth-quarter uncertainty. That is precisely the "credit withdrawal and
-   contemporary belief" of the chapter, but registered as an actual price in the
-   forward bill market rather than inferred from commentary. London, quoted in the same
-   1911 paragraph, carried only a ~¼-point forward premium at ninety days — so Berlin's
-   half-point was the wider of the two great centres that week.
+## Verdict: not unusual. The rates should come out.
 
-The honest limits: this is one quarter-end snapshot per year (as the "one figure each"
-design intends), the absolute gap is small (½ point), and 1913's range is genuinely
-ambiguous rather than a clean zero. None of that disturbs the finding, because the
-comparison is not gap-size against a threshold but *a gap at all* against five autumns
-that show none — including a firmer one. Autumn 1911 is the year Berlin's forward bills
-detached from spot. The scene stays as written.
+The gap does **not** single out Agadir. It is a quarter-end forward premium that
+appears whenever Berlin money is firm at the settlement — present in 1910 (a *war-free*
+cyclically-firm autumn, official rate 5%) at the same magnitude as in 1911, and in a
+smaller form in 1912; absent only when money is easy (1908, 1909). What the rates
+establish is that Berlin money was *firm at the 1911 quarter-end* — which the narrative
+already says — not that the firmness was war risk rather than the ordinary autumn
+squeeze. In your terms, this pushes Chapter III toward the first branch: **an account
+of credit withdrawal and contemporary belief, with the rates dropped out** (or used
+only to show Berlin was firm, not that it was uniquely so).
 
-## Does it generalize? Other centres, other crises — and why the answer sharpens the point
+One honest residue in 1911's favour, not enough to rescue the original claim: 1911's
+gap opens *earlier* (already forming 2 September) and comes wrapped in the
+Agadir-specific narrative of "very high rates bid for foreign assistance" and the
+French withdrawal of balances — i.e. in 1911 the quarter-end firmness was *itself*
+partly war-driven. But the gap cannot separate war-firmness from cyclical-firmness,
+because 1910's cyclical firmness produced the identical price. So the rates corroborate
+the scene's *mood*; they do not prove it.
 
-Two natural follow-ups: did any *other* market show the gap in 1911, and did Berlin
-show it in the *other* pre-war war scares? I checked both against the Chronicle.
+## Other centres and other crises
 
-**Other centres (Agadir, October 1911).** The spot-versus-to-arrive split is a feature
-of only the two great bill centres. Paris, Amsterdam, Brussels, and Vienna are quoted
-as *single* open-market rates throughout — they had no forward bill market deep enough
-to split. London *does* split its bills every week, and in the Agadir paragraph it
-carried a ¼-point forward premium at ninety days (spot 3¾%, to-arrive 4%). So within
-1911 the gap appears at the two centres one would expect, and Berlin's half-point was
-the wider of the two.
+**Only London and Berlin ever split their bills.** Across every issue read, Vienna,
+Paris, Amsterdam, and Brussels are quoted as *single* open-market rates (or a bid-ask
+range) — the *Chronicle* never draws a spot/to-arrive distinction for them. So the gap,
+as a measurable object, exists only at the two great bill centres; there is no Vienna
+or Paris series to compare. In the Agadir paragraph itself: *"At Vienna 4¼% is named"*;
+Paris 3¼%; Amsterdam 3¾% — all single.
 
-**Other crises (Berlin).** This is the decisive comparison, and Berlin's answer is that
-the gap is *Agadir-specific*:
+**The symmetric test fails for want of an instrument, not a result.** The natural
+follow-up — did *Vienna* split its bills during the crises that stressed *Austria*
+(the Bosnian annexation, the Balkan Wars) the way Berlin split in Agadir? — cannot be
+run: Vienna is never quoted with a spot/to-arrive split, even at the 1913 Balkan-war
+climax (it shows a single "closing rate," 5⅝% → the 6% Bank rate). And in the **Bosnian
+crisis** (Feb–Mar 1909) money was easy everywhere — Berlin a single 2⅜%, no gap at any
+centre. The **first Moroccan crisis (1905)** cannot be tested either: the *Chronicle*
+did not yet report the spot-versus-to-arrive split at all in 1905 (London and Paris
+appear as single discount rates), so the reporting convention that makes this test
+possible post-dates that crisis.
 
-| War scare | Berlin's quote | **Gap** |
-|---|---|---|
-| Bosnian annexation, 27 Mar 1909 | single rate, 2⅜% ("Berlin and Frankfort… 2⅜%") | **0** |
-| **Agadir, 7 Oct 1911** | **spot 4%, to-arrive 4½%** | **+0.5** |
-| Balkan winter crisis, 7 Dec 1912 | 60-day 5⅜%, 90-day 6%, *"for both spot and to arrive"* | **0** |
-
-Berlin split its bills in Agadir and in no other episode — not in the six calm autumns,
-not in the Bosnian crisis, not in the Balkan winter crisis. The Balkan-1912 case is the
-strongest control of all: Berlin money was *tighter* than in 1911 (6% versus 4%), the
-diplomatic war scare was acute (Austrian and Russian mobilization), and still the
-Chronicle records the rate as explicitly "for both spot and to arrive." So the gap is
-neither a generic war-scare signature nor a by-product of a high rate — a higher rate a
-year later, in a real war scare, produced none. London tells the same story from its
-continuous series: its forward premium was *widest* in Agadir (+0.25) and much smaller
-in the tighter December-1912 week (+0.06).
-
-**Why this sharpens Chapter III rather than diluting it.** The Bosnian and Balkan crises
-were Austro-Russian quarrels; whatever their diplomatic temperature, they did not force
-a scramble for forward cover in Berlin's own bill market. Agadir did — it was the one
-pre-war crisis that reached directly into Germany's financial position (the French
-withdrawal of some $150 million in balances, the "abnormal rates offered for foreign
-assistance," the war scare landing on the Oct-1 settlement). The gap's *uniqueness* is
-therefore the finding: it marks Agadir as the crisis that priced war risk in Berlin's
-forward money market itself, not merely in the diplomatic record.
+Net: the gap is a London/Berlin bill-centre feature, seasonal in origin, and the
+cross-country comparison the mechanism would need is not available in the source.
 
 ## Sources & reproduce
 
-*Commercial & Financial Chronicle*, early-October issues 1908–1913 (FRASER, Federal
-Reserve Bank of St. Louis): `cfc_19081003`, `cfc_19091002`, `cfc_19101001`,
-`cfc_19111007`, `cfc_19121005`, `cfc_19131004`. Cross-crisis weeks: `cfc_19090327`
-(Bosnian), `cfc_19121207` (Balkan winter). Verbatim quotes in the two CSVs
-(`berlin_spot_to_arrive_autumn.csv`, `spot_to_arrive_crises.csv`).
+*Commercial & Financial Chronicle* (FRASER, Federal Reserve Bank of St. Louis).
+Snapshot issues: `cfc_1908/9/10/11/12/13` early-October. Weekly panel: the September–
+November issues listed in `data/spot_to_arrive_weekly.csv`. Cross-crisis/centre weeks:
+`cfc_19090227`, `cfc_19081010` (Bosnian), `cfc_19121207` (Balkan winter), `cfc_1913…`
+(Second Balkan), `cfc_1905…` (first Moroccan — no split reported). Verbatim quotes in
+the three CSVs.
 
 ```bash
-cd war_premia && python spot_to_arrive.py   # prints the table + verdict, writes the SVG
+cd war_premia && python spot_to_arrive.py   # snapshot table, weekly panel + verdict, charts
 ```
