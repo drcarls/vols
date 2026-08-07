@@ -9,15 +9,18 @@ British consols were risk-free is fragile.**
 
 ## 1. What holds (survives instrument + benchmark)
 
-- **The Rigobon-Sack estimator reproduces** the paper's coefficients — but only
-  **Germany's premium (~0.30) survives scrutiny** (§2g): robust to a Swiss basis,
-  not just London, and clearly above the ~0.10 floor that *genuine neutrals*
-  (Amsterdam, Geneva, Stockholm) themselves show. **Belgium (~0.17) is a smaller,
-  stable second**; France (~0.10) sits at the neutral floor. And **the per-conflict
-  premia are not reliably identified** — re-estimated by crisis they swing across
-  bases, flip sign, and blow up at small n (Agadir n=22: Belgium +5.75), so no
-  single country-in-conflict premium is robust (`../war_premia/results/premia_by_conflict.md`).
-  The one clean country result is Germany, pooled over the whole period.
+- **The Rigobon-Sack estimator reproduces**, but the premium is **pooled-only and
+  neutral-shared** — the "war-risk" label is not clean (§2g). Berlin is the
+  largest loading (0.35) but is **not significant in any individual crisis** (every
+  per-crisis t < 1); it is significant only pooled (t 6.4). And the **neutrals
+  carry equally significant pooled premia** (Copenhagen t 5.6, Stockholm t 4.3,
+  Geneva t 2.8, Amsterdam t 2.2) — indeed in the Balkans neutral Stockholm is
+  significant where Berlin is not. So the coefficient is best read as a **loading
+  on a common London-centred money-market factor** (gold-standard integration that
+  tightens under stress) that every connected market shares; Berlin's is merely the
+  biggest. The per-conflict premia are not reliably identified at all (Agadir n=22:
+  Belgium +5.75). See `../war_premia/results/basis_robustness.md` and
+  `premia_by_conflict.md`.
 - **Two country-specific market facts survive every neutral benchmark** (US,
   Sweden, Switzerland, Netherlands): **France's short-term finances were calm in
   1905** (so the 1905 constraint lay in the ally, Russia, not French solvency), and
@@ -98,11 +101,17 @@ robust to a Swiss basis and clearly exceeds the ~0.10 premium that genuine neutr
 (Amsterdam 0.09, Geneva 0.09, Stockholm 0.12) carry against London; Paris and
 Vienna sit at that neutral floor.** So the Rigobon premium against a war-sensitive
 money-market basis partly measures war-week money-market *integration*, which every
-European market shares, not pure country war risk. Two things for the book: (i) the
-German result is *not* an artifact of the contaminated London basis — a Swiss basis
-reproduces it, a genuine robustness win; (ii) present the other premia as a cluster
-around the neutral floor that the method cannot cleanly rank by war risk, with the
-neutral placebo shown as the yardstick.
+European market shares, not pure country war risk. Three things for the book: (i)
+the German result is *not* an artifact of the contaminated London basis — a Swiss
+basis reproduces it, a genuine robustness win; (ii) present the other premia as a
+cluster around the neutral floor that the method cannot cleanly rank by war risk,
+with the neutral placebo shown as the yardstick; (iii) **be candid about
+significance** — Berlin is significant *only* pooled (t 6.4), not in any single
+crisis (per-crisis t < 1), and the neutrals' pooled premia are just as significant
+(Copenhagen t 5.6, Stockholm t 4.3). So the defensible claim is not "country X had a
+war premium of β" but "European money markets loaded on a common London-centred
+stress factor, most heavily Berlin, detectable only in the pooled sample." That
+thesis is still interesting; the per-country/per-crisis premium table is not.
 
 ## 3. What is still open (needs archives or new data)
 

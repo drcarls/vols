@@ -52,6 +52,30 @@ belligerent, the sharpest sign that the premium is not cleanly war risk. Only
 Berlin's full-sample ~0.35 stands clearly *and* consistently (positive in every
 identified crisis) above the neutral cluster.
 
+## The t-stats settle it: the premium is pooled-only and neutral-shared
+
+Add significance to the time series and the "war-risk" reading largely dissolves.
+
+**Berlin over time** (β, t vs London): First Moroccan +0.25 (t 0.97), Bosnia +0.02
+(t 0.12), Agadir +2.17 (t 0.63), Balkans +0.26 (t 0.92), **Full +0.35 (t 6.40)**.
+**Berlin is not significant in any single crisis** — every per-crisis t < 1. The
+German premium exists *only* in the pooled sample.
+
+**Neutrals, full-sample t:** Copenhagen +0.14 (**t 5.6**), Stockholm +0.12 (**t
+4.3**), Christiana +0.08 (**t 3.3**), Geneva +0.09 (**t 2.8**), Amsterdam +0.09
+(**t 2.2**) — all significant. The neutrals carry pooled premia as *significant* as
+Berlin's (Copenhagen's t 5.6 rivals Berlin's 6.4). And per crisis: **in the Balkans
+neutral Stockholm is significant (+0.34, t 3.4) while belligerent Berlin is not (t
+0.92)**; in the First Moroccan crisis neutral Geneva is significant (+0.30, t 2.2).
+
+So the coefficient is not cleanly a war-risk premium. It is a **loading on a common
+London-centred money-market factor** — gold-standard integration that tightens
+under stress — that *every* connected market carries, neutrals included, and that
+is only statistically detectable by pooling. Berlin's loading is the **largest**
+(0.35 vs the neutrals' 0.09–0.14), which is a real and interesting fact, but it is
+a difference of degree on a shared factor, not a qualitatively distinct war
+premium, and it cannot be seen crisis-by-crisis.
+
 ## The placebo: genuine neutrals carry "war premia" too
 
 Premium *of* each neutral, basis = London (a true neutral should be ~0):

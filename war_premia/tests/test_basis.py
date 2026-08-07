@@ -88,3 +88,20 @@ def test_neutral_floor_is_pooled_not_per_crisis_and_can_beat_a_belligerent():
     assert bos["stockholm_market"].single.beta < 0
     # ...and in the Balkans neutral Stockholm outscores belligerent Berlin.
     assert balk["stockholm_market"].single.beta > balk["berlin_openmkt"].single.beta
+
+
+def test_berlin_significant_only_pooled_and_neutrals_significant_too():
+    from war_premia.warweeks import CRISES
+    from neal_weidenmier.load import load_short_rates, to_series_map
+    from war_premia.run import run_crisis
+    cr = {c.key: c for c in CRISES}
+    smap = to_series_map(load_short_rates(SHORT))
+    per = {k: {r.city: r for r in run_crisis(smap, cr[k], basis_key="london_trade3mo")}
+           for k in ("morocco1", "bosnia", "balkans", "full")}
+    # Berlin is NOT significant in any individual crisis (|t| < 2) ...
+    for k in ("morocco1", "bosnia", "balkans"):
+        assert abs(per[k]["berlin_openmkt"].single.t_stat) < 2.0
+    # ... but is strongly significant pooled, and neutrals are significant pooled too.
+    assert per["full"]["berlin_openmkt"].single.t_stat > 4.0
+    assert per["full"]["copenhagen_market"].single.t_stat > 3.0
+    assert per["full"]["stockholm_market"].single.t_stat > 3.0
