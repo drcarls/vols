@@ -1,0 +1,14 @@
+country,ccode,slug,type,pct_germany,pct_central,pct_bellig,total_trade_musd
+Germany,255,berlin_openmkt,bell,,,41.4,4973
+France,220,paris_openmkt,bell,11.7,12.8,30.8,2951
+Austria,300,vienna_openmkt,bell,37.0,37.0,48.4,1240
+Belgium,211,brussels_openmkt,bell,16.7,17.4,58.7,1486
+Italy,325,genoa_openmkt,neut,16.1,23.9,49.4,1189
+Netherlands,210,amsterdam_openmkt,neut,19.1,19.1,32.7,2808
+Switzerland,225,geneva_market,neut,27.6,33.4,63.2,623
+Sweden,380,stockholm_market,neut,29.2,29.2,67.1,451
+Denmark,390,copenhagen_market,neut,32.1,33.1,75.8,422
+Norway,385,christiana_market,neut,26.2,26.2,61.8,256
+Spain,230,madrid_openmkt,neut,18.6,19.4,65.6,427
+Portugal,235,lisbon_openmkt,neut,14.9,16.4,48.8,119
+USA,2,new_york_call,far,13.8,14.8,44.9,4277
