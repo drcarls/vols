@@ -1,0 +1,5 @@
+series,date,value_usd,direction,source_quote,issue
+reichsbank_gold_added_since_agadir,1914-08-08,100000000,into_berlin_reserve,"the Bank of Germany has added upwards of $100,000,000 gold to its reserve since the Morocco incident. The great bulk of this addition has been accumulated since the recent Balkan war",cfc_19140808
+ny_bank_reserve_drain_subtreas_and_gold_exports,1914-08-01,16820000,out_of_ny_banks,"Sub Treas. oper. and gold exports [Into Banks] 25,672,000 [Out of Banks] 42,492,000 Loss 16,820,000 (weekly bank-statement drain on New York reserves)",cfc_19140808
+kronprinzessin_cecilie_gold_turned_back,1914-08-01,10000000,export_aborted,"there was no intention of re-shipping the $10,000,000 of gold on board the Kronprinzessin Cecilie of the North German Lloyd, which turned about and returned to America from its trip abroad when within two days from Plymouth",cfc_19140808
+proposed_gold_shipment_to_london,1914-08-08,100000000,proposed_out_of_ny,"I understand that a shipment of $100,000,000 in gold to London, to relieve the situation [was proposed]",cfc_19140808
