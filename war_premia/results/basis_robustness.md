@@ -22,6 +22,36 @@ bases, and placebo-test the neutrals themselves (`war-premia basis`).
   pre-1913 central bank — to identify anything).
 - **Paris and Vienna do not survive as cleanly** — small and basis-sensitive.
 
+## Where the neutral premia come from — and how they look over time
+
+The neutral premia are estimated exactly like any city's: the neutral as the
+regressand `x` against the London basis, β read off (`war-premia matrix`). They are
+**full-sample pooled** numbers, and over time they are as noisy as everyone's:
+
+**Premium vs London basis, city × crisis (~ = neutral):**
+
+| city | First Mor. | Bosnia | Agadir (n=22) | Balkans | **Full** |
+|---|---|---|---|---|---|
+| Berlin | +0.25 | +0.02 | +2.17 | +0.26 | **+0.35** |
+| Paris | +0.51 | +0.04 | +2.15 | −0.07 | +0.11 |
+| Vienna | −0.05 | +0.02 | +1.41 | +0.13 | +0.13 |
+| **Stockholm~** | −0.00 | **−0.21** | +1.33 | **+0.34** | **+0.12** |
+| Amsterdam~ | −0.08 | −0.04 | +0.35 | +0.04 | +0.09 |
+| Geneva~ | +0.30 | +0.01 | +1.25 | +0.05 | +0.09 |
+| Copenhagen~ | +0.14 | −0.03 | +1.67 | −0.00 | +0.14 |
+| NewYork~ | +0.14 | −0.36 | +0.76 | −0.44 | −0.33 |
+
+**Stockholm's premium over time:** −0.00 → −0.21 (Bosnia) → +1.33 (Agadir, t=0.7,
+junk) → +0.34 (Balkans, t=3.4) → **+0.12 full (t=4.3)**. So the "0.12 neutral floor"
+is a **pooled** number, not a stable per-crisis level — it is near zero or negative
+in most crises and the pooled positive comes mostly from the **Balkans**. Two
+consequences: (i) the neutral floor is a pooled artifact driven by specific periods
+of money-market integration, not a constant; (ii) **in the Balkans, neutral
+Stockholm (+0.34) outscores belligerent Berlin (+0.26)** — a neutral beating a
+belligerent, the sharpest sign that the premium is not cleanly war risk. Only
+Berlin's full-sample ~0.35 stands clearly *and* consistently (positive in every
+identified crisis) above the neutral cluster.
+
 ## The placebo: genuine neutrals carry "war premia" too
 
 Premium *of* each neutral, basis = London (a true neutral should be ~0):

@@ -74,3 +74,17 @@ def test_per_conflict_estimates_are_not_robust_but_full_sample_germany_is():
     lon = {r.city: r for r in run_crisis(smap, ag, basis_key="london_trade3mo")}
     ams = {r.city: r for r in run_crisis(smap, ag, basis_key="amsterdam_openmkt")}
     assert abs(lon["berlin_openmkt"].single.beta - ams["berlin_openmkt"].single.beta) > 1.0
+
+
+def test_neutral_floor_is_pooled_not_per_crisis_and_can_beat_a_belligerent():
+    from war_premia.warweeks import CRISES
+    from neal_weidenmier.load import load_short_rates, to_series_map
+    from war_premia.run import run_crisis
+    cr = {c.key: c for c in CRISES}
+    smap = to_series_map(load_short_rates(SHORT))
+    balk = {r.city: r for r in run_crisis(smap, cr["balkans"], basis_key="london_trade3mo")}
+    bos = {r.city: r for r in run_crisis(smap, cr["bosnia"], basis_key="london_trade3mo")}
+    # Stockholm's pooled floor is NOT stable per crisis: negative in Bosnia...
+    assert bos["stockholm_market"].single.beta < 0
+    # ...and in the Balkans neutral Stockholm outscores belligerent Berlin.
+    assert balk["stockholm_market"].single.beta > balk["berlin_openmkt"].single.beta

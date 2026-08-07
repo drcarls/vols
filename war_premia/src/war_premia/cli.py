@@ -182,6 +182,36 @@ def _cmd_grid(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_matrix(args: argparse.Namespace) -> int:
+    """Every city's premium in every crisis vs the London basis (belligerent + neutral)."""
+    from .warweeks import CRISES
+
+    smap = to_series_map(load_short_rates(args.short or SHORT))
+    cr = {c.key: c for c in CRISES}
+    order = ["morocco1", "bosnia", "morocco2", "balkans", "full"]
+    cities = [("berlin_openmkt", "Berlin"), ("vienna_openmkt", "Vienna"),
+              ("paris_openmkt", "Paris"), ("brussels_openmkt", "Brussels"),
+              ("petersburg_bank", "StPburg*"), ("amsterdam_openmkt", "Amsterdam~"),
+              ("geneva_market", "Geneva~"), ("stockholm_market", "Stockholm~"),
+              ("copenhagen_market", "Copenhagen~"), ("christiana_market", "Christiana~"),
+              ("new_york_call", "NewYork~")]
+    res = {k: {r.city: r for r in run_crisis(smap, cr[k], basis_key="london_trade3mo")} for k in order}
+    print("Premium (single-IV beta) vs LONDON basis, city x crisis  (~ = neutral):")
+    print(f"  {'city':<12}" + "".join(f"{cr[k].label.split()[0][:9]:>10}" for k in order))
+    for slug, name in cities:
+        print(f"  {name:<12}" + "".join(
+            f"{(f'{res[k][slug].single.beta:+.2f}' if slug in res[k] else '—'):>10}" for k in order))
+    print("\nOnly the FULL column is well-identified (Agadir n=22 blows everyone up; Bosnia is")
+    print("near-zero for all). Neutrals (~) carry pooled premia (Amsterdam 0.09, Geneva 0.09,")
+    print("Stockholm 0.12, Copenhagen 0.14) as large as Paris/Vienna -- and in the Balkans,")
+    print("neutral Stockholm (+0.34) beats belligerent Berlin (+0.26). So the 'neutral floor'")
+    print("is a pooled artifact driven by specific periods, and a neutral can outscore a")
+    print("belligerent -- the premium is not cleanly war risk. Only Berlin's full-sample ~0.35")
+    print("stands clearly and consistently above the neutral cluster.")
+    print("* administered bank rate (sticky).")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="war-premia", description="Reproduce/extend Carls (2005).")
     p.add_argument("--short", help="path to stinterestrates.xls")
@@ -193,6 +223,7 @@ def build_parser() -> argparse.ArgumentParser:
     sub.add_parser("kokovtsov", help="the Kokovtsov dismissal event test (Feb 1914)").set_defaults(func=_cmd_kokovtsov)
     sub.add_parser("basis", help="premia under neutral bases + neutral placebo").set_defaults(func=_cmd_basis)
     sub.add_parser("grid", help="per-crisis per-country premia across neutral bases").set_defaults(func=_cmd_grid)
+    sub.add_parser("matrix", help="every city's premium in every crisis vs London (incl. neutrals)").set_defaults(func=_cmd_matrix)
     return p
 
 
