@@ -142,6 +142,26 @@ thesis is still interesting; the per-country/per-crisis premium table is not.
    Balkan wars separately) to give the lag band statistical power — four
    confounded crises is a range check, not a test.
 
+## The organising frame — common + idiosyncratic risk, US as the non-EU control
+
+The cleanest way to present all of the above (`../war_premia/results/common_and_idiosyncratic.md`):
+risk decomposes into a **common European factor** every European money market loads
+on (belligerent *and* neutral) plus **idiosyncratic** country risk on top, with the
+**US as the outlier that does not load at all** (R² ≈ 0, and a *negative* premium —
+a safe haven, gold flowing in). This is the honest home for the "neutral premia"
+result: it is not that neutrals having premia refutes war risk, but that **war risk
+in an integrated Europe is largely common** — everyone connected is exposed — with
+**Germany carrying the distinct extra**. Two caveats to state: (i) the *big* common
+factor is mostly gold-standard financial **integration** (it is not war-amplified —
+the 1907 panic and seasonals dominate it), with war the smaller Rigobon component
+on top; (ii) the neutrals' genuine war exposure (British blockade, marine war-risk
+insurance and freight, mined Baltic/North Sea shipping — neutral Norway lost ~half
+its fleet, financial contagion, adjacency) is economically real but **cannot be
+separated from financial contagion using money-market rates** — pricing that channel
+directly needs marine war-risk insurance/freight rates, neutral exchange rates, and
+trade-exposure scaling. That is the strongest single frame for the book: a shared
+European war-risk factor, Germany's idiosyncratic excess, and the US as the control.
+
 ## On data frequency — would daily help?
 
 **Yes for identification and timing; no for the structural findings.** Each crisis

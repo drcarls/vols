@@ -248,6 +248,63 @@ def _cmd_neutrals(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_factor(args: argparse.Namespace) -> int:
+    """Common European money-market factor + idiosyncratic loadings; the US outlier."""
+    import datetime
+    import statistics
+
+    from .warweeks import get_crisis, war_mask
+
+    smap = to_series_map(load_short_rates(args.short or SHORT))
+    full = get_crisis("full")
+    lo, hi = full.window
+    week = datetime.timedelta(days=7)
+
+    def dchg(slug):
+        s = dict(smap[slug])
+        return {d: s[d] - s[d - week] for d in s if lo <= d <= hi and (d - week) in s}
+
+    eur = ["berlin_openmkt", "paris_openmkt", "vienna_openmkt", "brussels_openmkt",
+           "amsterdam_openmkt", "geneva_market", "stockholm_market",
+           "copenhagen_market", "christiana_market"]
+    ch = {k: dchg(k) for k in eur + ["new_york_call"]}
+    dates = sorted(set.intersection(*[set(ch[k]) for k in eur]))
+    F = {d: statistics.mean(ch[k][d] for k in eur) for d in dates}
+    mask = dict(zip(dates, war_mask(dates, full.war_events)))
+    warv = statistics.pvariance([F[d] for d in dates if mask[d]])
+    peacev = statistics.pvariance([F[d] for d in dates if not mask[d]])
+
+    def loading(slug):
+        common = sorted(set(ch[slug]) & set(F))
+        x = [ch[slug][d] for d in common]
+        f = [F[d] for d in common]
+        fb, xb = statistics.mean(f), statistics.mean(x)
+        beta = sum((a - xb) * (b - fb) for a, b in zip(x, f)) / sum((b - fb) ** 2 for b in f)
+        ss = sum((a - xb) ** 2 for a in x)
+        sr = sum((a - (xb + beta * (b - fb))) ** 2 for a, b in zip(x, f))
+        return beta, (1 - sr / ss if ss else 0.0)
+
+    print("Common European money-market factor F (mean of European weekly rate changes):")
+    print(f"  var(F) war weeks {warv:.4f} vs peace weeks {peacev:.4f} ({warv/peacev:.1f}x) --")
+    print("  NOT war-amplified: the common factor is financial integration (1907 panic,")
+    print("  autumn seasonals dominate), not a war-stress factor. War risk is the smaller")
+    print("  Rigobon component on top (war-premia basis/matrix).\n")
+    print("  Loading on F (beta) and R2 (= share of the market that is COMMON):")
+    for slug, name in [("berlin_openmkt", "Berlin"), ("vienna_openmkt", "Vienna"),
+                       ("paris_openmkt", "Paris"), ("amsterdam_openmkt", "Amsterdam~"),
+                       ("geneva_market", "Geneva~"), ("stockholm_market", "Stockholm~"),
+                       ("copenhagen_market", "Copenhagen~"), ("christiana_market", "Christiania~"),
+                       ("new_york_call", "NewYork~US")]:
+        b, r2 = loading(slug)
+        print(f"    {name:<14} beta={b:+.2f}  R2={r2:.2f}")
+    print("\nEvery European market (belligerent + neutral) loads positively on F; the US alone")
+    print("has R2~0 -- it is OUTSIDE the European system, and its war premium is negative (a")
+    print("safe haven: gold flowed IN). So risk decomposes into a COMMON European factor")
+    print("(integration) + IDIOSYNCRATIC country risk (Berlin's excess), with the US as the")
+    print("non-European control. ~ = neutral; Christiania = Oslo.")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="war-premia", description="Reproduce/extend Carls (2005).")
     p.add_argument("--short", help="path to stinterestrates.xls")
@@ -261,6 +318,7 @@ def build_parser() -> argparse.ArgumentParser:
     sub.add_parser("grid", help="per-crisis per-country premia across neutral bases").set_defaults(func=_cmd_grid)
     sub.add_parser("matrix", help="every city's premium in every crisis vs London (incl. neutrals)").set_defaults(func=_cmd_matrix)
     sub.add_parser("neutrals", help="belligerents vs each neutral + neutral-vs-neutral robustness").set_defaults(func=_cmd_neutrals)
+    sub.add_parser("factor", help="common European factor + idiosyncratic loadings; the US outlier").set_defaults(func=_cmd_factor)
     return p
 
 

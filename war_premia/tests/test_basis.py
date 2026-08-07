@@ -121,3 +121,30 @@ def test_berlin_clears_the_floor_against_most_neutral_bases():
     for basis in ("geneva_market", "copenhagen_market", "stockholm_market"):
         assert _betas(basis)["berlin_openmkt"].single.beta > 0.25
     assert _betas("amsterdam_openmkt")["berlin_openmkt"].single.beta < 0.15
+
+
+def test_us_is_the_non_european_outlier_on_the_common_factor():
+    # The common European factor: every European market loads (R2>0.1), the US does
+    # not (R2 ~ 0). Confirms a shared *European* factor with the US outside it.
+    import datetime, statistics
+    from war_premia.warweeks import get_crisis
+    from neal_weidenmier.load import load_short_rates, to_series_map
+    smap = to_series_map(load_short_rates(SHORT))
+    lo, hi = get_crisis("full").window
+    wk = datetime.timedelta(days=7)
+    def dchg(slug):
+        s = dict(smap[slug]); return {d: s[d]-s[d-wk] for d in s if lo<=d<=hi and (d-wk) in s}
+    eur = ["berlin_openmkt","paris_openmkt","vienna_openmkt","amsterdam_openmkt",
+           "geneva_market","stockholm_market","copenhagen_market","christiana_market"]
+    ch = {k: dchg(k) for k in eur+["new_york_call"]}
+    dates = sorted(set.intersection(*[set(ch[k]) for k in eur]))
+    F = {d: statistics.mean(ch[k][d] for k in eur) for d in dates}
+    def r2(slug):
+        c = sorted(set(ch[slug]) & set(F)); x=[ch[slug][d] for d in c]; f=[F[d] for d in c]
+        fb, xb = statistics.mean(f), statistics.mean(x)
+        beta = sum((a-xb)*(b-fb) for a,b in zip(x,f))/sum((b-fb)**2 for b in f)
+        ss = sum((a-xb)**2 for a in x); sr = sum((a-(xb+beta*(b-fb)))**2 for a,b in zip(x,f))
+        return 1-sr/ss
+    assert r2("berlin_openmkt") > 0.2
+    assert r2("stockholm_market") > 0.1        # neutral still loads
+    assert r2("new_york_call") < 0.05          # the US does not
