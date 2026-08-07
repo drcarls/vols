@@ -108,6 +108,31 @@ disruptive *dependence*, not volume), but the magnitude is fragile and no obtain
 data escapes the small-n / basis-sensitivity ceiling. The honest book claim is the
 *direction plus the US mechanism*, offered as suggestive evidence, not a coefficient.
 
+## The marine-insurance channel: where the real data lives (access map)
+
+The direct instrument (marine war-risk rates) would corroborate the mechanism but is
+**archival, not a dataset** — and it is a global/route series, so it cannot run the
+country cross-section anyway. Where it actually lives (checked; none is a download):
+
+- **Lloyd's List** (London, daily) — digitized on the *British Newspaper Archive*
+  (~271k pages) but **paywalled**; OCR of a daily paper.
+- **The Economist** — *Economist Historical Archive* (Gale), **paywalled**.
+- **The Statist** (London, weekly) — scattered public-domain volumes on Google
+  Books / HathiTrust; no clean run located.
+- **Journal of Commerce & Commercial Bulletin** (New York) — not digitized as a
+  continuous run.
+- **Hansa: Deutsche Nautische Zeitschrift** (Hamburg) — HathiTrust Record
+  000599288 (1891–1925), likely limited-view / Cloudflare-walled; German OCR.
+- **Assicurazioni Generali** ledgers (Trieste) — **physical corporate archive**.
+
+Building a continuous weekly series from these is a multi-month transcription
+project (cf. the July–Aug 1914 *Chronicle* OCR here, which took real effort for ~6
+weeks). **Do NOT synthesise it** — a skeleton of invented anchors + interpolation +
+noise is fabrication, not reconstruction, and a regression on it merely returns the
+spikes hard-coded into it. The tractable slice is targeted OCR of the *Economist* /
+*Statist* for the crisis weeks (late July 1911; late July–Aug 1914) — real sourced
+quotations for a footnote, not a 762-week dataset.
+
 ## Sources
 
 - Trade: **Correlates of War Bilateral Trade v4.0** — Barbieri, Katherine, Omar M. G.
