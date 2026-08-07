@@ -162,11 +162,13 @@ directly needs marine war-risk insurance/freight rates, neutral exchange rates, 
 trade-exposure scaling. (The trade-share version *has* now been run — expanding the
 neutrals to eight, Italy/Spain/Portugal added, with **Correlates of War 1913 trade
 shares**: within the neutrals the premium rises with Central-Powers trade share,
-r ≈ 0.64 (t≈2), the blockade channel's predicted sign — suggestive but underpowered
-(n=8, Scandinavian bloc). The US breaks it informatively: high belligerent trade yet
-a negative premium, a war supplier not a disrupted neutral, so it is disruptive
-*dependence* not trade volume. See `../war_premia/results/trade_exposure.md`. The
-harder confirmation still wants marine war-risk insurance/freight rates.) That is the
+r ≈ 0.64 (t≈2), the blockade channel's predicted sign — but underpowered (n=8,
+Scandinavian bloc) *and not robust to the premium measure* (≈0 on a Swiss basis, +0.41
+on the common factor), so suggestive, not confirmed. The US breaks it informatively:
+high belligerent trade yet a negative premium, a war supplier not a disrupted neutral,
+so it is disruptive *dependence* not trade volume. See
+`../war_premia/results/trade_exposure.md`. A real confirmation still wants marine
+war-risk insurance/freight rates.) That is the
 strongest single frame for the book: a shared
 European war-risk factor, Germany's idiosyncratic excess, and the US as the control.
 

@@ -102,11 +102,13 @@ dataset supplies real 1913 trade shares. Run
   exposure is **disruptive dependence**, not trade volume — which refines the
   hypothesis rather than denying it.
 
-So the trade-exposure channel *is* visible in the neutrals' premia — a real, sourced
-result. To harden it beyond marginal significance you still want the direct
-instrument (**marine war-risk insurance / freight rates** — the weekly price of the
-blockade/shipping channel) and a larger cross-section, but the money-market premia
-already track exposure to the trade a European war would sever.
+So the trade-exposure channel is *visible* in the neutrals' premia (r ≈ 0.64, the
+predicted sign) — but a robustness check shows it is **not confirmed**: it holds on
+the London-basis premium and the common-factor loading (r ≈ 0.41) yet **vanishes on
+the Swiss basis** (partly mechanical — Geneva is itself the top-Central-trade
+neutral). Suggestive, sourced, but measure-dependent and underpowered (n = 8). A real
+confirmation needs the direct instrument (**marine war-risk insurance / freight
+rates**) and a larger cross-section — see [`trade_exposure.md`](trade_exposure.md).
 
 ## What this settles, and what it doesn't
 

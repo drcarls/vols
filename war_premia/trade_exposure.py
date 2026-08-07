@@ -82,6 +82,32 @@ def load():
     return out
 
 
+def robustness():
+    """Is the trade correlation robust to the premium MEASURE? (neutrals, %Central)"""
+    import datetime
+    from neal_weidenmier.load import load_short_rates, to_series_map
+    from war_premia.run import run_crisis
+    from war_premia.warweeks import get_crisis
+    smap = to_series_map(load_short_rates(SHORT))
+    full = get_crisis("full")
+    rows = [d for d in load() if d["type"] == "neut" and d["pct_central"] is not None]
+    slugmap = {r["country"]: r for r in _shares_rows()}
+    slugs = [slugmap[d["country"]]["slug"] for d in rows]
+    x = [d["pct_central"] for d in rows]
+    london = {r.city: r.single.beta for r in run_crisis(smap, full, basis_key="london_trade3mo")}
+    swiss = {r.city: r.single.beta for r in run_crisis(smap, full, basis_key="geneva_market")}
+    return {
+        "London-basis beta": _pearson([london[s] for s in slugs], x),
+        "Swiss-basis beta (Geneva is itself 33% Central -> contaminated basis)":
+            _pearson([swiss.get(s, 0.0) for s in slugs], x),
+    }
+
+
+def _shares_rows():
+    with open(SHARES, newline="", encoding="utf-8") as fh:
+        return list(csv.DictReader(fh))
+
+
 def main():
     data = load()
     groups = [
@@ -107,6 +133,13 @@ def main():
     print("premia) washes it out, as expected. The US is the informative break: high belligerent")
     print("trade (44.9%) yet a NEGATIVE premium -- a war SUPPLIER/beneficiary, not a disrupted")
     print("neutral -- so exposure is about disruptive dependence, not trade volume.")
+    print("\nROBUSTNESS -- is the r=0.64 robust to the premium MEASURE? (neutrals, %Central):")
+    for measure, r in robustness().items():
+        print(f"  {measure}: r={r:+.2f}")
+    print("  Positive on the London basis (0.64) and the common-factor loading (~0.41) but ~0")
+    print("  on the Swiss basis -- partly mechanical (Geneva is itself the top-Central-trade")
+    print("  neutral, so it differences the signal away), but the result is NOT robust: it is")
+    print("  suggestive, measure-dependent, and underpowered -- not a clean confirmation.")
     print("\nTrade shares: Correlates of War Bilateral Trade v4.0 (Barbieri, Keshk & Pollins 2009).")
 
 

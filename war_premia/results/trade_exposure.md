@@ -58,16 +58,36 @@ se but **disruptive dependence**: being cut off from, or fought over, versus sel
 into the war. Central-Powers dependence captures the first; the US embodies the
 second. That refines your hypothesis rather than contradicting it.
 
-## Verdict
+## Robustness — and it is *not* robust to the premium measure
 
-The blockade/trade-exposure channel is **supported in sign and magnitude** among the
-European neutrals (premium rises with Central-Powers trade share, r ≈ 0.64) — a real,
-sourced result, not a hand-wave — but it is **underpowered** (n = 8, Scandinavian
-bloc) and only marginally significant. To harden it you would want the direct
-instrument (marine war-risk insurance / freight rates) and a larger cross-section;
-but on the data obtainable, the neutrals' premia do track their exposure to the
-trade a European war would sever, and the US proves the exposure is about
-disruption, not volume.
+Is the r = 0.64 an artifact of measuring the premium against the London basis?
+Recomputing the same correlation with other premium measures:
+
+| premium measure | r (premium vs %Central) |
+|---|---|
+| London-basis β | **+0.64** |
+| common-factor loading | +0.41 |
+| **Swiss-basis β** | **−0.01** |
+
+Positive on the London basis and the common-factor loading, but it **vanishes on the
+Swiss basis.** There is a mechanical reason — Geneva (Switzerland) is itself the
+*highest* Central-Powers-trade neutral (33.4%), so using it as the basis differences
+the shared trade-exposure component away, which is a contaminated basis for *this*
+test. But that excuse cannot fully rescue it: the result is measure-dependent.
+
+## Verdict — suggestive, fragile, not confirmed
+
+Honest bottom line: within the eight neutrals the premium **does** rise with
+Central-Powers trade dependence — the blockade channel's predicted sign, r ≈ 0.64 on
+the London-basis premium (r ≈ 0.41 on the common factor) — but it is **underpowered**
+(n = 8, three of them the Scandinavian bloc), only marginally significant, and **not
+robust** to the premium measure (≈ 0 on the Swiss basis). So it is a *suggestive*
+result, not a confirmed one — the same fragility every finding in this reanalysis has
+shown once pushed. The US remains the clean qualitative point: high belligerent trade
+but a negative premium, so exposure is disruptive *dependence*, not volume. A real
+confirmation needs the direct instrument (marine war-risk insurance / freight rates)
+and a cross-section large enough that no single basis choice or Scandinavian bloc can
+swing it.
 
 ## Sources
 
