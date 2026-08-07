@@ -29,8 +29,27 @@ proves the common factor is specifically **European**.
 
 ## So: common European war exposure, or just financial integration?
 
-Two channels produce a common European component, and the money-market data cannot
-fully separate them:
+**Three** channels produce a common European component, and the money-market data
+cannot fully separate them:
+
+0. **Contagion of war (fast, expectational) — the deepest one.** The common factor
+   is, at root, the market pricing the **probability that a *localized* crisis
+   cascades through the alliance system into a *general* war** — Entente vs Triple
+   Alliance, the mechanism that turned Sarajevo into a world war. This is why a
+   crisis nominally between two powers prices risk *everywhere*, neutrals included:
+   localization might fail. It is the natural name for the war-week Rigobon
+   component, it explains the **US outlier** better than economics alone (the US
+   was outside the *alliance* system, not just the economy), and it *is* the
+   paper's own thesis — the pre-war crises priced a general-war probability that
+   kept **not** materialising ("crying wolf"); July 1914 it did.
+   **But the direct test is weak at weekly resolution:** average European
+   cross-market correlation is **0.07 in the 29 war-event weeks vs 0.14 in peace**
+   — it does *not* spike (one cross-bloc pair, Paris–Vienna, 0.18 vs 0.11, does; the
+   average doesn't). The contagion signal, if present, is small against the
+   financial-integration/seasonal noise and buried by weekly resolution. So
+   contagion is the right *interpretation* of the war-week premium, not a
+   demonstrated correlation result — pinning it needs daily data and event-studies
+   around specific escalation/de-escalation news (`war-premia factor`).
 
 1. **Financial integration (mechanical).** European money markets co-moved via
    London and the gold standard (bill-on-London, gold points, shared discount

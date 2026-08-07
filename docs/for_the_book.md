@@ -162,6 +162,18 @@ directly needs marine war-risk insurance/freight rates, neutral exchange rates, 
 trade-exposure scaling. That is the strongest single frame for the book: a shared
 European war-risk factor, Germany's idiosyncratic excess, and the US as the control.
 
+And name the common factor for what it most likely is: **contagion of war** — the
+priced probability that a *localized* crisis cascades through the alliance system
+into a *general* war. That is why a two-power crisis prices risk everywhere
+(neutrals included), why the US (outside the *alliances*, not just the economy) is
+the outlier, and it *is* the book's own thesis: the pre-war crises priced a
+general-war probability that kept not materialising ("crying wolf") until July 1914.
+Honest caveat: the direct test is weak at weekly resolution (European cross-market
+correlation does not spike in war-event weeks — 0.07 vs 0.14 peace), so contagion is
+the right *interpretation* of the war-week premium, not a demonstrated correlation
+result; pinning it needs daily data and event-studies around escalation news — the
+same daily-data recommendation below, now with a second motive.
+
 ## On data frequency — would daily help?
 
 **Yes for identification and timing; no for the structural findings.** Each crisis

@@ -302,6 +302,32 @@ def _cmd_factor(args: argparse.Namespace) -> int:
     print("safe haven: gold flowed IN). So risk decomposes into a COMMON European factor")
     print("(integration) + IDIOSYNCRATIC country risk (Berlin's excess), with the US as the")
     print("non-European control. ~ = neutral; Christiania = Oslo.")
+    # Contagion test: do European markets co-move MORE in war weeks? (escalation risk)
+    import itertools
+    dates2 = sorted(set.intersection(*[set(ch[k]) for k in eur + ["new_york_call"]]))
+    m2 = dict(zip(dates2, war_mask(dates2, full.war_events)))
+    warw = [d for d in dates2 if m2[d]]
+    peace = [d for d in dates2 if not m2[d]]
+
+    def corr(a, b, dd):
+        xa = [ch[a][d] for d in dd]
+        xb = [ch[b][d] for d in dd]
+        ma, mb = statistics.mean(xa), statistics.mean(xb)
+        cov = sum((p - ma) * (q - mb) for p, q in zip(xa, xb))
+        va = sum((p - ma) ** 2 for p in xa) ** 0.5
+        vb = sum((q - mb) ** 2 for q in xb) ** 0.5
+        return cov / (va * vb) if va * vb else 0.0
+
+    def avg(members, dd):
+        return statistics.mean(corr(a, b, dd) for a, b in itertools.combinations(members, 2))
+    print(f"\nCONTAGION test -- avg European cross-market correlation: war {avg(eur, warw):+.2f} vs "
+          f"peace {avg(eur, peace):+.2f}.")
+    print("Weak at weekly resolution: correlation does NOT spike in the 29 event weeks (one")
+    print("cross-bloc pair, Paris-Vienna, does; the average doesn't). Contagion -- a localized")
+    print("crisis cascading through the alliance system into general war (the July-1914 thesis)")
+    print("-- is the right NAME for the war-week premium and for the US outlier (outside the")
+    print("alliances), but is not cleanly demonstrable here; it needs daily data + event-study")
+    print("around specific escalation/de-escalation news.")
     return 0
 
 
