@@ -15,8 +15,15 @@ Two developments the framework did not have before, both live in 2026:
 A US–Israel–Iran war erupted in **late February 2026**; the **Strait of Hormuz was virtually shut**
 (~8 million bbl/day removed). Oil surged **~52% in March** — WTI to a **$114 peak** (Brent ~$113) —
 and, crucially, **held above $100 through April–May**, not the days-long spike-and-collapse of June
-2025. It eased only after a US **strike pause** around late June (WTI ~$70 in July, ~$82 in early
-August — still well above the **$57** January base).
+2025.
+
+**Status as of August 2026 — live and unresolved.** This is the *one case in the whole arc that is
+not closed.* A ceasefire around late June brought WTI back to ~$70, but it is **fragile and
+repeatedly violated** — a cargo ship attacked near Oman in the Strait, drone attacks, ceasefire-end
+fears — and oil has **re-elevated to ~$75–82** (Brent ~$79) through early August, still well above
+the **$57** January base. The situation is **oscillating**, not settled: each violation pushes oil
+up, each de-escalation pulls it back. Everything below is therefore a *real-time* application, not a
+post-mortem — and that is the hardest test the framework faces.
 
 - **The size and *duration* discriminated threat from reality.** June 2025 (Hormuz threatened, strait
   open): oil spiked +10% and unwound *below* pre-crisis within days. 2026 (Hormuz actually closed):
@@ -84,6 +91,26 @@ Turning the book's lenses on this new instrument:
   the price unwind on de-escalation, with the **odds leading**. A calm oil price still is not a
   forecast of peace; but now you can check the Polymarket/Kalshi line to see what the crowd thinks
   the *decision* will be.
+
+## Reading it in real time (August 2026) — the discipline the live case demands
+
+Because it is unresolved, we are sitting squarely in the market's **weak channel — anticipation** —
+and the framework's honesty rules bite hardest here:
+
+- **Oil at ~$82 is a probability-weighted guess that will be wrong in one direction.** It embeds the
+  crowd's odds that the fragile ceasefire holds vs breaks. The framework says do *not* read it as a
+  forecast — it is the anticipation channel doing the thing it does poorly (oscillating with each
+  violation), and it will look either too high or too low once the next decision resolves.
+- **The informative moments are still the resolutions**, not today's level: an *actual* Hormuz
+  closure, or a *genuine* durable ceasefire, will reprice oil fast and correctly — as the strait's
+  closure did in March and the pause did in June. Watch the events, not the ambient price.
+- **The prediction markets say the crowd thinks it isn't over** (US entry by 31 Dec still ~90%;
+  Hormuz normal by 1 Sep only ~46%) — the anticipation read, now observable, but *thin and
+  manipulable*, so a lead indicator to watch, not to trust.
+- **The one thing we can state with confidence is the structure, not the outcome:** the tail is
+  Hormuz; it is *survivable and collectable*, so the market *can* price it; and it will hold a large
+  premium **only while the strait is actually shut.** How it ends is unknown — and the discipline is
+  to say so, not to dress an anticipation guess as a forecast.
 
 ## Reproduce / sources
 
