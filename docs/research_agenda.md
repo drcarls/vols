@@ -102,8 +102,23 @@ These are where finance was arguably the *binding* thing, so they test the causa
   turning point), but the guns-and-butter inflation, the **March-1968 London Gold Pool
   collapse**, and the strain that killed Bretton Woods.
 - **Boer War, 1899–1902** (Consols; British war finance); **Anschluss / Prague, 1938–39**
-  (neutral-market bond prices); **the Gulf Wars** (the oil-and-equity "war premium"). Useful
-  control/comparison points.
+  (neutral-market bond prices). Useful control/comparison points.
+
+- **The Gulf Wars, 1990–91 & 2003 — the war priced through *oil* (promoted; the instrument case).**
+  *(Seeded: `docs/modern_gulf_wars.md`, real WTI + S&P daily.)* Gulf I: WTI **~doubled (+90%)** and
+  the S&P fell **−17%** into Oct 1990, then the **inversion when Desert Storm began (17 Jan 1991):
+  stocks +~4%, oil −~30% in a day** as air supremacy removed the supply-catastrophe tail — the
+  **Bank of England Quarterly Bulletin (1 Mar 1991)** names it. 2003 replays it and is **Sack &
+  Rigobon's (2005)** own case — their heteroskedasticity-identified "war factor" raises oil and
+  lowers equities, the same ID family this project uses for 1911. The clean answer to *which
+  instrument carries the risk* — **oil** — and the oil lineage 1990 → 2003 → 2022.
+
+**The contemporaneous layer (non-negotiable).** Every modern rung needs a *contemporaneous* voice
+naming what was priced, exactly as the pre-1914 chapters use *Le Temps* / Lansburgh / the Chronicle.
+Map + secured quotes in `docs/modern_contemporaneous_sources.md` (BoE 1991; Rigobon–Sack 2003; St.
+Louis Fed 2022 secured; the *NYT*/*Chronicle*/*Economist* pointers listed for 1941/1948/1950/1956/
+1961/1962). Note: the pre-1914 FRASER Chronicle URL scheme does **not** resolve for 1950 — the
+mid-century Chronicle sits at a different FRASER path.
 
 - **Korea, 1950–51 — the discrimination test *in motion* (promoted to a keystone case).**
   *(Seeded: `docs/modern_korea_1950.md`, real S&P daily.)* The war that *did* move Wall Street —

@@ -1,0 +1,11 @@
+war,date,event,sp500,wti_oil,note
+Gulf War I,1990-08-01,pre-invasion,355.52,21.59,"Baseline"
+Gulf War I,1990-08-02,Iraq invades Kuwait,351.48,23.71,"Oil jumps immediately; the risk goes into the oil price"
+Gulf War I,1990-10-11,oil peak / equity low,295.46,41.07,"WTI ~doubled (+90%); S&P -17%. The war was priced THROUGH oil -- supply-catastrophe premium + recession fear."
+Gulf War I,1991-01-15,eve of Desert Storm,313.73,30.35,"Oil still elevated; S&P depressed on war-risk"
+Gulf War I,1991-01-17,Desert Storm begins,327.97,21.48,"THE INVERSION: S&P +~4% and oil -~29-33% in a day (BoE: 'largest-ever one day decline in oil prices'). Air supremacy from night one removed the supply-catastrophe tail."
+Gulf War I,1991-02-28,ceasefire,367.07,19.28,"S&P above pre-invasion; oil below pre-invasion. The entire premium unwound."
+Iraq War 2003,2003-01-02,new year,909.03,31.97,"Baseline (Rigobon-Sack's window opens)"
+Iraq War 2003,2003-03-11,pre-war low,800.73,36.81,"War-risk peak: S&P -12% from Jan, WTI up to ~$37. Rigobon-Sack's 'war factor' at its height."
+Iraq War 2003,2003-03-19,invasion begins,874.02,30.01,"S&P +9% off the low; WTI -$7. Same inversion as 1991 -- premium resolves as the war starts and goes fast."
+Iraq War 2003,2003-04-09,Baghdad falls,865.99,28.93,"Oil below pre-war; equities holding the rally"
