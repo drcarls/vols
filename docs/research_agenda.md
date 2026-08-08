@@ -128,3 +128,29 @@ market **discriminated** (general-war only) and the premium was **small** — su
 **Pitch:** *"Kirshner showed bankers wanted peace; this book shows what the market actually priced —
 when it flinched and when it didn't, why the caution was selective and modest, when it was strategy
 misread as finance, and when finance was the weapon rather than the dove."*
+
+## The three faces of finance in war (the friendly amendment to Kirshner)
+
+Kirshner gives finance one face — the **dove**. Agadir alone shows it has three, two of them
+in the *same* crisis:
+
+1. **The dove (Kirshner).** The financial community's war-aversion pressing its own government
+   for caution. *Agadir 1911:* the Deutsche Bank pressing Kiderlen's Foreign Office for calm as
+   the Berlin Bourse buckled.
+2. **The weapon wielded by bankers (private).** Private financial actors using capital flows
+   offensively. *Agadir 1911:* **French banks withdrawing their Berlin balances** (Lansburgh;
+   the mark driven to its gold point in Paris in our trace), stressing the German banks and
+   feeding the panic that helped push Germany to climb down. The same crisis shows German
+   bankers as doves and **French bankers as a weapon** — finance's role depends on *whose*
+   money and *which way* it flows.
+3. **The weapon wielded by the state.** Governments weaponizing finance. *Ruhr/reparations
+   1923, the 1941 asset freeze, Suez 1956, 2022.*
+
+**The discipline that keeps face #2 honest — effect vs. intent.** Our sources document the
+*effect* (French repatriation stressed Berlin, contributing to the retreat); a *deliberate*
+offensive squeeze — coordinated, intended as pressure — is the stronger claim, because
+defensive capital flight leaves the identical footprint. France's 1913 practice of gating the
+Paris bourse to German borrowers and tying Russian loans to strategic railways is the clearer
+proof that French finance *could* be wielded deliberately; whether Agadir 1911 was already that
+or just prudent flight with a strategic dividend is the open question — and the honest way to
+frame it. **The dove and the talon can be the same bird, and often the same crisis.**
