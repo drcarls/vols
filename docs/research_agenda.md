@@ -98,8 +98,17 @@ These are where finance was arguably the *binding* thing, so they test the causa
   turning point), but the guns-and-butter inflation, the **March-1968 London Gold Pool
   collapse**, and the strain that killed Bretton Woods.
 - **Boer War, 1899–1902** (Consols; British war finance); **Anschluss / Prague, 1938–39**
-  (neutral-market bond prices); **Korea, 1950** (the Wall Street "war scare"); **the Gulf Wars**
-  (the oil-and-equity "war premium"). Useful control/comparison points.
+  (neutral-market bond prices); **the Gulf Wars** (the oil-and-equity "war premium"). Useful
+  control/comparison points.
+
+- **Korea, 1950–51 — the discrimination test *in motion* (promoted to a keystone case).**
+  *(Seeded: `docs/modern_korea_1950.md`, real S&P daily.)* The war that *did* move Wall Street —
+  and why proves the rule. The market broke **−13%** on the June invasion (feared as the opening of
+  **WWIII**), fully **recovered past pre-invasion after Inchon** (contained), broke **−6.5% again**
+  when **China intervened** (general-war fear returned, Truman's atomic remark), then made **new
+  highs** as the war stayed **limited**. The *same war repriced up and down* with the general-war
+  probability — discrimination shown *happening*, on one continuous series. The priceable end of
+  the general-war rung (vs Cuba's un-priceable top).
 
 ## Practical sequencing
 
