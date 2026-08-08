@@ -91,10 +91,40 @@ These are where finance was arguably the *binding* thing, so they test the causa
 - **Sharpest contrast:** **Ruhr 1923** and **Suez 1956** to anchor the finance-as-weapon end
   of the exposure→lever→constraint spectrum, keeping the causal discipline honest.
 
-## Positioning (overlap discipline)
+## Positioning against Kirshner, *Appeasing Bankers* (Princeton, 2007)
 
-What is scarce is not the events but the **discipline applied to them**: the press-triangulation,
-the general-vs-localized test, and the exposure-vs-constraint rule. Any case a prior book has
-"taken" can still be ours if the contribution is that method and framing rather than the event
-selection. De-conflict a specific prior title case-by-case (tag each entry *clear / adjacent /
-covered*) once the title is fixed.
+Kirshner's cases are the **Spanish–American War, interwar Japan, interwar France, and the US in
+the Cold War**; his thesis is that finance is inherently *war-averse* (bankers are doves who fear
+instability, so states "appease their bankers"). That is a **preferences-and-influence** argument.
+This framework is a **price-signal** argument — what the markets *priced*, in which instrument,
+when — plus a causal discipline. They are complementary, and the four moves keep this book out of
+his shadow:
+
+1. **Confirm** — Agadir 1911 (Deutsche Bank pressing Kiderlen's Foreign Office) is his dove *caught
+   in the act*, from primary sources.
+2. **Measure** — he posits war-aversion; this prices it, and shows it was **modest and selective**.
+3. **Discipline** — the exposure-vs-constraint rule guards against his over-attribution (1905 France
+   was constrained by Russia's *military* fall, not its bankers).
+4. **Extend** — finance as **weapon**, not dove (Ruhr 1923, Suez 1956, the 1941 freeze, 2022) — the
+   face his frame does not cover.
+
+**The hook:** if bankers were *universally* dovish you'd see a premium in every crisis; instead the
+market **discriminated** (general-war only) and the premium was **small** — supporting Kirshner
+(finance is cautious) while **qualifying** him (selectively, modestly).
+
+**Overlap tags for the shortlist above:**
+
+- **Clear** (novel ground — Kirshner doesn't touch it): the pre-1914 continental core (Agadir, the
+  Balkans, **1905 Russia**), Civil War/Erlanger, the 1871 indemnity loan, **Ruhr 1923**, **Suez
+  1956**, Russia–Ukraine, Franco-Prussian, Boer War.
+- **Adjacent** (his frame, but the price lens differentiates): **Munich 1938** (appeasement is his
+  thesis, but his empirics are France/Japan, *not Britain* — a price-side Munich is open);
+  **Berlin '61 / Cuba '62** and **Vietnam–gold** (US Cold War is his, but "markets can't price a
+  catastrophe they won't survive to collect" is a *pricing-limits* claim, not a preference one);
+  **Pearl Harbor via the asset freeze** (his Japan is doves-overridden; this is the *coercion* story).
+- **Covered** (engage, don't re-run on his terms): **Spanish–American War 1898, interwar France,
+  interwar Japan** — cite him.
+
+**Pitch:** *"Kirshner showed bankers wanted peace; this book shows what the market actually priced —
+when it flinched and when it didn't, why the caution was selective and modest, when it was strategy
+misread as finance, and when finance was the weapon rather than the dove."*
