@@ -55,6 +55,36 @@ held at **3%** throughout. That matches our Neal-Weidenmier result (Paris carrie
 largest positive deseasonalized bump at the Sept–Oct climax) and answers cause-vs-cover
 from the French side: *Le Temps* repeatedly names the political crisis as the driver.
 
+### France as Germany's creditor — closing the loop
+
+Lansburgh's German-side claim was that **French creditors withdrew their balances from
+Berlin**, stripping the German banks (see `lansburgh_die_bank_autumn1911.md`). The
+French-side footprint:
+
+- **The great Berlin banks in distress, from Paris's Berlin correspondent — 30 Sept 1911
+  ("Déclarations rassurantes à Berlin"):**
+  > *"Berlin, 29 septembre. Les directeurs des grandes banques de Berlin ont reçu ce
+  > matin du ministère des affaires étrangères des assurances optimistes au sujet de la
+  > marche des négociations franco-allemandes."*
+  The directors of the great Berlin banks sought and got Foreign-Office reassurance on
+  29 September — **exactly the episode Lansburgh describes from the German side** (Deutsche
+  Bank pressing the *Auswärtiges Amt* for a calming declaration at end-September, driven
+  by the deposit/withdrawal drain). Two independent sources, the same event.
+- The Paris market's own tightening (the ~5% *loyer de l'argent*, the 3 July selloff)
+  is the near-side of the same flow: French money pulling home from Berlin as the crisis
+  peaked.
+
+**What could not be closed here (stated plainly):**
+- **Raffalovich's *Le Marché financier* is on Gallica only for 1896–1901 and 1910** — the
+  **1911–12 volume that would carry the Agadir retrospective is not digitized there**, so
+  his analytical account of the French withdrawal could not be pulled.
+- *Le Temps*'s **daily** bulletin carries no explicit "nous avons rapatrié nos fonds de
+  Berlin" sentence; the withdrawal is documented from the German side and corroborated by
+  the Berlin-distress dispatch above. The direct quantitative French footprint — the
+  **mark weakening in the Paris exchange** as balances were repatriated — is the natural
+  next pull (Le Temps's *Changes* table), and an analytical French statement would sit in
+  *L'Économiste français* (Leroy-Beaulieu) rather than the daily.
+
 ## Austria — the Vienna market through the Balkan Wars (*Neue Freie Presse*, 1912)
 
 The Vienna question the London-based *Chronicle* couldn't answer (it quoted only a bare
