@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="410" viewBox="0 0 720 410" font-family="Georgia,serif">
+<rect width="720" height="410" fill="#f6f4ef"/>
+<text x="58" y="26" font-size="15" font-weight="bold" fill="#1b1e26">French savers' war risk in 1905 was Russian: the Consolide on the Paris Bourse</text>
+<text x="58" y="43" font-size="11" fill="#59606e">Russian Consolidated 4%, Le Temps. Driven by the REVOLUTION, not the war: peace rallies it, the December uprising crashes it.</text>
+<line x1="58" y1="302.8" x2="692" y2="302.8" stroke="#e3ded3"/>
+<text x="52" y="305.8" font-size="9.5" fill="#59606e" text-anchor="end">80</text>
+<line x1="58" y1="234.8" x2="692" y2="234.8" stroke="#e3ded3"/>
+<text x="52" y="237.8" font-size="9.5" fill="#59606e" text-anchor="end">85</text>
+<line x1="58" y1="166.8" x2="692" y2="166.8" stroke="#e3ded3"/>
+<text x="52" y="169.8" font-size="9.5" fill="#59606e" text-anchor="end">90</text>
+<line x1="58" y1="98.8" x2="692" y2="98.8" stroke="#e3ded3"/>
+<text x="52" y="101.8" font-size="9.5" fill="#59606e" text-anchor="end">95</text>
+<polyline points="58.0,214.4 137.2,203.5 216.5,202.2 295.8,200.8 375.0,198.1 454.2,90.6 533.5,150.5 612.8,287.8 692.0,234.8" fill="none" stroke="#8a3b2e" stroke-width="2"/>
+<circle cx="58.0" cy="214.4" r="3.3" fill="#8a3b2e"/>
+<text x="58.0" y="346" font-size="9" fill="#333" text-anchor="middle">24 Jan</text>
+<text x="58.0" y="205.4" font-size="8.5" fill="#2f4b7c" text-anchor="middle">Bloody Sunday</text>
+<circle cx="137.2" cy="203.5" r="3.3" fill="#8a3b2e"/>
+<text x="137.2" y="346" font-size="9" fill="#333" text-anchor="middle">15 Mar</text>
+<circle cx="216.5" cy="202.2" r="3.3" fill="#8a3b2e"/>
+<text x="216.5" y="346" font-size="9" fill="#333" text-anchor="middle">2 May</text>
+<circle cx="295.8" cy="200.8" r="3.3" fill="#8a3b2e"/>
+<text x="295.8" y="346" font-size="9" fill="#333" text-anchor="middle">31 May</text>
+<text x="295.8" y="191.8" font-size="8.5" fill="#2f4b7c" text-anchor="middle">Tsushima</text>
+<circle cx="375.0" cy="198.1" r="3.3" fill="#8a3b2e"/>
+<text x="375.0" y="346" font-size="9" fill="#333" text-anchor="middle">4 Jul</text>
+<circle cx="454.2" cy="90.6" r="3.3" fill="#8a3b2e"/>
+<text x="454.2" y="346" font-size="9" fill="#333" text-anchor="middle">6 Sep</text>
+<text x="454.2" y="81.6" font-size="8.5" fill="#2f4b7c" text-anchor="middle">Portsmouth peace</text>
+<circle cx="533.5" cy="150.5" r="3.3" fill="#8a3b2e"/>
+<text x="533.5" y="346" font-size="9" fill="#333" text-anchor="middle">1 Nov</text>
+<text x="533.5" y="141.5" font-size="8.5" fill="#2f4b7c" text-anchor="middle">Oct Manifesto</text>
+<circle cx="612.8" cy="287.8" r="3.3" fill="#8a3b2e"/>
+<text x="612.8" y="346" font-size="9" fill="#333" text-anchor="middle">5 Dec</text>
+<text x="612.8" y="278.8" font-size="8.5" fill="#2f4b7c" text-anchor="middle">Dec uprising</text>
+<circle cx="692.0" cy="234.8" r="3.3" fill="#8a3b2e"/>
+<text x="692.0" y="346" font-size="9" fill="#333" text-anchor="middle">2 Jan'06</text>
+</svg>

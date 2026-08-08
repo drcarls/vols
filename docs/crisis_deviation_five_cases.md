@@ -80,6 +80,15 @@ outright:
   considérables qu'on s'était créées pour souscrire à **l'emprunt russe**"* — cash built up
   to subscribe the Russian loan (managed in Paris by Raffalovich, Russia's financial agent).
 
+**The series** (`war_premia/data/french_russian_bonds_1905.csv`, chart
+`…/results/french_russian_bonds_1905.svg`) shows the Russian Consolidé on the Paris Bourse
+was a barometer of the **Revolution, not the war**: ~87 through spring, the 3% 1891 knocked
+to **69** at Bloody Sunday, **barely dented by Tsushima** (already priced), rallied to
+**~95.6 on the Portsmouth peace** (Sept), then **crashed to ~81 in the December Moscow
+uprising**, recovering to ~85 by January 1906 as order returned and the great loan loomed.
+The instrument that carried France's strategic risk that year moved on Russian *domestic
+collapse*, not battles — and not on Morocco at all.
+
 So 1905 is not a quiet year mis-read as calm; it is a year whose real French financial
 event was **Russian sovereign risk in the bond market**, invisible to a money-market
 deviation test and unrelated to Morocco. Two lessons for the manuscript: (1) the Tangier
