@@ -143,14 +143,24 @@ in the *same* crisis:
    feeding the panic that helped push Germany to climb down. The same crisis shows German
    bankers as doves and **French bankers as a weapon** — finance's role depends on *whose*
    money and *which way* it flows.
-3. **The weapon wielded by the state.** Governments weaponizing finance. *Ruhr/reparations
-   1923, the 1941 asset freeze, Suez 1956, 2022.*
+3. **The weapon wielded by the state.** Governments weaponizing finance — and it cuts two
+   ways:
+   - *Coercive (the negative edge):* withhold, freeze, squeeze. *Ruhr/reparations 1923, the
+     1941 asset freeze, Suez 1956, 2022.* (Face #2 is the private version of this edge —
+     the French withdrawal from Berlin, 1911.)
+   - *Inductive (the positive edge — "buying the outcome"):* lend or subsidize to purchase
+     an ally's alignment. ***France buying the outcome in 1906*** — the great Russian loan
+     floated on the Paris market as (and when) Russia backed France at Algeciras. Finance
+     as carrot, not stick; the mirror image of the squeeze.
 
-**The discipline that keeps face #2 honest — effect vs. intent.** Our sources document the
-*effect* (French repatriation stressed Berlin, contributing to the retreat); a *deliberate*
-offensive squeeze — coordinated, intended as pressure — is the stronger claim, because
-defensive capital flight leaves the identical footprint. France's 1913 practice of gating the
-Paris bourse to German borrowers and tying Russian loans to strategic railways is the clearer
-proof that French finance *could* be wielded deliberately; whether Agadir 1911 was already that
-or just prudent flight with a strategic dividend is the open question — and the honest way to
-frame it. **The dove and the talon can be the same bird, and often the same crisis.**
+**The discipline that keeps the weapon claims honest — effect vs. intent.** For the *squeeze*
+(1911): our sources document the *effect* (French repatriation stressed Berlin, contributing
+to the retreat); a *deliberate* coordinated squeeze is the stronger claim, because defensive
+capital flight leaves the identical footprint. France's 1913 practice of gating the Paris
+bourse to German borrowers and tying Russian loans to strategic railways is the clearer proof
+that French finance *could* be wielded deliberately. For the *purchase* (1906): the loan and
+Russia's Algeciras support are both documented, but the *quid pro quo* is **inferred from the
+timing**, not from a signed bargain — so write "France floated the loan a desperate Russia
+needed as Russia backed it at Algeciras," not "France bought Russia's vote." Both edges carry
+the same rule: **document the effect; flag the intent.** The dove and the talon can be the
+same bird, and often the same crisis.
