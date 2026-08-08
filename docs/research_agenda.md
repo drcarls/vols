@@ -59,7 +59,11 @@ These are where finance was arguably the *binding* thing, so they test the causa
   Japan to war. Suez/2022 lineage.
 - **Russia–Ukraine, 2014 & 2022 — the modern apotheosis.** Reserve freeze, SWIFT expulsion,
   CDS blow-out, the ruble's collapse-and-capital-controls rebound. Shows the framework scaling
-  from Fraktur OCR to real-time CDS; finance as weapon in full.
+  from Fraktur OCR to real-time CDS; finance as weapon in full. *(Seeded:
+  `docs/modern_2022_russia_ukraine.md` — the discrimination test runs live on FRED. Western
+  equity closed **up** on invasion day and VIX peaked at just 36; the war priced through the
+  **energy channel** (Brent +34%), not as systemic risk, while the ruble/MOEX/Russian sovereign
+  took the violence and the G7 froze ~$300bn of reserves — Falklands pattern at sanctions scale.)*
 
 ## Tier 3 — the nuclear option (the general-war-probability extreme)
 
