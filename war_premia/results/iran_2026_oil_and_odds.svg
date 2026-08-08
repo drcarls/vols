@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="790" height="420" viewBox="0 0 790 420" font-family="Georgia,serif">
+<rect width="790" height="420" fill="#f6f4ef"/>
+<text x="52" y="24" font-size="15" font-weight="bold" fill="#1b1e26">Iran 2026: the tail materialized - Hormuz shut, oil +100%, and the odds priced the reopening</text>
+<text x="52" y="41" font-size="11" fill="#59606e">WTI crude daily (FRED), Jan-Aug 2026, with contemporaneous prediction-market odds (Polymarket/Kalshi).</text>
+<line x1="205.5" y1="80" x2="205.5" y2="320" stroke="#8a3b2e" stroke-dasharray="4,3" opacity="0.75"/>
+<text x="205.5" y="62" font-size="9.3" fill="#8a3b2e" text-anchor="middle" font-weight="bold">US-Israel strike Iran</text>
+<line x1="379.2" y1="80" x2="379.2" y2="320" stroke="#8a3b2e" stroke-dasharray="4,3" opacity="0.75"/>
+<text x="379.2" y="62" font-size="9.3" fill="#8a3b2e" text-anchor="middle" font-weight="bold">Iran shuts Hormuz</text>
+<line x1="570.8" y1="80" x2="570.8" y2="320" stroke="#2f4b7c" stroke-dasharray="4,3" opacity="0.75"/>
+<text x="570.8" y="62" font-size="9.3" fill="#2f4b7c" text-anchor="middle" font-weight="bold">US strike pause</text>
+<polyline points="54.0,301.8 58.5,298.7 62.9,302.6 67.4,306.0 71.8,299.9 76.3,295.7 80.7,294.2 85.2,289.1 89.6,285.6 94.1,295.1 98.6,294.1 103.0,291.0 107.5,290.7 111.9,294.7 116.4,289.6 120.8,290.4 125.3,284.9 129.7,282.4 134.2,275.3 138.6,276.3 143.1,286.4 147.6,282.9 152.0,276.1 156.5,281.9 160.9,278.8 165.4,276.2 169.8,277.3 174.3,275.2 178.7,281.3 183.2,281.4 187.7,283.2 192.1,273.4 196.6,268.7 201.0,268.6 205.5,269.8 209.9,272.4 214.4,273.5 218.8,274.2 223.3,267.7 227.8,253.1 232.2,241.4 236.7,241.0 241.1,219.0 245.6,184.3 250.0,170.8 254.5,209.0 258.9,198.2 263.4,167.4 267.8,157.4 272.3,175.2 276.8,166.0 281.2,165.6 285.7,165.6 290.1,156.5 294.6,189.4 299.0,175.9 303.5,181.7 307.9,165.4 312.4,147.6 316.9,135.6 321.3,142.0 325.8,145.4 330.2,105.7 334.7,103.0 339.1,101.0 343.6,165.4 348.0,153.4 352.5,157.8 357.0,149.5 361.4,176.3 365.9,176.4 370.3,164.4 374.8,201.3 379.2,183.3 383.7,174.3 388.1,170.4 392.6,154.6 397.0,157.6 401.5,152.4 406.0,140.0 410.4,115.4 414.9,121.8 419.3,133.2 423.8,117.9 428.2,132.2 432.7,156.4 437.1,157.7 441.6,156.0 446.1,146.6 450.5,131.8 455.0,136.2 459.4,135.7 463.9,120.6 468.3,109.2 472.8,109.7 477.2,146.1 481.7,151.3 486.2,150.8 490.6,160.3 495.1,178.8 499.5,177.8 504.0,183.0 508.4,166.2 512.9,160.9 517.3,152.9 521.8,163.1 526.2,171.9 530.7,169.5 535.2,180.4 539.6,174.2 544.1,181.5 548.5,191.9 553.0,205.8 557.4,222.7 561.9,219.8 566.3,220.8 570.8,225.7 575.3,240.9 579.7,252.1 584.2,247.7 588.6,256.0 593.1,250.5 597.5,255.1 602.0,257.9 606.4,258.0 610.9,258.4 615.4,251.7 619.8,241.1 624.3,246.0 628.7,248.5 633.2,224.8 637.6,220.5 642.1,219.5 646.5,221.9 651.0,210.0 655.4,206.7 659.9,200.9 664.4,195.2 668.8,176.3 673.3,180.9 677.7,207.2 682.2,218.8 686.6,200.8 691.1,204.0 695.5,200.5 700.0,215.2" fill="none" stroke="#8a3b2e" stroke-width="2.2"/>
+<text x="379" y="75" font-size="8.8" fill="#59606e" text-anchor="middle">Polymarket invasion 36%</text>
+<text x="571" y="75" font-size="8.8" fill="#59606e" text-anchor="middle">Kalshi reopening odds rise</text>
+<text x="303" y="124" font-size="9.5" fill="#8a3b2e" text-anchor="middle" font-style="italic">+52% in March; peak $114</text>
+<text x="629" y="243" font-size="9.5" fill="#2f4b7c" text-anchor="middle" font-style="italic">reopening priced -&gt; oil falls</text>
+<text x="48" y="295" font-size="9" fill="#59606e" text-anchor="end">$60</text>
+<line x1="54" y1="292.0" x2="700" y2="292.0" stroke="#e8e3d8"/>
+<text x="48" y="243" font-size="9" fill="#59606e" text-anchor="end">$75</text>
+<line x1="54" y1="239.5" x2="700" y2="239.5" stroke="#e8e3d8"/>
+<text x="48" y="190" font-size="9" fill="#59606e" text-anchor="end">$90</text>
+<line x1="54" y1="187.0" x2="700" y2="187.0" stroke="#e8e3d8"/>
+<text x="48" y="138" font-size="9" fill="#59606e" text-anchor="end">$105</text>
+<line x1="54" y1="134.5" x2="700" y2="134.5" stroke="#e8e3d8"/>
+<text x="54" y="338" font-size="9" fill="#333" text-anchor="middle">Jan</text>
+<text x="228" y="338" font-size="9" fill="#333" text-anchor="middle">Mar</text>
+<text x="379" y="338" font-size="9" fill="#333" text-anchor="middle">Hormuz</text>
+<text x="508" y="338" font-size="9" fill="#333" text-anchor="middle">Jun</text>
+<text x="700" y="338" font-size="9" fill="#333" text-anchor="middle">Aug</text>
+<text x="52" y="404" font-size="9" fill="#8f8a7f">Unlike June 2025 (threat, quick unwind), 2026 was an ACTUAL closure -- oil held $100+ for two months. Prediction markets quantified the decision the oil price could not. Source: FRED DCOILWTICO; Polymarket/Kalshi (cited).</text>
+</svg>

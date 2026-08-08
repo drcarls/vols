@@ -108,6 +108,29 @@ Chart: `war_premia/results/iran_2025_oil.svg`. Data: `war_premia/data/iran_2025.
    collect on — so the absence of a premium on nuclear (or arguably climate/AI tail) risk is not
    evidence it is low-probability. Don't outsource existential-risk assessment to prices.
 
+## 4½. The new instrument — prediction markets and the anticipation channel
+
+The book's central distinction is that markets are weak at **anticipation** and strong at
+**resolution**. As of 2026 there is a new instrument that attacks the weak channel head-on:
+**prediction markets** (Polymarket, Kalshi) that price the *political-military decision itself* —
+"will US forces enter Iran," "will Hormuz stay shut 7+ days," "will Kharg Island fall" — in the
+open, with real money. This is the first time the anticipation channel is **directly observable**.
+
+Why it matters: an oil price blends the *probability* of disruption with its *size*, so you could
+never read war-probability off it cleanly. Now you can **decompose** it — read *P(disruption)* off
+the prediction market and *size* off the oil futures curve — and in 2026 the two even move in
+sequence: prediction markets priced the Hormuz **reopening** on the US strike pause and **oil
+followed**. The odds led the price.
+
+But the hierarchy holds, and the book's own discipline applies to the new instrument:
+- Prediction markets are **better forecasters than oil** (finer-grained, faster) but **thin and
+  manipulable**, so the *cried-wolf* caution now attaches to *them*: a moving odds line is not proof.
+- **Resolution still dominates** — the cleanest repricing is still at the taken decision, not the
+  forecast.
+- **Reflexivity is new:** oil traders watch the odds and bettors watch oil, a feedback loop absent
+  in 1914 — it can sharpen discovery or amplify noise. A live research question. *(Full write-up:
+  `docs/modern_iran_2026_prediction_markets.md`.)*
+
 ## 5. On Iran specifically (applying the frame forward)
 
 If the question is *"what will the market tell us about an Iran war?"* — the frame says:

@@ -1,0 +1,9 @@
+date,event,wti_oil,sp500,prediction_market,note
+2026-01-02,pre-crisis,57.21,6858,,"Baseline: oil in the high 50s"
+2026-02-23,US-Israel strikes Iran; war erupts,~62,6976,,"Hostilities erupt late Feb; Strait of Hormuz virtually shut"
+2026-03-25,Hormuz blockade; ~8m bbl/d cut,~100,6882,,"Oil +52% in March (WTI peak $114.58, Brent ~$113); the supply TAIL materialized"
+2026-04-18,Iran fully closes Hormuz; fires on 2 ships,~105,6575,"Polymarket invasion 36%; US-entry-by-Dec-31 ~90% ($115M); Kharg Island 31% to fall ($12M)","Equities DIP (S&P 6575) but treat it as an energy/localized event"
+2026-06-01,sustained disruption then de-escalation,95.96,7600,"Kalshi: normal Hormuz traffic by Sep 1 ~46% ($19.7M)","Oil holds $100+ into May; S&P RECOVERS to new highs -- discrimination"
+2026-06-20,US strike pause,~85,7550,"Prediction markets price Hormuz REOPENING -> signal lower oil","The odds moved first; oil followed"
+2026-07-01,easing,69.74,7483,,"WTI back to ~$70 as reopening priced"
+2026-08-03,partial normalization,81.96,7600,,"Oil ~$82 (still above the $57 January base); S&P at highs"
