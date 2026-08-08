@@ -123,6 +123,32 @@ verification):
   discount-rate move or its exact date. The rate number must come from a rate series
   (Neal–Weidenmier Berlin bank rate) or the *Chronicle*, not from this deposit.
 - **No rate tables.** The deposit is his prose only.
+- **No named individual.** Lansburgh writes only *"dieses erste deutsche Institut"* (the
+  Deutsche Bank) — checked the full article: no *Herr*, no *Direktor*, no personal name.
+
+## Who from Deutsche Bank pressed the Foreign Office? — an honest attribution
+
+The sourced record names the **institution, not a person**: Lansburgh says *the Deutsche
+Bank* pressed the *Auswärtiges Amt* for a calming declaration at end-September 1911; *Le
+Temps* (30 Sep 1911) says *"les directeurs des grandes banques de Berlin"* received the
+government's assurances. No accessible primary source — Lansburgh, *Le Temps*, or the
+secondary historiography searched — names the individual for this specific approach.
+
+- **The overwhelmingly likely man is Arthur von Gwinner** — **Spokesman of Deutsche Bank's
+  Management Board 1910–1919** (so its head in 1911), responsible for international
+  operations and known within the bank as **"the bank's diplomat"** (Deutsche Bank
+  Historical Association). If one director carried the bank's alarm to the Wilhelmstrasse,
+  it was almost certainly Gwinner. But this is **role-based inference, not a documented
+  act** — no source places Gwinner personally at the Foreign Office in that week.
+- **The counterparty** was the Foreign Office of State Secretary **Alfred von
+  Kiderlen-Wächter**, architect of the *Panthersprung*.
+
+**Manuscript rule:** write *"the Deutsche Bank — whose board spokesman and 'diplomat' was
+Arthur von Gwinner — pressed Kiderlen's Foreign Office for reassurance,"* which is exactly
+what the evidence supports. Do **not** write *"Gwinner went to Kiderlen"* as fact; the line
+between the documented institution and the inferred individual is real. Pinning the person
+would need a specialised source (a Deutsche Bank corporate history, or the *Große Politik*
+/ Auswärtiges-Amt files for late September 1911).
 
 ## Bearing on Chapter III — and on our spot-vs-to-arrive reversal
 
