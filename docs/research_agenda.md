@@ -59,7 +59,11 @@ These are where finance was arguably the *binding* thing, so they test the causa
   case, figures flagged [VERIFY]; the matched opposite pole to 1905.)*
 - **Pearl Harbor via the 1941 asset freeze — finance as trigger.** The strong angle is not the
   raid but the **US freeze of Japanese assets + oil embargo (July–Aug 1941)** that helped push
-  Japan to war. Suez/2022 lineage.
+  Japan to war. Suez/2022 lineage. *(Seeded: `docs/modern_pearl_harbor_1941.md`, real S&P daily.
+  The **freeze was invisible in the US tape** (flat); **Pearl Harbor fell only −3.8% day one** —
+  a surprise has no scare to price, and war risk was already half-priced (−10% autumn drift) and
+  survivable. Anchors the **freeze lineage** — 1941 *provoked* war, 1956 *forced a retreat*, 2022
+  *punished without halting* — the same weapon, three outcomes.)*
 - **Russia–Ukraine, 2014 & 2022 — the modern apotheosis.** Reserve freeze, SWIFT expulsion,
   CDS blow-out, the ruble's collapse-and-capital-controls rebound. Shows the framework scaling
   from Fraktur OCR to real-time CDS; finance as weapon in full. *(Seeded:
