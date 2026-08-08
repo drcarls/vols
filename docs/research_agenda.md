@@ -53,7 +53,10 @@ These are where finance was arguably the *binding* thing, so they test the causa
   and German bond series.
 - **Suez, 1956 — the clean constraint case.** The US used the threat to sterling and IMF
   access to *force* Britain's withdrawal. If 1905 is "finance did **not** constrain," Suez is
-  "finance unambiguously **did**" — the deliberate contrast pair.
+  "finance unambiguously **did**" — the deliberate contrast pair. *(Seeded:
+  `docs/modern_suez_1956.md` — the sterling run (~$279m reserve drain) + US denial of IMF access
+  forced the 6 Nov ceasefire; the ~$1.3bn IMF package released only on withdrawal. Documentary
+  case, figures flagged [VERIFY]; the matched opposite pole to 1905.)*
 - **Pearl Harbor via the 1941 asset freeze — finance as trigger.** The strong angle is not the
   raid but the **US freeze of Japanese assets + oil embargo (July–Aug 1941)** that helped push
   Japan to war. Suez/2022 lineage.
@@ -72,7 +75,11 @@ These are where finance was arguably the *binding* thing, so they test the causa
   wolf that nearly wasn't." The recurring — and profound — result is how *little* markets move:
   **you cannot price a catastrophe you will not survive to collect on.** That is the limit of
   the discrimination test — markets price survivable/collectable risks, not existential ones —
-  and it is a strong closing argument, not a null to apologize for.
+  and it is a strong closing argument, not a null to apologize for. *(Seeded:
+  `docs/modern_nuclear_limits.md`, on real S&P daily — **Berlin '61 was flat through the tank
+  standoff**; **Cuba '62's low (23 Oct) came *before* the most dangerous days** and the market
+  rose on 24 Oct as the blockade was enforced, then rallied ~18% into December. The un-priceable
+  top rung of the discrimination ladder.)*
 
 ## Tier 4 — discrimination-test data points & adjacent cases
 
