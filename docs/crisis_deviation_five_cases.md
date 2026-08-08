@@ -61,6 +61,35 @@ Austro-Russian mobilization scare, which *did* tighten Vienna/Berlin and run the
 banks), the Second Balkan War was a **localized** Balkan conflict that never threatened a
 general war.
 
+## German press & the commercial register on 1906 — why they can't corroborate it
+
+The natural check on the Algeciras 1906 bump is the German-language financial press and a
+balance-sheet register. Both come up short, and the *reason* is itself the finding:
+
+- **The specialist financial press did not exist in 1906.** *Die Bank* (Lansburgh) and
+  *Der Österreichische Volkswirt* were **both founded in 1908** — the Zenodo corpus starts
+  in 1908. So the analytical German-language journals we lean on for 1911–14 have **nothing**
+  on 1906; the apparatus post-dates Algeciras by two years.
+- **The daily press treats Morocco as politics, not money.** In the *Neue Freie Presse*
+  issue at the conference climax (17 March 1906), "Algeciras"/"Marokko" **saturate the
+  political pages** (p.4: 6× *Algeciras*, 2× *Marokko*; also p.14) yet are **absent from
+  the finance/Börse pages**. The money-market coverage does not attribute conditions to the
+  conference. (The 1906 finance OCR is Fraktur and partial, so this is the presence/absence
+  pattern, not a full transcription — but it is clear.) That fits the detrended reading:
+  the 1906 tightening reads as the **pre-1907 cyclical stringency**, not a Moroccan
+  war-risk premium.
+- **The commercial register is not machine-accessible here.** *Compass* (the Habsburg
+  balance-sheet register) is catalogued but yields no OCR/images via ANNO — the same wall
+  we hit for *Der Österreichische Volkswirt*; the German registers (*Saling's*, the
+  *Handbuch der deutschen Aktiengesellschaften*, the *Handelsregister* in the
+  *Reichsanzeiger*) aren't cleanly reachable either. The only register-type data visible is
+  the weekly bank returns printed in the press, which the partial 1906 OCR didn't surrender.
+
+**Net:** the 1906 Algeciras bump **cannot be corroborated** from the specialist press (it
+didn't exist) or a machine-readable register (not accessible), and the daily press files
+Morocco under politics, not finance. So 1906 stays what the detrend already made it — a
+**small, cyclically-confounded** signal, not a demonstrated war-risk premium.
+
 ## The pattern
 
 After detrending and the press check, the crises sort by whether they threatened a
