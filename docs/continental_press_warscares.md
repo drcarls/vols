@@ -74,6 +74,36 @@ French-side footprint:
   is the near-side of the same flow: French money pulling home from Berlin as the crisis
   peaked.
 
+**The quantitative capstone — the mark falls to the gold point, then recovers.** The
+direct market footprint of the repatriation is the Paris quotation of the mark (Le Temps
+*Changes* table, francs per 100 marks; par ≈ 123.46, lower gold point ≈ 122.8). It traces
+the crisis exactly (`war_premia/data/mark_franc_agadir_1911.csv`, raw OCR kept for
+verification):
+
+| Date | Mark (FF/100) | |
+|---|---|---|
+| 5 Aug 1911 | 123.69 | at par |
+| 2 Sep | 123.50 | at par |
+| 16 Sep | 122.75 | **at the lower gold point** |
+| 14 Oct | 122.88 | weak |
+| 21 Oct | 122.69 | **weakest — at/below the gold point** |
+| 11 Nov | 123.13 | recovering (the convention was 4 Nov) |
+| 25 Nov | 123.38 | back near par |
+
+The mark slid from par to the **gold-export point** in Paris as Agadir peaked
+(Sept–Oct) and recovered to par after the **4 November** Franco-German convention — the
+signature of French balances being pulled home from Berlin and the pressure releasing on
+resolution. It sat *at* the gold point but was held there: Germany defended (the
+Reichsbank rate rise and the rediscount squeeze Lansburgh documents), which fits his boast
+that the French balances were repaid *"ohne… Exporte von Gold nach Frankreich."* So three
+independent French-side traces — the 3 July selloff, the ~5% *loyer de l'argent*, and the
+mark at the gold point — all corroborate the German-side withdrawal story. Chart:
+`war_premia/results/mark_franc_agadir_1911.svg`.
+
+*(OCR caveat: the columnar Changes table defeated clean extraction on several dates; the
+seven values above parsed cleanly and are kept with their raw OCR, but verify against the
+page images.)*
+
 **What could not be closed here (stated plainly):**
 - **Raffalovich's *Le Marché financier* is on Gallica only for 1896–1901 and 1910** — the
   **1911–12 volume that would carry the Agadir retrospective is not digitized there**, so
