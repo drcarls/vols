@@ -80,6 +80,14 @@ These are where finance was arguably the *binding* thing, so they test the causa
   standoff**; **Cuba '62's low (23 Oct) came *before* the most dangerous days** and the market
   rose on 24 Oct as the blockade was enforced, then rallied ~18% into December. The un-priceable
   top rung of the discrimination ladder.)*
+- **Berlin Airlift, 1948–49 — discrimination *without* the nuclear confound.** *(Seeded:
+  `docs/modern_berlin_airlift_1948.md`, real S&P daily.)* A prolonged US–USSR standoff but
+  **pre-nuclear-parity** (USSR tests only Aug 1949), so *priceable* — and the market **rallied
+  +21% through the war scare**, **shrugged at the blockade (−1%)**, and gave **no relief rally when
+  it lifted** (the −13% airlift-period slide was the 1948–49 recession + the Truman upset, not
+  Berlin). The missing relief rally is the framework's cleanest diagnostic — resolution rallies
+  only where the war was *priced* (Munich, Agadir) — so **1948 vs 1962 is the pair that separates
+  discrimination from un-priceability** (same calm tape, two different reasons).
 
 ## Tier 4 — discrimination-test data points & adjacent cases
 
