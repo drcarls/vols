@@ -85,7 +85,9 @@ These are where finance was arguably the *binding* thing, so they test the causa
 ## Practical sequencing
 
 - **Cheapest first:** the **1871 indemnity loan** and a **Franco-Prussian rente** trace reuse
-  the Le Temps/Gallica pipeline verbatim — a near-drop-in extension.
+  the Le Temps/Gallica pipeline verbatim — a near-drop-in extension. *(Seeded: reconnaissance
+  stub in `docs/prototype_1871_indemnity_loan.md` — the 2-billion tranche came ~2½× covered,
+  Le Temps' own commentary, June–July 1871.)*
 - **Highest payoff:** **Munich 1938** (best data, direct thesis replay) and the **Erlanger
   bonds** (the bond-barometer structure the *fonds russes* opened).
 - **Sharpest contrast:** **Ruhr 1923** and **Suez 1956** to anchor the finance-as-weapon end

@@ -1,0 +1,6 @@
+date,item,value_francs,note,source_quote
+1871-06-27,amount_offered,2000000000,"The first Thiers indemnity loan: a 5% rente, 2 billion fr nominal","""l'Etat avait demandé 2 milliards a la France"" (Le Temps, 2 Jul 1871)"
+1871-06-30,subscriptions_reported,4500000000,"Reported total climbing past what was first announced [OCR-VERIFY]","""4 milliards 500 millions, et tout n'etait pas encore completement connu"""
+1871-06-30,paris_share,3500000000,"Paris alone >3/4 of the total [OCR-VERIFY]","""Paris... y figure pour plus des trois quarts, 3 milliards 500 millions"""
+1871-07-01,subscriptions_reported,5000000000,"Near 5 billion in a single day [OCR-VERIFY]","""nous atteignons pres de 5 milliards en un seul jour"""
+1871-07-02,oversubscription_ratio,2.5,"~2.5x covered: 2bn asked, ~5bn offered","""la France lui avait repondu par une offre de pres de 5 milliards"""

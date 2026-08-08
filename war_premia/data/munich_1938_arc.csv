@@ -1,0 +1,5 @@
+date,phase,driver,market_reaction,quote_gloss,quantitative_anchor
+1938-09-17,build,Chamberlain's abrupt return from Berchtesgaden; Henlein proclamation,down,"""déception évidente"" — evident disappointment; the Berchtesgaden talk had ""fait apparaître des difficultés sérieuses"" and Henlein's proclamation revived fears",
+1938-09-28,trough/turn,Hitler's Sportpalast speech (27 Sep) parsed overnight,calmer_but_irregular,"""plus calme, quoique très irrégulière"" — the market judged the speech ""ne contenait rien d'irréparable,"" leaving hope of ""une solution pacifique du problème des Sudètes""",
+1938-09-30,relief_rally,Munich Agreement signed in the early hours of 30 Sep,sharp_up,"""a manifesté avec éclat un optimisme"" that ""jamais complètement abandonné""; the franc rallied on the accord",FX: GBP 178.90->178.51 fr; USD 38.90->37.55 fr [OCR-VERIFY]
+1938-10-08,settle,Post-Munich calm; awaiting Daladier's financial measures,slightly_soft,"""séance calme... la plupart des valeurs ont légèrement fléchi""; the market ""se conformant aux recommandations de M. Daladier""",
