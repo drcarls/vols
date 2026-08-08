@@ -5,6 +5,18 @@ in 1905, then French capital became the **lever** that turned weakness into a 19
 Both ends are documented in *Le Temps* (Gallica ALTO OCR; figures/quotes verify against
 the page images).
 
+> **Causal caution (read before using any of this).** The 1905 constraint on France was
+> **military-strategic, not financial**: with Russia crushed at Mukden/Tsushima and in
+> revolution, France had no usable ally against Germany and so could not stand firm over
+> Morocco. Finance did **not** tie France's hands here — the *fonds russes* crash is a
+> **symptom** of Russia's condition, not the cause of the retreat, and *Le Temps* blames
+> the Fez failure and its European backlash, not bondholders. Finance does real causal work
+> only in the **1906 lever** (creditor power over a desperate Russia), which shaped the
+> *recovery*, not the paralysis — and even that quid-pro-quo is inferred from timing. So do
+> **not** write "finance constrained France." The defensible claim is narrower: *France's
+> diplomacy was hostage to its ally's military fortunes; finance was the alliance's
+> substrate, a 1905 casualty, and the 1906 instrument of leverage.*
+
 ## The retreat — Delcassé forced out (Le Temps, 7 June 1905)
 
 With Russia — France's continental counterweight — crushed by Japan and convulsed by
@@ -60,9 +72,12 @@ the alliance.
   Russia becomes leverage → the loan floated at the Algeciras close → Germany isolated,
   the Entente hardened, Russia drawn closer (toward the 1907 Anglo-Russian Entente).
 
-France's strategic risk in this period lived in the **sovereign-bond market** (French
-holdings of Russian debt), not the money market — which is why the Tangier money-market
-test read null, and why the story has to be told through the *fonds russes* and the loan.
+France's *strategic* risk in this period was the loss of its ally's **military** value; its
+*financial* exposure to that crisis lived in the **sovereign-bond market** (French holdings
+of Russian debt), not the money market — which is why the Tangier money-market test read
+null, and why the financial side of the story has to be told through the *fonds russes* and
+the loan. The two are linked but distinct: the bond market measures the exposure, not the
+constraint.
 
 ## Sources
 
