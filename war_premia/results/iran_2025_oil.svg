@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="400" viewBox="0 0 760 400" font-family="Georgia,serif">
+<rect width="760" height="400" fill="#f6f4ef"/>
+<text x="52" y="26" font-size="15" font-weight="bold" fill="#1b1e26">Iran, June 2025: the barrel priced the war, then unwound below where it began</text>
+<text x="52" y="43" font-size="11" fill="#59606e">WTI crude, daily (FRED). Oil carried the entire signal; the S&amp;P made new highs throughout.</text>
+<line x1="277.6" y1="74" x2="277.6" y2="315" stroke="#59606e" stroke-dasharray="4,3" opacity="0.75"/>
+<text x="277.6" y="70" font-size="9.3" fill="#59606e" text-anchor="middle" font-weight="bold">Israel strikes</text>
+<line x1="401.8" y1="74" x2="401.8" y2="315" stroke="#8a3b2e" stroke-dasharray="4,3" opacity="0.75"/>
+<text x="401.8" y="70" font-size="9.3" fill="#8a3b2e" text-anchor="middle" font-weight="bold">US 'Midnight Hammer'</text>
+<line x1="426.7" y1="74" x2="426.7" y2="315" stroke="#2f4b7c" stroke-dasharray="4,3" opacity="0.75"/>
+<text x="426.7" y="70" font-size="9.3" fill="#2f4b7c" text-anchor="middle" font-weight="bold">ceasefire</text>
+<polyline points="54.0,291.9 78.8,279.1 103.7,287.2 128.5,279.7 153.4,260.5 178.2,249.9 203.1,255.0 227.9,204.8 252.8,207.6 277.6,128.8 302.5,149.0 327.3,101.3 352.2,97.1 377.0,99.8 401.8,197.9 426.7,258.2 451.5,250.0 476.4,242.9 501.2,239.6 526.1,245.1 550.9,239.9 575.8,208.7 600.6,216.9 625.5,201.0 650.3,195.0 675.2,194.0 700.0,222.3" fill="none" stroke="#8a3b2e" stroke-width="2.2"/>
+<text x="352" y="89" font-size="9.5" fill="#8a3b2e" text-anchor="middle" font-weight="bold">Hormuz fear: +10%</text>
+<text x="501" y="281" font-size="9.5" fill="#2f4b7c" text-anchor="middle" font-style="italic">response symbolic, strait open -&gt; below pre-crisis</text>
+<text x="48" y="314" font-size="9" fill="#59606e" text-anchor="end">$62</text>
+<line x1="54" y1="311.5" x2="700" y2="311.5" stroke="#e8e3d8"/>
+<text x="48" y="253" font-size="9" fill="#59606e" text-anchor="end">$66</text>
+<line x1="54" y1="249.7" x2="700" y2="249.7" stroke="#e8e3d8"/>
+<text x="48" y="191" font-size="9" fill="#59606e" text-anchor="end">$70</text>
+<line x1="54" y1="188.0" x2="700" y2="188.0" stroke="#e8e3d8"/>
+<text x="48" y="129" font-size="9" fill="#59606e" text-anchor="end">$74</text>
+<line x1="54" y1="126.3" x2="700" y2="126.3" stroke="#e8e3d8"/>
+<text x="54" y="333" font-size="9" fill="#333" text-anchor="middle">Jun 2</text>
+<text x="278" y="333" font-size="9" fill="#333" text-anchor="middle">Israel</text>
+<text x="402" y="333" font-size="9" fill="#333" text-anchor="middle">US</text>
+<text x="551" y="333" font-size="9" fill="#333" text-anchor="middle">Jul 1</text>
+<text x="52" y="382" font-size="9" fill="#8f8a7f">Even the direct US strike sent oil DOWN: what mattered was not "is the US at war" but "will supply be cut" -- and the answer became no. Source: FRED DCOILWTICO.</text>
+</svg>

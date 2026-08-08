@@ -129,6 +129,23 @@ mid-century Chronicle sits at a different FRASER path.
   probability — discrimination shown *happening*, on one continuous series. The priceable end of
   the general-war rung (vs Cuba's un-priceable top).
 
+- **WWII outbreak, 1939–40 — the anticipation failure, purest form.** *(Seeded:
+  `docs/modern_wwii_outbreak_1939_1940.md`.)* The US **rose +21% on the outbreak** (Sept 1939 war
+  boom — the war it could profit from), then **crashed −29%** on the fall of France (May–June 1940 —
+  a systemic threat, and a *surprise* eight Phoney-War months did not price). Same war, repriced as
+  its character changed; the WWII twin of Korea.
+- **Iran, June 2025 — the live oil-instrument case.** *(Seeded: `docs/modern_iran_2025` in
+  synthesis.)* Oil +10% on Hormuz-closure fear, then **below pre-crisis** once the US strike drew a
+  symbolic Iranian response and the strait stayed open; S&P at new highs throughout. The template
+  for reading an Iran war: signal in **oil**, poor at forecasting, fast at resolution.
+
+## The synthesis
+
+The book's conclusion is written up in **`docs/synthesis_and_lessons.md`** — the
+**anticipation-vs-resolution** spine (markets poor at forecasting a war, good at pricing a taken
+decision), how the modern arc replicates and extends the 2005 work, the five lessons for today, and
+the Iran-2025 application.
+
 ## Practical sequencing
 
 - **Cheapest first:** the **1871 indemnity loan** and a **Franco-Prussian rente** trace reuse
