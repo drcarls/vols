@@ -109,6 +109,8 @@ def analyse(smap, treatment=None, baselines=None, win_start=None, win_end=None, 
                 "base_sd": statistics.pstdev(bvals),
                 "dev": treat[w] - bmean,
             })
+        if not weeks:                                # no week with >=2 baseline years
+            continue                                 # (city absent/short in this window)
         devs = [wk["dev"] for wk in weeks]
         pos = max(weeks, key=lambda wk: wk["dev"])   # peak tightening above seasonal
         absmax = max(weeks, key=lambda wk: abs(wk["dev"]))
@@ -141,10 +143,12 @@ def format_table(rows):
             r["base_disp"],
         ))
     out.append("")
-    out.append("Reading: 'peak tightening' is the largest week 1911 sat ABOVE its own")
-    out.append("seasonal norm -- the Agadir-specific signal. 'baseline dispersion' is the")
-    out.append("typical week-to-week scatter of the baseline years: a deviation smaller")
-    out.append("than it is inside normal year-to-year noise.")
+    out.append("Reading: 'peak tightening' is the largest week the treatment year sat ABOVE")
+    out.append("its own seasonal norm. 'baseline dispersion' is the typical week-to-week")
+    out.append("scatter of the baseline years: a deviation smaller than it sits inside normal")
+    out.append("year-to-year noise. NB when the treatment year's cyclical rate LEVEL differs")
+    out.append("from the baselines', the deviation conflates the crisis with that level --")
+    out.append("trust synchronized TIMING over absolute magnitude.")
     return "\n".join(out)
 
 
