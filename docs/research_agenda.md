@@ -115,6 +115,17 @@ his shadow:
 market **discriminated** (general-war only) and the premium was **small** — supporting Kirshner
 (finance is cautious) while **qualifying** him (selectively, modestly).
 
+**Answering the reduction ("this is just finance wanting peace").** The full rebuttal is in
+`docs/answering_the_kirshner_critic.md`. Its spine is two moves: (1) a **falsifiability knife** —
+"finance wanted stability" has to swallow lending (1871), withholding (Berlin 1911), *and* fleeing
+alike, and a hypothesis that predicts every direction of capital flow is a tautology, not a theory;
+what defeats it is the **discrimination nulls** (the market ignored a real war in 1913, stayed
+silent through Bosnia) plus the **state-wielded weapon** cases. (2) The **armorer continuity** —
+even the 1871 "stability" motive fails as dovishness because the same restored French credit became
+the Franco-Russian loan machine aimed at Germany (1906 is that exact move); the stability France
+bought was the platform for the next confrontation, not a vote for peace. Contrast the genuinely
+system-stabilizing **1924 Dawes loans** to see the difference.
+
 **Overlap tags for the shortlist above:**
 
 - **Clear** (novel ground — Kirshner doesn't touch it): the pre-1914 continental core (Agadir, the
