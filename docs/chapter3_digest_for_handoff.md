@@ -109,6 +109,28 @@ timing* (to-arrive above spot). Related manifestations of the same quarter-end f
 
 ---
 
+## Part IV — Lansburgh on the other crises, and on 1914
+
+His coverage is uneven, and the unevenness ranks the episodes the way the money market does.
+
+- **Bosnian crisis (1908–09): near silence.** No 1908–09 article treats the annexation as
+  a financial event (no Bosnien/Annexion/Balkan/Kriegsgefahr; "Kreditkrisen" is a theoretical
+  essay). Matches the easy money of Feb–March 1909 — a clean null.
+- **Balkan Wars (1912–13): a repeat of 1911.** "Spargelder und Kriegsflucht" (late 1912):
+  savers "stürmten zu den Banken und Sparkassen," the Reichsbank — rate *already at 6%*
+  [verify] — near raising again; withdrawals worst in East Prussia, the Chancellor wiring a
+  calming telegram. "Geldklemme" (Jan 1913): continued squeeze, Reichsbank tightening. Same
+  deposit-flight mechanism as autumn 1911.
+- **1914 — cyclical calm, then the London freeze.** Early 1914 ("Krisen-Erreger") the worry
+  is a *downturn*, not war ("seit etwa einem Jahre geht es… sichtbar bergab") — matching that
+  markets didn't price the war in advance. At the outbreak ("Das Geld im Kriege"): "Der
+  Weltkrieg, der lange gefürchtete, ist da." Then **"Die Ausschaltung Londons als Clearinghaus
+  der Welt"** documents, from Berlin, our NY-control result: claims on London "zum erheblichen
+  Teil nicht verwertbar" — the August moratorium (extended), the ban on German/Austrian bills,
+  and doubted acceptance-house solvency froze the bill-on-London system worldwide.
+
+*(Full sourced notes: `docs/lansburgh_other_crises_1914.md`.)*
+
 ## Synthesis — what the chapter can safely say
 
 1. **The crisis was real and severe**, documented from the German side: French
