@@ -150,6 +150,25 @@ tightening**, explicitly tied to the political news, and unwound on resolution. 
 and the Austro-Hungarian Bank's 5→6% march — which the London-centred rate series
 either muffle (Vienna as one number) or, for Paris, register only as a modest bump.
 
+## Causal discipline — applies across the whole 1905–14 arc
+
+The creditor material here (France as **Germany's** creditor in 1911 — the mark/franc
+trace; and, in the companion note, France as **Russia's** creditor in 1905) documents
+**exposure and potential leverage, not automatic constraint.** Hold the same line
+throughout the manuscript:
+
+- A price move (the mark at its gold point, the *fonds russes* falling) is **evidence of
+  exposure** and of the counterparty's condition — a *symptom*, not proof that finance
+  *drove* a decision.
+- Finance becomes causal as a **lever** only where a specific choice can be shown bending
+  to it (e.g. the 1906 Russian loan and Russian support at Algeciras — and even that is
+  inferred from timing, not a documented bargain).
+- The binding constraints in these episodes were **strategic-military** (an ally's
+  collapse) and **money-market/liquidity** (the London freeze), with finance the medium
+  and the instrument, not the dictator. So write "finance was the substrate and the
+  lever," never "finance constrained X," unless a decision demonstrably turned on it.
+  (Full argument: `finance_diplomacy_1905_1906.md`.)
+
 ## Reproduce
 
 ```bash
