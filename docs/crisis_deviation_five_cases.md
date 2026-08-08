@@ -61,6 +61,35 @@ Austro-Russian mobilization scare, which *did* tighten Vienna/Berlin and run the
 banks), the Second Balkan War was a **localized** Balkan conflict that never threatened a
 general war.
 
+## 1905 was Russian, not Moroccan — and it was a *bond* story, not a money-market one
+
+The Tangier "null" needs the right reading. France's financial distress in 1905 was not
+Moroccan — it was **Russian**: France was Russia's creditor, and the Russo-Japanese defeat
+plus the 1905 Revolution battered French-held Russian paper. That is why the *money-market*
+test shows nothing for Tangier — the stress lived in the **bond market** (the *fonds
+russes*), which a discount-rate test cannot see. *Le Temps*'s finance column says it
+outright:
+
+- **Post-Tsushima, 31 May 1905:** *"Les fonds russes sont plus lourds: le 3 % 1891 de
+  73.60 à 73.50; le 4 % 1901 de 88.75 à 88.60…"* [OCR — verify] — Russian bonds weaken on
+  the naval catastrophe (the front page is given over to "le drame de Tsou-Sima").
+- **October Manifesto, 1 Nov 1905:** *"Les autres valeurs, qui avaient été aux séances
+  précédentes influencées par la **baisse des valeurs russes**, se relèvent aujourd'hui
+  avec elles."* The whole Paris list had been dragged by Russian paper and rallied with it
+  on the news of the Tsar's concessions. And the money was Russia-bound: *"…disponibilités
+  considérables qu'on s'était créées pour souscrire à **l'emprunt russe**"* — cash built up
+  to subscribe the Russian loan (managed in Paris by Raffalovich, Russia's financial agent).
+
+So 1905 is not a quiet year mis-read as calm; it is a year whose real French financial
+event was **Russian sovereign risk in the bond market**, invisible to a money-market
+deviation test and unrelated to Morocco. Two lessons for the manuscript: (1) the Tangier
+money-market null is genuine *and* correctly attributed — Morocco was not a Paris financial
+event; (2) the war-risk channel that mattered for France in 1905 ran through **French
+holdings of allied (Russian) debt**, a bond-market/solvency story that belongs in the
+cross-section of sovereign spreads, not the discount-rate series. (This is the French
+mirror of the "France as Germany's creditor" mechanism in 1911 — in 1905 France's exposure
+was to *Russia*.)
+
 ## German press & the commercial register on 1906 — why they can't corroborate it
 
 The natural check on the Algeciras 1906 bump is the German-language financial press and a
