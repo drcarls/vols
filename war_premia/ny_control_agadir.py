@@ -62,39 +62,48 @@ MARKERS = [
 ]
 
 
-def _window(smap, slug, year):
-    """{iso_week: value} for the 1 Jun -- 30 Nov window of `year`."""
-    lo = datetime.date(year, *WIN_START)
-    hi = datetime.date(year, *WIN_END)
+def _window(smap, slug, year, win_start=WIN_START, win_end=WIN_END):
+    """{iso_week: value} for the ``win_start``..``win_end`` window of ``year``."""
+    lo = datetime.date(year, *win_start)
+    hi = datetime.date(year, *win_end)
     return {d.isocalendar()[1]: v for d, v in smap[slug] if lo <= d <= hi}
 
 
-def analyse(smap):
-    """Per city: week-by-week 1911 value, own-seasonal baseline, deviation, dispersion.
+def analyse(smap, treatment=None, baselines=None, win_start=None, win_end=None, cities=None):
+    """Per city: week-by-week treatment value, own-seasonal baseline, deviation, dispersion.
 
-    Alignment is by ISO week (all four cities share the same survey date each week,
-    and the years drift only a few days), so the same calendar week is compared
-    across years. A week is used only where >= 2 baseline years supply a value.
+    Alignment is by ISO week (cities share the same survey date each week, and the years
+    drift only a few days), so the same calendar week is compared across years. A week is
+    used only where >= 2 baseline years supply a value. The five keyword arguments make
+    this reusable for *any* crisis window (see ``crisis_deviation.py``); the defaults
+    reproduce the Agadir-1911 analysis.
     """
-    # representative 1911 date for each iso week (for the x-axis / labels)
-    dates = {
-        d.isocalendar()[1]: d
-        for d, _ in smap["berlin_openmkt"]
-        if datetime.date(1911, *WIN_START) <= d <= datetime.date(1911, *WIN_END)
-    }
+    treatment = TREATMENT_YEAR if treatment is None else treatment
+    baselines = BASELINE_YEARS if baselines is None else tuple(baselines)
+    win_start = WIN_START if win_start is None else win_start
+    win_end = WIN_END if win_end is None else win_end
+    cities = CITIES if cities is None else cities
+    # representative treatment-year date for each iso week (union across the cities, so
+    # every week has a label regardless of which city is listed first)
+    lo, hi = datetime.date(treatment, *win_start), datetime.date(treatment, *win_end)
+    dates = {}
+    for _, slug, _ in cities:
+        for d, _v in smap.get(slug, []):
+            if lo <= d <= hi:
+                dates.setdefault(d.isocalendar()[1], d)
     out = []
-    for label, slug, note in CITIES:
-        treat = _window(smap, slug, TREATMENT_YEAR)
-        base = {y: _window(smap, slug, y) for y in BASELINE_YEARS}
+    for label, slug, note in cities:
+        treat = _window(smap, slug, treatment, win_start, win_end)
+        base = {y: _window(smap, slug, y, win_start, win_end) for y in baselines}
         weeks = []
         for w in sorted(treat):
-            bvals = [base[y][w] for y in BASELINE_YEARS if w in base[y]]
+            bvals = [base[y][w] for y in baselines if w in base[y]]
             if len(bvals) < 2:
                 continue
             bmean = statistics.mean(bvals)
             weeks.append({
                 "week": w,
-                "date": dates[w],
+                "date": dates.get(w),
                 "value": treat[w],
                 "base_mean": bmean,
                 "base_sd": statistics.pstdev(bvals),
@@ -114,8 +123,8 @@ def analyse(smap):
 
 def format_table(rows):
     out = []
-    out.append("New York control for Agadir -- deviation of 1911 from own-seasonal baseline")
-    out.append("(baseline = mean of 1909, 1910, 1912, 1913; 1907 excluded; 1 Jun - 30 Nov)")
+    out.append("Deviation from each city's own seasonal baseline (same calendar weeks across")
+    out.append("the baseline years). Positive tightening = above the city's own seasonal norm.")
     out.append("")
     hdr = "%-10s | %-28s | %-24s | %s" % (
         "city", "peak tightening (dev>0)", "largest deviation (|dev|)", "baseline")

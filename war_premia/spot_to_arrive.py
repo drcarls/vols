@@ -323,7 +323,20 @@ def _svg_crises(rows, path):
     return path
 
 
-def main():
+def main(argv=None):
+    import argparse
+    ap = argparse.ArgumentParser(description="Berlin spot-vs-to-arrive gap (Chronicle-sourced).")
+    ap.add_argument("--year", type=int, help="print only this autumn's weekly Berlin gap trajectory")
+    a = ap.parse_args(argv)
+    if a.year is not None:
+        wk = [r for r in load_weekly() if r["centre"] == "Berlin" and r["year"] == a.year]
+        if not wk:
+            print("no weekly Berlin observations for %d (panel covers 1908-1913)" % a.year)
+            return 0
+        print("Berlin spot-vs-to-arrive gap, %d (to-arrive minus spot, pp):" % a.year)
+        for r in sorted(wk, key=lambda r: r["week"]):
+            print("  %s  %+.3f  (%s)" % (r["week"], r["gap"], r["source_quote"][:60]))
+        return 0
     rows = load()
     weekly = load_weekly()
     print(format_report(rows, weekly))
