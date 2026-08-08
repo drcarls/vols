@@ -23,23 +23,70 @@ absolute magnitude, and read the confounded cases as suggestive, not measured.
 | **4. Second Balkan War, summer 1913** | **strong, synchronized** | London +2.44, Vienna +2.34, Berlin +2.16, Paris +1.87 — **all peaking in the same two weeks (28 Jun / 5 Jul 1913), the war's onset.** The synchronized spike at the event week is a genuine event effect (a mere level shift would be flat-high, not peaked), though the 1913 stringency inflates the absolute size. |
 | **5. July 1914 — pre-Sarajevo only** | **no anticipation** | Peaks fall in **January** (New York +2.31, Amsterdam +1.88, cyclical year-open), and by June every market is at/below norm (Berlin −1.34 on 13 Jun). No war was priced approaching Sarajevo. *The outbreak itself is beyond the data — the NW weekly series ends 1914-06-27* (covered instead by the Chronicle, Lansburgh, and the NFP → 8% Vienna). |
 
+## Detrended — remove the cyclical level, and the war signals shrink to modest
+
+Re-running with `--detrend` (centre each year's window at its own mean, so only the
+within-window *shape* is compared) strips out the rate-level confound. Peak tightening
+above own norm, detrended:
+
+| Crisis | Detrended peaks | Verdict |
+|---|---|---|
+| Algeciras 1906 | Berlin **+0.52** (17 Mar), Paris +0.37, London +0.33 | a small Berlin-led bump survives at the conference climax |
+| Tripolitania 1912 | Genoa +0.64, Berlin +0.72, Vienna +0.62 — **peaks scattered** (Feb, Mar, May) | not synchronized → stays inconclusive |
+| Second Balkan 1913 | London +0.64, Berlin +0.38, Paris +0.25, Vienna +0.16 — peaks at the onset week | timing survives, **magnitude collapses** (raw +2.3 was the 1913 level) |
+| Agadir 1911 (clean baselines) | Berlin +0.64 & Paris +0.60, both 30 Sep | the two protagonists co-move at the climax |
+
+The headline: **once the cyclical level is removed, every pre-war money-market signal is
+modest — roughly +0.3 to +0.7 points.** None is a dramatic squeeze; the large raw numbers
+were the business cycle. What survives is *timing* (synchronization at the event week),
+not magnitude — consistent with the spot-vs-to-arrive reversal, where the war component
+was likewise small once the quarter-end seasonal was controlled.
+
+## Press check — the Second Balkan "spike" was the semester-end, not the war
+
+The detrended Second Balkan signal peaks at 28 Jun / 5 Jul — but so does the **30 June
+semester-end liquidation**. The contemporary press settles which it was. *Le Temps*,
+Paris, **30 June 1913**, at the war's onset:
+
+> *"La liquidation se passe dans les conditions prévues; l'argent, très abondant en face
+> de positions peu nombreuses à reporter, doit se contenter de taux modérés… la
+> spéculation accueille cette constatation avec calme et même indifférence."*
+
+Paris was **calm and indifferent** — money *abundant*, report rate ~2%, and the market met
+the news with "indifférence." (Vienna's detrended signal was likewise tiny, +0.16; NFP
+carried Balkan war news but no Vienna squeeze.) So the late-June bump was the
+**semester-end settlement**, not the Second Balkan War. The great-power money market
+**ignored** it — because, unlike the First Balkan War's winter crisis of 1912 (the
+Austro-Russian mobilization scare, which *did* tighten Vienna/Berlin and run the savings
+banks), the Second Balkan War was a **localized** Balkan conflict that never threatened a
+general war.
+
 ## The pattern
 
-Ranked by money-market bite, the pre-war crises sort cleanly — and not by diplomatic
-temperature:
+After detrending and the press check, the crises sort by whether they threatened a
+**general** (great-power) war — not by diplomatic temperature, and not by whether a war
+was actually being fought:
 
-- **Left no money-market mark:** Tangier 1905, Bosnia 1908–09. Both were serious *war
-  scares* that stayed diplomatic; money stayed easy.
-- **A real, timed money-market event:** the **Second Balkan War** (Jun–Jul 1913,
-  synchronized onset spike) and **Agadir** (autumn 1911, Berlin the idiosyncratic mover —
-  though that turned out to be largely the quarter-end, see `chapter3_digest_for_handoff.md`).
-- **Confounded by the cyclical regime:** Algeciras 1906 (pre-1907 tightening) and
-  Tripolitania 1912 (tight-year vs easy baselines) — suggestive, not clean.
+- **Ignored — no general-war threat:** Tangier 1905 and Bosnia 1908–09 (serious scares
+  that stayed diplomatic; money easy), and — the surprise — the **Second Balkan War
+  1913** (a *localized* Balkan war; Paris explicitly *"calme et indifférence"*). A war
+  being fought did not move the great-power money market when it stayed contained.
+- **Priced, but modestly:** **Agadir 1911** (Berlin + Paris co-moving ~+0.6 detrended at
+  the 30 Sep climax) and the **First Balkan winter crisis 1912** (the Austro-Russian
+  mobilization scare — Vienna/Berlin tightened, savings-bank runs; see
+  `continental_press_warscares.md`). These are the episodes that genuinely risked a
+  general war, and they are the ones the money market reacted to — though even here the
+  reaction is small once the cycle is removed.
+- **Cyclically confounded:** Algeciras 1906 (a small Berlin bump survives) and
+  Tripolitania 1912 (scattered) — suggestive at most.
 - **1914:** priced at nothing until it arrived.
 
-This is the paper's thesis quantified across the whole run: the pre-war crises that
-*"cried war"* mostly did **not** move the money market — until the ones that actually
-tipped toward general war (the Balkan onset, and then 1914) did.
+That is the paper's thesis, sharpened by the whole run and by controlling properly: the
+money market discriminated by the **probability of a general war**, not by war as such or
+by diplomatic noise — it ignored localized wars (Second Balkan) and pure scares (Bosnia)
+alike, and stirred only for the crises that could have gone general (Agadir, the First
+Balkan winter, 1914). And the war component it did price was **modest** — the dramatic
+raw moves were the business cycle.
 
 ## Reproduce
 

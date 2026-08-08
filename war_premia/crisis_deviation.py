@@ -72,6 +72,9 @@ def main(argv=None):
     ap.add_argument("--cities", type=_cities, help="comma-separated NW slugs (or Label:slug)")
     ap.add_argument("--short", default=nc.SHORT, help="path to stinterestrates.xls")
     ap.add_argument("--list", action="store_true", help="list available city slugs and exit")
+    ap.add_argument("--detrend", action="store_true",
+                    help="centre each year's window at its own mean (remove the cyclical "
+                         "rate level; compare only the within-window shape)")
     a = ap.parse_args(argv)
 
     from neal_weidenmier.load import load_short_rates, to_series_map
@@ -83,11 +86,12 @@ def main(argv=None):
 
     win = a.window or (nc.WIN_START, nc.WIN_END)
     rows = nc.analyse(smap, treatment=a.treatment, baselines=a.baselines,
-                      win_start=win[0], win_end=win[1], cities=a.cities)
+                      win_start=win[0], win_end=win[1], cities=a.cities, detrend=a.detrend)
     treatment = a.treatment or nc.TREATMENT_YEAR
     baselines = a.baselines or list(nc.BASELINE_YEARS)
-    print("Seasonal-deviation test -- treatment %d vs baselines %s, window %02d-%02d..%02d-%02d"
-          % (treatment, ",".join(map(str, baselines)), win[0][0], win[0][1], win[1][0], win[1][1]))
+    print("Seasonal-deviation test -- treatment %d vs baselines %s, window %02d-%02d..%02d-%02d%s"
+          % (treatment, ",".join(map(str, baselines)), win[0][0], win[0][1], win[1][0], win[1][1],
+             "  [DETRENDED: level removed]" if a.detrend else ""))
     print(nc.format_table(rows))
     return 0
 

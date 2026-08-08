@@ -69,7 +69,8 @@ def _window(smap, slug, year, win_start=WIN_START, win_end=WIN_END):
     return {d.isocalendar()[1]: v for d, v in smap[slug] if lo <= d <= hi}
 
 
-def analyse(smap, treatment=None, baselines=None, win_start=None, win_end=None, cities=None):
+def analyse(smap, treatment=None, baselines=None, win_start=None, win_end=None, cities=None,
+            detrend=False):
     """Per city: week-by-week treatment value, own-seasonal baseline, deviation, dispersion.
 
     Alignment is by ISO week (cities share the same survey date each week, and the years
@@ -95,6 +96,16 @@ def analyse(smap, treatment=None, baselines=None, win_start=None, win_end=None, 
     for label, slug, note in cities:
         treat = _window(smap, slug, treatment, win_start, win_end)
         base = {y: _window(smap, slug, y, win_start, win_end) for y in baselines}
+        if detrend:
+            # centre each year's window at its own mean, so only the within-window
+            # *shape* is compared -- removes the cyclical rate LEVEL confound.
+            if treat:
+                tm = statistics.mean(treat.values())
+                treat = {w: v - tm for w, v in treat.items()}
+            for y in list(base):
+                if base[y]:
+                    bm = statistics.mean(base[y].values())
+                    base[y] = {w: v - bm for w, v in base[y].items()}
         weeks = []
         for w in sorted(treat):
             bvals = [base[y][w] for y in baselines if w in base[y]]
