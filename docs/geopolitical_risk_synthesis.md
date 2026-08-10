@@ -95,14 +95,25 @@ armor itself lets Oslo anchor the Western system. Watch the GPFG's exclusions an
 universal owner that big moves things at the margin — and read it as the **stabilizing** counterweight
 to the gold/de-dollarization bid, not part of it.
 
-**And the currency trap, because it's a live way to lose money.** Norway became Europe's largest gas
-supplier after 2022, oil stayed elevated — and the krone *weakened* (USD/NOK ~8.3 in 2021 to ~10–11
-in 2023–25). The naive "oil-currency, long the energy shock" trade **failed**, and the framework says
-exactly why: under the fiscal rule, *every krone of petroleum revenue flows into the fund and is spent
-on foreign assets*, so the windfall is recycled abroad by construction and never bids up the krone.
-Norway **sterilizes its own energy-currency beta.** The exposed instrument (gas) went the right way;
-the obvious expression (NOK) was neutralized by the state's own plumbing — a clean case of *read the
-instrument, not the naive proxy.* Data: `war_premia/data/norway_gpfg.csv`.
+**And the currency trap, because it's a live way to lose money.** Yes, people trade NOK as a
+petrocurrency — it sits in the commodity-FX bucket with CAD/AUD and had a positive oil beta
+historically. But that beta **broke down** — weakening after the 2015 oil crash (risk/asset prices
+became the bigger driver) and *spectacularly* in 2022–23: Norway became Europe's largest gas supplier
+with record energy terms-of-trade, and the krone fell to multi-decade lows (USD/NOK ~8.3 in 2021 to
+~10–11 in 2023–25). The naive "oil-currency, long the energy shock" trade **failed**, for reasons that
+are multiple and worth getting right:
+
+- **NOK is the least-liquid G10 currency**, so it trades as a **risk-sentiment / liquidity proxy** —
+  in the 2022 risk-off it was sold regardless of energy (the *primary* driver);
+- **rate differentials** (Norges Bank relatively low-yielding through the cycle);
+- a **transition-risk premium** (the market pricing fading future petroleum revenue / the green shift);
+- and, as a *contributor* not the whole story, the **fund's FX plumbing** — Norges Bank recycling
+  petroleum revenue into the fund's foreign assets, with its *accelerated* FX purchases in autumn 2022
+  adding pressure.
+
+The reco is therefore *stronger*, not weaker: **NOK is a risk/liquidity proxy first and an energy proxy
+a distant second**, so don't use it as a clean gas play. The exposed instrument (gas) went the right
+way; the obvious proxy (NOK) is driven by other things. *Read the instrument, not the naive proxy.*
 
 Strategically, Norwegian gas infrastructure is now *critical European* infrastructure (militarized
 after the Nord Stream sabotage), and Norway is a NATO–Russia Arctic frontline — a small, localized

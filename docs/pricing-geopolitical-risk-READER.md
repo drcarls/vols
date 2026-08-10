@@ -242,14 +242,17 @@ petroleum revenue and spends only the expected real return, a structural, price-
 global equities. It is not a fortress; it is a load-bearing wall of the side that wields the weapon, and
 the stabilizing counterweight to the gold/de-dollarization bid.
 
-**The krone trap, because it is a live way to lose money.** Norway became Europe's largest gas supplier
-after 2022 and oil stayed elevated — yet the krone *weakened* (USD/NOK roughly 8.3 in 2021 to 10–11 in
-2023–25). The naive "oil-currency, long the energy shock" trade failed, and the reason is structural:
-under the fiscal rule every krone of petroleum revenue flows into the fund and is spent on foreign
-assets, so the windfall is recycled abroad by construction and never bids up the krone. Norway
-**sterilizes its own energy-currency beta.** The exposed instrument (gas) went the right way; the
-obvious proxy (NOK) was neutralised by the state's own plumbing — a clean case of *read the instrument,
-not the naive proxy.*
+**The krone trap, because it is a live way to lose money.** People do trade NOK as a petrocurrency — it
+sits in the commodity-FX bucket with the Canadian and Australian dollars and had a positive oil beta
+historically. But that beta broke down: weakening after the 2015 oil crash and *spectacularly* in
+2022–23, when Norway became Europe's largest gas supplier with record energy terms-of-trade and the
+krone nonetheless fell to multi-decade lows (USD/NOK roughly 8.3 in 2021 to 10–11 in 2023–25). The
+naive "oil-currency, long the energy shock" trade failed — because NOK is the least-liquid G10 currency
+and trades as a *risk-sentiment proxy* first (sold in any risk-off regardless of energy), with rate
+differentials, a transition-risk premium on fading future petroleum revenue, and the sovereign fund's
+own FX flows all pulling the other way. The lesson stands, sharpened: **NOK is a risk proxy first and
+an energy proxy a distant second** — the exposed instrument (gas) went the right way while the obvious
+currency proxy was driven by something else. *Read the instrument, not the naive proxy.*
 
 ## Recommendations
 
