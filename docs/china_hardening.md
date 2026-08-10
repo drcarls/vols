@@ -21,6 +21,21 @@ Data + sources: `war_premia/data/china_de_risking.csv`. (The global backdrop: EM
 have bought **>1,000 tonnes of gold a year since 2022** — the de-dollarization wave the reserve
 freeze set off.)
 
+### The inflection, charted
+
+`war_premia/results/china_gold_vs_treasuries.svg` overlays the two moves: **gold** (~$1,800 and flat
+through 2021–22, then accelerating to **$3,400+/oz** by 2025) against **China's US Treasury holdings**
+(down to **~$690bn**), with the February-2022 freeze marked. The two lines diverge hard after the
+freeze — sell the hostage, buy what cannot be seized.
+
+**But read the chart honestly, or it becomes propaganda.** China's Treasury run-off **began at the
+2013 peak** (~$1.32tn), *not* in 2022 — the freeze **hardened and accelerated an existing trend**, it
+did not start it. And gold's rise has several drivers (rates, the dollar, retail demand) besides
+central-bank buying. The defensible claim is the modest one: the freeze **coincides with, and plausibly
+steepened,** a de-risking already under way — the acceleration is visible, the sole-causation is not.
+(Gold series: Yahoo `GC=F`, reproducible, through Aug 2025. China Treasury points: US Treasury TIC;
+recent values [VERIFY].)
+
 ## Why gold, specifically — it is the anti-freeze asset
 
 The 2022 weapon was a **reserve freeze**: $300bn of Russian central-bank assets immobilised because
