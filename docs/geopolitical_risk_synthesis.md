@@ -46,6 +46,7 @@ of peace** (it is the market declining to price a decision no one has made — t
 | **China / Taiwan** | candidate *general/existential* | **Semiconductors** (SOX/TSMC), CNH/TWD | Calm — and calm here is *not* informative. Pelosi-2022 drills moved semis only −3.7%, reversed in a fortnight. The un-priceable tail. |
 | **The sanctions weapon** (meta-theme) | — | **Reserves, gold, payment rails** | The 2022 freeze set off a structural de-risking; its value is decaying (see China). The biggest slow fact. |
 | **Russia / NATO** | escalation tail → un-priceable | European **energy**; the freeze | Weapon already deployed; direct-war tail near the ceiling — silence ≠ safety. |
+| **Norway** (the anti-China) | — | Gas, Norwegian energy equities (*not* NOK) | Europe's gas lifeline; the ~$2.2tn fund is the *pro-Western-system* mirror of China's exit. |
 | **NK, India–Pakistan** | localized | regional FX/equity | Great markets ignore; here calm *is* roughly informative. |
 | **Climate / AI tails** | above the ceiling | — | Un-priceable; market silence is not reassurance (the Cuba lesson generalized). |
 
@@ -75,6 +76,38 @@ identical on the ledger). Read it as war plans and you've made the field's deepe
 
 ---
 
+## Norway — the anti-China, and a currency trap
+
+If China is state financial power turned into a *fortress against* the weapon, Norway is the same
+phenomenon pointed the other way — and the pairing is the sharpest thing on the board for anyone
+thinking about "sovereign money as a geopolitical actor." Two resource-funded state pools of
+extraordinary scale, de-risking in **opposite directions**:
+
+- **China** exits the Western system — opaque, sanction-*proofing*, gold and own-rails, hardening.
+- **Norway's GPFG** — **~$2.2 trillion, the world's largest fund, owning ~1.5% of every listed
+  company on earth** — sits *inside* it: transparent, rules-based, and sanction-*enforcing* (it
+  divested Russia in 2022). It is not building a fortress; it *is* a load-bearing wall of the side
+  that wields the weapon, and a structural, price-insensitive **buyer** of global equities (the 2001
+  fiscal rule reinvests all petroleum revenue and spends only the expected real return).
+
+So the "finance as instrument of state" theme cuts both ways at once: the same tool that lets Beijing
+armor itself lets Oslo anchor the Western system. Watch the GPFG's exclusions and rebalancing — a
+universal owner that big moves things at the margin — and read it as the **stabilizing** counterweight
+to the gold/de-dollarization bid, not part of it.
+
+**And the currency trap, because it's a live way to lose money.** Norway became Europe's largest gas
+supplier after 2022, oil stayed elevated — and the krone *weakened* (USD/NOK ~8.3 in 2021 to ~10–11
+in 2023–25). The naive "oil-currency, long the energy shock" trade **failed**, and the framework says
+exactly why: under the fiscal rule, *every krone of petroleum revenue flows into the fund and is spent
+on foreign assets*, so the windfall is recycled abroad by construction and never bids up the krone.
+Norway **sterilizes its own energy-currency beta.** The exposed instrument (gas) went the right way;
+the obvious expression (NOK) was neutralized by the state's own plumbing — a clean case of *read the
+instrument, not the naive proxy.* Data: `war_premia/data/norway_gpfg.csv`.
+
+Strategically, Norwegian gas infrastructure is now *critical European* infrastructure (militarized
+after the Nord Stream sabotage), and Norway is a NATO–Russia Arctic frontline — a small, localized
+escalation exposure that sits well below the market-moving threshold but above zero.
+
 ## Recommendations
 
 *Framed as what the lens implies — structural allocations, event tactics, tail insurance, and the
@@ -95,6 +128,11 @@ shape.*
 3. **Underwrite sanctions-weapon *decay*, not escalation.** The consensus prices dollar-weaponization
    as an ever-tighter noose; the framework says its *marginal deterrent value fades* as targets harden.
    Fade the assumption that the next freeze bites like the last.
+4. **Trade the China/Norway pair as the two poles of sovereign money.** Long the *exit* side (gold,
+   de-dollarization plumbing) against the recognition that the *anchor* side (Norway's GPFG and the
+   Western-aligned universal owners) is a stabilizing, structural equity bid — not a symmetric hedge,
+   but the right mental model: one pool arms against the weapon, the other underwrites the system that
+   fires it. Track GPFG exclusions/rebalancing as a marginal mover.
 
 ### Tactical / event (the resolution trade)
 
@@ -104,8 +142,11 @@ shape.*
    when the tail *materializes* (Hormuz actually shut), the premium is large and *persistent* — so this
    is a scares-fade / real-closure-persists discrimination, and the size-and-duration of the move is
    how you tell them apart in real time.
-5. **Trade the exposed instrument, not the index.** Oil for Iran, energy/FX for Russia, semis for
-   Taiwan. The generalist watching the S&P is the counterparty.
+5. **Trade the exposed instrument, not the index — and not the naive proxy.** Oil for Iran, energy/FX
+   for Russia, semis for Taiwan. And the Norway warning: **don't be long NOK as a European-gas play** —
+   the sovereign fund sterilizes the krone's energy beta, so express Norwegian energy security in *gas
+   and energy equities* (Equinor, infrastructure), not the currency. The obvious proxy can be
+   structurally decoupled from the instrument.
 6. **Use prediction markets to decompose the premium.** Read *P(disruption)* off Polymarket/Kalshi,
    *size* off the futures curve; in spring 2026 the Hormuz-reopening odds led the oil price. Treat the
    odds as thin and manipulable — a lead indicator to watch, never to trust; the resolution still wins.
