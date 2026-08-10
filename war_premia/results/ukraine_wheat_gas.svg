@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="430" viewBox="0 0 800 430" font-family="Georgia,serif">
+<rect width="800" height="430" fill="#f6f4ef"/>
+<text x="52" y="24" font-size="15" font-weight="bold" fill="#1b1e26">Ukraine's exposed instruments: the spike, then the forward curve was right</text>
+<text x="52" y="41" font-size="11" fill="#59606e">Indexed to Jan 2021 = 100. European gas (TTF) and wheat spiked on the invasion, then normalized as supply re-balanced.</text>
+<line x1="186.4" y1="74" x2="186.4" y2="320" stroke="#8a3b2e" stroke-dasharray="4,3" opacity="0.7"/>
+<text x="186.4" y="70" font-size="9" fill="#8a3b2e" text-anchor="middle" font-weight="bold">invasion</text>
+<line x1="235.9" y1="74" x2="235.9" y2="320" stroke="#2f4b7c" stroke-dasharray="4,3" opacity="0.7"/>
+<text x="235.9" y="70" font-size="9" fill="#2f4b7c" text-anchor="middle" font-weight="bold">grain deal</text>
+<line x1="354.4" y1="74" x2="354.4" y2="320" stroke="#59606e" stroke-dasharray="4,3" opacity="0.7"/>
+<text x="354.4" y="70" font-size="9" fill="#59606e" text-anchor="middle" font-weight="bold">Russia exits deal</text>
+<polyline points="58.0,300.0 67.9,304.2 77.8,300.8 87.6,296.5 97.5,294.9 107.4,285.1 117.3,278.9 137.0,221.4 146.9,254.6 156.8,226.7 166.7,249.0 176.6,234.6 186.4,220.5 196.3,193.0 206.2,219.7 226.0,174.2 235.9,127.4 245.7,78.0 255.6,129.6 265.5,195.6 275.4,172.3 285.3,243.0 305.0,272.9 314.9,271.7 324.8,281.1 334.7,292.9 344.5,282.6 354.4,291.4 364.3,284.7 374.2,277.8 393.9,277.5 403.8,287.4 413.7,289.5 423.6,294.9 433.5,292.4 443.3,290.6 453.2,285.5 463.1,285.2 473.0,283.8 482.9,279.8 502.6,279.1 512.5,271.8 532.3,266.3 542.1,275.3 552.0,279.0 561.9,287.4 571.8,285.5 591.6,284.4 601.4,288.1 611.3,288.3 621.2,288.6 631.1,290.9 641.0,291.6 650.8,280.4 680.5,273.6 690.4,273.6 700.2,276.2 710.1,260.4 720.0,264.0" fill="none" stroke="#8a3b2e" stroke-width="2.3"/>
+<polyline points="58.0,300.0 67.9,300.2 77.8,301.4 87.6,297.6 97.5,300.0 107.4,299.8 117.3,298.8 137.0,298.1 146.9,296.7 156.8,296.7 166.7,296.8 176.6,297.0 186.4,292.0 196.3,289.7 206.2,288.5 226.0,293.8 235.9,295.6 245.7,295.6 255.6,292.2 265.5,293.4 275.4,296.7 285.3,296.1 305.0,299.1 314.9,299.1 324.8,301.3 334.7,302.1 344.5,300.8 354.4,299.9 364.3,302.7 374.2,303.7 393.9,302.8 403.8,301.1 413.7,302.0 423.6,302.6 433.5,303.1 443.3,302.4 453.2,299.5 463.1,303.3 473.0,304.1 482.9,303.9 502.6,302.8 512.5,303.9 532.3,303.1 542.1,303.8 552.0,303.8 561.9,304.5 571.8,303.9 591.6,304.2 601.4,304.4 611.3,304.7 621.2,303.9 631.1,304.0 641.0,304.7 650.8,303.8 680.5,301.2 690.4,301.6 700.2,302.5 710.1,300.7 720.0,300.7" fill="none" stroke="#356b60" stroke-width="2.3"/>
+<text x="252" y="78" font-size="10" fill="#8a3b2e" font-weight="bold">TTF gas +590%</text>
+<text x="200" y="284" font-size="10" fill="#356b60" font-weight="bold">wheat +50%</text>
+<text x="463" y="308" font-size="9.5" fill="#59606e" text-anchor="middle" font-style="italic">both normalized -- the forward curve's 2022 base case, realized</text>
+<text x="52" y="303" font-size="9" fill="#59606e" text-anchor="end">100</text>
+<line x1="58" y1="300.0" x2="720" y2="300.0" stroke="#e8e3d8"/>
+<text x="52" y="263" font-size="9" fill="#59606e" text-anchor="end">300</text>
+<line x1="58" y1="260.0" x2="720" y2="260.0" stroke="#e8e3d8"/>
+<text x="52" y="223" font-size="9" fill="#59606e" text-anchor="end">500</text>
+<line x1="58" y1="220.0" x2="720" y2="220.0" stroke="#e8e3d8"/>
+<text x="52" y="183" font-size="9" fill="#59606e" text-anchor="end">700</text>
+<line x1="58" y1="180.0" x2="720" y2="180.0" stroke="#e8e3d8"/>
+<text x="58" y="338" font-size="9" fill="#333" text-anchor="middle">2021</text>
+<text x="177" y="338" font-size="9" fill="#333" text-anchor="middle">2022</text>
+<text x="295" y="338" font-size="9" fill="#333" text-anchor="middle">2023</text>
+<text x="414" y="338" font-size="9" fill="#333" text-anchor="middle">2024</text>
+<text x="532" y="338" font-size="9" fill="#333" text-anchor="middle">2025</text>
+<text x="651" y="338" font-size="9" fill="#333" text-anchor="middle">2026</text>
+<text x="52" y="404" font-size="8.8" fill="#8f8a7f">TTF 35->240->30 EUR/MWh; wheat 671->1006->540 c/bu. At the 2022 peak both curves were steeply BACKWARDATED -- the market saying "temporary." It was. Source: Yahoo TTF=F, ZW=F.</text>
+</svg>
