@@ -115,6 +115,24 @@ The reco is therefore *stronger*, not weaker: **NOK is a risk/liquidity proxy fi
 a distant second**, so don't use it as a clean gas play. The exposed instrument (gas) went the right
 way; the obvious proxy (NOK) is driven by other things. *Read the instrument, not the naive proxy.*
 
+**And this is not a new observation — it is the book's instrument problem, live.** The naive instrument
+misleads in exactly two ways, and the two hardest pre-war chapters name both:
+
+- **The null that isn't — 1905.** France's money market read *calm* through 1905, not because France
+  was safe but because its risk sat in a *different* instrument: Russian bonds in French portfolios.
+  The exposure was real and *elsewhere*. NOK reads "not an energy currency" the same way — the energy
+  strength is real, but it lives in the terms of trade, the fund's inflows, and gas equities, not the
+  FX. Look in the wrong instrument and you see a null that isn't one.
+- **The contaminated price — Agadir.** Berlin's discount rate in autumn 1911 barely showed the squeeze,
+  because a *mechanical* factor — the quarter-end settlement — swamped it; the crisis was in the
+  quantities (balances withdrawn, deposit runs, Bourse call loans), not the price. NOK is swamped the
+  same way: liquidity, risk-sentiment, and rate differentials dominate the currency and drown the
+  energy signal.
+
+So the discipline is the oldest one in the book. The obvious instrument can be **silent while the risk
+sits elsewhere** (1905) or **loud with the wrong signal** (Agadir); either way, find the instrument that
+actually carries the exposure and distrust the obvious one.
+
 Strategically, Norwegian gas infrastructure is now *critical European* infrastructure (militarized
 after the Nord Stream sabotage), and Norway is a NATO–Russia Arctic frontline — a small, localized
 escalation exposure that sits well below the market-moving threshold but above zero.

@@ -254,6 +254,16 @@ own FX flows all pulling the other way. The lesson stands, sharpened: **NOK is a
 an energy proxy a distant second** — the exposed instrument (gas) went the right way while the obvious
 currency proxy was driven by something else. *Read the instrument, not the naive proxy.*
 
+And this is not a modern curiosity — it is the same lesson the pre-war material turns on, in two
+forms. In 1905, France's money market read *calm* not because France was safe but because its risk sat
+in a different instrument entirely — Russian bonds in French portfolios; the obvious instrument showed
+a null that wasn't one. At Agadir in 1911, Berlin's discount rate barely registered the squeeze because
+a mechanical factor, the quarter-end settlement, swamped it — the crisis was in the quantities, not the
+price; the obvious instrument was loud with the wrong signal. NOK is a live instance of both: silent on
+energy because the strength sits elsewhere, and swamped by liquidity and rates besides. The obvious
+instrument can mislead by nullity or by contamination — which is why you read the one that actually
+carries the exposure.
+
 ## Recommendations
 
 *What the lens implies — structural allocations, event tactics, tail insurance, and the signposts that
