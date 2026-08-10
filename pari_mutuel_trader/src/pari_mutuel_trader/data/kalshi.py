@@ -83,6 +83,40 @@ def load_local_probs(path: str | None = None) -> dict[str, float]:
         return {}
 
 
+def list_events(category: str | None = None, *, base: str | None = None, api_key: str | None = None,
+                max_events: int = 1200, timeout: float = 8.0) -> list[dict]:
+    """Discover what Kalshi prices: [{event_ticker, title, category}, ...], optionally by category.
+
+    A discovery engine for *more things to price* — enumerate Kalshi's universe, then filter to the
+    markets that map to a real exposed instrument on a tradeable horizon (see the exposure map and
+    docs/mining-kalshi-for-instruments.md). Best-effort; returns what it has on any failure.
+    """
+    base = (base or os.getenv("KALSHI_API_BASE") or DEFAULT_BASE).rstrip("/")
+    api_key = api_key or os.getenv("KALSHI_API_KEY")
+    out: list[dict] = []
+    cursor = ""
+    try:
+        while len(out) < max_events:
+            url = f"{base}/events?limit=200&with_nested_markets=false" + (f"&cursor={cursor}" if cursor else "")
+            req = urllib.request.Request(url, headers={"Accept": "application/json"})
+            if api_key:
+                req.add_header("Authorization", f"Bearer {api_key}")
+            with urllib.request.urlopen(req, timeout=timeout) as r:
+                data = json.loads(r.read().decode("utf-8", "replace"))
+            evs = data.get("events", [])
+            for e in evs:
+                if category and (e.get("category") or "").lower() != category.lower():
+                    continue
+                out.append({"event_ticker": e.get("event_ticker"), "title": e.get("title"),
+                            "category": e.get("category")})
+            cursor = data.get("cursor", "")
+            if not cursor or not evs:
+                break
+    except Exception:
+        return out
+    return out
+
+
 def enrich_events(events: list[dict], *, base: str | None = None, api_key: str | None = None,
                   local_path: str | None = None, use_live: bool = True) -> list[dict]:
     """Set each event's ``prob`` from Kalshi. Priority: live -> local file -> static config.

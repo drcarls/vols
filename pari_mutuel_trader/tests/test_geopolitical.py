@@ -58,3 +58,19 @@ def test_attach_broadcasts_across_dates():
 def test_sleeve_registered_in_factory():
     names = {a.name for a in build_v1_agents()}
     assert "geopolitical" in names
+
+
+def test_extended_exposure_map_covers_more_categories():
+    from pari_mutuel_trader.data.geopolitical import DEFAULT_EXPOSURE_MAP, build_geo_signal
+    # macro / policy / crypto now present, not just geopolitics
+    for ev in ("FED_HIKE", "TARIFFS", "MAJOR_HURRICANE", "CRYPTO_RALLY"):
+        assert ev in DEFAULT_EXPOSURE_MAP
+    sig = build_geo_signal(["KRE", "TLT", "XYZ"], [{"event": "FED_HIKE", "prob": 0.7, "premium": 0.3}])
+    assert sig["KRE"] > 0      # banks benefit from a hike
+    assert sig["TLT"] < 0      # long duration hurt
+    assert sig["XYZ"] == 0.0   # unexposed
+
+
+def test_list_events_is_callable():
+    from pari_mutuel_trader.data.kalshi import list_events
+    assert callable(list_events)

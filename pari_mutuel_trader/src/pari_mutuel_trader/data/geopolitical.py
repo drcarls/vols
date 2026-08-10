@@ -47,6 +47,30 @@ DEFAULT_EXPOSURE_MAP: dict[str, dict[str, float]] = {
     "REARM": {"LMT": 1.0, "RTX": 1.0, "NOC": 1.0, "GD": 0.8, "LHX": 0.8, "HII": 0.6},
     # Venezuela / Guyana (oil + specific E&P exposure).
     "VENEZUELA": {"XOM": 0.6, "CVX": 0.5},
+
+    # --- Beyond geopolitics: Kalshi prices the anticipation channel for many events. Each maps to an
+    # exposed instrument. Keep only those with a real instrument on a tradeable horizon (see
+    # docs/mining-kalshi-for-instruments.md); drop the instrument-less (Sports, Pope) and the
+    # un-priceable (Mars-by-2050, supervolcano). ---
+
+    # MACRO (Kalshi Economics: Fed funds, CPI, GDP)
+    "FED_HIKE": {"KRE": 1.0, "JPM": 0.6, "TLT": -1.0, "ARKK": -0.8, "GLD": -0.5, "XLU": -0.4},
+    "FED_CUT": {"TLT": 1.0, "ARKK": 0.9, "GLD": 0.6, "XLU": 0.4, "KRE": -0.4},
+    "CPI_HOT": {"XLE": 0.8, "XOM": 0.6, "FCX": 0.6, "GLD": 0.5, "TLT": -1.0},
+    "RECESSION": {"XLP": 0.9, "XLU": 0.7, "GLD": 0.6, "XLY": -0.9, "XLI": -0.8, "HYG": -0.7},
+
+    # POLICY (Kalshi Politics/legislation)
+    "TARIFFS": {"GM": -0.7, "NKE": -0.7, "FDX": -0.5, "FXI": -0.8, "EWW": -0.7, "X": 0.6, "NUE": 0.6},
+    "DRUG_PRICING": {"PFE": -0.8, "MRK": -0.7, "LLY": -0.6, "CVS": -0.6, "UNH": -0.5},
+
+    # HEALTH (Kalshi FDA approvals) — single-name; example placeholders, set per live market
+    "FDA_APPROVAL": {"LLY": 0.6, "NVO": 0.6},
+
+    # CLIMATE/WEATHER (Kalshi hurricanes/quakes) — insurance & energy, NOT the un-priceable long tails
+    "MAJOR_HURRICANE": {"ALL": -0.9, "TRV": -0.8, "RNR": 0.6, "XOM": 0.4, "VLO": 0.4},
+
+    # CRYPTO (Kalshi BTC/ETH ranges, ETF) — crypto-exposed equities
+    "CRYPTO_RALLY": {"COIN": 1.0, "MSTR": 1.2, "MARA": 1.0},
 }
 
 
