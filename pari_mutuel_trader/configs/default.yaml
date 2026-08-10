@@ -1,6 +1,7 @@
 data:
   features_path: data/processed/features.parquet
   state_path: data/state/dashboard_state.json
+  geopolitical_path: configs/geopolitical.yaml  # optional; sleeve is neutral if absent
 portfolio:
   top_k: 25
   min_holdings: 20

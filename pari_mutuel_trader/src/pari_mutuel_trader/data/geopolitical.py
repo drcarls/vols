@@ -95,7 +95,10 @@ def attach_geo_signal(
 
 
 def load_events(path: str | None) -> list[dict]:
-    """Load a list of live events from YAML/JSON: [{event, prob, premium}, ...]. Missing -> []."""
+    """Load a list of live events from YAML/JSON: [{event, prob, premium, kalshi_ticker?}, ...].
+
+    Missing file -> []. This does NOT fetch Kalshi; use ``resolve_events`` for that.
+    """
     if not path:
         return []
     p = Path(path)
@@ -109,3 +112,18 @@ def load_events(path: str | None) -> list[dict]:
         data = json.loads(p.read_text())
     events = data.get("events", data) if isinstance(data, dict) else data
     return events if isinstance(events, list) else []
+
+
+def resolve_events(path: str | None, *, use_kalshi: bool = True) -> list[dict]:
+    """Load events and populate ``prob`` from the Kalshi feed (live -> local file -> static config).
+
+    Degrades gracefully: with no network/keys/local file, each event keeps its static ``prob``.
+    """
+    events = load_events(path)
+    if use_kalshi and events:
+        try:
+            from .kalshi import enrich_events
+            events = enrich_events(events)
+        except Exception:
+            pass
+    return events

@@ -43,24 +43,27 @@ Following the repo's conventions exactly:
 - `data/geopolitical.py` — `build_geo_signal()`, `attach_geo_signal(features_df, events)`,
   `load_events(path)`.
 
-## Feeding it live
+## Feeding it live — Kalshi is wired into `build-features`
 
-Two inputs per run:
-1. **`prob`** — the decision-odds from your **Kalshi / prediction-market feed** (you already ingest
-   these). One number per event.
-2. **`premium`** — the disruption already priced in the exposed instrument, backed out of its implied
-   vol / skew / term structure — **OVX** for oil-linked events, the **FFA curve** for freight, **semis
-   skew** for Taiwan. This is what makes it a *mispricing* signal and not just a fear gauge.
+The sleeve is populated **automatically** each time you build features. `cli.py: build-features` reads
+`data.geopolitical_path` (default `configs/geopolitical.yaml`), resolves each event's `prob` from
+Kalshi, and attaches the `geo_signal` column — no manual step. It prints, e.g.
+`geo sleeve: attached geo_signal for 5 events (prob source: ['kalshi_live', 'static'])`.
 
-Wire it into the feature build:
+Two inputs per event:
+1. **`prob`** — the decision-odds, resolved in priority order by `data/kalshi.py`:
+   **live** (GET the Kalshi market named by the event's `kalshi_ticker`) → **local file**
+   (`KALSHI_PROBS_PATH`, a `{ticker: prob}` CSV/JSON your pipeline writes) → **static** (the `prob` in
+   the config). So it works with no keys/network (static) and upgrades to live odds when a feed exists.
+2. **`premium`** — the disruption already priced in the exposed instrument, from its implied vol /
+   skew / term structure — **OVX** for oil, the **FFA curve** for freight, **semis skew** for Taiwan.
+   This is what makes it a *mispricing* signal, not a fear gauge. (Config-set today; wire to a live OVX
+   feed the same way if you want it automatic.)
 
-```python
-from pari_mutuel_trader.data.geopolitical import load_events, attach_geo_signal
-events = load_events("configs/geopolitical.yaml")     # [{event, prob, premium}, ...]
-features = attach_geo_signal(features, events)         # adds the geo_signal column
-```
-
-See `configs/geopolitical.example.yaml` for the event-set format.
+Config: copy `configs/geopolitical.example.yaml` → `configs/geopolitical.yaml`, give each event a
+`kalshi_ticker` (omit it for structural themes like `REARM` to keep them static), and set env in
+`.env` (`KALSHI_API_BASE`, `KALSHI_API_KEY`, `KALSHI_PROBS_PATH` — all optional). Then just
+`build-features` as usual and the tilt is live.
 
 ## The discipline (built into the design)
 

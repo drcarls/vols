@@ -10,23 +10,29 @@
 # The exposure map (which tickers each event moves, and the sign) lives in
 # src/pari_mutuel_trader/data/geopolitical.py (DEFAULT_EXPOSURE_MAP); override there for a live book.
 #
-# NOTE: fill `prob` from Kalshi each run; `premium` from the instrument's implied vol/curve.
+# `prob` is populated automatically from Kalshi at build-features time when an event has a
+# `kalshi_ticker` (live fetch -> KALSHI_PROBS_PATH local file -> the static `prob` below, in that order).
+# `premium` from the instrument's implied vol/curve (OVX for oil, FFA for freight, skew for semis).
 # With OVX ~55 in Aug 2026 (elevated), the oil premium is high — so IRAN_HORMUZ edge is likely
 # small or negative right now (the fade side), not a buy. This file is illustrative.
 
 events:
-  - event: IRAN_HORMUZ   # Kalshi: P(Hormuz closure/incident by year-end); premium from OVX
-    prob: 0.30
+  - event: IRAN_HORMUZ   # premium from OVX (oil implied vol)
+    kalshi_ticker: KXHORMUZ-26   # <- your Kalshi market ticker; prob is fetched from it
+    prob: 0.30                   # fallback if the feed is unreachable
     premium: 0.30        # ~OVX-implied; elevated today -> edge ~0 (no tilt) — the discipline
-  - event: RED_SEA       # Kalshi/analog: P(Red Sea disruption persists); premium from FFA curve
+  - event: RED_SEA       # premium from the FFA curve
+    kalshi_ticker: KXREDSEA-26
     prob: 0.55
     premium: 0.35        # curve pricing a quicker reopening than the odds -> +edge to shippers
-  - event: TAIWAN        # P(Taiwan blockade/military action); un-priceable -> trim semis only
+  - event: TAIWAN        # un-priceable -> trim semis only
+    kalshi_ticker: KXTAIWAN-26
     prob: 0.08
     premium: 0.03        # small +edge -> mild underweight of chip names (insurance, not a short)
-  - event: RARE_EARTH    # P(China tightens critical-mineral export controls)
+  - event: RARE_EARTH    # China tightens critical-mineral export controls
+    kalshi_ticker: KXRAREEARTH-26
     prob: 0.40
     premium: 0.20        # +edge -> tilt toward Western miners/processors
-  - event: REARM         # structural: sustained defense-spend surge (carry-like, low premium)
-    prob: 0.70
+  - event: REARM         # structural defense-spend surge (carry-like)
+    prob: 0.70   # no kalshi_ticker -> stays static (structural, not an event market)
     premium: 0.40        # +edge -> tilt toward defense primes

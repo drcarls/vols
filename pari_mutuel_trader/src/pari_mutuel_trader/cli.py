@@ -23,6 +23,16 @@ def cmd_build_features(args):
     data_cfg = cfg["data"]
     raw = load_features(data_cfg["features_path"])
     feat = build_features(raw)
+
+    # Geopolitical sleeve: populate geo_signal from live events (Kalshi prob vs instrument premium).
+    geo_path = data_cfg.get("geopolitical_path")
+    if geo_path and Path(geo_path).exists():
+        from pari_mutuel_trader.data.geopolitical import resolve_events, attach_geo_signal
+        events = resolve_events(geo_path)  # Kalshi prob (live -> local -> static)
+        feat = attach_geo_signal(feat, events)
+        srcs = {e.get("prob_source", "static") for e in events}
+        print(f"geo sleeve: attached geo_signal for {len(events)} events (prob source: {sorted(srcs)})")
+
     out = Path(data_cfg["features_path"])
     out.parent.mkdir(parents=True, exist_ok=True)
     feat.to_parquet(out)
@@ -86,6 +96,7 @@ def cmd_doctor(_args):
 
     print(f"TIINGO_API_KEY present: {bool(os.getenv('TIINGO_API_KEY'))}")
     print(f"FRED_API_KEY present: {bool(os.getenv('FRED_API_KEY'))}")
+    print(f"KALSHI_API_KEY present: {bool(os.getenv('KALSHI_API_KEY'))}")
     sample_exists = Path("data/processed/features.parquet").exists() or Path("data/processed/features.csv").exists()
     print(f"sample data exists: {sample_exists}")
     print("next: python -m pari_mutuel_trader.cli backtest --config configs/default.yaml")
