@@ -9,6 +9,8 @@ desk   = read("instrument-problem-desk-note.md")
 trades = read("trade-expressions.md")
 cases  = read("cases-catalogue.md")
 board  = read("live-board-2026.md")
+fwd    = read("forward-curve-across-conflicts.md")
+uafut  = read("ukraine-futures-forward-info.md")
 
 # reader: drop its own Recommendations + Monitoring (covered by Part IV)
 i, j = reader.find("## Recommendations"), reader.find("## The one line to keep")
@@ -28,6 +30,7 @@ parts = [
   ('PART IV',     'Trade Expressions',                           H(trades)),
   ('PART V',      'More Cases &amp; the Chokepoint Thread',      H(cases)),
   ('PART VI',     'The Live Board by Region — 2026',             H(board)),
+  ('PART VII',    'Reading the Forward Curve',                   H(fwd) + '<hr>' + H(uafut)),
 ]
 
 cover = """
