@@ -146,6 +146,15 @@ The book's conclusion is written up in **`docs/synthesis_and_lessons.md`** — t
 decision), how the modern arc replicates and extends the 2005 work, the five lessons for today, and
 the Iran-2025 application.
 
+## Cases catalogue (more situations, and today's live board)
+
+A running catalogue of additional cases and **live 2026 situations** — the Six-Day War, Yom
+Kippur (the oil weapon), the Iran-Iraq Tanker War (the original Hormuz), 9/11 (surprise +
+infrastructure), Brexit (the instrument problem in a referendum), the **chokepoint** thread
+(Tiran -> Suez -> Hormuz -> Bab-el-Mandeb), and the live board (Red Sea, tariffs-as-weapon,
+European rearmament, Venezuela, NK-memory-chips, a US technical default) — is in
+`docs/cases-catalogue.md`.
+
 ## Practical sequencing
 
 - **Cheapest first:** the **1871 indemnity loan** and a **Franco-Prussian rente** trace reuse
