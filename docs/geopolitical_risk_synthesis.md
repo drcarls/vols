@@ -1,0 +1,153 @@
+# PRICING GEOPOLITICAL RISK — a synthesis, with positioning
+
+*A one-sitting brief for a markets reader. It compresses the method (built on the pre-1914 money
+market, tested across the twentieth century) into a lens, maps the board as it stands in the late
+summer of 2026, and ends with what the lens implies for positioning and monitoring — China first.
+Framework, not advice; the discipline is the product. Figures are reproducible or cited; the 2026
+ones move monthly.*
+
+---
+
+## The thesis in three sentences
+
+Markets are poor at forecasting *whether* a war happens and excellent at pricing its *consequences*
+once the decision is taken; the gap between those two skills is where the mistakes and the trades
+live. They price the probability of a *general* war — not war as such — so they ignore localized wars,
+price survivable ones (and mean-revert when the tail is resolved), and fall silent before the
+existential ones they cannot represent. And finance is now itself a weapon whose coercive value
+**decays as targets harden** — which is the single most important slow-moving fact on the board, and
+it is being made in Beijing.
+
+## The lens (half a page)
+
+Four questions, asked of any confrontation:
+
+1. **Could it go general?** This sorts the payoff. *Localized* → the great markets ignore it (fade the
+   spike). *General but survivable* → priced, and it mean-reverts on resolution. *Existential* →
+   **un-priceable** — the market cannot put it in the price, so its absence is not safety.
+2. **Which instrument is exposed?** The signal hides from the index. Oil for the Gulf/Iran, energy and
+   FX for Russia, **semiconductors for Taiwan**, reserves/currencies for the coercion cases.
+3. **Is finance a symptom, a lever, or a weapon?** Most exposure is symptom; a few cases are the
+   state-wielded weapon (1941, Suez, 2022) — and the weapon's bite is contingent, never assumed.
+4. **What do contemporaries say it is pricing?** A number means nothing until a credible source names
+   the driver (the cause-vs-cover check).
+
+Two master-rules fall out: **trade the resolution, not the forecast** (the signal is the decision —
+blockade, invasion, sanctions package — not the calm before it), and **a calm market is not a forecast
+of peace** (it is the market declining to price a decision no one has made — the July-1914 error).
+
+---
+
+## The board today
+
+| Theater | Rung | Exposed instrument | State (mid-2026) |
+|---|---|---|---|
+| **Iran / Hormuz** | general, *survivable* → priceable | **Oil** (Brent/WTI) | **Live, unresolved.** Hormuz shut in spring 2026 (oil +52%, held >$100 two months); fragile, violated ceasefire; oil oscillating ~$75–82. The tradeable tail. |
+| **China / Taiwan** | candidate *general/existential* | **Semiconductors** (SOX/TSMC), CNH/TWD | Calm — and calm here is *not* informative. Pelosi-2022 drills moved semis only −3.7%, reversed in a fortnight. The un-priceable tail. |
+| **The sanctions weapon** (meta-theme) | — | **Reserves, gold, payment rails** | The 2022 freeze set off a structural de-risking; its value is decaying (see China). The biggest slow fact. |
+| **Russia / NATO** | escalation tail → un-priceable | European **energy**; the freeze | Weapon already deployed; direct-war tail near the ceiling — silence ≠ safety. |
+| **NK, India–Pakistan** | localized | regional FX/equity | Great markets ignore; here calm *is* roughly informative. |
+| **Climate / AI tails** | above the ceiling | — | Un-priceable; market silence is not reassurance (the Cuba lesson generalized). |
+
+---
+
+## China — the center of gravity
+
+The 2022 reserve freeze's most important audience was Beijing, and its response is the clearest live
+instance of the book's engine (a power that felt the weapon used on a peer, closing its own gap
+*before* its crisis — Germany after Agadir, pre-dated):
+
+- **Gold:** PBoC **~2,346 tonnes**, a **20-month** buying streak, bought *through* a ~16% price slide —
+  structural, not tactical. Still **<10%** of reserves vs ~70% for Western central banks: lots of room
+  left. Gold is the **anti-freeze asset** — a claim on no one, held at home, settled without permission.
+- **Treasuries:** down to **~$690bn**, lowest since 2008, ~−50% from the 2013 peak. *Sell the hostage.*
+- **Plumbing:** CIPS (1,400+ institutions) + the digital yuan — insurance against the SWIFT-expulsion
+  half of the weapon.
+
+**The implication is directional and dated: US financial leverage over China is a wasting asset.**
+Every tonne and every payment node reduces the future force of a freeze.
+
+**The disciplines (why this isn't a one-way story):** $690bn is still an enormous exposure; gold
+cannot pay for imports at wartime scale; CIPS still leans partly on Western messaging — China has
+*reduced* the weapon's bite, not neutralized it. And the intent is unreadable off a balance sheet:
+the gold documents **capability, not a decision to fight** (prudential hoarding and war-prep look
+identical on the ledger). Read it as war plans and you've made the field's deepest error.
+
+---
+
+## Recommendations
+
+*Framed as what the lens implies — structural allocations, event tactics, tail insurance, and the
+signposts that would confirm or kill each. Size and instrument are the reader's; the point is the
+shape.*
+
+### Structural (multi-year)
+
+1. **Own the structural gold bid.** There is a price-insensitive central-bank buyer (China + EM) whose
+   motive — sanction-proofing — is orthogonal to real yields, which is why gold ran with rising real
+   rates in 2023–25. Hold gold as a *structural allocation to the de-dollarization/weapon-decay theme*,
+   not a rates trade. **Caveat:** the rally is multi-driver; don't underwrite the whole move as "China,"
+   and don't chase parabola — size it as insurance with a return, not a momentum trade.
+2. **Position for a slowly multipolar reserve/payments system.** The RMB-internationalization theme
+   (CIPS, mBridge, e-CNY, bilateral settlement) is a *decade* trade, not a quarter — small, secular,
+   and real. Expression is less "long CNH" (managed) than exposure to the plumbing and to commodity
+   corridors settling outside the dollar.
+3. **Underwrite sanctions-weapon *decay*, not escalation.** The consensus prices dollar-weaponization
+   as an ever-tighter noose; the framework says its *marginal deterrent value fades* as targets harden.
+   Fade the assumption that the next freeze bites like the last.
+
+### Tactical / event (the resolution trade)
+
+4. **Buy the invasion, sell the phony war.** When a *survivable* war actually starts and the feared
+   catastrophe doesn't materialize, the premium collapses (Gulf '91, Iraq '03, Iran June '25). Structure
+   for mean-reversion of a *resolved* tail, not for the spike. **The 2026 exception is the teacher:**
+   when the tail *materializes* (Hormuz actually shut), the premium is large and *persistent* — so this
+   is a scares-fade / real-closure-persists discrimination, and the size-and-duration of the move is
+   how you tell them apart in real time.
+5. **Trade the exposed instrument, not the index.** Oil for Iran, energy/FX for Russia, semis for
+   Taiwan. The generalist watching the S&P is the counterparty.
+6. **Use prediction markets to decompose the premium.** Read *P(disruption)* off Polymarket/Kalshi,
+   *size* off the futures curve; in spring 2026 the Hormuz-reopening odds led the oil price. Treat the
+   odds as thin and manipulable — a lead indicator to watch, never to trust; the resolution still wins.
+
+### Tail / hedges
+
+7. **Don't pay spot for the Taiwan tail — insure it convexly.** A full US–China war is near the
+   un-priceable ceiling: you cannot harvest a premium the market can't put in the price, and you cannot
+   cheaply *hold* short-Taiwan-risk in the index. Express it where it's exposed — cheap convex
+   structures on **semis / SOX / TSM, and on CNH/TWD** — and, for real-money, via *supply-chain
+   diversification* as the durable hedge. The absence of a Taiwan premium today is the instrument's
+   ceiling, not an all-clear.
+8. **Respect that existential tails are avoidance problems, not premium problems.** Nuclear, climate,
+   AGI: the market is structurally silent, so don't read calm as low probability and don't sell the
+   tail for carry — you won't be around to collect.
+
+### Monitoring — the signposts that move the book
+
+- **Iran:** Hormuz open/shut, tanker traffic, and the Hormuz prediction-market odds — the *resolutions*,
+  not the ambient oil level. *(An automated weekly watch is built —* `war_premia/iran_watch.py` *—
+  flagging only a state change: an actual closure or a durable ceasefire.)*
+- **China:** the **monthly PBoC gold** print and the **TIC** China-Treasury line (is the de-risking
+  accelerating?); **semis on US export-control days** (each is a clean resolution); CNH fixings and
+  CIPS volumes.
+- **Cross-cutting:** watch **exposed-instrument vol vs the VIX** — when the war is real, the dispersion
+  (oil-vol or semis-vol rich to index-vol) shows up before the index does.
+
+**What would falsify the frame:** stress that consistently *precedes* the decision (markets forecasting
+after all); relief rallies where nothing was priced; a freeze that bites *harder* on a hardened target;
+or a general war the index prices in full ahead of time. None has happened yet across a century — but
+those are the tells to watch for.
+
+---
+
+## The one line to keep
+
+The risks that would end the game are the ones the market cannot price at all — so on those, its
+silence is not a signal. Everywhere else, don't trade the forecast; trade the resolution, in the
+instrument that's actually exposed, and remember the financial weapon is a wasting asset. Somebody
+still has to be in the room to ask the money question. The market cannot ask it for you.
+
+*Companion reading: `docs/pricing-the-next-war.md` (the narrative version), `docs/china_hardening.md`
+(the gold/de-risking detail + chart), `docs/forward_applications.md` (Taiwan and the other theaters),
+`docs/synthesis_and_lessons.md` (the anticipation-vs-resolution core). Not investment advice; a
+framework and its disciplines.*
