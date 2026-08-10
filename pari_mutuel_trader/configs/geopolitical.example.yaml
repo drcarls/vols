@@ -1,0 +1,32 @@
+# Geopolitical mispricing sleeve — live event set (example).
+#
+# Each event turns into a per-name equity tilt: (prob - premium) * signed_exposure(name).
+#   prob     = decision-odds for the event, from your Kalshi / prediction-market feed (0..1).
+#   premium  = the disruption already priced in the exposed instrument (0..1) — e.g. back it out of
+#              OVX (oil implied vol) for oil-linked events, the FFA curve for freight, skew for semis.
+# Edge = prob - premium. Positive edge => tilt toward beneficiaries, away from victims (the market
+# hasn't put the odds into the names yet). Negative edge => the premium is rich; fade / stand down.
+#
+# The exposure map (which tickers each event moves, and the sign) lives in
+# src/pari_mutuel_trader/data/geopolitical.py (DEFAULT_EXPOSURE_MAP); override there for a live book.
+#
+# NOTE: fill `prob` from Kalshi each run; `premium` from the instrument's implied vol/curve.
+# With OVX ~55 in Aug 2026 (elevated), the oil premium is high — so IRAN_HORMUZ edge is likely
+# small or negative right now (the fade side), not a buy. This file is illustrative.
+
+events:
+  - event: IRAN_HORMUZ   # Kalshi: P(Hormuz closure/incident by year-end); premium from OVX
+    prob: 0.30
+    premium: 0.30        # ~OVX-implied; elevated today -> edge ~0 (no tilt) — the discipline
+  - event: RED_SEA       # Kalshi/analog: P(Red Sea disruption persists); premium from FFA curve
+    prob: 0.55
+    premium: 0.35        # curve pricing a quicker reopening than the odds -> +edge to shippers
+  - event: TAIWAN        # P(Taiwan blockade/military action); un-priceable -> trim semis only
+    prob: 0.08
+    premium: 0.03        # small +edge -> mild underweight of chip names (insurance, not a short)
+  - event: RARE_EARTH    # P(China tightens critical-mineral export controls)
+    prob: 0.40
+    premium: 0.20        # +edge -> tilt toward Western miners/processors
+  - event: REARM         # structural: sustained defense-spend surge (carry-like, low premium)
+    prob: 0.70
+    premium: 0.40        # +edge -> tilt toward defense primes

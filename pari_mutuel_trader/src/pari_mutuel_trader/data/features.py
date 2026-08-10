@@ -19,8 +19,10 @@ def build_features(raw: pd.DataFrame) -> pd.DataFrame:
         out["news_intensity"] = 0.0
     if "macro_regime" not in out:
         out["macro_regime"] = 0.0
+    if "geo_signal" not in out:
+        out["geo_signal"] = 0.0
     cols = [
         "ret_1d", "ret_20d", "ret_60d", "vol_20d", "drawdown_60d", "breakout_20d",
-        "trend_persistence", "news_intensity", "macro_regime", "adv_usd", "close"
+        "trend_persistence", "news_intensity", "macro_regime", "geo_signal", "adv_usd", "close"
     ]
     return out[cols].fillna(0.0)
