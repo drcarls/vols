@@ -23,6 +23,49 @@ discipline dictates.*
 
 ---
 
+## Trading the quiet — the no-catalyst book
+
+The hard question the framework provokes: if you *trade the resolution, not the forecast*, what do you
+do when there is no resolution — which is **most of the time**? "No catalyst" is the base rate, not the
+exception. It is the subject of the book this accompanies: nine years in which Europe kept *not* going
+to war. You do not sit in cash waiting for one. You run a book that pays in the quiet and carries a
+cheap overlay for the rare decision.
+
+**1. Don't fight the calm.** A quiet market is not a mispricing — it is the market correctly declining
+to price a decision no one has made. So don't manufacture a catalyst or force a forecast where you have
+no edge. Most of the time the right geopolitical-tail position is *small and cheap*, and the P&L comes
+from elsewhere. Perma-bear-on-a-war-that's-years-away is how you bleed to death.
+
+**2. Run the engines that need no catalyst (the base book).**
+- **Structural / carry** — gold as the central-bank-bid allocation, the de-dollarization plumbing,
+  AI-breadth. Secular flows; they grind regardless.
+- **Relative value / divergence** — gold vs real rates, Equinor vs NOK, RSP vs SPY, the Urals discount.
+  Persistent mispricings that mean-revert on their own clock, catalyst-free.
+
+This is the "peacetime money market" of the book — the part that compounds through the nine years.
+
+**3. In the quiet, be an insurance *seller* — of scares.** "No catalyst" is exactly what makes selling
+scare-premium pay, because *most scares fizzle*. So in calm periods you flip from buyer to **seller of
+the phony-war premium**: fade the rich vol/upside that spikes on a *localized* flare-up the market was
+always going to ignore. The discrimination ladder is what makes it safe — **sell the localized scares
+(the great markets ignore them anyway); flip to buyer or flat the moment one crosses toward the
+*general-war* rung.** The one trade you cannot get wrong is selling the scare that's actually general —
+the July-1914 mistake.
+
+**4. Accumulate the cheap tail *because* there's no catalyst.** The calm is when exposed-instrument
+convexity is cheapest — nobody wants Brent calls when the strait is open, or SOX tail when Taiwan is
+quiet. So the quiet is the **accumulation phase** — buy straw hats in winter — sized as insurance you
+*expect to bleed on*, and financed partly by the scare-selling in (3): sell the rich front, own the
+cheap back (calendar/ratio structures). Holding cheap convexity *through the boredom* is the whole
+edge, and the reason it stays cheap is that almost no one else can.
+
+**The no-catalyst book in one line:** carry + RV + scare-selling pay the bills and compound through the
+quiet; a small, cheap, always-on tail overlay (bought when cheapest, financed by the scares) costs a
+little and pays rarely and hugely; and the framework's job in the calm is to prevent the two ruinous
+errors — **forcing a war bet with no edge, and selling the one scare that's real.**
+
+---
+
 ## The expressions
 
 ### 1. China / Taiwan — the un-priceable tail (insurance, not harvest)
