@@ -66,6 +66,15 @@ errors — **forcing a war bet with no edge, and selling the one scare that's re
 
 ---
 
+## Finding the mispricing (before you express it)
+
+A worked detector for *where* the edge is: decompose the exposed instrument's premium into
+`P(disruption) x size`, read **P** off the prediction market (Kalshi) and **size** off the
+instrument's vol/curve, and trade the **gap** (odds-rich + premium-cheap -> buy convexity;
+premium-rich + odds-cheap -> fade). Full worked example (Hormuz, two-sided, with the live
+OVX~55 reading) in `mispricing-worked-example.md`; the systematic long-only version is the
+**geopolitical sleeve** in the equity stock-picker (`pari_mutuel_geopolitical_sleeve.md`).
+
 ## The expressions
 
 ### 1. China / Taiwan — the un-priceable tail (insurance, not harvest)

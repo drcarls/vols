@@ -11,6 +11,8 @@ cases  = read("cases-catalogue.md")
 board  = read("live-board-2026.md")
 fwd    = read("forward-curve-across-conflicts.md")
 uafut  = read("ukraine-futures-forward-info.md")
+mispx  = read("mispricing-worked-example.md")
+sleeve = read("pari_mutuel_geopolitical_sleeve.md")
 
 # reader: drop its own Recommendations + Monitoring (covered by Part IV)
 i, j = reader.find("## Recommendations"), reader.find("## The one line to keep")
@@ -31,6 +33,7 @@ parts = [
   ('PART V',      'More Cases &amp; the Chokepoint Thread',      H(cases)),
   ('PART VI',     'The Live Board by Region — 2026',             H(board)),
   ('PART VII',    'Reading the Forward Curve',                   H(fwd) + '<hr>' + H(uafut)),
+  ('PART VIII',   'Finding &amp; Trading a Mispricing',           H(mispx) + '<hr>' + H(sleeve)),
 ]
 
 cover = """
