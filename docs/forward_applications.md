@@ -86,6 +86,10 @@ The discipline holds unchanged: the reserve freeze's *effect* on Russia is docum
 *decisiveness* was not (it punished without halting), and the same caution applies to any assumed
 US financial leverage over China — **document the effect, argue the decisiveness, never assume it.**
 
+*Full treatment with the mid-2026 figures — the 2,346-tonne gold pile, the Treasury run-off to
+~$682bn, the CIPS/e-CNY build — and the exact parallel to the manuscript's German-gold caution is in
+`docs/china_hardening.md`.*
+
 ### 5. The un-priceable ceiling — the limit that matters most here
 
 A full US–China war is close enough to the existential that the market **cannot represent it** —
