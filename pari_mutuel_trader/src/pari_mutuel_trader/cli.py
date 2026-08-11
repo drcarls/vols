@@ -83,6 +83,77 @@ def cmd_paper(args):
     print({"saved": cfg["data"]["state_path"], "metrics": payload["metrics"]})
 
 
+def cmd_discover(args):
+    """Enumerate what Kalshi is pricing and map each event to a tradeable exposed instrument.
+
+    Prints Kalshi events (optionally filtered by category), tagging those whose title matches a known
+    exposure theme with the theme + instruments they map to. The matched rows are ready to paste into
+    configs/geopolitical.yaml (event + kalshi_ticker). This is the "more things to price" discovery
+    step from docs/mining-kalshi-for-instruments.md.
+    """
+    from pari_mutuel_trader.data.kalshi import list_events
+    from pari_mutuel_trader.data.geopolitical import DEFAULT_EXPOSURE_MAP
+
+    # Keyword -> exposure-map event. First hit wins; keeps discovery honest about what maps.
+    KEYWORDS = [
+        ("hormuz", "IRAN_HORMUZ"), ("iran", "IRAN_HORMUZ"), ("strait", "IRAN_HORMUZ"),
+        ("red sea", "RED_SEA"), ("houthi", "RED_SEA"), ("suez", "RED_SEA"),
+        ("taiwan", "TAIWAN"), ("tsmc", "TAIWAN"),
+        ("rare earth", "RARE_EARTH"), ("rare-earth", "RARE_EARTH"),
+        ("defense", "REARM"), ("nato", "REARM"), ("rearm", "REARM"), ("military spend", "REARM"),
+        ("venezuela", "VENEZUELA"), ("guyana", "VENEZUELA"),
+        ("fed hike", "FED_HIKE"), ("rate hike", "FED_HIKE"), ("raise rates", "FED_HIKE"),
+        ("fed cut", "FED_CUT"), ("rate cut", "FED_CUT"), ("lower rates", "FED_CUT"),
+        ("cpi", "CPI_HOT"), ("inflation", "CPI_HOT"),
+        ("recession", "RECESSION"), ("gdp", "RECESSION"),
+        ("tariff", "TARIFFS"), ("trade war", "TARIFFS"),
+        ("drug pric", "DRUG_PRICING"), ("medicare", "DRUG_PRICING"),
+        ("fda", "FDA_APPROVAL"), ("approv", "FDA_APPROVAL"),
+        ("hurricane", "MAJOR_HURRICANE"), ("storm", "MAJOR_HURRICANE"),
+        ("bitcoin", "CRYPTO_RALLY"), ("btc", "CRYPTO_RALLY"), ("ethereum", "CRYPTO_RALLY"),
+    ]
+
+    def match(title: str) -> str | None:
+        t = (title or "").lower()
+        for kw, ev in KEYWORDS:
+            if kw in t:
+                return ev
+        return None
+
+    events = list_events(category=args.category, max_events=args.max)
+    if not events:
+        print("no Kalshi events returned (no network/keys, or category empty). "
+              "The sleeve still runs on static config; discovery just needs the public feed.")
+        return
+
+    mapped, unmapped = [], 0
+    for e in events:
+        ev = match(e.get("title"))
+        if ev:
+            mapped.append((e, ev))
+        else:
+            unmapped += 1
+
+    cats = sorted({(e.get("category") or "?") for e in events})
+    print(f"Kalshi events: {len(events)} (categories: {', '.join(cats)})")
+    print(f"mapped to a tradeable instrument: {len(mapped)}  |  no instrument (skip): {unmapped}\n")
+    if not mapped:
+        print("none of these titles matched a known exposure theme — "
+              "extend DEFAULT_EXPOSURE_MAP / KEYWORDS to price a new one.")
+        return
+    print(f"{'EVENT_TICKER':<28} {'THEME':<16} INSTRUMENTS")
+    print("-" * 78)
+    for e, ev in mapped[: args.limit]:
+        names = ", ".join(sorted(DEFAULT_EXPOSURE_MAP.get(ev, {}), key=str))
+        tick = (e.get("event_ticker") or "?")[:27]
+        print(f"{tick:<28} {ev:<16} {names}")
+    if len(mapped) > args.limit:
+        print(f"\n... {len(mapped) - args.limit} more mapped (raise --limit to see them).")
+    print("\nPaste a row into configs/geopolitical.yaml as:")
+    print("  - {event: <THEME>, kalshi_ticker: <a market ticker under EVENT_TICKER>, prob: 0.0, premium: 0.0}")
+    print("Then `build-features` resolves prob (Kalshi) and premium (vol) automatically.")
+
+
 def cmd_doctor(_args):
     print_python_banner()
     print(f"Python version: {platform.python_version()}")
@@ -122,6 +193,12 @@ def main():
     pr = sp.add_parser("paper-run")
     pr.add_argument("--config", default="configs/default.yaml")
     pr.set_defaults(fn=cmd_paper)
+
+    dc = sp.add_parser("discover", help="enumerate what Kalshi prices and map to tradeable instruments")
+    dc.add_argument("--category", default=None, help="filter Kalshi category (e.g. Economics, Politics)")
+    dc.add_argument("--max", type=int, default=1200, help="max Kalshi events to scan")
+    dc.add_argument("--limit", type=int, default=40, help="max mapped rows to print")
+    dc.set_defaults(fn=cmd_discover)
 
     d = sp.add_parser("doctor")
     d.set_defaults(fn=cmd_doctor)

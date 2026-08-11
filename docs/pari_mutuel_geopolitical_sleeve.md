@@ -79,11 +79,76 @@ Config: copy `configs/geopolitical.example.yaml` → `configs/geopolitical.yaml`
   doesn't perform. That is the right home for a noisy-but-informative signal: co-equal, attributed, and
   self-correcting.
 
+## What the recommendations actually look like
+
+The sleeve's output is a **per-name tilt** (`geo_signal`), not a buy list — the engine pools it with
+the other agents and the hedge weight decides how much it moves the book. But read on its own, with
+the example config (Aug 2026 odds; premiums auto-fetched), the tilts come out like this:
+
+| Event | edge = prob − premium | Names it tilts (weight = edge × exposure) |
+|---|---|---|
+| **REARM** (structural, static premium) | 0.70 − 0.40 = **+0.30** | **LMT / RTX / NOC +0.30**, GD / LHX +0.24, HII +0.18 |
+| **RED_SEA** | 0.55 − 0.35 = **+0.20** | **ZIM +0.24**, MATX +0.20, XOM +0.08, CVX +0.06 |
+| **RARE_EARTH** (static premium) | 0.40 − 0.20 = **+0.20** | **MP +0.30**, ALB +0.12, UEC +0.12 |
+| **TAIWAN** (un-priceable → trim only) | 0.08 − 0.03 = **+0.05** | **TSM −0.06**, NVDA / AMD −0.05, AVGO / ASML / MU −0.04, QCOM −0.03 |
+| **IRAN_HORMUZ** (OVX elevated) | ~0.30 − ~0.30 ≈ **0** | **no tilt** — the tail is already in the oil price; the sleeve stands down |
+
+Read plainly: **long the beneficiaries with a standing odds-vs-premium gap** (defense primes on
+rearmament, box-shippers on the Red Sea reroute, the one Western rare-earth name), **lightly trim the
+un-priceable victim** (chip names on Taiwan — insurance, never a short), and **do nothing on Hormuz**
+because the premium already equals the odds. The single most important line is the last one: the
+sleeve's job is as much *where not to tilt* as where to.
+
+These are magnitudes on the sleeve's own scale; the book-level position is this tilt × the sleeve's
+hedge weight, softmax-pooled with every other agent — so no single name is ever a large gross bet.
+
+## What a historical return would look like
+
+There are two honest ways to answer "what would this have returned," and they answer different
+questions:
+
+1. **A strategy backtest** — the engine metric — needs a *dated weekly (prob, premium) panel per
+   event* to replay. We don't have that: Kalshi's markets for these bespoke events are recent and
+   sparse, so a true Sharpe would be fit on a handful of weeks and would overstate. On the synthetic
+   test universe (no real tickers) the sleeve is **neutral by construction** — the engine backtest
+   returns all-zeros / `insufficient_holdings`, which is the correct "no signal on names it can't see."
+   *We do not report a fabricated Sharpe.*
+
+2. **An event study of the tilts** — what the beneficiary basket the sleeve points at actually did,
+   window by window, on **real Yahoo prices** — is defensible as a *documented-effect illustration*
+   (not a live-tradeable P&L, since it uses the realized window with hindsight on dates):
+
+   - **Ukraine invasion** (24 Feb → 30 Dec 2022), long the REARM+energy beneficiaries
+     XLE / ITA / LMT / XOM: **+25.8% basket** vs **−10.2% S&P** → **spread ≈ +36 pts**.
+     (XLE +29.5%, LMT +23.1%, XOM +44.1%, ITA +6.7%.)
+   - **Red Sea disruption** (15 Dec 2023 → 31 May 2024), long the shipping beneficiaries ZIM / MATX:
+     **+73.3% basket** vs **+10.9% S&P** → **spread ≈ +62 pts**.
+     (ZIM +124.9%, MATX +21.7%.)
+
+   That is what the *exposure map* captured when the resolution channel fired — the strong channel of
+   the whole framework ("trade the resolution, not the forecast"). It is **not** a claim the sleeve
+   would have timed the entries: the discipline is that you only take the beneficiary tilt while
+   `edge = prob − premium` is positive, and you stand down (Hormuz today) when the premium already
+   equals the odds. The event study shows the *size of the move available* when the tilt is right; the
+   `edge` gate is what's meant to keep you from paying for it after it's priced.
+
+## Discover more things to price
+
+```bash
+python3 -m pari_mutuel_trader.cli discover --category Economics
+```
+
+Enumerates what Kalshi is currently pricing, tags each event that maps to a real exposed instrument
+(via the keyword→theme map), and prints rows ready to paste into `configs/geopolitical.yaml`. Events
+with no tradeable instrument (Sports, Pope) or an un-priceable tail (Mars-by-2050) are counted and
+skipped — the filter from `docs/mining-kalshi-for-instruments.md`, made executable.
+
 ## Run
 
 ```bash
 cd pari_mutuel_trader && export PYTHONPATH=src
-python3 -m pytest tests/test_geopolitical.py -q     # 7 passing
+python3 -m pytest tests/test_geopolitical.py tests/test_kalshi.py tests/test_premium.py -q
+python3 -m pari_mutuel_trader.cli discover --category Economics   # find more instruments
 # then feed events via configs/geopolitical.yaml and rebuild features before backtest/paper.
 ```
 
