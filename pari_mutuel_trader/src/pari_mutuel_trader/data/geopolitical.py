@@ -32,6 +32,10 @@ import pandas as pd
 # negative = hurt by it. A sensible, liquid default; override via config for a live book.
 DEFAULT_EXPOSURE_MAP: dict[str, dict[str, float]] = {
     # Iran / Strait of Hormuz -> oil supply shock: energy & tankers up, oil-importers down.
+    # Instrument note: the *premium* prices in crude futures (Brent = the Hormuz barrel, > WTI) and OVX;
+    # for a long-only book the expression is integrated/E&P equity (XOM/CVX/...) + tankers, which often
+    # lead on closure/reroute FEAR even when barrels are ultimately rerouted. Avoid USO as a hold (WTI
+    # roll/contango drag); BNO (Brent) is the cleaner ETF if one is used.
     "IRAN_HORMUZ": {
         "XOM": 1.0, "CVX": 1.0, "COP": 1.0, "OXY": 1.0, "EOG": 0.8, "SLB": 0.8,
         "FRO": 1.2, "STNG": 1.2, "INSW": 1.0, "DHT": 1.0,
@@ -41,8 +45,16 @@ DEFAULT_EXPOSURE_MAP: dict[str, dict[str, float]] = {
     "RED_SEA": {"ZIM": 1.2, "MATX": 1.0, "XOM": 0.4, "CVX": 0.3},
     # Taiwan -> semiconductor supply disrupted: chip names DOWN (un-priceable tail; trim only).
     "TAIWAN": {"NVDA": -1.0, "AMD": -1.0, "AVGO": -0.8, "TSM": -1.2, "ASML": -0.8, "QCOM": -0.6, "MU": -0.8},
-    # China rare-earth / critical-mineral squeeze -> Western miners/processors up.
-    "RARE_EARTH": {"MP": 1.5, "ALB": 0.6, "UEC": 0.6},
+    # China rare-earth / magnet-metal (NdPr) squeeze -> Western pure-plays up.
+    # Instrument note: NO clean commodity instrument exists (NdPr trades on Chinese/OTC venues), so this
+    # is FORCED into equity proxies. MP is the only scaled US pure-play. REMX (the obvious ETF) is
+    # CONTAMINATED -- it holds Chinese producers + lithium and can carry the WRONG SIGN in a squeeze, so
+    # small weight only. LYSCF (Lynas) is the ex-China pure-play but trades US OTC. ALB (lithium) and
+    # UEC (uranium) are NOT rare earths -> moved to their own themes below.
+    "RARE_EARTH": {"MP": 1.5, "REMX": 0.6, "LYSCF": 0.4},
+    # Split out from the old (mislabeled) RARE_EARTH bucket: distinct commodities, distinct instruments.
+    "LITHIUM": {"ALB": 1.0, "SQM": 0.8, "LAC": 0.8},
+    "URANIUM": {"CCJ": 1.0, "UEC": 1.0, "UUUU": 0.8},
     # Rearmament (Europe/global defense spend) -> defense primes up.
     "REARM": {"LMT": 1.0, "RTX": 1.0, "NOC": 1.0, "GD": 0.8, "LHX": 0.8, "HII": 0.6},
     # Venezuela / Guyana (oil + specific E&P exposure).

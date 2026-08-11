@@ -71,6 +71,23 @@ def test_extended_exposure_map_covers_more_categories():
     assert sig["XYZ"] == 0.0   # unexposed
 
 
+def test_rare_earth_map_is_corrected():
+    from pari_mutuel_trader.data.geopolitical import DEFAULT_EXPOSURE_MAP
+    re = DEFAULT_EXPOSURE_MAP["RARE_EARTH"]
+    assert "MP" in re                       # the clean US pure-play stays
+    assert "ALB" not in re and "UEC" not in re  # lithium/uranium no longer mislabeled as rare earth
+    # they now live in their own, correctly-named themes
+    assert DEFAULT_EXPOSURE_MAP["LITHIUM"]["ALB"] > 0
+    assert DEFAULT_EXPOSURE_MAP["URANIUM"]["UEC"] > 0
+
+
+def test_rare_earth_contaminated_etf_underweighted():
+    from pari_mutuel_trader.data.geopolitical import DEFAULT_EXPOSURE_MAP
+    re = DEFAULT_EXPOSURE_MAP["RARE_EARTH"]
+    # REMX carries wrong-sign contamination -> must weigh less than the clean pure-play MP
+    assert re.get("REMX", 0) < re["MP"]
+
+
 def test_list_events_is_callable():
     from pari_mutuel_trader.data.kalshi import list_events
     assert callable(list_events)

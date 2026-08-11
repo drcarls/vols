@@ -28,8 +28,26 @@ geo_signal[symbol] = Σ_e  (prob_e − premium_e) · exposure[e][symbol]
 
 The default exposure map (`data/geopolitical.py: DEFAULT_EXPOSURE_MAP`) covers **Iran/Hormuz** (energy
 & tankers up, airlines down), **Red Sea** (shipping up), **Taiwan** (semis down — un-priceable, trim
-only), **rare earths** (Western miners up), **rearmament** (defense up), and **Venezuela** (oil/E&P).
+only), **rare earths** (Western pure-plays up), **rearmament** (defense up), and **Venezuela** (oil/E&P).
 Override it for a live book.
+
+### Instrument notes — which proxy actually carries the trade
+
+The exposure map is only as good as the instrument behind each name. Two cases sit on opposite sides of
+the instrument problem:
+
+- **Rare earths — no clean instrument exists.** There is *no liquid Western-listed rare-earth (NdPr)
+  future*; the metal prices on Chinese/OTC venues. So the theme is **forced into equity proxies**:
+  **MP** is the only scaled US pure-play (magnet-metal miner); **LYSCF** (Lynas) is the ex-China
+  pure-play but trades US OTC; **REMX**, the obvious ETF, is **contaminated** — it holds Chinese
+  producers and lithium and can move the *wrong way* in a squeeze, so it carries only a small weight.
+  A prior version mislabeled **ALB** (lithium) and **UEC** (uranium) as rare earths; they now sit in
+  their own `LITHIUM` / `URANIUM` themes so they don't distort the rare-earth signal.
+- **Oil — many instruments, ranked by contamination.** The *premium* prices in crude futures and
+  **OVX**; use **Brent** (the Hormuz-relevant waterborne barrel), not landlocked WTI. **USO** bleeds
+  roll yield in contango — never a hold; **BNO** (Brent) is the cleaner ETF. For a long-only stock
+  book the expression is integrated/E&P equity plus **tankers** (FRO/STNG/INSW/DHT), which often lead
+  on closure/reroute *fear* even when barrels are ultimately rerouted and flat price gives the move back.
 
 ## How it plugs in (no engine changes)
 
