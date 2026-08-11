@@ -1,0 +1,4 @@
+
+# Fetched market-data panels (regenerate with scripts/fetch_real_universe.py)
+data/processed/features_real.parquet
+data/processed/*.parquet
