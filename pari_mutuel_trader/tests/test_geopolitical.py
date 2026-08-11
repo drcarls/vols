@@ -71,6 +71,37 @@ def test_extended_exposure_map_covers_more_categories():
     assert sig["XYZ"] == 0.0   # unexposed
 
 
+def test_timeline_exit_decays_signal():
+    from pari_mutuel_trader.data.geopolitical import attach_geo_signal_timeline
+    # weekly dates from the event start; with half_life=1wk the signal should halve each week
+    idx = pd.MultiIndex.from_product(
+        [pd.to_datetime(["2022-02-24", "2022-03-03", "2022-03-10"]), ["LMT", "AAA"]],
+        names=["date", "symbol"],
+    )
+    df = pd.DataFrame({"close": range(6)}, index=idx)
+    tl = [{"event": "REARM", "start": "2022-02-24", "end": "2022-12-31", "prob": 0.7, "premium": 0.4}]
+    out = attach_geo_signal_timeline(df, tl, half_life_weeks=1.0)
+    lmt = out.xs("LMT", level="symbol")["geo_signal"].tolist()
+    # edge 0.3 * exposure 1.0 = 0.3 at start; ~0.15 after 1 wk; ~0.075 after 2 wk
+    assert lmt[0] == approx(0.3, abs=1e-6)
+    assert lmt[1] == approx(0.15, abs=0.02)
+    assert lmt[2] == approx(0.075, abs=0.02)
+
+
+def test_timeline_window_bounds_and_macro():
+    from pari_mutuel_trader.data.geopolitical import attach_geo_signal_timeline
+    idx = pd.MultiIndex.from_product(
+        [pd.to_datetime(["2022-01-01", "2022-06-01"]), ["LMT"]], names=["date", "symbol"],
+    )
+    df = pd.DataFrame({"close": [1, 2]}, index=idx)
+    # event starts 2022-03-01 -> Jan row is outside the window (0), Jun row inside (>0)
+    tl = [{"event": "FED_HIKE", "start": "2022-03-01", "end": "2022-12-31", "prob": 0.8, "premium": 0.3}]
+    out = attach_geo_signal_timeline(df, tl, half_life_weeks=None)  # no decay
+    mr = out.xs("LMT", level="symbol")["macro_regime"].tolist()
+    assert mr[0] == 0.0            # before the event window
+    assert mr[1] == approx(-0.5)  # FED_HIKE risk-off, edge 0.5 * sign -1, no decay
+
+
 def test_rare_earth_map_is_corrected():
     from pari_mutuel_trader.data.geopolitical import DEFAULT_EXPOSURE_MAP
     re = DEFAULT_EXPOSURE_MAP["RARE_EARTH"]

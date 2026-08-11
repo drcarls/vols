@@ -179,6 +179,65 @@ def attach_geo_signal(
     return out
 
 
+def attach_geo_signal_timeline(
+    features_df: pd.DataFrame,
+    timeline: list[dict],
+    *,
+    half_life_weeks: float | None = 13.0,
+    exposure_map: dict[str, dict[str, float]] | None = None,
+    sign_map: dict[str, float] | None = None,
+) -> pd.DataFrame:
+    """Attach ``geo_signal`` + ``macro_regime`` from a DATED events timeline, with an exit rule.
+
+    ``timeline`` = [{event, start, end, prob, premium, half_life_weeks?}, ...] (dates 'YYYY-MM-DD' or
+    Timestamp). Each event contributes only within [start, end], and its weight decays exponentially
+    from its start::
+
+        weight(t) = edge * exposure * 0.5 ** ((t - start) / half_life_weeks)
+
+    This encodes "buy the resolution, sell the phony war" — the signal pulses at the catalyst and
+    fades as it settles, so the weekly rebalance rotates the book back out (an actual exit) instead of
+    holding the catalyst names indefinitely. The backtest ladder (see docs) shows the sign of the
+    sleeve's contribution flips positive only with this exit discipline, and improves monotonically as
+    the half-life shortens toward the resolution window. ``half_life_weeks=None`` disables decay (a
+    plain windowed hold-through); a per-entry ``half_life_weeks`` overrides the default.
+
+    Un-dated live use should stay on :func:`attach_geo_signal` (current-event cross-section); this
+    function is for a historical/dated panel.
+    """
+    if not isinstance(features_df.index, pd.MultiIndex):
+        raise ValueError("Expected MultiIndex (date, symbol)")
+    out = features_df.copy()
+    dates = out.index.get_level_values("date")
+    syms = out.index.get_level_values("symbol")
+    all_syms = syms.unique()
+    geo = pd.Series(0.0, index=out.index)
+    reg = pd.Series(0.0, index=out.index)
+    for entry in timeline or []:
+        event = entry.get("event")
+        if event is None:
+            continue
+        start = pd.Timestamp(entry.get("start"))
+        end = pd.Timestamp(entry.get("end")) if entry.get("end") else dates.max()
+        mask = (dates >= start) & (dates <= end)
+        if not mask.any():
+            continue
+        hl = entry.get("half_life_weeks", half_life_weeks)
+        if hl and hl > 0:
+            weeks = (dates[mask] - start).days / 7.0
+            decay = 0.5 ** (weeks / float(hl))
+            decay = decay.values
+        else:
+            decay = 1.0
+        ev = [{"event": event, "prob": entry.get("prob", 0.0), "premium": entry.get("premium", 0.0)}]
+        sig = build_geo_signal(all_syms, ev, exposure_map)
+        geo.loc[mask] += syms[mask].map(sig).astype(float).fillna(0.0).values * decay
+        reg.loc[mask] += build_macro_regime(ev, sign_map) * decay
+    out["geo_signal"] = geo.values
+    out["macro_regime"] = reg.clip(-1.0, 1.0).values
+    return out
+
+
 def load_events(path: str | None) -> list[dict]:
     """Load a list of live events from YAML/JSON: [{event, prob, premium, kalshi_ticker?}, ...].
 
