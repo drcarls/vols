@@ -55,10 +55,11 @@ Two inputs per event:
    **live** (GET the Kalshi market named by the event's `kalshi_ticker`) → **local file**
    (`KALSHI_PROBS_PATH`, a `{ticker: prob}` CSV/JSON your pipeline writes) → **static** (the `prob` in
    the config). So it works with no keys/network (static) and upgrades to live odds when a feed exists.
-2. **`premium`** — the disruption already priced in the exposed instrument, from its implied vol /
-   skew / term structure — **OVX** for oil, the **FFA curve** for freight, **semis skew** for Taiwan.
-   This is what makes it a *mispricing* signal, not a fear gauge. (Config-set today; wire to a live OVX
-   feed the same way if you want it automatic.)
+2. **`premium`** — the disruption already priced in the exposed instrument, now **auto-fetched from
+   implied vol** (`data/premium.py`): **OVX** for oil events, **MOVE** for rate/macro events, **VIX**
+   for equity/systemic events — normalized to [0,1] as the fraction of the instrument's crisis range
+   currently implied. Events with no clean vol proxy (rare earths, rearm, FDA) keep the static config
+   `premium`. This is what makes it a *mispricing* signal, not a fear gauge.
 
 Config: copy `configs/geopolitical.example.yaml` → `configs/geopolitical.yaml`, give each event a
 `kalshi_ticker` (omit it for structural themes like `REARM` to keep them static), and set env in

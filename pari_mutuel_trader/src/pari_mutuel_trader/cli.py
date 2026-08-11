@@ -30,8 +30,9 @@ def cmd_build_features(args):
         from pari_mutuel_trader.data.geopolitical import resolve_events, attach_geo_signal
         events = resolve_events(geo_path)  # Kalshi prob (live -> local -> static)
         feat = attach_geo_signal(feat, events)
-        srcs = {e.get("prob_source", "static") for e in events}
-        print(f"geo sleeve: attached geo_signal for {len(events)} events (prob source: {sorted(srcs)})")
+        psrc = {e.get("prob_source", "static") for e in events}
+        qsrc = {e.get("premium_source", "static") for e in events}
+        print(f"geo sleeve: attached geo_signal for {len(events)} events (prob: {sorted(psrc)}; premium: {sorted(qsrc)})")
 
     out = Path(data_cfg["features_path"])
     out.parent.mkdir(parents=True, exist_ok=True)

@@ -138,16 +138,24 @@ def load_events(path: str | None) -> list[dict]:
     return events if isinstance(events, list) else []
 
 
-def resolve_events(path: str | None, *, use_kalshi: bool = True) -> list[dict]:
-    """Load events and populate ``prob`` from the Kalshi feed (live -> local file -> static config).
+def resolve_events(path: str | None, *, use_kalshi: bool = True, use_premium_feed: bool = True) -> list[dict]:
+    """Load events and populate ``prob`` (Kalshi) and ``premium`` (instrument implied vol).
 
-    Degrades gracefully: with no network/keys/local file, each event keeps its static ``prob``.
+    ``prob``   : live Kalshi -> local file -> static config.
+    ``premium``: instrument implied vol (OVX/MOVE/VIX, normalized) -> static config.
+    So ``edge = prob - premium`` computes hands-free. Degrades gracefully with no network/keys.
     """
     events = load_events(path)
     if use_kalshi and events:
         try:
             from .kalshi import enrich_events
             events = enrich_events(events)
+        except Exception:
+            pass
+    if use_premium_feed and events:
+        try:
+            from .premium import resolve_premiums
+            events = resolve_premiums(events)
         except Exception:
             pass
     return events

@@ -13,6 +13,7 @@ fwd    = read("forward-curve-across-conflicts.md")
 uafut  = read("ukraine-futures-forward-info.md")
 mispx  = read("mispricing-worked-example.md")
 sleeve = read("pari_mutuel_geopolitical_sleeve.md")
+mining = read("mining-kalshi-for-instruments.md")
 
 # reader: drop its own Recommendations + Monitoring (covered by Part IV)
 i, j = reader.find("## Recommendations"), reader.find("## The one line to keep")
@@ -34,6 +35,7 @@ parts = [
   ('PART VI',     'The Live Board by Region — 2026',             H(board)),
   ('PART VII',    'Reading the Forward Curve',                   H(fwd) + '<hr>' + H(uafut)),
   ('PART VIII',   'Finding &amp; Trading a Mispricing',           H(mispx) + '<hr>' + H(sleeve)),
+  ('PART IX',     'Mining Prediction Markets for Instruments',   H(mining)),
 ]
 
 cover = """
