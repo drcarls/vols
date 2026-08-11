@@ -155,6 +155,17 @@ def main():
     conv = copy.deepcopy(base)
     conv["learning"]["use_conviction"] = True
 
+    # Half-life sensitivity: is the winning config (exit + conviction) robust, or knife-edge at 13wk?
+    if "--sweep" in sys.argv:
+        print("\n=== Half-life sensitivity: D_exit+conv (Sharpe / CAGR), baseline Sharpe 0.461 ===", flush=True)
+        for hl in (4.0, 8.0, 13.0, 26.0, 52.0):
+            f = attach_dated_exit(feat, half_life_weeks=hl)
+            r = geo_report(f, conv, f"hl={hl:g}w")
+            delta = r["Sharpe"] - 0.461
+            print(f"half_life={hl:>4g}w : Sharpe {r['Sharpe']:.3f} ({delta:+.3f} vs base) | "
+                  f"CAGR {r['CAGR']:.4f} | MaxDD {r['MaxDD']:.3f}", flush=True)
+        return
+
     dated = attach_dated(feat)
     exit13 = attach_dated_exit(feat, half_life_weeks=13.0)   # a-priori: ~1-quarter half-life
     runs = [
