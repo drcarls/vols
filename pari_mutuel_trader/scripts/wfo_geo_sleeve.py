@@ -86,6 +86,36 @@ def attach_dated(feat: pd.DataFrame) -> pd.DataFrame:
     return out
 
 
+def attach_dated_exit(feat: pd.DataFrame, half_life_weeks: float = 13.0) -> pd.DataFrame:
+    """Dated events WITH an exit rule: each event's signal pulses at onset and decays exponentially.
+
+    weight(t) = edge * exposure * 0.5 ** ((t - start)/half_life). This is "buy the invasion, sell the
+    phony war" — hold the resolution repricing, then rotate out as it settles (the weekly rebalance
+    turns the decayed signal into an actual exit). ONE fixed half-life for ALL events (not per-event
+    tuned) to avoid fitting the windows. Also decays macro_regime the same way.
+    """
+    out = feat.copy()
+    dates = out.index.get_level_values("date")
+    syms_all = out.index.get_level_values("symbol")
+    all_syms = out.index.get_level_values("symbol").unique()
+    geo = pd.Series(0.0, index=out.index)
+    reg = pd.Series(0.0, index=out.index)
+    for start, end, event, prob, premium in TIMELINE:
+        ts = pd.Timestamp(start)
+        mask = (dates >= ts) & (dates <= pd.Timestamp(end))
+        if not mask.any():
+            continue
+        weeks = (dates[mask] - ts).days / 7.0
+        decay = 0.5 ** (weeks / half_life_weeks)
+        ev = [{"event": event, "prob": prob, "premium": premium}]
+        sig = build_geo_signal(all_syms, ev)
+        geo.loc[mask] += syms_all[mask].map(sig).astype(float).fillna(0.0).values * decay.values
+        reg.loc[mask] += build_macro_regime(ev) * decay.values
+    out["geo_signal"] = geo.values
+    out["macro_regime"] = reg.clip(-1.0, 1.0).values
+    return out
+
+
 def geo_report(feat: pd.DataFrame, cfg: dict, label: str) -> dict:
     res = run_backtest(feat, cfg)
     m = res.metrics
@@ -126,11 +156,14 @@ def main():
     conv["learning"]["use_conviction"] = True
 
     dated = attach_dated(feat)
+    exit13 = attach_dated_exit(feat, half_life_weeks=13.0)   # a-priori: ~1-quarter half-life
     runs = [
         ("A_baseline", feat, base),
         ("B_static", attach_static(feat), base),
         ("C_dated", dated, base),
-        ("C_dated+conv", dated, conv),   # same signal, conviction lever ON
+        ("C_dated+conv", dated, conv),           # hold-through + concentrate
+        ("D_exit", exit13, base),                # exit rule (decay), no conviction
+        ("D_exit+conv", exit13, conv),           # exit rule + concentrate = full thesis
     ]
 
     hdr = ["run", "Sharpe", "CAGR", "MaxDD", "turnover", "geo_attr", "macro_attr", "geo_wt", "macro_wt", "flag"]
