@@ -49,6 +49,13 @@ def cmd_build_features(args):
             live = [f"{e['event']}={e.get('resolution_state')}" for e in events if e.get("kalshi_ticker")]
             if live:
                 print(f"resolution trigger: {', '.join(live)}")
+        # Accumulate a dated odds/premium panel for a future honest trigger backtest.
+        odds_path = data_cfg.get("odds_log_path")
+        if odds_path:
+            from pari_mutuel_trader.data.odds_log import append_odds_snapshot
+            n = append_odds_snapshot(events, odds_path, date.today().isoformat())
+            if n:
+                print(f"odds log: appended {n} rows to {odds_path}")
 
     out = Path(data_cfg["features_path"])
     out.parent.mkdir(parents=True, exist_ok=True)

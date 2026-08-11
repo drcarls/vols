@@ -105,9 +105,13 @@ with no `kalshi_ticker` (e.g. `REARM`) have no odds to resolve on and are left u
 `build-features` runs it automatically when the config path is set and prints, e.g.,
 `resolution trigger: IRAN_HORMUZ=watching, RED_SEA=active`.
 
-The honest limit: we can't fully *backtest* this trigger, because Kalshi odds history for these
+The honest limit: we can't fully *backtest* this trigger yet, because Kalshi odds history for these
 bespoke events is sparse. But the mechanism is exactly the validated discipline (gate on resolution,
-exit on a weeks-scale clock), now driven by live odds rather than hindsight.
+exit on a weeks-scale clock), now driven by live odds rather than hindsight — and the fix for the
+backtest gap is accumulation, not more hindsight. `data/odds_log.py` + `scripts/log_odds.py` append a
+dated `(prob, premium, resolution_state)` row per event on every run (idempotent per day) to
+`data.odds_log_path`. Schedule `log_odds.py` weekly and, in a few months, you hold the genuine dated
+panel a real trigger backtest needs — the entry side finally gets its own honest track record.
 
 ## Tying it to the existing sleeves — the Kalshi→macro_regime bridge
 
