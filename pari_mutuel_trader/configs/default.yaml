@@ -2,6 +2,7 @@ data:
   features_path: data/processed/features.parquet
   state_path: data/state/dashboard_state.json
   geopolitical_path: configs/geopolitical.yaml  # optional; sleeve is neutral if absent
+  resolution_state_path: data/state/resolution_state.json  # optional; live entry-gate + exit-decay
 portfolio:
   top_k: 25
   min_holdings: 20

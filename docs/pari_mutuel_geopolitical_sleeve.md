@@ -84,6 +84,31 @@ Config: copy `configs/geopolitical.example.yaml` → `configs/geopolitical.yaml`
 `.env` (`KALSHI_API_BASE`, `KALSHI_API_KEY`, `KALSHI_PROBS_PATH` — all optional). Then just
 `build-features` as usual and the tilt is live.
 
+## Live entry, not hindsight — the resolution trigger
+
+The backtest ladder (`geo-sleeve-backtest-ladder.md`) validated the *exit* discipline given a correct
+entry, but its entries were placed with hindsight. `data/resolution.py` supplies the entry **live**,
+off real Kalshi odds, closing that gap:
+
+- **Watching** (odds `< activate_at`, default 0.5): `resolution_decay = 0` → **the sleeve tilts
+  nothing**. Merely *anticipating* a decision is the weak channel; the sleeve does not trade it.
+- **Resolved** (odds cross `activate_at`): `resolution_decay = 1.0` → **full tilt at the catalyst**.
+  Entry is the odds crossing, recorded with the date — the strong (resolution) channel.
+- **Settling**: `resolution_decay = 0.5**(weeks_since_activation / half_life)` → the tilt fades and
+  the weekly rebalance **rotates the book out** — the validated exit, now running live.
+- **Reversed** (odds fall back below `deactivate_at`): cleared back to watching (flat).
+
+It sets a per-event `resolution_decay` that multiplies the `edge` in `build_geo_signal` (default 1.0
+when unused, so nothing changes for callers that don't opt in), and persists *when* each event first
+resolved to `data.resolution_state_path` so the decay clock survives across runs. Structural themes
+with no `kalshi_ticker` (e.g. `REARM`) have no odds to resolve on and are left untouched.
+`build-features` runs it automatically when the config path is set and prints, e.g.,
+`resolution trigger: IRAN_HORMUZ=watching, RED_SEA=active`.
+
+The honest limit: we can't fully *backtest* this trigger, because Kalshi odds history for these
+bespoke events is sparse. But the mechanism is exactly the validated discipline (gate on resolution,
+exit on a weeks-scale clock), now driven by live odds rather than hindsight.
+
 ## Tying it to the existing sleeves — the Kalshi→macro_regime bridge
 
 The sleeve is not a bolt-on; `edge = prob − premium` **is** the pari-mutuel objective the whole engine

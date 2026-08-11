@@ -153,6 +153,7 @@ def build_geo_signal(
         if not exposure:
             continue
         edge = float(ev.get("prob", 0.0)) - float(ev.get("premium", 0.0))  # odds minus what's priced
+        edge *= float(ev.get("resolution_decay", 1.0))  # live resolution gate/exit (1.0 if unused)
         if edge == 0.0:
             continue
         for ticker, weight in exposure.items():
@@ -258,12 +259,25 @@ def load_events(path: str | None) -> list[dict]:
     return events if isinstance(events, list) else []
 
 
-def resolve_events(path: str | None, *, use_kalshi: bool = True, use_premium_feed: bool = True) -> list[dict]:
-    """Load events and populate ``prob`` (Kalshi) and ``premium`` (instrument implied vol).
+def resolve_events(
+    path: str | None,
+    *,
+    use_kalshi: bool = True,
+    use_premium_feed: bool = True,
+    resolution_state_path: str | None = None,
+    today: str | None = None,
+) -> list[dict]:
+    """Load events and populate ``prob`` (Kalshi), ``premium`` (implied vol), and optionally gate/exit
+    each event by its live resolution odds.
 
     ``prob``   : live Kalshi -> local file -> static config.
     ``premium``: instrument implied vol (OVX/MOVE/VIX, normalized) -> static config.
     So ``edge = prob - premium`` computes hands-free. Degrades gracefully with no network/keys.
+
+    If ``resolution_state_path`` is given (with ``today`` = 'YYYY-MM-DD'), the live resolution trigger
+    runs last: it sets each Kalshi-backed event's ``resolution_decay`` (0 while merely anticipated,
+    1.0 at the resolution, decaying out afterward) and persists when each event first resolved. This
+    makes ENTRY odds-driven rather than hindsight — the missing piece from the backtest ladder.
     """
     events = load_events(path)
     if use_kalshi and events:
@@ -276,6 +290,14 @@ def resolve_events(path: str | None, *, use_kalshi: bool = True, use_premium_fee
         try:
             from .premium import resolve_premiums
             events = resolve_premiums(events)
+        except Exception:
+            pass
+    if resolution_state_path and today and events:
+        try:
+            from .resolution import load_state, save_state, apply_resolution_trigger
+            state = load_state(resolution_state_path)
+            events, state = apply_resolution_trigger(events, state, today)
+            save_state(resolution_state_path, state)
         except Exception:
             pass
     return events

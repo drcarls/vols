@@ -30,7 +30,14 @@ def cmd_build_features(args):
         from pari_mutuel_trader.data.geopolitical import (
             resolve_events, attach_geo_signal, attach_macro_regime, build_macro_regime,
         )
-        events = resolve_events(geo_path)  # Kalshi prob (live -> local -> static)
+        from datetime import date
+        # Live resolution trigger (optional): entry gated by Kalshi odds crossing, exit by decay.
+        res_path = data_cfg.get("resolution_state_path")
+        events = resolve_events(
+            geo_path,  # Kalshi prob (live -> local -> static)
+            resolution_state_path=res_path,
+            today=date.today().isoformat() if res_path else None,
+        )
         feat = attach_geo_signal(feat, events)
         feat = attach_macro_regime(feat, events)  # Kalshi macro odds -> MacroRegimeAgent's regime sign
         regime = build_macro_regime(events)
@@ -38,6 +45,10 @@ def cmd_build_features(args):
         qsrc = {e.get("premium_source", "static") for e in events}
         print(f"geo sleeve: attached geo_signal for {len(events)} events (prob: {sorted(psrc)}; premium: {sorted(qsrc)})")
         print(f"geo->macro bridge: macro_regime {regime:+.3f} from Kalshi macro odds")
+        if res_path:
+            live = [f"{e['event']}={e.get('resolution_state')}" for e in events if e.get("kalshi_ticker")]
+            if live:
+                print(f"resolution trigger: {', '.join(live)}")
 
     out = Path(data_cfg["features_path"])
     out.parent.mkdir(parents=True, exist_ok=True)
