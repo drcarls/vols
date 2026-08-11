@@ -74,3 +74,37 @@ def test_extended_exposure_map_covers_more_categories():
 def test_list_events_is_callable():
     from pari_mutuel_trader.data.kalshi import list_events
     assert callable(list_events)
+
+
+def test_macro_regime_sign_risk_off_on_hike():
+    from pari_mutuel_trader.data.geopolitical import build_macro_regime
+    # FED_HIKE with a positive edge -> risk-off (negative regime)
+    r = build_macro_regime([{"event": "FED_HIKE", "prob": 0.7, "premium": 0.2}])  # edge +0.5, sign -1
+    assert r == approx(-0.5)
+
+
+def test_macro_regime_sign_risk_on_on_cut():
+    from pari_mutuel_trader.data.geopolitical import build_macro_regime
+    r = build_macro_regime([{"event": "FED_CUT", "prob": 0.6, "premium": 0.1}])  # edge +0.5, sign +1
+    assert r == approx(0.5)
+
+
+def test_macro_regime_ignores_geopolitics_and_clips():
+    from pari_mutuel_trader.data.geopolitical import build_macro_regime
+    # geopolitical events carry no regime sign; two risk-off events clip at -1
+    evs = [
+        {"event": "IRAN_HORMUZ", "prob": 0.9, "premium": 0.1},  # ignored (no sign)
+        {"event": "CPI_HOT", "prob": 0.9, "premium": 0.1},      # edge +0.8, sign -1
+        {"event": "RECESSION", "prob": 0.9, "premium": 0.1},    # edge +0.8, sign -1 -> sum -1.6
+    ]
+    assert build_macro_regime(evs) == approx(-1.0)  # clipped
+
+
+def test_attach_macro_regime_is_additive_and_clipped():
+    from pari_mutuel_trader.data.geopolitical import attach_macro_regime
+    idx = pd.MultiIndex.from_product(
+        [pd.to_datetime(["2026-01-01"]), ["AAA", "BBB"]], names=["date", "symbol"]
+    )
+    df = pd.DataFrame({"macro_regime": [0.3, 0.3]}, index=idx)
+    out = attach_macro_regime(df, [{"event": "FED_CUT", "prob": 0.6, "premium": 0.1}])  # +0.5
+    assert out["macro_regime"].round(6).eq(0.8).all()  # 0.3 + 0.5, additive

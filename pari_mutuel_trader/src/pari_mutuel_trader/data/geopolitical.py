@@ -74,6 +74,55 @@ DEFAULT_EXPOSURE_MAP: dict[str, dict[str, float]] = {
 }
 
 
+# Macro events map to a market-wide risk-on/off SIGN (not a per-name exposure). This is the bridge to
+# MacroRegimeAgent: the prediction market sets the regime sign that agent multiplies by (ret-vol).
+# +1 = risk-on (easing/expansion) -> reward high-return low-vol names; -1 = risk-off (tightening/
+# contraction) -> flip toward defensives. Only macro events carry a sign; geopolitics does not.
+MACRO_REGIME_SIGN: dict[str, float] = {
+    "FED_CUT": 1.0,      # easing -> risk-on
+    "FED_HIKE": -1.0,    # tightening -> risk-off
+    "CPI_HOT": -1.0,     # hawkish inflation surprise -> risk-off
+    "RECESSION": -1.0,   # contraction -> risk-off
+}
+
+
+def build_macro_regime(events: list[dict], sign_map: dict[str, float] | None = None) -> float:
+    """Market-wide macro regime in [-1, 1] from prediction-market odds.
+
+    ``regime = clip( sum_e (prob_e - premium_e) * sign_e , -1, 1)`` over macro events only. This is the
+    same ``edge = prob - premium`` used for the name tilt, but projected onto one risk-on/off axis so
+    MacroRegimeAgent can consume it: a Kalshi-priced regime replaces (or adds to) the returns-derived
+    one. A cheap premium (calm MOVE/VIX) with standing odds -> a large-magnitude regime; a rich premium
+    (already priced) -> near zero, the same discipline as the name sleeve.
+    """
+    sign_map = sign_map or MACRO_REGIME_SIGN
+    total = 0.0
+    for ev in events or []:
+        sign = sign_map.get(ev.get("event"))
+        if sign is None:
+            continue
+        edge = float(ev.get("prob", 0.0)) - float(ev.get("premium", 0.0))
+        total += edge * float(sign)
+    return max(-1.0, min(1.0, total))
+
+
+def attach_macro_regime(
+    features_df: pd.DataFrame,
+    events: list[dict],
+    sign_map: dict[str, float] | None = None,
+) -> pd.DataFrame:
+    """Add the Kalshi-derived regime scalar into the ``macro_regime`` column (broadcast across rows).
+
+    Additive and clipped to [-1, 1], so it composes with any returns-derived regime already present
+    rather than clobbering it. MacroRegimeAgent then turns it into a per-name tilt via (ret-vol).
+    """
+    regime = build_macro_regime(events, sign_map)
+    out = features_df.copy()
+    base = out["macro_regime"] if "macro_regime" in out.columns else 0.0
+    out["macro_regime"] = (base + regime).clip(-1.0, 1.0)
+    return out
+
+
 def build_geo_signal(
     symbols: Iterable[str],
     events: list[dict],

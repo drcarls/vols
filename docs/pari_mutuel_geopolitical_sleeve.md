@@ -66,6 +66,28 @@ Config: copy `configs/geopolitical.example.yaml` → `configs/geopolitical.yaml`
 `.env` (`KALSHI_API_BASE`, `KALSHI_API_KEY`, `KALSHI_PROBS_PATH` — all optional). Then just
 `build-features` as usual and the tilt is live.
 
+## Tying it to the existing sleeves — the Kalshi→macro_regime bridge
+
+The sleeve is not a bolt-on; `edge = prob − premium` **is** the pari-mutuel objective the whole engine
+runs on (true odds − pool-implied odds), just read across two venues (Kalshi vs the vol market). To
+make that tie explicit, the macro events feed the repo's existing **`MacroRegimeAgent`** directly:
+
+- `data/geopolitical.py: build_macro_regime(events)` projects the FED/CPI/RECESSION edges onto one
+  risk-on/off axis — `regime = clip(Σ (prob − premium)·sign, −1, 1)`, with `FED_CUT +1`, `FED_HIKE /
+  CPI_HOT / RECESSION −1`. A **cheap premium** (calm MOVE/VIX today) with standing odds → a
+  large-magnitude regime; an **already-rich premium** → near zero — the same discipline as the name tilt.
+- `attach_macro_regime(features_df, events)` adds that scalar into the `macro_regime` column
+  (additive + clipped, so it composes with any returns-derived regime). `MacroRegimeAgent` then turns
+  it into a per-name tilt via its existing `regime · (ret_20d − vol_20d)` — **prediction-market odds
+  now set the regime sign** instead of (or on top of) realized returns.
+- `build-features` wires it automatically and prints, e.g., `geo->macro bridge: macro_regime -0.42
+  from Kalshi macro odds`.
+
+So one Kalshi read now drives **two** sleeves — the geo name-tilt *and* the macro regime — expressing
+the same view through two lenses. Any redundancy is handled by the hedge learner, which sizes each
+sleeve on realized P&L. (Companion options not yet wired: an `edge = signal − priced` house primitive
+retrofit to momentum/news, and geo-sign gating of momentum entries — "trade the resolution.")
+
 ## The discipline (built into the design)
 
 - **Two-sided, and honest about the regime.** With **OVX ~55 (Aug 2026, elevated)**, the oil premium

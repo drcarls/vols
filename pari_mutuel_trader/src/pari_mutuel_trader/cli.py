@@ -27,12 +27,17 @@ def cmd_build_features(args):
     # Geopolitical sleeve: populate geo_signal from live events (Kalshi prob vs instrument premium).
     geo_path = data_cfg.get("geopolitical_path")
     if geo_path and Path(geo_path).exists():
-        from pari_mutuel_trader.data.geopolitical import resolve_events, attach_geo_signal
+        from pari_mutuel_trader.data.geopolitical import (
+            resolve_events, attach_geo_signal, attach_macro_regime, build_macro_regime,
+        )
         events = resolve_events(geo_path)  # Kalshi prob (live -> local -> static)
         feat = attach_geo_signal(feat, events)
+        feat = attach_macro_regime(feat, events)  # Kalshi macro odds -> MacroRegimeAgent's regime sign
+        regime = build_macro_regime(events)
         psrc = {e.get("prob_source", "static") for e in events}
         qsrc = {e.get("premium_source", "static") for e in events}
         print(f"geo sleeve: attached geo_signal for {len(events)} events (prob: {sorted(psrc)}; premium: {sorted(qsrc)})")
+        print(f"geo->macro bridge: macro_regime {regime:+.3f} from Kalshi macro odds")
 
     out = Path(data_cfg["features_path"])
     out.parent.mkdir(parents=True, exist_ok=True)
