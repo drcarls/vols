@@ -76,6 +76,26 @@ def test_list_events_is_callable():
     assert callable(list_events)
 
 
+def test_conviction_neutral_when_quiet():
+    # geo_signal ~ 0 -> conviction ~ 1.0 (no boost; baseline untouched)
+    df = pd.DataFrame({"geo_signal": [0.0, 0.0]}, index=["AAA", "BBB"])
+    assert GeopoliticalAgent().conviction(df) == approx(1.0)
+
+
+def test_conviction_ramps_with_live_signal():
+    # a large live |geo_signal| lifts conviction above 1 (capped)
+    a = GeopoliticalAgent()
+    df = pd.DataFrame({"geo_signal": [0.3, -0.1]}, index=["AAA", "BBB"])
+    assert a.conviction(df) == approx(1.0 + a.CONVICTION_GAIN * 0.3)
+    big = pd.DataFrame({"geo_signal": [5.0]}, index=["AAA"])  # clipped at CAP
+    assert a.conviction(big) == approx(1.0 + a.CONVICTION_GAIN * a.CONVICTION_CAP)
+
+
+def test_conviction_absent_column_is_neutral():
+    df = pd.DataFrame({"ret_1d": [0.0]}, index=["AAA"])
+    assert GeopoliticalAgent().conviction(df) == 1.0
+
+
 def test_macro_regime_sign_risk_off_on_hike():
     from pari_mutuel_trader.data.geopolitical import build_macro_regime
     # FED_HIKE with a positive edge -> risk-off (negative regime)

@@ -121,18 +121,26 @@ def main():
           f"{feat.index.get_level_values('date').min().date()}..{feat.index.get_level_values('date').max().date()}",
           flush=True)
 
-    variants = {
-        "A_baseline": feat,                 # geo_signal & macro_regime already 0 from build_features
-        "B_static": attach_static(feat),
-        "C_dated": attach_dated(feat),
-    }
+    import copy
+    conv = copy.deepcopy(base)
+    conv["learning"]["use_conviction"] = True
+
+    dated = attach_dated(feat)
+    runs = [
+        ("A_baseline", feat, base),
+        ("B_static", attach_static(feat), base),
+        ("C_dated", dated, base),
+        ("C_dated+conv", dated, conv),   # same signal, conviction lever ON
+    ]
 
     hdr = ["run", "Sharpe", "CAGR", "MaxDD", "turnover", "geo_attr", "macro_attr", "geo_wt", "macro_wt", "flag"]
     print("\n=== Full-period backtest (2018-2026) ===", flush=True)
-    print(" | ".join(h.rjust(10) for h in hdr), flush=True)
-    for name, f in variants.items():
-        r = geo_report(f, base, name)
-        print(" | ".join(str(r[h]).rjust(10) for h in hdr), flush=True)
+    print(" | ".join(h.rjust(12) for h in hdr), flush=True)
+    variants = {}
+    for name, f, cfg in runs:
+        variants[name] = f
+        r = geo_report(f, cfg, name)
+        print(" | ".join(str(r[h]).rjust(12) for h in hdr), flush=True)
 
     if "--wfo" in sys.argv:
         wfo_cfg = {"train_years": 3, "test_months": 6, "step_months": 6,

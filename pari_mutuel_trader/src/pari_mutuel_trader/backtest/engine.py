@@ -52,7 +52,14 @@ def run_backtest(features: pd.DataFrame, config: dict) -> BacktestResult:
             probs = {}
             for a in agents:
                 probs[a.name] = softmax(a.compute_signal(liquid), learn_cfg["temperature"])
-            pooled = pari_mutuel_aggregate(probs, weights)
+            # Conviction: a transient per-rebalance boost to an event-driven agent's pool share while
+            # it has a live, high-magnitude signal (opt-in; hedge weights are left untouched). When
+            # every agent returns conviction 1.0 (the default), this is identical to plain aggregation.
+            if learn_cfg.get("use_conviction"):
+                agg_weights = {a.name: weights[a.name] * a.conviction(liquid) for a in agents}
+            else:
+                agg_weights = weights
+            pooled = pari_mutuel_aggregate(probs, agg_weights)
             selected = select_universe(pooled, port_cfg["top_k"], port_cfg["min_holdings"])
             target = build_weights(selected, port_cfg.get("weighting", "equal_weight"), liquid.get("vol_20d"), port_cfg["max_stock_weight"])
 
