@@ -109,11 +109,17 @@ def geo_report(feat: pd.DataFrame, cfg: dict, label: str) -> dict:
 
 
 def main():
+    import sys
     base = load_yaml("configs/default.yaml")
+    # Benchmark config fix: the default 0.40 turnover cap blocks the cold-start ramp from cash to a
+    # full 25-name book (initial turnover ~0.5), so the book never invests. Raise it enough to allow
+    # the ramp; ongoing weekly turnover stays well under. Engine logic untouched.
+    base["portfolio"]["turnover_cap"] = 0.60
     raw = load_features(FEAT)
     feat = build_features(raw)
     print(f"universe: {feat.index.get_level_values('symbol').nunique()} symbols, "
-          f"{feat.index.get_level_values('date').min().date()}..{feat.index.get_level_values('date').max().date()}\n")
+          f"{feat.index.get_level_values('date').min().date()}..{feat.index.get_level_values('date').max().date()}",
+          flush=True)
 
     variants = {
         "A_baseline": feat,                 # geo_signal & macro_regime already 0 from build_features
@@ -121,26 +127,26 @@ def main():
         "C_dated": attach_dated(feat),
     }
 
-    print("=== Full-period backtest (2018-2026) ===")
-    rows = [geo_report(f, base, name) for name, f in variants.items()]
     hdr = ["run", "Sharpe", "CAGR", "MaxDD", "turnover", "geo_attr", "macro_attr", "geo_wt", "macro_wt", "flag"]
-    print(" | ".join(h.rjust(10) for h in hdr))
-    for r in rows:
-        print(" | ".join(str(r[h]).rjust(10) for h in hdr))
+    print("\n=== Full-period backtest (2018-2026) ===", flush=True)
+    print(" | ".join(h.rjust(10) for h in hdr), flush=True)
+    for name, f in variants.items():
+        r = geo_report(f, base, name)
+        print(" | ".join(str(r[h]).rjust(10) for h in hdr), flush=True)
 
-    # Walk-forward (trimmed grid for runtime) on baseline vs dated to show OOS behaviour.
-    wfo_cfg = {"train_years": 3, "test_months": 6, "step_months": 6,
-               "top_k_grid": [25], "temperature_grid": [1.0], "hedge_eta_grid": [0.03]}
-    print("\n=== Walk-forward (train 3y / test 6m / step 6m) — mean OOS score ===")
-    for name in ("A_baseline", "B_static", "C_dated"):
-        try:
-            res = run_wfo(variants[name], base, wfo_cfg)
-            segs = res["segments"]
-            scored = [s["score"] for s in segs if s["score"] > float("-inf")]
-            print(f"{name:12}: mean_oos_score={res['mean_oos_score']:+.3f}  "
-                  f"segments={len(segs)}  scored={len(scored)}")
-        except Exception as e:
-            print(f"{name:12}: WFO failed: {e}")
+    if "--wfo" in sys.argv:
+        wfo_cfg = {"train_years": 3, "test_months": 6, "step_months": 6,
+                   "top_k_grid": [25], "temperature_grid": [1.0], "hedge_eta_grid": [0.03]}
+        print("\n=== Walk-forward (train 3y / test 6m / step 6m) — mean OOS score ===", flush=True)
+        for name in ("A_baseline", "B_static", "C_dated"):
+            try:
+                res = run_wfo(variants[name], base, wfo_cfg)
+                segs = res["segments"]
+                scored = [s["score"] for s in segs if s["score"] > float("-inf")]
+                print(f"{name:12}: mean_oos_score={res['mean_oos_score']:+.3f}  "
+                      f"segments={len(segs)}  scored={len(scored)}", flush=True)
+            except Exception as e:
+                print(f"{name:12}: WFO failed: {e}", flush=True)
 
 
 if __name__ == "__main__":
