@@ -1,0 +1,201 @@
+<title>Sources &amp; Method</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg:#eef1f5; --surface:#fff; --surface-2:#f5f8fc; --border:#d8e0ea; --border-strong:#c3cedb;
+    --ink:#141b23; --ink-2:#55616f; --ink-3:#8b96a4;
+    --accent:#0d6e8c; --accent-soft:#e0f0f5; --accent-ink:#0a556d;
+    --hot:#c0490f; --hot-soft:#fbe7dc; --warn:#9a6b12; --warn-soft:#f7ecd4;
+    --good:#12795a; --good-soft:#dcefe7; --crit:#b02a2f; --crit-soft:#f8e0e1;
+    --shadow:0 1px 2px rgba(20,27,35,.06),0 10px 30px rgba(20,27,35,.07);
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --sans:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --bg:#0c1116; --surface:#141b22; --surface-2:#1b242d; --border:#28323d; --border-strong:#37444f;
+    --ink:#e7ecf2; --ink-2:#9aa6b3; --ink-3:#67727f;
+    --accent:#38aacb; --accent-soft:#10303b; --accent-ink:#7fd0e6;
+    --hot:#f0854a; --hot-soft:#37211550; --warn:#d6a63e; --warn-soft:#2f261150;
+    --good:#46c199; --good-soft:#102c2350; --crit:#e57078; --crit-soft:#33161950;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px rgba(0,0,0,.4);
+  }}
+  :root[data-theme="dark"]{
+    --bg:#0c1116; --surface:#141b22; --surface-2:#1b242d; --border:#28323d; --border-strong:#37444f;
+    --ink:#e7ecf2; --ink-2:#9aa6b3; --ink-3:#67727f;
+    --accent:#38aacb; --accent-soft:#10303b; --accent-ink:#7fd0e6;
+    --hot:#f0854a; --hot-soft:#37211550; --warn:#d6a63e; --warn-soft:#2f261150;
+    --good:#46c199; --good-soft:#102c2350; --crit:#e57078; --crit-soft:#33161950;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px rgba(0,0,0,.4);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;font-size:15px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1000px;margin:0 auto;padding:26px clamp(14px,3.5vw,32px) 64px}
+  a{color:var(--accent-ink)}
+
+  header{display:flex;align-items:center;gap:13px;padding-bottom:16px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand svg{width:30px;height:30px;display:block}
+  .brand .n{font-weight:700;font-size:16px;letter-spacing:-.01em}
+  .brand .n small{display:block;font-weight:500;font-size:12.5px;color:var(--ink-2)}
+  .tag{font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--good);background:var(--good-soft);padding:3px 8px;border-radius:5px;border:1px solid color-mix(in srgb,var(--good) 30%,transparent)}
+  .sp{flex:1}
+  .tbtn{font:inherit;font-size:13px;color:var(--ink-2);background:var(--surface);border:1px solid var(--border-strong);border-radius:8px;padding:6px 11px;cursor:pointer}
+  .tbtn:hover{color:var(--ink);border-color:var(--accent)} .tbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  .hero{margin:26px 0 26px}
+  .hero h1{font-size:clamp(24px,4.4vw,34px);line-height:1.12;letter-spacing:-.02em;margin:0 0 12px;text-wrap:balance;max-width:22ch}
+  .hero h1 em{font-style:normal;color:var(--accent-ink)}
+  .hero p{font-size:16px;color:var(--ink-2);max-width:64ch;margin:0}
+
+  .band{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--good);
+    border-radius:12px;box-shadow:var(--shadow);padding:14px 17px;margin-top:20px}
+  .band .lead{font-weight:650;font-size:14.5px;white-space:nowrap}
+  .band .no{display:flex;gap:7px;flex-wrap:wrap}
+  .no span{font-size:12px;font-family:var(--mono);color:var(--ink-2);background:var(--surface-2);border:1px solid var(--border);border-radius:6px;padding:3px 9px}
+  .no span b{color:var(--crit);font-weight:700}
+
+  section{margin-top:34px}
+  .eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--accent-ink);margin:0 0 4px}
+  h2{font-size:21px;letter-spacing:-.01em;margin:0 0 4px;text-wrap:balance}
+  .lede{color:var(--ink-2);margin:0 0 8px;max-width:66ch;font-size:14.5px}
+
+  .legend{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 4px}
+  .legend .li{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--ink-2);background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:4px 11px}
+  .dot{width:9px;height:9px;border-radius:50%;flex:none}
+  .dot.live{background:var(--good)} .dot.auto{background:var(--accent)} .dot.plug{background:var(--warn)} .dot.hand{background:var(--ink-3)}
+
+  .ledger{display:flex;flex-direction:column;gap:11px;margin-top:12px}
+  .sig{background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);padding:15px 17px;
+    display:grid;grid-template-columns:1fr auto;gap:6px 16px;align-items:start}
+  .sig .hd{grid-column:1;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .sig .nm{font-weight:680;font-size:15.5px;letter-spacing:-.01em}
+  .sig .what{color:var(--ink-2);font-size:13.5px}
+  .sig .chips{grid-column:2;grid-row:1/span 3;display:flex;flex-direction:column;gap:6px;align-items:flex-end;justify-self:end}
+  .amark{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;font-weight:600;white-space:nowrap;padding:4px 10px;border-radius:7px;border:1px solid var(--border);background:var(--surface-2)}
+  .conf{font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:3px 9px;border-radius:6px;white-space:nowrap}
+  .conf.hi{color:var(--good);background:var(--good-soft);border:1px solid color-mix(in srgb,var(--good) 26%,transparent)}
+  .conf.med{color:var(--warn);background:var(--warn-soft);border:1px solid color-mix(in srgb,var(--warn) 26%,transparent)}
+  .src{grid-column:1;display:flex;align-items:center;gap:9px;margin-top:3px}
+  .src .lbl{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);flex:none}
+  .src code{font-family:var(--mono);font-size:12px;color:var(--accent-ink);background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 20%,transparent);
+    border-radius:6px;padding:3px 8px;line-height:1.9}
+  .lim{grid-column:1;font-size:12.5px;color:var(--ink-2);margin-top:4px;padding-left:12px;border-left:2px solid var(--border-strong)}
+  .lim b{color:var(--ink);font-weight:600}
+  @media(max-width:640px){.sig{grid-template-columns:1fr}.sig .chips{grid-column:1;grid-row:auto;flex-direction:row;justify-self:start;align-items:center}}
+
+  .callout{border-left:3px solid var(--warn);background:var(--warn-soft);border-radius:0 12px 12px 0;padding:15px 18px;margin-top:16px}
+  .callout h3{margin:0 0 5px;font-size:15px} .callout p{margin:0;font-size:14px;color:var(--ink)}
+  .pitch{background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 26%,transparent);border-radius:14px;padding:17px 20px;margin-top:16px}
+  .pitch p{margin:0;font-size:14.5px} .pitch b{color:var(--accent-ink)}
+  .pitch code{font-family:var(--mono);font-size:12.5px;background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:1px 6px}
+
+  footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--border);font-size:12.5px;color:var(--ink-2);display:flex;flex-direction:column;gap:8px}
+  footer .hd{color:var(--ink);font-weight:600}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <path d="M16 2.5 27 6.4v8.1c0 6.9-4.5 12.4-11 15-6.5-2.6-11-8.1-11-15V6.4L16 2.5Z" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="M10.7 16.2 14.4 20l7-7.6" stroke="var(--accent)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="n">Cyber Defencely<small>Sources &amp; Method · companion to the Prospect Brief</small></div>
+    </div>
+    <span class="tag">Reproducible</span>
+    <span class="sp"></span>
+    <button class="tbtn" id="theme" type="button" aria-label="Toggle theme"><span id="ti">◐</span> Theme</button>
+  </header>
+
+  <div class="hero">
+    <h1>Every number in the brief has a <em>receipt</em>.</h1>
+    <p>This is the "show your work" page. Each signal we scored the prospects on is listed below with its exact public source, how much of it runs unattended, how far to trust it, and where it stops. If a signal can't be defended in front of a prospect, it doesn't belong in the pitch — so the limits are here in the open, not buried.</p>
+  </div>
+
+  <div class="band">
+    <span class="lead">Passive &amp; public, always.</span>
+    <span class="no">
+      <span><b>No</b> port scans</span>
+      <span><b>No</b> vulnerability probes</span>
+      <span><b>No</b> authenticated access</span>
+      <span><b>Nothing</b> the target sees as directed at them</span>
+    </span>
+  </div>
+
+  <section>
+    <p class="eyebrow">The provenance ledger</p>
+    <h2>Eight signals, and where each comes from</h2>
+    <p class="lede">The automation mark tells you what scales for free today versus what still needs a key or a hand — the honest map of the engine, not a sales gloss.</p>
+
+    <div class="legend">
+      <span class="li"><span class="dot live"></span> Live · free</span>
+      <span class="li"><span class="dot auto"></span> Automated · free</span>
+      <span class="li"><span class="dot plug"></span> Pluggable · needs a key</span>
+      <span class="li"><span class="dot hand"></span> Hand-verified this run</span>
+    </div>
+
+    <div class="ledger" id="ledger"></div>
+  </section>
+
+  <section>
+    <div class="callout">
+      <h3>The one dependency worth naming</h3>
+      <p>Everything above is automated and free <b>except candidate generation</b> — turning "all Swedish energy &amp; transport firms ≥50 staff" into names + domains + SNI codes. This run hand-verified that step, which is why the 10 are trustworthy and 50–100 needs a registry feed (allabolag / Bolagsverket / Roaring). The engine's <code style="font-family:var(--mono);font-size:12.5px">Company</code> shape is already built for it — wiring one in changes nothing downstream. This is the scaling boundary, stated plainly, not a hidden one.</p>
+    </div>
+
+    <div class="pitch">
+      <p><b>And it's built to feed the stack.</b> The same collectors run behind one <code>POST /enrich</code> call — a domain in, this whole signal bundle out as flat JSON — so it drops straight into <b>Clay</b>'s enrichment waterfall and on into <b>UpliftIQ</b>'s scoring. The signal isn't the moat; the signal <em>wired into the systems that close the loop</em> is.</p>
+    </div>
+  </section>
+
+  <footer>
+    <span class="hd">Screening, not adjudication.</span>
+    <span>The NIS2 verdict is a screening heuristic, not a legal determination. "No visible CISO" is a confidence signal to verify by hand before outreach, never a claim of absence. Named individuals (CISO detection) are handled as minimal, retention-limited, legitimate-interest B2B processing under GDPR.</span>
+    <span>Demo run: 10 companies, 12 Aug 2026 — 89 attack-surface findings, 147 digital suppliers, 124 procurement suppliers, 63 named suppliers. Full per-signal write-up in <code style="font-family:var(--mono);font-size:11.5px">docs/METHODOLOGY.md</code>.</span>
+  </footer>
+</div>
+
+<script>
+  const A={live:["live","Live · free"],auto:["auto","Automated · free"],plug:["plug","Pluggable · key"],hand:["hand","Hand-verified"]};
+  const SIG=[
+    {nm:"1 · NIS2 scope",what:"In-scope essential/important entity — sector match + size threshold (≥50 staff or €10M).",
+     src:"SNI code → NIS2 sector map  ·  public size figures",a:"hand",conf:"med",
+     lim:"Sector logic is automated; SNI &amp; headcount were <b>hand-verified</b> this run (no registry feed yet). A screening heuristic, not a legal determination."},
+    {nm:"2 · Email security",what:"SPF / DMARC enforcement, plus DNSSEC · CAA · MTA-STS · TLS-RPT hardening.",
+     src:"dns.google/resolve  (DNS-over-HTTPS)  ·  live TXT / MX / DNSKEY",a:"live",conf:"hi",
+     lim:"A missing DMARC record is a <b>fact</b>, not an inference. Measures domain spoofability — the quick win — not inbound filtering."},
+    {nm:"3 · CISO / hiring trigger",what:"Any publicly visible security leader — and the stronger signal, actively hiring one.",
+     src:"public web + LinkedIn search  ·  Bright Data SERP-ready  (EN + SV titles)",a:"plug",conf:"med",
+     lim:"<b>Absence is a confidence signal, not proof</b> — a null can be a private profile or Swedish-only title. The live job req is the high-confidence signal: public intent + budget."},
+    {nm:"4 · Passive attack surface",what:"Security headers, version/EoL disclosure, security.txt, subdomains, exposed services / OT.",
+     src:"HTTP headers  ·  crt.sh CT logs  ·  Shodan InternetDB  (free, per-IP)",a:"auto",conf:"hi",
+     lim:"High confidence for what's <b>present</b>; a takeover ‘candidate’ is flagged for manual confirmation, never asserted. Read-only — no probe the target would see."},
+    {nm:"5 · Suppliers — digital",what:"Third parties visible from outside: mail/DNS providers + third-party code in their own site.",
+     src:"MX / NS records  ·  the site’s own content-security-policy",a:"auto",conf:"hi",
+     lim:"Vendors declared by the company’s own headers/markup. Only <b>externally observable</b> suppliers — won’t see an internal ERP. 147 mapped across the 10."},
+    {nm:"6 · Suppliers — procurement",what:"NIS2-critical systems outsourced by public tender: IT, software, telecom, OT/electrical.",
+     src:"TED  api.ted.europa.eu  ·  openprocurements.com  (national portals)",a:"auto",conf:"hi",
+     lim:"Award decisions are public record → linkage is high confidence. The title-keyword <b>category</b> guess is weak (over-matches) — we ship the verified linkage, not the guess. 124 + 63 named."},
+    {nm:"7 · Big suppliers as leads",what:"Named IT/OT vendors ranked by how many public bodies they serve — a second funnel.",
+     src:"award records → distinct-buyer count  ·  ownership-verified domains",a:"auto",conf:"hi",
+     lim:"Reach counted from records. Domains are <b>ownership-verified</b> (brand as a whole word on a resolving homepage); an earlier noisier scored list was <b>withheld</b> until accuracy was fixed."},
+    {nm:"8 · Context mapping",what:"Each finding → its NIS2 Art. 21(2) measure, ISO 27001 control, severity, and CD service.",
+     src:"kb/crosswalk.yaml  (curated backbone)  +  grounded LLM prose",a:"auto",conf:"hi",
+     lim:"Framework IDs come from the fixed table <b>only</b>; the LLM writes prose and is never asked for a control ID, so it <b>can’t hallucinate one</b>. Template fallback with no key."},
+  ];
+  document.getElementById("ledger").innerHTML=SIG.map(s=>{
+    const[cls,label]=A[s.a];
+    const conf=s.conf==="hi"?'<span class="conf hi">High confidence</span>':'<span class="conf med">Medium</span>';
+    return `<div class="sig">
+      <div class="hd"><span class="nm">${s.nm}</span><span class="what">${s.what}</span></div>
+      <div class="src"><span class="lbl">Source</span><code>${s.src}</code></div>
+      <div class="lim">${s.lim}</div>
+      <div class="chips"><span class="amark"><span class="dot ${cls}"></span>${label}</span>${conf}</div>
+    </div>`;}).join("");
+
+  const root=document.documentElement,tb=document.getElementById("theme"),ti=document.getElementById("ti");
+  let m="system";
+  tb.addEventListener("click",()=>{m=m==="system"?"light":m==="light"?"dark":"system";
+    if(m==="system")root.removeAttribute("data-theme");else root.setAttribute("data-theme",m);
+    ti.textContent=m==="light"?"☀":m==="dark"?"☾":"◐";});
+</script>

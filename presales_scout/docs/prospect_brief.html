@@ -1,0 +1,245 @@
+<title>NIS2 Prospect Brief</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg:#eef1f5; --surface:#fff; --surface-2:#f5f8fc; --border:#d8e0ea; --border-strong:#c3cedb;
+    --ink:#141b23; --ink-2:#55616f; --ink-3:#8b96a4;
+    --accent:#0d6e8c; --accent-soft:#e0f0f5; --accent-ink:#0a556d;
+    --hot:#c0490f; --hot-soft:#fbe7dc; --warn:#9a6b12; --warn-soft:#f7ecd4;
+    --good:#12795a; --good-soft:#dcefe7; --crit:#b02a2f; --crit-soft:#f8e0e1;
+    --shadow:0 1px 2px rgba(20,27,35,.06),0 10px 30px rgba(20,27,35,.07);
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --sans:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --bg:#0c1116; --surface:#141b22; --surface-2:#1b242d; --border:#28323d; --border-strong:#37444f;
+    --ink:#e7ecf2; --ink-2:#9aa6b3; --ink-3:#67727f;
+    --accent:#38aacb; --accent-soft:#10303b; --accent-ink:#7fd0e6;
+    --hot:#f0854a; --hot-soft:#37211550; --warn:#d6a63e; --warn-soft:#2f261150;
+    --good:#46c199; --good-soft:#102c2350; --crit:#e57078; --crit-soft:#33161950;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px rgba(0,0,0,.4);
+  }}
+  :root[data-theme="dark"]{
+    --bg:#0c1116; --surface:#141b22; --surface-2:#1b242d; --border:#28323d; --border-strong:#37444f;
+    --ink:#e7ecf2; --ink-2:#9aa6b3; --ink-3:#67727f;
+    --accent:#38aacb; --accent-soft:#10303b; --accent-ink:#7fd0e6;
+    --hot:#f0854a; --hot-soft:#37211550; --warn:#d6a63e; --warn-soft:#2f261150;
+    --good:#46c199; --good-soft:#102c2350; --crit:#e57078; --crit-soft:#33161950;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px rgba(0,0,0,.4);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;font-size:15px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1000px;margin:0 auto;padding:26px clamp(14px,3.5vw,32px) 64px}
+  a{color:var(--accent-ink)}
+
+  header{display:flex;align-items:center;gap:13px;padding-bottom:16px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand svg{width:30px;height:30px;display:block}
+  .brand .n{font-weight:700;font-size:16px;letter-spacing:-.01em}
+  .brand .n small{display:block;font-weight:500;font-size:12.5px;color:var(--ink-2)}
+  .tag{font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--good);background:var(--good-soft);padding:3px 8px;border-radius:5px;border:1px solid color-mix(in srgb,var(--good) 30%,transparent)}
+  .sp{flex:1}
+  .tbtn{font:inherit;font-size:13px;color:var(--ink-2);background:var(--surface);border:1px solid var(--border-strong);border-radius:8px;padding:6px 11px;cursor:pointer}
+  .tbtn:hover{color:var(--ink);border-color:var(--accent)} .tbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  .hero{margin:26px 0 30px}
+  .hero h1{font-size:clamp(24px,4.4vw,34px);line-height:1.12;letter-spacing:-.02em;margin:0 0 12px;text-wrap:balance;max-width:20ch}
+  .hero h1 em{font-style:normal;color:var(--hot)}
+  .hero p{font-size:16px;color:var(--ink-2);max-width:62ch;margin:0}
+  .clock{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}
+  .fact{font-size:12.5px;background:var(--surface);border:1px solid var(--border-strong);border-radius:20px;padding:5px 12px;display:inline-flex;gap:7px;align-items:center}
+  .fact b{color:var(--ink)} .fact .d{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+
+  section{margin-top:38px}
+  .eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--accent-ink);margin:0 0 4px}
+  h2{font-size:21px;letter-spacing:-.01em;margin:0 0 4px;text-wrap:balance}
+  .lede{color:var(--ink-2);margin:0 0 16px;max-width:64ch;font-size:14.5px}
+
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0 6px}
+  @media(max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}}
+  .stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px 15px;box-shadow:var(--shadow)}
+  .stat .k{font-size:26px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+  .stat .k.hot{color:var(--hot)} .stat .k.ac{color:var(--accent)}
+  .stat .l{font-size:12px;color:var(--ink-2);margin-top:2px}
+
+  .rows{display:flex;flex-direction:column;gap:9px;margin-top:6px}
+  .row{background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);display:grid;grid-template-columns:30px minmax(0,1fr) auto auto;align-items:center;gap:14px;padding:12px 15px}
+  @media(max-width:720px){.row{grid-template-columns:26px minmax(0,1fr);row-gap:9px}.row .chips,.row .meter-wrap{grid-column:1/-1}}
+  .rk{font-variant-numeric:tabular-nums;font-weight:700;color:var(--ink-3);text-align:center}
+  .co .cn{font-weight:650;letter-spacing:-.01em} .co .cm{font-size:12.5px;color:var(--ink-2)}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;justify-self:end}
+  .chip{font-size:11px;font-weight:600;padding:3px 8px;border-radius:6px;border:1px solid transparent;white-space:nowrap}
+  .chip.op{color:var(--hot);background:var(--hot-soft);border-color:color-mix(in srgb,var(--hot) 26%,transparent)}
+  .chip.gd{color:var(--good);background:var(--good-soft);border-color:color-mix(in srgb,var(--good) 26%,transparent)}
+  .chip.wn{color:var(--warn);background:var(--warn-soft);border-color:color-mix(in srgb,var(--warn) 26%,transparent)}
+  .chip.tr{color:var(--hot);background:transparent;border:1.5px solid color-mix(in srgb,var(--hot) 55%,transparent);font-weight:700}
+  .meter-wrap{display:flex;align-items:center;gap:9px;min-width:130px;justify-self:end}
+  .meter{width:74px;height:7px;border-radius:5px;background:var(--surface-2);border:1px solid var(--border);overflow:hidden}
+  .meter>i{display:block;height:100%}
+  .fitn{font-variant-numeric:tabular-nums;font-weight:700;width:28px;text-align:right}
+
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px}
+  @media(max-width:720px){.split{grid-template-columns:1fr}}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);padding:16px 17px}
+  .card h3{margin:0 0 3px;font-size:15.5px}
+  .card .sub{font-size:12.5px;color:var(--ink-2);margin:0 0 12px}
+  .bar{display:grid;grid-template-columns:150px 1fr auto;gap:10px;align-items:center;margin:7px 0;font-size:13px}
+  @media(max-width:420px){.bar{grid-template-columns:120px 1fr auto}}
+  .bar .nm{color:var(--ink)} .bar .track{height:9px;border-radius:5px;background:var(--surface-2);border:1px solid var(--border);overflow:hidden}
+  .bar .track>i{display:block;height:100%;background:var(--hot);border-radius:5px}
+  .bar .v{font-variant-numeric:tabular-nums;font-weight:700;color:var(--hot);width:26px;text-align:right}
+
+  .big{display:flex;flex-direction:column;gap:9px;margin-top:6px}
+  .bigrow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);padding:12px 15px}
+  .bigrow .nm{font-weight:650} .bigrow .role{font-size:12.5px;color:var(--ink-2)}
+  .bigrow .reach{display:flex;align-items:baseline;gap:5px;justify-self:end}
+  .bigrow .reach b{font-size:20px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums}
+  .bigrow .reach span{font-size:11.5px;color:var(--ink-3)}
+
+  .pitch{background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 26%,transparent);border-radius:14px;padding:18px 20px;margin-top:14px}
+  .pitch p{margin:0;font-size:15px}
+  .pitch b{color:var(--accent-ink)}
+  .callout{border-left:3px solid var(--hot);background:var(--hot-soft);border-radius:0 10px 10px 0;padding:12px 15px;margin-top:14px;font-size:14px}
+
+  footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--border);font-size:12.5px;color:var(--ink-2);display:flex;flex-direction:column;gap:8px}
+  footer .hd{color:var(--ink);font-weight:600}
+  footer code{font-family:var(--mono);font-size:11.5px;background:var(--surface-2);padding:1px 5px;border-radius:4px;border:1px solid var(--border)}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <path d="M16 2.5 27 6.4v8.1c0 6.9-4.5 12.4-11 15-6.5-2.6-11-8.1-11-15V6.4L16 2.5Z" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="M10.7 16.2 14.4 20l7-7.6" stroke="var(--accent)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="n">Cyber Defencely<small>NIS2 Prospect Brief · Energy &amp; Transport</small></div>
+    </div>
+    <span class="tag">Live data · 12 Aug 2026</span>
+    <span class="sp"></span>
+    <button class="tbtn" id="theme" type="button" aria-label="Toggle theme"><span id="ti">◐</span> Theme</button>
+  </header>
+
+  <div class="hero">
+    <h1>Ten Swedish firms that are <em>legally obligated</em> — and not ready.</h1>
+    <p>Sweden's Cybersecurity Act (Cybersäkerhetslagen, SFS 2025:1506) went live 15 January 2026. It puts energy and transport operators squarely in NIS2 scope. This brief points at ten of them, ranks each on public risk signals, and — as a bonus — surfaces the IT/OT suppliers they're all quietly dependent on.</p>
+    <div class="clock">
+      <span class="fact"><span class="d"></span><b>In force</b> since Jan 2026</span>
+      <span class="fact"><span class="d"></span><b>18 sectors</b>, incl. energy &amp; transport</span>
+      <span class="fact"><span class="d"></span><b>≥50 staff</b> or <b>€10M</b> turnover</span>
+      <span class="fact"><span class="d"></span><b>Entity-wide</b> scope</span>
+    </div>
+  </div>
+
+  <!-- ================= 10 PROSPECTS ================= -->
+  <section>
+    <p class="eyebrow">The target list</p>
+    <h2>10 prospects, ranked by fit</h2>
+    <p class="lede">Every firm is in NIS2 scope. What separates them is observable, public risk: weak email security, no visible security leader — and the strongest signal of all, actively hiring a CISO.</p>
+
+    <div class="stats">
+      <div class="stat"><div class="k ac">10</div><div class="l">All in NIS2 scope</div></div>
+      <div class="stat"><div class="k">8</div><div class="l">Weak email security</div></div>
+      <div class="stat"><div class="k">10</div><div class="l">No clear CISO</div></div>
+      <div class="stat"><div class="k hot">5</div><div class="l">Hiring a CISO now</div></div>
+    </div>
+
+    <div class="rows" id="rows"></div>
+    <div class="callout"><b>The signal that matters most:</b> half of them are <b>actively recruiting a CISO or infosec lead</b> right now (⚡). They've admitted the gap and have the budget — the ideal moment to walk in with CISO-as-a-Service.</div>
+  </section>
+
+  <!-- ================= SUPPLY CHAIN ================= -->
+  <section>
+    <p class="eyebrow">The angle no one else pitches</p>
+    <h2>Their suppliers are their liability too</h2>
+    <p class="lede">NIS2 Art. 21(2)(d) makes each firm accountable for its suppliers' security. Two layers are public: the ICT/OT vendors they procure (from EU tender records), and the third-party code running in their websites.</p>
+
+    <div class="split">
+      <div class="card">
+        <h3>NIS2-critical contracts they've outsourced</h3>
+        <p class="sub">Public procurement (TED) — software, IT services, OT/electrical, control systems</p>
+        <div id="proc"></div>
+      </div>
+      <div class="card">
+        <h3>Third-party code in their sites</h3>
+        <p class="sub">Vendors running in-page with user-data access (passive)</p>
+        <div id="digi"></div>
+        <p style="font-size:12.5px;color:var(--ink-2);margin:12px 0 0">Stena Line alone pulls <b>27 external suppliers</b>, 24 of them executing in visitors' browsers — analytics, an AI chatbot, ad pixels. Each is a supplier NIS2 holds them accountable for.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= BIG ONES BONUS ================= -->
+  <section>
+    <p class="eyebrow">Bonus — the leads behind the leads</p>
+    <h2>The big suppliers, embedded everywhere</h2>
+    <p class="lede">The named suppliers we pulled from award records aren't just risk on the utilities' books — they're <b>huge prospects in their own right</b>. These IT/OT firms supply dozens of public bodies, so every one of those buyers now demands NIS2 assurance from them. Compliance pressure flows downhill.</p>
+
+    <div class="big" id="big"></div>
+
+    <div class="pitch">
+      <p><b>Two funnels for the price of one.</b> Sell NIS2 readiness to the utilities — <em>and</em> to the IT/OT suppliers those utilities depend on, who must now prove their own security to keep the contracts. The supplier graph is a second, self-refilling lead list.</p>
+    </div>
+  </section>
+
+  <footer>
+    <span class="hd">All signals are passive and public.</span>
+    <span>NIS2 scope from SNI industry code + public company size · email hygiene from live SPF/DMARC DNS · CISO signal from public web/LinkedIn search · procurement from the EU's <code>TED</code> award records + <code>openprocurements</code> · third-party code from the sites' own <code>content-security-policy</code>. No scanning, no probing, nothing behind a login.</span>
+    <span>Demo data from a real 12 Aug 2026 run. Supplier names are drawn from public award decisions; "no visible CISO" is a confidence signal to verify by hand before outreach.</span>
+  </footer>
+</div>
+
+<script>
+  const SIZE={ "Skellefteå Kraft AB":"~700 staff","Mälarenergi AB":"~750 staff","Göteborg Energi AB":"~1,150 staff",
+    "Öresundskraft AB":"~450 staff","Stena Line Scandinavia AB":"~5,000 staff","Jämtkraft AB":"~350 staff",
+    "Tekniska verken i Linköping AB":"~1,000 staff","Transdev Sverige AB":"~6,000 staff",
+    "Green Cargo AB":"~1,800 staff","Nobina Sverige AB":"~11,000 staff"};
+  const DATA=[
+    {r:1,n:"Skellefteå Kraft AB",s:"Energy",fit:100,email:"weak",ciso:"none",hiring:false},
+    {r:2,n:"Mälarenergi AB",s:"Energy",fit:100,email:"weak",ciso:"none",hiring:true},
+    {r:3,n:"Göteborg Energi AB",s:"Energy",fit:100,email:"weak",ciso:"none",hiring:true},
+    {r:4,n:"Öresundskraft AB",s:"Energy",fit:100,email:"weak",ciso:"none",hiring:true},
+    {r:5,n:"Stena Line Scandinavia AB",s:"Transport",fit:100,email:"weak",ciso:"none",hiring:false},
+    {r:6,n:"Jämtkraft AB",s:"Energy",fit:85,email:"weak",ciso:"unclear",hiring:false},
+    {r:7,n:"Tekniska verken i Linköping AB",s:"Energy",fit:85,email:"weak",ciso:"unclear",hiring:true},
+    {r:8,n:"Transdev Sverige AB",s:"Transport",fit:85,email:"weak",ciso:"unclear",hiring:true},
+    {r:9,n:"Green Cargo AB",s:"Transport",fit:75,email:"strong",ciso:"none",hiring:false},
+    {r:10,n:"Nobina Sverige AB",s:"Transport",fit:60,email:"strong",ciso:"unclear",hiring:false},
+  ];
+  const col=f=>f>=90?"var(--hot)":f>=70?"var(--accent)":"var(--ink-3)";
+  document.getElementById("rows").innerHTML=DATA.map(d=>{
+    const em = d.email==="weak"?`<span class="chip op">Email · weak</span>`:`<span class="chip gd">Email · strong</span>`;
+    const ci = d.ciso==="none"?`<span class="chip op">No CISO</span>`:`<span class="chip wn">CISO · unclear</span>`;
+    const hr = d.hiring?`<span class="chip tr">⚡ Hiring a CISO</span>`:"";
+    return `<div class="row">
+      <span class="rk">${d.r}</span>
+      <span class="co"><span class="cn">${d.n}</span><span class="cm">${d.s} · ${SIZE[d.n]||""}</span></span>
+      <span class="chips">${em}${ci}${hr}</span>
+      <span class="meter-wrap"><span class="meter"><i style="width:${d.fit}%;background:${col(d.fit)}"></i></span><span class="fitn">${d.fit}</span></span>
+    </div>`;}).join("");
+
+  const PROC=[["Göteborg Energi",35],["Öresundskraft",27],["Skellefteå Kraft",27],["Tekniska verken",14],["Mälarenergi",11],["Jämtkraft",10]];
+  const pmax=35;
+  document.getElementById("proc").innerHTML=PROC.map(([n,v])=>`<div class="bar"><span class="nm">${n}</span><span class="track"><i style="width:${Math.round(v/pmax*100)}%"></i></span><span class="v">${v}</span></div>`).join("");
+
+  const DIGI=[["Stena Line",27],["Green Cargo",23],["Transdev",18],["Nobina",13],["Öresundskraft",13],["Göteborg Energi",13]];
+  const dmax=27;
+  document.getElementById("digi").innerHTML=DIGI.map(([n,v])=>`<div class="bar"><span class="nm">${n}</span><span class="track"><i style="width:${Math.round(v/dmax*100)}%"></i></span><span class="v">${v}</span></div>`).join("");
+
+  const BIG=[
+    {n:"Atea Sverige AB",role:"IT services & hardware — supplies these utilities and beyond",reach:49},
+    {n:"Advania Sverige AB",role:"IT services (org 556765-3786) — supplies Mälarenergi",reach:41},
+    {n:"ABB Power Grids Sweden AB",role:"OT / grid control — supplies Öresundskraft",reach:null},
+    {n:"Ramböll Management Consulting AB",role:"IT & advisory — supplies Skellefteå Kraft",reach:37},
+  ];
+  document.getElementById("big").innerHTML=BIG.map(b=>`<div class="bigrow">
+    <span><span class="nm">${b.n}</span><br><span class="role">${b.role}</span></span>
+    ${b.reach!=null?`<span class="reach"><b>${b.reach}</b><span>public-sector<br>customers</span></span>`:`<span class="reach"><b>OT</b><span>grid supplier</span></span>`}
+  </div>`).join("");
+
+  const root=document.documentElement,tb=document.getElementById("theme"),ti=document.getElementById("ti");
+  let m="system";
+  tb.addEventListener("click",()=>{m=m==="system"?"light":m==="light"?"dark":"system";
+    if(m==="system")root.removeAttribute("data-theme");else root.setAttribute("data-theme",m);
+    ti.textContent=m==="light"?"☀":m==="dark"?"☾":"◐";});
+</script>
