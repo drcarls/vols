@@ -12,7 +12,7 @@ from typing import Optional
 
 from ..context_map import enrich
 from ..models import Company, EmailSecuritySignal, Finding
-from . import ct_surface, dns_hardening, security_txt, shodan_exposure, web_headers
+from . import ct_surface, dns_hardening, security_txt, shodan_exposure, supply_chain, web_headers
 
 
 def _email_codes(sig: EmailSecuritySignal) -> list[tuple[str, str]]:
@@ -47,7 +47,7 @@ def collect(
     # passive network collectors
     if run_network and company.domain:
         d = company.domain
-        for mod in (dns_hardening, web_headers, security_txt, ct_surface, shodan_exposure):
+        for mod in (dns_hardening, web_headers, security_txt, ct_surface, shodan_exposure, supply_chain):
             try:
                 pairs += mod.scan(d)
             except Exception:

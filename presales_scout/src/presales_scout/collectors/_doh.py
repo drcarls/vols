@@ -12,7 +12,7 @@ from urllib.request import Request, urlopen
 _ENDPOINT = "https://dns.google/resolve"
 
 # numeric TXT/record type codes we care about
-_TYPES = {"A": 1, "TXT": 16, "CAA": 257, "DNSKEY": 48, "DS": 43, "MX": 15}
+_TYPES = {"A": 1, "NS": 2, "TXT": 16, "CAA": 257, "DNSKEY": 48, "DS": 43, "MX": 15}
 
 
 def resolve(name: str, rtype: str, timeout: int = 15) -> list[str]:

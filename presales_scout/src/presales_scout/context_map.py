@@ -167,6 +167,13 @@ CATALOG: dict[str, dict] = {
         service="Rapid Cybersecurity Assessment (critical) + Team-as-a-Service",
         remediation="Isolate OT from the internet; segment IT/OT networks.",
         talking="An industrial control system appears internet-exposed — a critical safety risk."),
+    "SUPPLY_UNMANAGED": dict(
+        title="Unmanaged third-party / supplier dependencies", category="supply_chain", base=2,
+        risk="Each external supplier that runs in-page or handles data is an attack path the entity is accountable for.",
+        nis2="(d) supply-chain security", iso="A.5.19 / A.5.21 (supplier relationships, ICT supply chain)",
+        service="Supply-chain / third-party risk assessment (Rapid Assessment + Team-as-a-Service)",
+        remediation="Inventory suppliers, set security requirements, and monitor them continuously.",
+        talking="Under NIS2 you're accountable for these suppliers' security — is there a third-party risk process?"),
     "CRED_BREACH": dict(
         title="Breached employee credentials exposed", category="credential", base=3,
         risk="Leaked credentials enable account takeover and initial access.",
@@ -190,7 +197,7 @@ def enrich(code: str, evidence: str, company: Company) -> Finding | None:
     sector = None
     from .collectors import nis2 as _nis2
     sector = _nis2.match_sector(company.sni_code)
-    if sector in CRITICAL_INFRA_SECTORS and spec["category"] in ("email", "dns", "web", "tls", "surface", "exposure"):
+    if sector in CRITICAL_INFRA_SECTORS and spec["category"] in ("email", "dns", "web", "tls", "surface", "exposure", "supply_chain"):
         score = _clamp(score + 1)
     severity = SEVERITY_ORDER[score - 1]
     return Finding(
