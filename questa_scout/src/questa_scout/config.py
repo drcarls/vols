@@ -26,3 +26,10 @@ def brightdata_token() -> str | None:
     environment (or a local, git-ignored .env) before running live.
     """
     return os.environ.get("BRIGHTDATA_API_TOKEN")
+
+
+def brightdata_zone() -> str:
+    """Bright Data zone name. Account-specific -- a dedicated SERP zone, or a
+    Web Unlocker zone (which also returns SERP JSON via brd_json). Set
+    BRIGHTDATA_ZONE to match your account; defaults to 'serp'."""
+    return os.environ.get("BRIGHTDATA_ZONE", "serp")

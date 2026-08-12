@@ -23,12 +23,13 @@ BRIGHTDATA_API_URL = "https://api.brightdata.com/request"
 
 
 class BrightDataSerpBackend:
-    def __init__(self, token: str, zone: str = "serp", timeout: int = 30):
+    def __init__(self, token: str, zone: str = "serp", timeout: int = 60, attempts: int = 3):
         if not token:
             raise ValueError("Bright Data API token is required for live SERP queries")
         self.token = token
         self.zone = zone
         self.timeout = timeout
+        self.attempts = attempts
 
     def _google_url(self, query: str, country: str, language: str) -> str:
         params = {
@@ -41,24 +42,40 @@ class BrightDataSerpBackend:
         return "https://www.google.com/search?" + urlencode(params)
 
     def search(self, query: str, *, country: str = "us", language: str = "en") -> list[SerpResult]:
+        import json as _json
+        import time as _time
+
         import requests  # imported lazily so fixture-only runs need no dependency
+        from requests.exceptions import HTTPError, RequestException
 
         payload = {
             "zone": self.zone,
             "url": self._google_url(query, country, language),
             "format": "raw",
         }
-        resp = requests.post(
-            BRIGHTDATA_API_URL,
-            headers={
-                "Authorization": f"Bearer {self.token}",
-                "Content-Type": "application/json",
-            },
-            json=payload,
-            timeout=self.timeout,
-        )
-        resp.raise_for_status()
-        return parse_serp_json(resp.text)
+        headers = {
+            "Authorization": f"Bearer {self.token}",
+            "Content-Type": "application/json",
+        }
+        # A Web Unlocker zone solves Google's anti-bot per call, so an
+        # individual request can be slow, time out, or hand back an HTML block
+        # page instead of the SERP JSON. Retry a few times, then degrade this
+        # one query to no results -- a single bad request must never abort a
+        # batch run. Genuine auth/zone misconfig (400/401/403/407) surfaces.
+        for attempt in range(self.attempts):
+            try:
+                resp = requests.post(BRIGHTDATA_API_URL, headers=headers, json=payload, timeout=self.timeout)
+                resp.raise_for_status()
+                return parse_serp_json(resp.text)
+            except HTTPError as exc:
+                code = exc.response.status_code if exc.response is not None else 0
+                if code in (400, 401, 403, 407):  # configuration/auth problem
+                    raise
+            except (RequestException, _json.JSONDecodeError, ValueError):
+                pass  # transient: timeout, connection reset, or non-JSON body
+            if attempt < self.attempts - 1:
+                _time.sleep(1.5 * (attempt + 1))
+        return []
 
 
 def parse_serp_json(raw: str | dict) -> list[SerpResult]:

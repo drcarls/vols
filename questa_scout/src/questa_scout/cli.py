@@ -3,7 +3,7 @@ from __future__ import annotations
 import argparse
 import sys
 
-from .config import brightdata_token, fixtures_dir
+from .config import brightdata_token, brightdata_zone, fixtures_dir
 from .collectors.serp import BrightDataSerpBackend, FixtureBackend
 from .collectors.serp.base import SerpBackend
 from .models import Company
@@ -106,7 +106,8 @@ def cmd_universe(args):
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="questa", description="Questa AI pre-sales prospecting")
     p.add_argument("--offline", action="store_true", help="force fixture backend (no network)")
-    p.add_argument("--serp-zone", default="serp", help="Bright Data SERP zone name")
+    p.add_argument("--serp-zone", default=brightdata_zone(),
+                   help="Bright Data zone name (or set BRIGHTDATA_ZONE; default 'serp')")
     p.add_argument("--no-web", action="store_true", help="skip the homepage AI/chatbot check")
     sub = p.add_subparsers(dest="command", required=True)
 
