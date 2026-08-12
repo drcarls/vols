@@ -1,0 +1,98 @@
+# Control-theme crosswalk — the curated knowledge base behind automated context mapping.
+#
+# This is the deterministic backbone. A finding is tagged with ONE control theme
+# (see context_engine.THEME_OF); the theme maps here to its NIS2 Art. 21(2)
+# measure, ISO 27001:2022 control, base severity, and the Cyber Defencely service
+# that remediates it. Framework citations come from this table only — an LLM
+# narrative layer may phrase the risk but can never invent a control ID.
+#
+# Curated once (with Cyber Defencely — this table is the moat). Adding a new
+# finding costs one line in THEME_OF, not a hand-written mapping.
+#
+# nis2 letters (Swedish Cybersäkerhetslagen implements NIS2 Art. 21(2)):
+#   (a) risk analysis & IS security policies   (f) effectiveness assessment
+#   (b) incident handling                      (g) basic cyber hygiene & training
+#   (c) business continuity / backup           (h) cryptography & encryption
+#   (d) supply-chain security                  (i) HR / access control / asset mgmt
+#   (e) secure dev & maintenance, vuln handling (j) MFA & secured comms
+
+themes:
+  email_authentication:
+    label: Email authentication & anti-spoofing
+    nis2: "(g) basic cyber hygiene"
+    iso: "A.5.14 / A.8.16 (information transfer, monitoring)"
+    cis: "CIS 9.2 (DMARC)"
+    base_severity: 3
+    service: "Rapid Cybersecurity Assessment (email-security quick win)"
+
+  transport_encryption:
+    label: Transport & DNS cryptography
+    nis2: "(h) cryptography & encryption"
+    iso: "A.8.24 (use of cryptography)"
+    cis: "CIS 3.10"
+    base_severity: 2
+    service: "Rapid Cybersecurity Assessment"
+
+  vulnerability_management:
+    label: Secure development & vulnerability management
+    nis2: "(e) secure development & maintenance"
+    iso: "A.8.8 / A.8.9 / A.8.26 (technical vulnerabilities, config, app security)"
+    cis: "CIS 7 (continuous vulnerability management)"
+    base_severity: 2
+    service: "Rapid Cybersecurity Assessment + remediation advisory"
+
+  vulnerability_disclosure:
+    label: Coordinated vulnerability disclosure
+    nis2: "(e) vulnerability handling & disclosure"
+    iso: "A.5.5 / A.6.8 (authorities, reporting security events)"
+    cis: "CIS 17"
+    base_severity: 1
+    service: "Rapid Cybersecurity Assessment"
+
+  attack_surface:
+    label: External attack surface & asset management
+    nis2: "(a) risk analysis & (i) asset management"
+    iso: "A.5.9 (inventory of assets)"
+    cis: "CIS 1 (enterprise asset inventory)"
+    base_severity: 2
+    service: "Rapid Cybersecurity Assessment (external attack-surface review)"
+
+  security_governance:
+    label: Security governance & leadership
+    nis2: "(a) governance & security policies"
+    iso: "A.5.1 / A.5.2 (policies, roles & responsibilities)"
+    cis: "CIS 14 / 17"
+    base_severity: 3
+    service: "CISO-as-a-Service + Leadership training"
+
+  exposed_service:
+    label: Internet-exposed service
+    nis2: "(i) access control & asset management"
+    iso: "A.8.20 / A.8.9 (network security, configuration)"
+    cis: "CIS 4 / 12"
+    base_severity: 4
+    service: "Rapid Cybersecurity Assessment (urgent) + Team-as-a-Service"
+
+  exposed_ot:
+    label: Internet-exposed OT/ICS
+    nis2: "(a) risk analysis & (c) business continuity"
+    iso: "A.8.20 (network security)"
+    cis: "CIS 12"
+    base_severity: 5
+    service: "Rapid Cybersecurity Assessment (critical) + Team-as-a-Service"
+
+  credential_exposure:
+    label: Breached credential exposure
+    nis2: "(i) access control & (j) MFA"
+    iso: "A.5.17 / A.8.5 (authentication information, secure authentication)"
+    cis: "CIS 5 / 6"
+    base_severity: 3
+    service: "Security Awareness Training + access-control review"
+
+  supply_chain:
+    label: Supply-chain / third-party risk
+    nis2: "(d) supply-chain security"
+    iso: "A.5.19 / A.5.21 / A.5.22 (supplier relationships, ICT supply chain, monitoring)"
+    cis: "CIS 15 (service provider management)"
+    base_severity: 3
+    service: "Supply-chain / third-party risk assessment"

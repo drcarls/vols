@@ -15,6 +15,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=8.0"]
+llm = ["anthropic>=0.40"]   # optional: grounded LLM narrative in context_engine
 
 [project.scripts]
 presales = "presales_scout.cli:main"
