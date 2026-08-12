@@ -174,6 +174,13 @@ CATALOG: dict[str, dict] = {
         service="Supply-chain / third-party risk assessment (Rapid Assessment + Team-as-a-Service)",
         remediation="Inventory suppliers, set security requirements, and monitor them continuously.",
         talking="Under NIS2 you're accountable for these suppliers' security — is there a third-party risk process?"),
+    "SUPPLY_PROCUREMENT_CRITICAL": dict(
+        title="Outsources NIS2-critical systems via public procurement", category="supply_chain", base=3,
+        risk="External suppliers hold access to ICT/OT/telecom/security functions the entity remains accountable for under NIS2.",
+        nis2="(d) supply-chain security", iso="A.5.19 / A.5.21 / A.5.22 (supplier relationships & monitoring)",
+        service="Supply-chain / third-party risk assessment",
+        remediation="Add security requirements and continuous monitoring to these supplier contracts.",
+        talking="Your public tenders show ICT/OT is outsourced — NIS2 makes those suppliers' security your responsibility."),
     "CRED_BREACH": dict(
         title="Breached employee credentials exposed", category="credential", base=3,
         risk="Leaked credentials enable account takeover and initial access.",
