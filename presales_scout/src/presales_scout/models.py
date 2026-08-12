@@ -65,6 +65,51 @@ class CisoSignal:
 
 
 @dataclass
+class Finding:
+    """One observable weakness, enriched with its business/compliance context.
+
+    Collectors emit a bare (code, evidence); the context map turns it into a
+    full Finding with severity, the NIS2/ISO obligation it maps to, the
+    Cyber Defencely service that addresses it, and a sales talking point.
+    """
+
+    company: str
+    domain: Optional[str]
+    finding_id: str
+    title: str
+    category: str                 # email | dns | web | tls | surface | governance | exposure | credential
+    severity: str                 # info | low | medium | high | critical
+    severity_score: int           # 1..5, context-adjusted
+    evidence: str
+    risk: str
+    nis2_measure: str             # Art. 21(2) letter + short text
+    iso_control: str
+    service: str                  # Cyber Defencely service that remediates it
+    remediation: str
+    talking_point: str
+    source: str = "passive_osint"
+
+    def to_row(self) -> dict:
+        return {
+            "company_name": self.company,
+            "domain": self.domain or "",
+            "finding_id": self.finding_id,
+            "title": self.title,
+            "category": self.category,
+            "severity": self.severity,
+            "severity_score": self.severity_score,
+            "evidence": self.evidence,
+            "risk": self.risk,
+            "nis2_measure": self.nis2_measure,
+            "iso_control": self.iso_control,
+            "cyberdefencely_service": self.service,
+            "remediation": self.remediation,
+            "talking_point": self.talking_point,
+            "source": self.source,
+        }
+
+
+@dataclass
 class ProspectReport:
     company: Company
     nis2: Nis2Verdict
