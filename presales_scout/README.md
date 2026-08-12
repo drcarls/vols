@@ -72,10 +72,35 @@ Candidates come from a CSV — see `fixtures/candidates.sample.csv`:
 | `sni_code` | SNI industry code — drives the NIS2 sector match |
 | `employees`, `turnover_eur`, `balance_sheet_eur` | drive the NIS2 size test |
 
-In v1 you supply this CSV. A live **allabolag / Bolagsverket** backend that
-builds the candidate universe by SNI + size (so you don't hand-assemble the
-list) is the planned next step — it populates the same `Company` shape, so
-nothing downstream changes.
+You can supply this CSV by hand, or **generate it** with `harvest` (below) so you
+never hand-assemble the list.
+
+## Harvest the candidate universe (Stage 0)
+
+`harvest` turns *"energy & transport, ≥50 staff"* into the candidate CSV, by SNI
+industry code + size — the step that lets the list scale past a hand-picked few.
+It's pluggable, same as CISO detection:
+
+```bash
+# offline: bundled sample (no key, no network)
+presales --offline harvest --sectors energy,transport --out candidates.csv
+
+# a downloaded registry export (allabolag / Bolagsverket / Roaring CSV)
+presales harvest --sectors energy,transport --export my_export.csv --out candidates.csv
+
+# live Roaring Company Prospecting API (auto-selected when credentials are set)
+export ROARING_CLIENT_ID=…  ROARING_CLIENT_SECRET=…
+presales harvest --sectors energy,transport --min-employees 50 --out candidates.csv
+
+# then rank the harvested universe
+presales discover --input candidates.csv --out ranked.csv
+```
+
+Every backend emits the same `Company` shape, so `harvest` output feeds straight
+into `discover`. Sector aliases (`energy`, `transport`, `water`, `ict`, …) resolve
+to the SNI catalog in `collectors/registry/sni_catalog.py`; energy and transport
+are enumerated to full 5-digit granularity. `harvest` re-checks NIS2 scope itself,
+so a loose backend never leaks below-threshold rows downstream.
 
 ## How it's organized
 
@@ -85,6 +110,13 @@ src/presales_scout/
   collectors/
     nis2.py                 # SNI + size -> NIS2 scope verdict
     email_security.py       # SPF/DMARC DNS check (pure grader is unit-tested)
+    registry/               # Stage 0: harvest the candidate universe by SNI + size
+      base.py               # RegistryBackend protocol
+      sni_catalog.py        # sector -> SNI codes (energy/transport in full)
+      roaring.py            # live Roaring Company Prospecting API (key-gated)
+      csv_export.py         # a downloaded allabolag/Bolagsverket/Roaring export
+      fixture.py            # bundled offline sample
+      discover.py           # discover_universe(): resolve SNI -> qualify -> dedup
     ciso/
       base.py               # CisoBackend protocol + normalized SerpResult
       query.py              # query building, title classification (EN + SV), parsing

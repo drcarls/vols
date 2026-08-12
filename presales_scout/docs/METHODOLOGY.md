@@ -105,10 +105,16 @@ suppliers, so the compliance-bearing fields were moved behind a fixed table.
 
 Everything above is automated and free **except candidate generation** — turning
 "all Swedish energy & transport firms ≥50 staff" into a list of names+domains+SNI
-codes. In this run that step was hand-verified, which is why the 10 are trustworthy
-and why 50–100 needs a feed (allabolag / Bolagsverket / Roaring). The `Company`
-shape is already built for it; wiring one in changes nothing downstream. This is the
-honest scaling boundary, not a hidden one.
+codes. In this run that step was hand-verified, which is why the 10 are trustworthy.
+
+That seam is now built: `collectors/registry/` harvests the candidate universe by
+SNI code + size through a pluggable backend — live **Roaring** Company Prospecting
+API (key-gated), a downloaded **allabolag / Bolagsverket / Roaring** CSV export, or
+an offline sample — and re-checks NIS2 scope before anything goes downstream
+(`presales harvest --sectors energy,transport --out candidates.csv`). What remains
+account-specific is the credential/export itself: plug in Cyber Defencely's registry
+access and the 50–100 list generates itself. This is the honest scaling boundary,
+and now the code path to cross it.
 
 ## What "passive & public" means, precisely
 

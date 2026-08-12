@@ -7,8 +7,9 @@ from pathlib import Path
 from .config import brightdata_token, fixtures_dir
 from .collectors.ciso import BrightDataSerpBackend, FixtureBackend
 from .collectors.ciso.base import CisoBackend
+from .collectors import registry
 from .models import Company
-from .pipeline import analyze, load_candidates, run, write_csv
+from .pipeline import analyze, load_candidates, run, write_companies, write_csv
 from .scoring import brief
 
 
@@ -60,6 +61,49 @@ def cmd_discover(args):
         print()
 
 
+def _select_registry_backend(args) -> registry.RegistryBackend:
+    """Live Roaring if credentials are present and a CSV export wasn't given;
+    a CSV export if --export is set; otherwise the bundled offline fixture."""
+    if args.export:
+        print(f"Registry backend: CSV export ({args.export})", file=sys.stderr)
+        return registry.CsvExportBackend(args.export)
+    if not args.offline:
+        try:
+            backend = registry.RoaringBackend()
+            print("Registry backend: Roaring API (live)", file=sys.stderr)
+            return backend
+        except registry.RegistryAuthError:
+            pass
+    reason = "offline flag" if args.offline else "no ROARING credentials / --export"
+    print(f"Registry backend: fixture sample ({reason})", file=sys.stderr)
+    return registry.FixtureBackend()
+
+
+def cmd_harvest(args):
+    """Build the candidate universe from SNI sectors + size — no hand assembly."""
+    sectors = [s.strip() for s in args.sectors.split(",") if s.strip()]
+    unknown = [s for s in sectors if registry.resolve_sector(s) is None]
+    if unknown:
+        print(f"warning: unrecognised sector(s) {unknown}; "
+              f"known: {', '.join(sorted(registry.SECTOR_SNI))}", file=sys.stderr)
+    backend = _select_registry_backend(args)
+    companies = registry.discover_universe(
+        backend, sectors,
+        min_employees=args.min_employees,
+        include_likely=not args.strict_size,
+        limit=args.limit or None,
+    )
+    print(f"Harvested {len(companies)} in-scope candidates "
+          f"for {', '.join(sectors)}", file=sys.stderr)
+    if args.out:
+        write_companies(companies, args.out)
+        print(f"Candidate universe written to {args.out} "
+              f"(feed it to `presales discover --input {args.out}`)", file=sys.stderr)
+    for c in companies[: args.show or len(companies)]:
+        size = f"{c.employees} staff" if c.employees is not None else "size?"
+        print(f"  {c.name}  ·  SNI {c.sni_code}  ·  {size}  ·  {c.domain or 'no domain'}")
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="presales", description="Cyber Defencely pre-sales prospecting")
     p.add_argument("--offline", action="store_true", help="force fixture backend (no network)")
@@ -75,6 +119,19 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--employees", type=int)
     s.add_argument("--turnover-eur", dest="turnover_eur", type=float)
     s.set_defaults(func=cmd_scan)
+
+    h = sub.add_parser("harvest", help="build the candidate universe from SNI sectors + size")
+    h.add_argument("--sectors", required=True,
+                   help="comma-separated, e.g. 'energy,transport' (aliases resolved)")
+    h.add_argument("--min-employees", dest="min_employees", type=int, default=50,
+                   help="size floor passed to the registry (default 50)")
+    h.add_argument("--export", help="a downloaded registry CSV export (allabolag/Bolagsverket/Roaring)")
+    h.add_argument("--out", help="write the candidate universe CSV (feeds `discover`)")
+    h.add_argument("--limit", type=int, default=0, help="cap the number of candidates (0 = all)")
+    h.add_argument("--show", type=int, default=0, help="print only the first N to stdout (0 = all)")
+    h.add_argument("--strict-size", action="store_true",
+                   help="drop companies whose size is unknown (keep only confirmed in-scope)")
+    h.set_defaults(func=cmd_harvest)
 
     d = sub.add_parser("discover", help="rank a CSV of candidate companies")
     d.add_argument("--input", required=True, help="candidates CSV (see fixtures/candidates.sample.csv)")

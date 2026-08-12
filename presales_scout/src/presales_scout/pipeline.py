@@ -89,3 +89,26 @@ def write_csv(reports: list[ProspectReport], out_path: str | Path) -> None:
         writer = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
         writer.writeheader()
         writer.writerows(rows)
+
+
+CANDIDATE_FIELDS = ["name", "domain", "org_number", "sni_code",
+                    "employees", "turnover_eur", "balance_sheet_eur", "country"]
+
+
+def write_companies(companies: list[Company], out_path: str | Path) -> None:
+    """Write a candidate universe in the exact schema load_candidates reads,
+    so `harvest` output feeds straight into `discover`."""
+    out = Path(out_path)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    with open(out, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=CANDIDATE_FIELDS)
+        writer.writeheader()
+        for c in companies:
+            writer.writerow({
+                "name": c.name, "domain": c.domain or "", "org_number": c.org_number or "",
+                "sni_code": c.sni_code or "",
+                "employees": c.employees if c.employees is not None else "",
+                "turnover_eur": c.turnover_eur if c.turnover_eur is not None else "",
+                "balance_sheet_eur": c.balance_sheet_eur if c.balance_sheet_eur is not None else "",
+                "country": c.country,
+            })
