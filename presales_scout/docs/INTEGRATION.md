@@ -110,10 +110,40 @@ Each layer does the one thing it's best at, and the seams are clean JSON/CSV. Th
 moat isn't any single box — it's that the loop **closes** on data only Cyber
 Defencely holds.
 
+## The Clay endpoint, concretely
+
+The HTTP wrapper is built — `src/presales_scout/integrations/clay.py`. Clay's
+HTTP-enrichment column POSTs a domain; the endpoint runs the full stack and
+returns one flat JSON object that maps straight onto Clay columns:
+
+```
+REQUEST   POST /enrich   { "domain": "goteborgenergi.se",
+                           "name": "Göteborg Energi AB",
+                           "sni_code": "35110", "employees": 1150 }
+
+RESPONSE  200            { "nis2_in_scope": true, "nis2_sector": "Energy",
+                           "email_weakness": "weak", "dmarc_policy": "none",
+                           "ciso_status": "none_found", "ciso_confidence": 0.7,
+                           "top_finding": "DMARC not enforced (p=none)",
+                           "top_finding_nis2": "Art. 21(2)(g) basic cyber hygiene",
+                           "top_finding_service": "Rapid Cybersecurity Assessment …",
+                           "finding_count": 10, "max_severity": "high",
+                           "talking_point": "…grounded one-line opener…",
+                           "findings": [ … full context-mapped rows … ] }
+```
+
+Every field is scalar/flat so it becomes a filterable Clay column; `findings` is
+the full context-mapped detail for the sequence body. Run it standalone with
+`python -m presales_scout.integrations.clay 8787` (POST `/enrich`, GET `/health`),
+or drop `enrich_domain()` into FastAPI/Flask behind your gateway. The pure
+function is unit-tested offline; a live call against a real domain returns the
+same signal the demo brief is built from.
+
 ## Build order (cheapest → highest-leverage)
 
 1. **CSV feeds to UpliftIQ** — already produced; wire the join. *(done)*
 2. **HTTP endpoint** wrapping the collectors → Clay enrichment column + webhook.
+   *(built — `integrations/clay.py`; add auth + deploy)*
 3. **Registry feed** (allabolag / Bolagsverket / Roaring) so candidate generation
    scales past the hand-verified 10 — the one real dependency (methodology §8).
 4. **Feedback capture** — a field in Cyber Defencely's CRM for assessment outcome,
