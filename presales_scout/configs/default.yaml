@@ -1,0 +1,11 @@
+# presales_scout configuration
+ciso:
+  # Bright Data SERP zone name (the token comes from BRIGHTDATA_API_TOKEN env var)
+  serp_zone: serp
+  country: se
+  language: sv
+
+scoring:
+  nis2_weights: {in_scope: 45, likely_in_scope: 28, unknown: 10, out_of_scope: -100}
+  email_weights: {weak: 25, partial: 12, strong: 0, unknown: 5}
+  ciso_weights: {none_found: 30, uncertain: 15, visible: 0}

@@ -1,0 +1,6 @@
+name,domain,org_number,sni_code,employees,turnover_eur,balance_sheet_eur,country
+Nordfrakt Logistik AB,nordfrakt.example,556000-0001,49410,180,42000000,,SE
+Sverige Elnat AB,sverigeelnat.example,556000-0002,35120,240,90000000,,SE
+DataHall Nordic AB,datahall.example,556000-0003,63110,12,3000000,,SE
+Blue Harbor Foods AB,blueharbor.example,556000-0004,10200,30,6000000,,SE
+Mini Bud AB,minibud.example,556000-0005,53200,18,1200000,,SE

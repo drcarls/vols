@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "presales_scout"
+version = "0.1.0"
+description = "Pre-sales prospecting engine for Cyber Defencely (NIS2 fit, email hygiene, CISO detection)"
+requires-python = ">=3.11"
+dependencies = [
+  "pyyaml>=6.0",
+  "requests>=2.31",
+  "dnspython>=2.4",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+presales = "presales_scout.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

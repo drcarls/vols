@@ -1,0 +1,16 @@
+{
+  "organic": [
+    {
+      "rank": 1,
+      "link": "https://www.linkedin.com/in/anna-svensson-ciso",
+      "title": "Anna Svensson - CISO - Nordfrakt Logistik AB | LinkedIn",
+      "description": "Chief Information Security Officer at Nordfrakt Logistik AB. Stockholm, Sweden."
+    },
+    {
+      "rank": 2,
+      "link": "https://nordfrakt.example/om-oss",
+      "title": "Om oss - Nordfrakt Logistik AB",
+      "description": "Nordfrakt is a Swedish freight and logistics operator."
+    }
+  ]
+}
