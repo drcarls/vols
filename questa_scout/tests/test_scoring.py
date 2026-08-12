@@ -53,6 +53,41 @@ def test_saas_routes_to_developer_product():
     assert reports[0].product == "Questa Developer (API)"
 
 
+def test_adoption_intensity_ranks_within_the_hot_tier():
+    from questa_scout.models import AiAdoptionSignal, DataScopeVerdict, GovernanceSignal
+    from questa_scout.scoring import score
+
+    ds = DataScopeVerdict("in_scope", "Hospitals", "PHI", "HIPAA", 4, [])
+    gov = GovernanceSignal("none_found", 0.6, [], True)
+    maxed = AiAdoptionSignal("active", hiring=True, strong_hiring=True, public_ai=True, chatbot=True)  # intensity 5
+    modest = AiAdoptionSignal("active", hiring=True, strong_hiring=True)  # intensity 2
+
+    r_max = score(Company("Maxed", naics_code="622110"), ds, maxed, gov)
+    r_mod = score(Company("Modest", naics_code="622110"), ds, modest, gov)
+
+    # Same sensitivity + governance, so adoption intensity orders them.
+    assert r_max.fit_score > r_mod.fit_score
+    # Only the fully-maxed prospect reaches the cap; a modest one is well below.
+    assert r_max.fit_score == 100
+    assert r_mod.fit_score < 90
+
+
+def test_sensitivity_and_intensity_both_move_the_score():
+    from questa_scout.models import AiAdoptionSignal, DataScopeVerdict, GovernanceSignal
+    from questa_scout.scoring import score
+
+    gov = GovernanceSignal("none_found", 0.6, [], True)
+    ad = AiAdoptionSignal("active", hiring=True, strong_hiring=True, public_ai=True)  # intensity 3
+    phi = score(Company("PHI", naics_code="622110"),
+                DataScopeVerdict("in_scope", "Hospitals", "PHI", "HIPAA", 4, []), ad, gov)
+    pii = score(Company("PII", naics_code="561440"),
+                DataScopeVerdict("in_scope", "BPO", "consumer_pii", "state", 2, []), ad, gov)
+    # Identical adoption/governance; PHI's higher sensitivity ranks it above PII,
+    # and neither saturates at 100.
+    assert phi.fit_score > pii.fit_score
+    assert phi.fit_score < 100 and pii.fit_score < 100
+
+
 def test_findings_lead_with_shadow_ai_for_adopting_ungoverned():
     reports = run(
         [Company(name="Cascade Health Partners", naics_code="621111", employees=900)],

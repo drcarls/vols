@@ -18,11 +18,22 @@ from .models import (
 )
 from .routing import route_product
 
-SCOPE_WEIGHTS = {"in_scope": 45, "likely_in_scope": 30, "unknown": 10, "out_of_scope": -100}
-ADOPTION_WEIGHTS = {"active": 40, "emerging": 22, "none": 0, "unknown": 8}
-GOVERNANCE_WEIGHTS = {"none_found": 30, "uncertain": 15, "governed": 0}
-# Sensitivity tier (0..4) -> additive bonus that differentiates top accounts.
-SENSITIVITY_BONUS = {4: 10, 3: 7, 2: 3, 1: 1, 0: 0}
+# Components are sized so a maxed prospect lands at ~100 without the clamp
+# doing the work: qualifier + sensitivity + adoption intensity + governance.
+# Nothing saturates until PHI + full adoption + no owner, which is rare.
+SCOPE_WEIGHTS = {"in_scope": 30, "likely_in_scope": 20, "unknown": 6, "out_of_scope": -100}
+GOVERNANCE_WEIGHTS = {"none_found": 25, "uncertain": 12, "governed": 0}
+# Data sensitivity (0..4) is a first-class ranking axis, not just a tie-break.
+SENSITIVITY_WEIGHTS = {4: 15, 3: 10, 2: 5, 1: 2, 0: 0}
+ADOPTION_MAX = 30          # scaled by intensity (0..5); "unknown" gets a small floor
+ADOPTION_UNKNOWN = 5.0
+ADOPTION_INTENSITY_MAX = 5
+
+
+def _adoption_points(adoption: AiAdoptionSignal) -> float:
+    if adoption.level == "unknown":
+        return ADOPTION_UNKNOWN
+    return ADOPTION_MAX * (adoption.intensity() / ADOPTION_INTENSITY_MAX)
 
 
 def score(
@@ -39,11 +50,11 @@ def score(
         reasons.append(
             f"Regulated data: {data_scope.data_class} ({data_scope.sector}, {data_scope.regime})"
         )
-        total += SENSITIVITY_BONUS.get(data_scope.sensitivity, 0)
+        total += SENSITIVITY_WEIGHTS.get(data_scope.sensitivity, 0)
     elif data_scope.verdict == "out_of_scope":
         reasons.append("Not a regulated-data sector on current data")
 
-    total += ADOPTION_WEIGHTS.get(adoption.level, 0)
+    total += _adoption_points(adoption)
     if adoption.level == "active":
         reasons.append("Active AI adoption (" + "; ".join(adoption.findings) + ")")
     elif adoption.level == "emerging":

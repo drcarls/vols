@@ -54,10 +54,20 @@ class AiAdoptionSignal:
 
     level: str                   # active | emerging | none | unknown
     hiring: Optional[bool] = None        # AI/ML roles open
+    strong_hiring: Optional[bool] = None # GenAI/LLM/MLOps roles (build, not just analytics)
     public_ai: Optional[bool] = None     # AI mentioned on their own site
     chatbot: Optional[bool] = None       # customer-facing chatbot detected
     hits_considered: int = 0
     findings: list[str] = field(default_factory=list)
+
+    def intensity(self) -> int:
+        """Concurrent AI-adoption evidences, 0..5. Drives the granular score."""
+        if self.level == "unknown":
+            return 0
+        job = 2 if self.strong_hiring else (1 if self.hiring else 0)
+        ai = 1 if self.public_ai else 0
+        chat = 2 if self.chatbot else 0
+        return job + ai + chat
 
 
 @dataclass

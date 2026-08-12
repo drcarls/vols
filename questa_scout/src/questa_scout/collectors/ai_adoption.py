@@ -80,6 +80,7 @@ def detect_adoption(
     return AiAdoptionSignal(
         level=level,
         hiring=any_job,
+        strong_hiring=strong_job,
         public_ai=public_ai,
         chatbot=chatbot,
         hits_considered=hits,
