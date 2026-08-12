@@ -85,6 +85,27 @@ def write_csv(reports: list[ProspectReport], out_path: str | Path) -> None:
         writer.writerows(rows)
 
 
+def write_candidates_csv(companies: list[Company], out_path: str | Path) -> None:
+    """Write Company objects out in the Stage-1 candidates CSV format, so a
+    universe built from EDGAR can be reviewed/edited before `discover`."""
+    out = Path(out_path)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    fields = ["name", "domain", "naics_code", "employees", "revenue_usd", "state", "country"]
+    with open(out, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=fields)
+        writer.writeheader()
+        for c in companies:
+            writer.writerow({
+                "name": c.name,
+                "domain": c.domain or "",
+                "naics_code": c.naics_code or "",
+                "employees": c.employees if c.employees is not None else "",
+                "revenue_usd": c.revenue_usd if c.revenue_usd is not None else "",
+                "state": c.state or "",
+                "country": c.country or "US",
+            })
+
+
 def write_findings_csv(reports: list[ProspectReport], out_path: str | Path) -> None:
     """Write the per-finding view (one row per mapped signal)."""
     from .context_map import derive_findings

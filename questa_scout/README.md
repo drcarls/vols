@@ -45,12 +45,35 @@ account and no network:
 
 ```bash
 questa --offline --no-web discover --input fixtures/candidates.sample.csv \
-       --out ranked.csv --findings-out findings.csv --top 10
+       --out ranked.csv --findings-out findings.csv --html prospects.html --top 10
 questa --offline --no-web scan --name "Cascade Health Partners" --naics 621111 --employees 900
 ```
 
 (`--offline` forces the fixture SERP backend; `--no-web` skips the live
 homepage fetch. Drop both when a token and network are available.)
+`--html` writes a **self-contained dashboard** ("Prospect Scout") — the
+ranked list with fit meters, product routing, signal chips, and per-finding
+talking points, viewable in any browser with no assets or network.
+
+## Build the candidate universe from SEC EDGAR
+
+Instead of hand-assembling the input CSV, pull a real universe of US
+registrants by regulated-data sector straight from SEC EDGAR (free, no key):
+
+```bash
+export EDGAR_USER_AGENT="Your Name your.email@example.com"   # SEC requires a contact
+questa universe --sectors health,finance,legal,software --limit 40 --out candidates.csv
+questa discover --input candidates.csv --out ranked.csv --html prospects.html
+```
+
+`universe` maps each sector to SIC codes (health→PHI/HIPAA, finance→GLBA,
+legal→privilege, software→SaaS processor), fetches EDGAR's company listing,
+and writes the Stage-1 CSV — de-duplicated, NAICS-tagged, ready for
+`discover`. Sectors: `health, pharma, finance, insurance, legal, software,
+dataproc`. Without `EDGAR_USER_AGENT` set, SEC will rate-limit anonymous
+traffic and the backend falls back to any bundled fixture. EDGAR gives name +
+sector + state; enrich `domain`/`employees` (for the homepage check and
+product routing) from your own data before `discover` if you have them.
 
 ## Run (live, via Bright Data SERP)
 
@@ -130,11 +153,14 @@ src/questa_scout/
       query.py              # job & governance query building, title/job classification
       brightdata_serp.py    # live Bright Data SERP backend + parse_serp_json()
       fixture.py            # offline backend (routes jobs vs profiles by query)
+  universe/
+    edgar.py                # SEC EDGAR listing by SIC -> candidate Company universe
   routing.py                # prospect -> Questa product
   context_map.py            # raw signal -> regulation + product + talking point (the sellable layer)
   scoring.py                # combine signals -> fit score + brief
+  dashboard.py              # ranked reports -> self-contained HTML "Prospect Scout"
   pipeline.py               # CSV -> analyze each -> rank -> CSV (ranked + per-finding)
-  cli.py                    # `questa scan` / `questa discover`
+  cli.py                    # `questa universe` / `questa scan` / `questa discover`
 ```
 
 Swap or add a SERP backend by implementing `SerpBackend.search()`.

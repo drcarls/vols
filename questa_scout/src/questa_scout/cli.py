@@ -7,8 +7,16 @@ from .config import brightdata_token, fixtures_dir
 from .collectors.serp import BrightDataSerpBackend, FixtureBackend
 from .collectors.serp.base import SerpBackend
 from .models import Company
-from .pipeline import analyze, load_candidates, run, write_csv, write_findings_csv
+from .pipeline import (
+    analyze,
+    load_candidates,
+    run,
+    write_candidates_csv,
+    write_csv,
+    write_findings_csv,
+)
 from .scoring import brief
+from .universe import SECTOR_SIC, build_universe
 
 
 def _select_backend(args) -> SerpBackend:
@@ -54,12 +62,40 @@ def cmd_discover(args):
     if args.findings_out:
         write_findings_csv(reports, args.findings_out)
         print(f"Per-finding rows written to {args.findings_out}", file=sys.stderr)
+    if args.html:
+        from .dashboard import render_dashboard
+
+        note = f"{len(reports)} companies scored · ranked by fit"
+        with open(args.html, "w", encoding="utf-8") as fh:
+            fh.write(render_dashboard(reports, generated_note=note))
+        print(f"Dashboard written to {args.html}", file=sys.stderr)
 
     top = reports[: args.top] if args.top else reports
     print(f"\nTop {len(top)} prospects\n" + "=" * 44)
     for r in top:
         print(brief(r))
         print()
+
+
+def cmd_universe(args):
+    """Build a candidate CSV from SEC EDGAR by regulated-data sector."""
+    sectors = [s.strip() for s in args.sectors.split(",") if s.strip()]
+    unknown = [s for s in sectors if s not in SECTOR_SIC]
+    if unknown:
+        print(
+            f"Unknown sector(s): {', '.join(unknown)}. "
+            f"Choose from: {', '.join(sorted(SECTOR_SIC))}",
+            file=sys.stderr,
+        )
+        return
+    mode = "fixtures (offline)" if args.offline else "SEC EDGAR (live)"
+    print(f"Universe source: {mode}; sectors: {', '.join(sectors)}", file=sys.stderr)
+    companies = build_universe(sectors, limit_per_sic=args.limit, offline=args.offline)
+    print(f"Built {len(companies)} candidate companies", file=sys.stderr)
+    write_candidates_csv(companies, args.out)
+    print(f"Candidates written to {args.out}", file=sys.stderr)
+    print("Next: enrich with domains/size if you have them, then:", file=sys.stderr)
+    print(f"  questa discover --input {args.out} --out ranked.csv", file=sys.stderr)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -82,8 +118,19 @@ def build_parser() -> argparse.ArgumentParser:
     d.add_argument("--input", required=True, help="candidates CSV (see fixtures/candidates.sample.csv)")
     d.add_argument("--out", help="write ranked prospect rows to this CSV")
     d.add_argument("--findings-out", dest="findings_out", help="write per-finding rows to this CSV")
+    d.add_argument("--html", help="write a self-contained HTML dashboard here")
     d.add_argument("--top", type=int, default=0, help="print only the top N (0 = all)")
     d.set_defaults(func=cmd_discover)
+
+    u = sub.add_parser("universe", help="build a candidate CSV from SEC EDGAR by sector")
+    u.add_argument(
+        "--sectors",
+        default="health,finance,legal",
+        help="comma-separated: " + ",".join(sorted(SECTOR_SIC)),
+    )
+    u.add_argument("--limit", type=int, default=40, help="max companies per SIC code")
+    u.add_argument("--out", required=True, help="write the candidates CSV here")
+    u.set_defaults(func=cmd_universe)
     return p
 
 
