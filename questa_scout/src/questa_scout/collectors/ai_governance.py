@@ -31,14 +31,20 @@ def detect_governance(company: Company, backend: SerpBackend) -> GovernanceSigna
         tier = classify_title(f"{r.title} {r.snippet}")
         if tier is None:
             continue
-        matches_company = company_mentioned(company.name, r.title, r.snippet)
+        # A company-specific signal must ignore profiles that aren't about
+        # this company. Search engines happily return generic "Chief Privacy
+        # Officer" profiles (at other employers) for any company query; those
+        # are noise, not evidence of *this* company's governance. Only keep
+        # results that actually mention the company.
+        if not company_mentioned(company.name, r.title, r.snippet):
+            continue
         name, role = parse_person(r.title)
         people.append(
             Person(
                 name=name or "(unknown)",
                 title=role or r.title,
                 profile_url=r.link,
-                role_tier="leader" if (tier == "leader" and matches_company) else "generic",
+                role_tier="leader" if tier == "leader" else "generic",
             )
         )
 

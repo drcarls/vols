@@ -32,3 +32,23 @@ def test_no_hit_is_none_found():
     )
     assert sig.status == "none_found"
     assert sig.verify_recommended is True
+
+
+class _NoiseBackend:
+    """Returns real governance-leader profiles that belong to OTHER companies
+    -- the exact noise a live SERP returns for a company-specific query."""
+
+    def search(self, query, *, country="us", language="en"):
+        from questa_scout.collectors.serp import SerpResult
+        return [
+            SerpResult("https://www.linkedin.com/in/a", "Cari Benn - Chief Privacy Officer @ Microsoft", "CPO at Microsoft"),
+            SerpResult("https://www.linkedin.com/in/b", "Kimberly Gray - Chief Privacy Officer; IQVIA", "CPO at IQVIA"),
+        ]
+
+
+def test_unrelated_leader_profiles_are_ignored():
+    # None of the returned CPOs work at the target company, so the signal is
+    # none_found (a real opening to verify) -- never a false 'uncertain'.
+    sig = ai_governance.detect_governance(Company(name="Meridian Trust Bank"), _NoiseBackend())
+    assert sig.status == "none_found"
+    assert sig.people == []
