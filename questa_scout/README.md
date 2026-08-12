@@ -96,12 +96,22 @@ job-posting and governance-owner signals switch on automatically once
 
 ## Run (live, via Bright Data SERP)
 
-Set your token in the environment — **never commit it**:
+Set your token in the environment — **never commit it**. The zone name is
+account-specific: a dedicated **SERP** zone, or a **Web Unlocker** zone (which
+also returns SERP JSON via `brd_json`). Set it with `BRIGHTDATA_ZONE` or
+`--serp-zone`:
 
 ```bash
-export BRIGHTDATA_API_TOKEN="…"     # from your Bright Data account
-questa discover --input my_candidates.csv --out ranked.csv --findings-out findings.csv
+export BRIGHTDATA_API_TOKEN="…"      # from your Bright Data account
+export BRIGHTDATA_ZONE="unblocker"   # your zone name (default 'serp')
+questa discover --input my_candidates.csv --out ranked.csv \
+       --findings-out findings.csv --html prospects.html
 ```
+
+A Web Unlocker zone solves Google's anti-bot per call, so individual requests
+are slow and occasionally time out or return an HTML block page; the backend
+retries and then degrades that one query to no-signal, so a batch never
+aborts on a single bad request.
 
 With a token present (and without `--offline`) the SERP backend switches to
 the live Bright Data SERP API automatically. It runs two Google queries per
@@ -116,6 +126,22 @@ site:linkedin.com/in  ("Data Protection Officer" OR "Chief Privacy Officer"
 Cost is ~$1.50 / 1000 requests (two requests per company; 5k/month free
 tier), and failed requests aren't billed. Without `--no-web` it also fetches
 each company's homepage over HTTPS to grade advertised AI + chatbot signals.
+
+### Known limitation: the governance signal under-detects
+
+Live testing (12 real US companies) showed the governance query is a weak
+proxy: a `site:linkedin.com/in … "<Company>"` search returns generic
+"Chief Privacy Officer" profiles at *other* employers, not the target
+company's own owner. The detector correctly ignores profiles that don't
+mention the company, so most companies read `none_found` — treat this as
+"no owner surfaced publicly, **verify by hand**," not "has no owner." A
+LinkedIn-org / people-API backend (e.g. Bright Data's LinkedIn dataset) would
+detect real owners far better and is the natural next backend to add.
+
+Note too that fit **saturates at 100**: any regulated + AI-adopting +
+no-surfaced-owner company hits the cap, so the score qualifies prospects but
+doesn't rank *within* the hot tier — tune the weights (or add a granular
+"heat" tie-break) if you need finer ordering at the top.
 
 ## Input format (Stage 1)
 
