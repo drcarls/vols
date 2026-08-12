@@ -101,6 +101,17 @@
   .pitch b{color:var(--accent-ink)}
   .callout{border-left:3px solid var(--hot);background:var(--hot-soft);border-radius:0 10px 10px 0;padding:12px 15px;margin-top:14px;font-size:14px}
 
+  .spot{background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);padding:16px 18px;margin-top:14px}
+  .spot .sphd{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+  .spot .spname{font-weight:700;font-size:15.5px;letter-spacing:-.01em}
+  .spot .spver{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--good);background:var(--good-soft);
+    border:1px solid color-mix(in srgb,var(--good) 30%,transparent);border-radius:5px;padding:2px 8px}
+  .spot .spsub{font-size:13px;color:var(--ink-2);margin:0 0 11px;max-width:70ch}
+  .spot .spchips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:11px}
+  .spot .spopener{font-size:14px;margin:0}
+  .spot .spopener b{color:var(--accent-ink)}
+  .spot code{font-family:var(--mono);font-size:12.5px;background:var(--surface-2);border:1px solid var(--border);border-radius:5px;padding:1px 6px}
+
   footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--border);font-size:12.5px;color:var(--ink-2);display:flex;flex-direction:column;gap:8px}
   footer .hd{color:var(--ink);font-weight:600}
   footer code{font-family:var(--mono);font-size:11.5px;background:var(--surface-2);padding:1px 5px;border-radius:4px;border:1px solid var(--border)}
@@ -176,6 +187,21 @@
     <p class="lede">The named suppliers we pulled from award records aren't just risk on the utilities' books — they're <b>huge prospects in their own right</b>. These IT/OT firms supply dozens of public bodies, so every one of those buyers now demands NIS2 assurance from them. Compliance pressure flows downhill.</p>
 
     <div class="big" id="big"></div>
+
+    <div class="spot">
+      <div class="sphd">
+        <span class="spname">Supplier spotlight — Atea Sverige AB</span>
+        <span class="spver">Verified live · atea.se</span>
+      </div>
+      <p class="spsub">The biggest supplier on the list — 49 public buyers — is itself a managed-IT provider, so it's in NIS2 scope too. We ran the same passive engine on it and checked the DNS by hand:</p>
+      <div class="spchips">
+        <span class="chip gd">SPF · strong (−all)</span>
+        <span class="chip op">DMARC · p=none — not enforced</span>
+        <span class="chip wn">MTA-STS · missing</span>
+        <span class="chip gd">NIS2 · in scope (MSP)</span>
+      </div>
+      <p class="spopener"><b>The opener:</b> Atea already collects DMARC reports but left the policy at monitor-only — the domain stays spoofable. <em>"You're one config change from <code>p=reject</code> — want help closing the last step safely?"</em> A security vendor with an unenforced DMARC takes that call. Not "they're careless" — 80% done and stalled on the enforceable step. There are dozens like this behind the utilities.</p>
+    </div>
 
     <div class="pitch">
       <p><b>Two funnels for the price of one.</b> Sell NIS2 readiness to the utilities — <em>and</em> to the IT/OT suppliers those utilities depend on, who must now prove their own security to keep the contracts. The supplier graph is a second, self-refilling lead list.</p>
