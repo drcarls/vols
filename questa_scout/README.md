@@ -71,9 +71,28 @@ legal→privilege, software→SaaS processor), fetches EDGAR's company listing,
 and writes the Stage-1 CSV — de-duplicated, NAICS-tagged, ready for
 `discover`. Sectors: `health, pharma, finance, insurance, legal, software,
 dataproc`. Without `EDGAR_USER_AGENT` set, SEC will rate-limit anonymous
-traffic and the backend falls back to any bundled fixture. EDGAR gives name +
-sector + state; enrich `domain`/`employees` (for the homepage check and
-product routing) from your own data before `discover` if you have them.
+traffic and the backend falls back to any bundled fixture.
+
+`--enrich-domains` resolves a website for each company via Clearbit's free
+autocomplete endpoint (no key), so the homepage AI/chatbot check has a domain
+to hit. The matcher is conservative — it attaches a domain only when the
+suggestion's name actually matches, so you don't mis-tag a prospect; obscure
+micro-caps may resolve to nothing, which is the safe failure. `employees` /
+`revenue_usd` still come from your own data (they drive product routing).
+
+## Signals by credential
+
+| Signal | Needs | Without it |
+|---|---|---|
+| Regulated-data scope | nothing (NAICS in the CSV) | always on |
+| AI adoption — homepage | a `domain` (use `--enrich-domains`) | falls back to job-posting signal |
+| AI adoption — job postings | `BRIGHTDATA_API_TOKEN` | homepage signal only |
+| Governance owner (DPO/CPO) | `BRIGHTDATA_API_TOKEN` | `none_found` (offline fixtures/tests) |
+
+With a domain but no token, `discover` still lights up live: it reads the
+company's real homepage for advertised AI and chatbot widgets. The LinkedIn
+job-posting and governance-owner signals switch on automatically once
+`BRIGHTDATA_API_TOKEN` is set (see below).
 
 ## Run (live, via Bright Data SERP)
 
@@ -148,6 +167,7 @@ src/questa_scout/
     ai_adoption.py          # SERP job postings + homepage signals -> adoption level
     web_signals.py          # passive homepage AI/chatbot grader (pure grader unit-tested)
     ai_governance.py        # SERP LinkedIn -> scored governance signal
+    enrich.py               # company name -> domain (Clearbit autocomplete; matcher unit-tested)
     serp/
       base.py               # SerpBackend protocol + normalized SerpResult
       query.py              # job & governance query building, title/job classification

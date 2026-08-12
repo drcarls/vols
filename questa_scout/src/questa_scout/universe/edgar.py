@@ -129,7 +129,7 @@ def fetch_sic_html(sic: str, count: int = 100, timeout: int = 25, retries: int =
                 return resp.read().decode("latin-1", errors="ignore")
         except HTTPError as exc:
             last = exc
-            if exc.code in (403, 429) and attempt < retries:
+            if exc.code in (403, 429, 500, 502, 503) and attempt < retries:
                 time.sleep(1.5 * (attempt + 1))
                 continue
             raise

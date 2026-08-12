@@ -92,6 +92,11 @@ def cmd_universe(args):
     print(f"Universe source: {mode}; sectors: {', '.join(sectors)}", file=sys.stderr)
     companies = build_universe(sectors, limit_per_sic=args.limit, offline=args.offline)
     print(f"Built {len(companies)} candidate companies", file=sys.stderr)
+    if args.enrich_domains:
+        from .collectors.enrich import enrich_domains
+
+        resolved, attempted = enrich_domains(companies, offline=args.offline)
+        print(f"Domain enrichment: resolved {resolved}/{attempted}", file=sys.stderr)
     write_candidates_csv(companies, args.out)
     print(f"Candidates written to {args.out}", file=sys.stderr)
     print("Next: enrich with domains/size if you have them, then:", file=sys.stderr)
@@ -129,6 +134,8 @@ def build_parser() -> argparse.ArgumentParser:
         help="comma-separated: " + ",".join(sorted(SECTOR_SIC)),
     )
     u.add_argument("--limit", type=int, default=40, help="max companies per SIC code")
+    u.add_argument("--enrich-domains", dest="enrich_domains", action="store_true",
+                   help="resolve a website domain per company (Clearbit autocomplete)")
     u.add_argument("--out", required=True, help="write the candidates CSV here")
     u.set_defaults(func=cmd_universe)
     return p
