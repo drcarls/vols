@@ -113,6 +113,15 @@ org-chart view.
   the basis, and set a retention limit. Don't hoard profiles.
 - The NIS2 check is a **screening heuristic**, not a legal determination.
 
+## Documentation
+
+- [`docs/METHODOLOGY.md`](docs/METHODOLOGY.md) — **what we did and where every data
+  point came from.** Per-signal provenance (source, automation level, confidence,
+  limits), the "passive & public" definition, and the one honest scaling dependency.
+- [`docs/INTEGRATION.md`](docs/INTEGRATION.md) — **the real moat.** How this signal
+  plugs into Clay's enrichment waterfall, feeds UpliftIQ's scoring, and closes the
+  loop against Cyber Defencely's own assessment outcomes.
+
 ## Tests
 
 ```bash
