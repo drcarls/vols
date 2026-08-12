@@ -1,0 +1,12 @@
+# questa_scout configuration
+serp:
+  # Bright Data SERP zone name (the token comes from BRIGHTDATA_API_TOKEN env var)
+  zone: serp
+  country: us
+  language: en
+
+scoring:
+  scope_weights: {in_scope: 45, likely_in_scope: 30, unknown: 10, out_of_scope: -100}
+  adoption_weights: {active: 40, emerging: 22, none: 0, unknown: 8}
+  governance_weights: {none_found: 30, uncertain: 15, governed: 0}
+  sensitivity_bonus: {4: 10, 3: 7, 2: 3, 1: 1, 0: 0}

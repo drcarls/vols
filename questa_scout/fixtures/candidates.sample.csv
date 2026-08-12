@@ -1,0 +1,7 @@
+name,domain,naics_code,employees,revenue_usd,state,country
+Cascade Health Partners,cascadehealth.example,621111,900,180000000,WA,US
+Harbor & Vale LLP,harborvale.example,541110,220,60000000,NY,US
+DocuFlow Software Inc,docuflow.example,511210,140,25000000,CA,US
+Meridian Trust Bank,meridiantrust.example,522110,1200,400000000,IL,US
+BrightClaim BPO Inc,brightclaim.example,561440,400,45000000,TX,US
+TinyShop LLC,tinyshop.example,448140,15,2000000,OH,US
