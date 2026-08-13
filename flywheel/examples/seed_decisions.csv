@@ -1,0 +1,12 @@
+decision_id,tenant_id,surfaced_at,decision_type,entity_type,entity_id,mapping_version_id,model_confidence,segment_key,recommendation,context
+d1,t_alpha,2026-05-01 00:00:00,price_change,sku,S1,map_pricing_elasticity_v2,0.70,seg_midmarket,{},{}
+d2,t_alpha,2026-05-02 00:00:00,price_change,sku,S2,map_pricing_elasticity_v3,0.80,seg_midmarket,{},{}
+d3,t_beta,2026-05-03 00:00:00,price_change,sku,S3,map_pricing_elasticity_v3,0.75,seg_midmarket,{},{}
+d4,t_beta,2026-05-04 00:00:00,price_change,sku,S4,map_pricing_elasticity_v2,0.60,seg_enterprise,{},{}
+d5,t_gamma,2026-05-05 00:00:00,price_change,sku,S5,map_pricing_elasticity_v3,0.65,seg_enterprise,{},{}
+d6,t_alpha,2026-05-06 00:00:00,price_change,sku,S6,map_pricing_elasticity_v3,0.70,seg_enterprise,{},{}
+d7,t_gamma,2026-05-07 00:00:00,price_change,sku,S7,map_pricing_elasticity_v2,0.70,seg_midmarket,{},{}
+d8,t_beta,2026-05-08 00:00:00,price_change,sku,S8,map_pricing_elasticity_v3,0.82,seg_midmarket,{},{}
+d9,t_alpha,2026-05-09 00:00:00,campaign,campaign,C1,map_promo_timing_v2,0.60,seg_midmarket,{},{}
+d10,t_gamma,2026-05-10 00:00:00,campaign,campaign,C2,map_promo_timing_v2,0.60,seg_midmarket,{},{}
+d11,t_beta,2026-05-11 00:00:00,price_change,sku,S9,map_pricing_elasticity_v3,0.50,seg_enterprise,{},{}

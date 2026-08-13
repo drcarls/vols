@@ -1,0 +1,4 @@
+mapping_version_id,mapping_family,version,parent_version_id,created_at,retired_at,definition,author,notes
+map_pricing_elasticity_v2,pricing_elasticity,2,map_pricing_elasticity_v1,2026-04-01 00:00:00,,{},flywheel,Sharpened on Q1 outcomes
+map_pricing_elasticity_v3,pricing_elasticity,3,map_pricing_elasticity_v2,2026-07-01 00:00:00,,{},flywheel,Segment-split: steeper mid-market branch
+map_promo_timing_v2,promo_timing,2,map_promo_timing_v1,2026-06-15 00:00:00,,{},flywheel,End-of-quarter promos down-weighted

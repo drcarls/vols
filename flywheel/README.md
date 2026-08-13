@@ -97,6 +97,24 @@ dbt build          # runs staging -> marts and all data tests
 Configure per deployment in `dbt_project.yml`: `flywheel_raw_schema` (where
 events land) and `benchmark_k` (the anonymity threshold).
 
+## See it turn — no warehouse needed
+
+`examples/run_demo.py` runs the **actual model SQL** against seeded data in
+DuckDB (an in-process engine) — it only shims the dbt Jinja so the same files
+execute locally. Eleven decisions across all three attribution methods, three
+tenants, two mapping versions:
+
+```bash
+pip install duckdb
+python3 examples/run_demo.py
+```
+
+It prints the three stages turning: every outcome attributed to isolated lift
+with its validity tier, the per-tenant **mapping-performance** moat table
+(pricing_elasticity v3 beats v2 in mid-market; promo_timing v2 posts negative
+lift → retire it), and the k-anonymized **benchmark** that only emits where
+tenants agree. What `dbt build` runs on a real warehouse is the identical SQL.
+
 ## How it maps to the moat narrative
 
 - **`fct_attribution`** is the honest-attribution arrow — "was the lift real?"

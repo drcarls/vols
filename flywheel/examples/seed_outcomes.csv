@@ -1,0 +1,11 @@
+outcome_id,decision_id,tenant_id,metric,window_start,window_end,method,observed_value,control_value,baseline_value,comparison_delta,counterfactual_value,n_treatment,n_control,variance_treatment,variance_control
+o1,d1,t_alpha,revenue,2026-05-01 00:00:00,2026-05-31 00:00:00,holdout,118,100,,,,400,400,1600,1600
+o2,d2,t_alpha,revenue,2026-05-02 00:00:00,2026-06-01 00:00:00,holdout,130,100,,,,400,400,1600,1600
+o3,d3,t_beta,revenue,2026-05-03 00:00:00,2026-06-02 00:00:00,pre_post,126,,100,4,,,,,
+o4,d4,t_beta,revenue,2026-05-04 00:00:00,2026-06-03 00:00:00,holdout,108,100,,,,200,200,3600,3600
+o5,d5,t_gamma,revenue,2026-05-05 00:00:00,2026-06-04 00:00:00,observational,112,,,,100,,,,
+o6,d6,t_alpha,revenue,2026-05-06 00:00:00,2026-06-05 00:00:00,pre_post,104,,100,,,,,,
+o7,d7,t_gamma,revenue,2026-05-07 00:00:00,2026-06-06 00:00:00,observational,109,,,,100,,,,
+o8,d8,t_beta,revenue,2026-05-08 00:00:00,2026-06-07 00:00:00,holdout,128,101,,,,400,400,1600,1600
+o9,d9,t_alpha,revenue,2026-05-09 00:00:00,2026-06-08 00:00:00,pre_post,95,,100,,,,,,
+o10,d10,t_gamma,revenue,2026-05-10 00:00:00,2026-06-09 00:00:00,holdout,97,100,,,,300,300,900,900

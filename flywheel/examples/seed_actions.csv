@@ -1,0 +1,12 @@
+action_id,decision_id,tenant_id,responded_at,response,applied_change,applied_at,experiment_id,experiment_arm,experiment_unit_id
+a1,d1,t_alpha,2026-05-01 12:00:00,accepted,{},2026-05-01 12:00:00,e1,treatment,u1
+a2,d2,t_alpha,2026-05-02 12:00:00,accepted,{},2026-05-02 12:00:00,e2,treatment,u2
+a3,d3,t_beta,2026-05-03 12:00:00,modified,{},2026-05-03 12:00:00,,,
+a4,d4,t_beta,2026-05-04 12:00:00,accepted,{},2026-05-04 12:00:00,e4,treatment,u4
+a5,d5,t_gamma,2026-05-05 12:00:00,accepted,{},2026-05-05 12:00:00,,,
+a6,d6,t_alpha,2026-05-06 12:00:00,accepted,{},2026-05-06 12:00:00,,,
+a7,d7,t_gamma,2026-05-07 12:00:00,accepted,{},2026-05-07 12:00:00,,,
+a8,d8,t_beta,2026-05-08 12:00:00,accepted,{},2026-05-08 12:00:00,e8,treatment,u8
+a9,d9,t_alpha,2026-05-09 12:00:00,accepted,{},2026-05-09 12:00:00,,,
+a10,d10,t_gamma,2026-05-10 12:00:00,accepted,{},2026-05-10 12:00:00,e10,treatment,u10
+a11,d11,t_beta,2026-05-11 12:00:00,rejected,,,,,
