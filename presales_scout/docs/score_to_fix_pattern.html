@@ -1,0 +1,234 @@
+<title>The Score-to-Fix Pattern</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg:#eef1f5; --surface:#fff; --surface-2:#f5f8fc; --border:#d8e0ea; --border-strong:#c3cedb;
+    --ink:#141b23; --ink-2:#55616f; --ink-3:#8b96a4;
+    --accent:#0d6e8c; --accent-soft:#e0f0f5; --accent-ink:#0a556d;
+    --hot:#c0490f; --hot-soft:#fbe7dc; --warn:#9a6b12; --warn-soft:#f7ecd4;
+    --good:#12795a; --good-soft:#dcefe7; --crit:#b02a2f; --crit-soft:#f8e0e1;
+    --shadow:0 1px 2px rgba(20,27,35,.06),0 10px 30px rgba(20,27,35,.07);
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --sans:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --bg:#0c1116; --surface:#141b22; --surface-2:#1b242d; --border:#28323d; --border-strong:#37444f;
+    --ink:#e7ecf2; --ink-2:#9aa6b3; --ink-3:#67727f;
+    --accent:#38aacb; --accent-soft:#10303b; --accent-ink:#7fd0e6;
+    --hot:#f0854a; --hot-soft:#37211550; --warn:#d6a63e; --warn-soft:#2f261150;
+    --good:#46c199; --good-soft:#102c2350; --crit:#e57078; --crit-soft:#33161950;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px rgba(0,0,0,.4);
+  }}
+  :root[data-theme="dark"]{
+    --bg:#0c1116; --surface:#141b22; --surface-2:#1b242d; --border:#28323d; --border-strong:#37444f;
+    --ink:#e7ecf2; --ink-2:#9aa6b3; --ink-3:#67727f;
+    --accent:#38aacb; --accent-soft:#10303b; --accent-ink:#7fd0e6;
+    --hot:#f0854a; --hot-soft:#37211550; --warn:#d6a63e; --warn-soft:#2f261150;
+    --good:#46c199; --good-soft:#102c2350; --crit:#e57078; --crit-soft:#33161950;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px rgba(0,0,0,.4);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;font-size:15px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:960px;margin:0 auto;padding:26px clamp(14px,3.5vw,32px) 64px}
+  a{color:var(--accent-ink)}
+
+  header{display:flex;align-items:center;gap:13px;padding-bottom:16px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand svg{width:30px;height:30px;display:block}
+  .brand .n{font-weight:700;font-size:16px;letter-spacing:-.01em}
+  .brand .n small{display:block;font-weight:500;font-size:12.5px;color:var(--ink-2)}
+  .tag{font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent-soft);padding:3px 8px;border-radius:5px;border:1px solid color-mix(in srgb,var(--accent) 30%,transparent)}
+  .sp{flex:1}
+  .tbtn{font:inherit;font-size:13px;color:var(--ink-2);background:var(--surface);border:1px solid var(--border-strong);border-radius:8px;padding:6px 11px;cursor:pointer}
+  .tbtn:hover{color:var(--ink);border-color:var(--accent)} .tbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  .hero{margin:26px 0 8px}
+  .hero h1{font-size:clamp(23px,4.2vw,33px);line-height:1.13;letter-spacing:-.02em;margin:0 0 12px;text-wrap:balance;max-width:20ch}
+  .hero h1 em{font-style:normal;color:var(--accent-ink)}
+  .hero p{font-size:16px;color:var(--ink-2);max-width:64ch;margin:0}
+  .hero p b{color:var(--ink)}
+
+  figure{margin:22px 0 0;background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);padding:20px clamp(12px,3vw,24px) 8px}
+  figure svg{display:block;width:100%;height:auto;color:var(--ink)}
+  figure svg text{font-family:var(--sans)}
+  figcaption{font-size:13px;color:var(--ink-2);margin:8px 4px 8px;text-wrap:pretty}
+  figcaption b{color:var(--ink)}
+
+  section{margin-top:32px}
+  .eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--accent-ink);margin:0 0 4px}
+  h2{font-size:20px;letter-spacing:-.01em;margin:0 0 12px;text-wrap:balance}
+
+  .tbl{width:100%;overflow-x:auto}
+  table{border-collapse:collapse;width:100%;min-width:640px;font-size:13.5px}
+  th,td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--border);vertical-align:top}
+  thead th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);font-weight:700;border-bottom:1px solid var(--border-strong)}
+  tbody tr:last-child td{border-bottom:none}
+  td .v{font-weight:650;color:var(--ink)}
+  td small{display:block;color:var(--ink-2);font-size:12px;margin-top:2px}
+  .col-fix{color:var(--accent-ink);font-weight:600}
+
+  .rules{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+  @media(max-width:620px){.rules{grid-template-columns:1fr}}
+  .rule{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:0 12px 12px 0;box-shadow:var(--shadow);padding:13px 16px}
+  .rule .rt{font-weight:650;font-size:14px;margin:0 0 3px}
+  .rule p{margin:0;font-size:13px;color:var(--ink-2)}
+
+  .line{margin-top:22px;background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 26%,transparent);border-radius:14px;padding:17px 20px;text-align:center}
+  .line p{margin:0;font-size:16px;font-weight:600;color:var(--accent-ink);text-wrap:balance}
+
+  footer{margin-top:32px;padding-top:18px;border-top:1px solid var(--border);font-size:12.5px;color:var(--ink-2);display:flex;flex-direction:column;gap:7px}
+  footer .hd{color:var(--ink);font-weight:600}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <circle cx="16" cy="16" r="12.5" stroke="var(--accent)" stroke-width="1.6"/>
+        <circle cx="16" cy="16" r="7" stroke="var(--accent)" stroke-width="1.6" opacity=".6"/>
+        <circle cx="16" cy="16" r="2.4" fill="var(--accent)"/>
+      </svg>
+      <div class="n">UpliftIQ<small>The Score → Fix pattern · how this generalizes</small></div>
+    </div>
+    <span class="tag">Playbook</span>
+    <span class="sp"></span>
+    <button class="tbtn" id="theme" type="button" aria-label="Toggle theme"><span id="ti">◐</span> Theme</button>
+  </header>
+
+  <div class="hero">
+    <h1>Give away the <em>score</em>. Charge for the <em>fix</em>.</h1>
+    <p>Every version of this — cyber, retail, anywhere — has the same shape. A <b>score</b> computed from commodity signals is the hook: provocative, uninvited, free. The <b>fix</b> is UpliftIQ ranking on the client's own data: paid, and compounding. What makes both speak the domain's language is the one layer no agent produces — the <b>context mapping</b> you build.</p>
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 1000 352" role="img" aria-label="The Score-to-Fix pattern. Top: commodity signals (anyone can gather) feed a score that is given away as the hook; the client's proprietary data feeds UpliftIQ to produce the paid, compounding fix. Both rest on a shared foundation — the context-mapping crosswalk from signal to meaning to action, which is the domain-expertise layer you build.">
+      <defs>
+        <marker id="a" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="currentColor" fill-opacity=".55"/>
+        </marker>
+      </defs>
+
+      <!-- inputs -->
+      <g fill="var(--surface)" stroke="currentColor" stroke-opacity=".45" stroke-width="1.3">
+        <rect x="40"  y="42" width="400" height="66" rx="12"/>
+        <rect x="560" y="42" width="400" height="66" rx="12"/>
+      </g>
+      <g fill="currentColor" text-anchor="middle">
+        <text x="240" y="72" font-size="13" font-weight="650">Commodity signals</text>
+        <text x="240" y="92" font-size="9.5" fill-opacity=".62">DNS · prices · demand · reviews — any agent · outside-in</text>
+        <text x="760" y="72" font-size="13" font-weight="650">Your proprietary data</text>
+        <text x="760" y="92" font-size="9.5" fill-opacity=".62">POS · sell-through · won/lost · outcomes — inside-out</text>
+      </g>
+      <g font-size="8.5" font-weight="700" letter-spacing=".6" text-anchor="middle" fill="currentColor" fill-opacity=".5">
+        <text x="240" y="56">ANYONE CAN GATHER</text>
+        <text x="760" y="56">YOURS ALONE</text>
+      </g>
+
+      <!-- arrows into map -->
+      <g stroke="currentColor" stroke-opacity=".55" stroke-width="1.7" marker-end="url(#a)">
+        <line x1="240" y1="108" x2="240" y2="150"/>
+        <line x1="760" y1="108" x2="760" y2="150"/>
+      </g>
+      <g fill="currentColor" fill-opacity=".75" font-size="9" font-style="italic">
+        <text x="250" y="133">raw signals</text>
+        <text x="770" y="133">your history</text>
+      </g>
+
+      <!-- context map: the layer you build (accent) -->
+      <rect x="40" y="152" width="920" height="72" rx="14" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.3"/>
+      <text x="500" y="182" text-anchor="middle" font-size="14.5" font-weight="700" fill="var(--accent-ink)">CONTEXT MAPPING</text>
+      <text x="500" y="203" text-anchor="middle" font-size="10.5" fill="var(--accent-ink)" fill-opacity=".92">the crosswalk you build:  signal &#8594; meaning &#8594; action</text>
+      <text x="944" y="168" text-anchor="end" font-size="8.5" font-weight="700" letter-spacing=".6" fill="var(--accent-ink)" fill-opacity=".8">THE LAYER YOU BUILD</text>
+
+      <!-- arrows out of map -->
+      <g stroke="currentColor" stroke-opacity=".55" stroke-width="1.7" marker-end="url(#a)">
+        <line x1="240" y1="224" x2="240" y2="266"/>
+        <line x1="760" y1="224" x2="760" y2="266"/>
+      </g>
+      <g fill="currentColor" fill-opacity=".75" font-size="9" font-style="italic">
+        <text x="250" y="249">the gap, scored</text>
+        <text x="770" y="249">the action, ranked</text>
+      </g>
+
+      <!-- outputs -->
+      <g fill="var(--surface)" stroke="currentColor" stroke-opacity=".45" stroke-width="1.3">
+        <rect x="40"  y="268" width="400" height="70" rx="12"/>
+        <rect x="560" y="268" width="400" height="70" rx="12"/>
+      </g>
+      <g fill="currentColor" text-anchor="middle">
+        <text x="240" y="298" font-size="13.5" font-weight="700">THE SCORE</text>
+        <text x="240" y="318" font-size="9.5" fill-opacity=".62">the hook · given away · gets the meeting</text>
+        <text x="760" y="298" font-size="13.5" font-weight="700">UpliftIQ  &#8594;  THE FIX</text>
+        <text x="760" y="318" font-size="9.5" fill-opacity=".62">ranked actions on your data · paid · compounds</text>
+      </g>
+      <g font-size="8.5" font-weight="700" letter-spacing=".6" text-anchor="middle" fill="currentColor" fill-opacity=".5">
+        <text x="240" y="332">FREE — THE WEDGE</text>
+        <text x="760" y="332">PAID — THE ENGINE</text>
+      </g>
+    </svg>
+    <figcaption><b>Two products, one foundation.</b> The score is computed outside-in and given away — the wedge that gets the meeting. The fix is UpliftIQ ranking on the client's proprietary data — paid, and compounding. Both speak the domain's language only because of the <b>context-mapping layer beneath them</b>. That layer is domain expertise, not compute — which is exactly why it's the part worth building.</figcaption>
+  </figure>
+
+  <section>
+    <p class="eyebrow">Same shape, any vertical</p>
+    <h2>One pattern, three instances</h2>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Vertical</th><th>The hook — a score</th><th>Built from (commodity)</th><th>The fix — on their data</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="v">Cyber</span><small>Cyber Defencely</small></td>
+            <td>NIS2 / security readiness score<small>"you're obligated and not ready"</small></td>
+            <td>DNS · CT logs · procurement · job posts</td>
+            <td class="col-fix">"Assess these 12 prospects, in this order"</td>
+          </tr>
+          <tr>
+            <td><span class="v">Retail — assortment</span><small>e.g. La-Z-Boy</small></td>
+            <td>Assortment-fit score per store<small>"this showroom misses local demand"</small></td>
+            <td>demographics · competitor SKUs · search / demand · reviews</td>
+            <td class="col-fix">"Reallocate this inventory to these showrooms"</td>
+          </tr>
+          <tr>
+            <td><span class="v">Retail — pricing</span><small>any merchant</small></td>
+            <td>Margin-left-on-table score<small>"you're underpricing 30% of SKUs"</small></td>
+            <td>competitor price scraping · local income · promo cadence</td>
+            <td class="col-fix">"Reprice these 40 SKUs to this curve"</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Two rules that keep it honest and effective</p>
+    <h2>What makes a score a wedge</h2>
+    <div class="rules">
+      <div class="rule">
+        <p class="rt">It's computable before they're a customer</p>
+        <p>If the score needs their internal data, it's a project, not a wedge. The whole power is walking in with the number already on the table.</p>
+      </div>
+      <div class="rule">
+        <p class="rt">It's a confidence signal, not a verdict</p>
+        <p>Overclaim and a sharp buyer catches you. Lead with "here's what's observable, here's the gap." Certainty comes from the fix — because that's where their real data enters.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="line">
+    <p>We give you the score that shows the gap. We're the engine that turns your data into the fix — an actionable competitive advantage.</p>
+  </div>
+
+  <footer>
+    <span class="hd">Who owns which layer.</span>
+    <span>Commodity signals — anyone, and that's fine (they're the fuel). The prediction engine — UpliftIQ. The proprietary outcome data — the client, and it's the moat. The context mapping — the domain crosswalk that translates signal into the vertical's language and actions — is the expertise-gated layer, curated once per vertical and reused. Agents commoditise the signal; they don't commoditise the mapping.</span>
+    <span>Companion to the Cyber Defencely set (Brief · How It Works · Sources &amp; Method · Getting It Live) — the first instance of this pattern, running today.</span>
+  </footer>
+</div>
+
+<script>
+  const root=document.documentElement,tb=document.getElementById("theme"),ti=document.getElementById("ti");
+  let m="system";
+  tb.addEventListener("click",()=>{m=m==="system"?"light":m==="light"?"dark":"system";
+    if(m==="system")root.removeAttribute("data-theme");else root.setAttribute("data-theme",m);
+    ti.textContent=m==="light"?"☀":m==="dark"?"☾":"◐";});
+</script>
