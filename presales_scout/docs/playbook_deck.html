@@ -288,7 +288,7 @@
       <p class="sub">10 Swedish energy &amp; transport operators, ranked on external security hygiene from passive signals. The view you'd hand a prospect: <b>"you're bottom of your peer group."</b></p>
       <div class="bench" id="bench"></div>
     </div>
-    <p class="why"><b>Only Cyber Defencely can draw this line</b> — it needs the cross-client dataset no competitor holds. It's both a devastating sales hook and a service clients renew for.</p>
+    <p class="why"><b>Only Cyber Defencely can draw this line</b> — it needs the cross-client dataset no competitor holds. Note the firm at the bottom, Skellefteå Kraft, is also your #1-ranked prospect from Play 1 — worst hygiene, in scope, no CISO.</p>
   </section>
 
   <!-- 9 PLAY 6 -->
@@ -346,12 +346,11 @@
 
 <script>
   // benchmark data (composite external-hygiene score from passive signals)
-  const B=[
-    ["Green Cargo AB",72,"gd"],["Nobina Sverige AB",68,"gd"],["Stena Line Scandinavia",54,"mid"],
-    ["Tekniska verken",48,"mid"],["Transdev Sverige",46,"mid"],["Jämtkraft AB",44,"mid"],
-    ["Mälarenergi AB",41,"mid"],["Öresundskraft AB",39,"hot"],["Skellefteå Kraft AB",37,"hot"],
-    ["Göteborg Energi AB",35,"hot"]
-  ];
+  // scores mechanically computed by presales_scout.benchmark from the run's findings
+  const B=[["Green Cargo AB",78,"gd"],["Mälarenergi AB",58,"gd"],["Stena Line Scandinavia",46,"gd"],
+    ["Göteborg Energi AB",42,"mid"],["Öresundskraft AB",42,"mid"],["Nobina Sverige AB",36,"mid"],
+    ["Transdev Sverige",36,"mid"],["Tekniska verken",26,"hot"],["Jämtkraft AB",24,"hot"],
+    ["Skellefteå Kraft AB",2,"hot"]];
   const cls={gd:"fgd",mid:"fmid",hot:"fhot"};
   document.getElementById("bench").innerHTML =
     B.map((r,i)=>{
@@ -366,9 +365,9 @@
         <span><span class="sw" style="background:var(--good)"></span>Strong (top quartile)</span>
         <span><span class="sw" style="background:color-mix(in srgb,var(--ink-3) 70%,transparent)"></span>Mid</span>
         <span><span class="sw" style="background:var(--hot)"></span>Exposed (bottom quartile)</span>
-        <span><b style="color:var(--hot)">◄</b> the prospect · ranks 10 / 10 · bottom 10%</span>
+        <span><b style="color:var(--hot)">◄</b> the prospect · ranks 10 / 10 · bottom of peer group</span>
        </div>
-       <p class="foot">Composite external-hygiene score (0–100) from passive signals only: SPF / DMARC enforcement, MTA-STS, security headers, exposed surface. Peer set: 10 Swedish energy &amp; transport operators, Aug 2026. Median 42.5. Göteborg Energi verified live at DMARC <code style="font-family:var(--mono)">p=none</code>.</p>`;
+       <p class="foot">Mechanically computed (<code style="font-family:var(--mono)">presales_scout.benchmark</code>): score = 100 − a severity-weighted penalty for each observable weakness — SPF / DMARC enforcement, MTA-STS, security headers, exposed surface. No tuning knobs to dispute. Peer set: 10 Swedish energy &amp; transport operators, Aug 2026. Median 39. Skellefteå Kraft verified live at DMARC <code style="font-family:var(--mono)">p=none</code>, MTA-STS absent.</p>`;
 
   // deck nav
   const slides=[...document.querySelectorAll(".slide")];
