@@ -1,0 +1,6 @@
+mapping_version_id,mapping_family,version,parent_version_id,created_at,author,notes
+map_pricing_elasticity_v1,pricing_elasticity,1,,2026-01-05T00:00:00Z,seed,Initial expert-authored elasticity map
+map_pricing_elasticity_v2,pricing_elasticity,2,map_pricing_elasticity_v1,2026-04-01T00:00:00Z,flywheel,Sharpened on Q1 outcomes: steeper mid-market elasticity
+map_pricing_elasticity_v3,pricing_elasticity,3,map_pricing_elasticity_v2,2026-07-01T00:00:00Z,flywheel,Segment-split: enterprise vs mid-market branches diverged
+map_promo_timing_v1,promo_timing,1,,2026-02-10T00:00:00Z,seed,Initial promo-timing map
+map_promo_timing_v2,promo_timing,2,map_promo_timing_v1,2026-06-15T00:00:00Z,flywheel,Down-weighted end-of-quarter promos after negative lift

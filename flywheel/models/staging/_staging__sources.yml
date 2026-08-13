@@ -1,0 +1,31 @@
+version: 2
+
+sources:
+  - name: flywheel_raw
+    description: >
+      Raw flywheel capture events, landed from the ingestion API (validated
+      against schemas/events.*.schema.json). One landing table per event type.
+      Configure `database`/`schema` per deployment via the vars in dbt_project.yml.
+    database: "{{ var('flywheel_raw_database', target.database) }}"
+    schema: "{{ var('flywheel_raw_schema', 'flywheel_raw') }}"
+    tables:
+      - name: raw_decisions
+        description: DecisionEvent rows, one per surfaced recommendation.
+        columns:
+          - name: decision_id
+            tests: [not_null, unique]
+      - name: raw_actions
+        description: ActionEvent rows, the customer's response to a decision.
+        columns:
+          - name: action_id
+            tests: [not_null, unique]
+      - name: raw_outcomes
+        description: OutcomeEvent rows, measured results with their counterfactual basis.
+        columns:
+          - name: outcome_id
+            tests: [not_null, unique]
+      - name: raw_mapping_versions
+        description: The mapping/rule versions that produce decisions (lineage of the map).
+        columns:
+          - name: mapping_version_id
+            tests: [not_null, unique]

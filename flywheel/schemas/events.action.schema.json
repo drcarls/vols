@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://upliftiq.dev/flywheel/events/action.schema.json",
+  "title": "ActionEvent",
+  "description": "What the customer actually did with a surfaced decision. Captures the gap between recommended and applied -- 'modified' is signal, not noise. Also carries the experiment assignment when a holdout was used, so treated vs. control is knowable.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["action_id", "decision_id", "tenant_id", "responded_at", "response"],
+  "properties": {
+    "action_id": {"type": "string", "minLength": 1},
+    "decision_id": {"type": "string", "description": "The decision this responds to.", "minLength": 1},
+    "tenant_id": {"type": "string", "minLength": 1},
+    "responded_at": {"type": "string", "format": "date-time"},
+    "response": {"type": "string", "enum": ["accepted", "modified", "rejected", "no_action"], "description": "accepted = applied as recommended; modified = applied differently (capture what in applied_change); rejected/no_action = not applied. All four are training signal."},
+    "applied_change": {"type": ["object", "null"], "description": "What was actually applied (may differ from the recommendation when response='modified')."},
+    "applied_at": {"type": ["string", "null"], "format": "date-time"},
+    "experiment": {
+      "type": ["object", "null"],
+      "description": "Present only when this decision was rolled out with a holdout. Enables the experimental attribution method.",
+      "additionalProperties": false,
+      "required": ["experiment_id", "arm"],
+      "properties": {
+        "experiment_id": {"type": "string"},
+        "arm": {"type": "string", "enum": ["treatment", "control"], "description": "Which arm the acting unit was assigned to."},
+        "unit_id": {"type": "string", "description": "The randomization unit (store, user, region...)."},
+        "assigned_at": {"type": ["string", "null"], "format": "date-time"}
+      }
+    }
+  }
+}

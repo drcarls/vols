@@ -1,0 +1,65 @@
+version: 2
+
+models:
+  - name: fct_decision_spine
+    description: One row per surfaced decision, joined to its response and mapping lineage.
+    columns:
+      - name: decision_id
+        tests: [not_null, unique]
+      - name: tenant_id
+        tests: [not_null]
+      - name: mapping_version_id
+        description: The moat link -- the exact map version that produced the decision.
+        tests:
+          - not_null
+          - relationships: {to: ref('stg_mapping_versions'), field: mapping_version_id}
+      - name: response
+        tests:
+          - accepted_values: {values: ['accepted', 'modified', 'rejected', 'no_action']}
+
+  - name: fct_attribution
+    description: >
+      One isolated lift estimate per (decision, metric). The method field selects
+      the counterfactual; validity_tier records how much to trust it.
+    columns:
+      - name: decision_id
+        tests:
+          - not_null
+          - relationships: {to: ref('fct_decision_spine'), field: decision_id}
+      - name: method
+        tests:
+          - not_null
+          - accepted_values: {values: ['holdout', 'pre_post', 'observational']}
+      - name: validity_tier
+        tests:
+          - accepted_values: {values: ['experimental', 'quasi', 'observational']}
+      - name: lift_relative
+        description: Relative lift vs. the counterfactual. Null only when the counterfactual was zero/absent.
+      - name: validity_weight
+        description: 0..1 trust weight used to pool lift; experimental outweighs observational.
+
+  - name: mart_mapping_performance
+    description: >
+      THE MOAT, per customer. Which mappings drove results, for which customer
+      type. Grain (tenant, mapping_family, mapping_version, segment_key, metric).
+      The table the map is sharpened from.
+    columns:
+      - name: weighted_mean_lift
+        description: Validity-weighted mean relative lift -- the headline "does this map work here".
+      - name: win_rate
+        description: Share of loops with positive, significant lift.
+      - name: n_outcomes
+        tests: [not_null]
+
+  - name: mart_benchmark
+    description: >
+      Cross-customer, anonymized rollup by (mapping_family, segment_key, metric).
+      Emitted only when tenant_count >= var('benchmark_k') so no thin cell is ever
+      exposed. No tenant id or tenant-level value appears. This is the network
+      effect and the benchmark you give back.
+    columns:
+      - name: tenant_count
+        description: Distinct contributing tenants; always >= benchmark_k by construction.
+        tests:
+          - not_null
+          - dbt_utils.accepted_range: {min_value: "{{ var('benchmark_k', 5) }}"}

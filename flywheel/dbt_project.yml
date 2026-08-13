@@ -1,0 +1,29 @@
+name: 'flywheel'
+version: '0.1.0'
+config-version: 2
+
+# The UpliftIQ flywheel: decision -> action -> outcome -> attribution, plus the
+# mapping-performance moat and the anonymized cross-customer benchmark. Runs on
+# any dbt-supported warehouse (Snowflake / BigQuery / Databricks / Postgres /
+# Redshift); the one divergent primitive (percentile) is behind a dispatched macro.
+
+profile: 'flywheel'
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+seed-paths: ["seeds"]
+
+vars:
+  # Where raw capture events land (override per deployment).
+  flywheel_raw_database: "{{ target.database }}"
+  flywheel_raw_schema: 'flywheel_raw'
+  # k-anonymity threshold for the cross-customer benchmark: a rollup cell is
+  # only exposed when at least this many distinct tenants contribute.
+  benchmark_k: 5
+
+models:
+  flywheel:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table

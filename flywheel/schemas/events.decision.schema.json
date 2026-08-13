@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://upliftiq.dev/flywheel/events/decision.schema.json",
+  "title": "DecisionEvent",
+  "description": "One recommendation the product surfaced. Emitted the moment a decision is shown to the customer -- this is turn 1 of the flywheel. Domain-generic: the specific recommendation lives in the opaque `recommendation` payload; the columns the loop needs are typed.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["decision_id", "tenant_id", "surfaced_at", "decision_type", "entity", "mapping_version_id", "segment"],
+  "properties": {
+    "decision_id": {"type": "string", "description": "Stable unique id for this decision (uuid). Foreign key for every downstream event.", "minLength": 1},
+    "tenant_id": {"type": "string", "description": "Customer/tenant this decision belongs to. Never crosses tenants except via the anonymized benchmark.", "minLength": 1},
+    "surfaced_at": {"type": "string", "format": "date-time", "description": "When the recommendation was shown."},
+    "decision_type": {"type": "string", "description": "Typed, extensible kind of decision, e.g. 'price_change', 'campaign_launch', 'budget_allocation'. Drives nothing structurally -- it labels the row for slicing.", "minLength": 1},
+    "entity": {
+      "type": "object", "description": "What the decision is about, as a generic reference.",
+      "additionalProperties": false, "required": ["type", "id"],
+      "properties": {
+        "type": {"type": "string", "description": "e.g. 'sku', 'campaign', 'segment', 'account'."},
+        "id": {"type": "string"},
+        "label": {"type": "string"}
+      }
+    },
+    "recommendation": {"type": "object", "description": "Opaque, domain-specific payload of what was recommended (the price, the budget, the target). Passed through the warehouse untouched; parsed only in customer-specific layers so the core stays warehouse-agnostic."},
+    "mapping_version_id": {"type": "string", "description": "THE MOAT LINK. The exact mapping version that produced this decision. Every outcome is later attributed back through this id, so you learn which mappings actually work.", "minLength": 1},
+    "model_confidence": {"type": ["number", "null"], "minimum": 0, "maximum": 1, "description": "The mapping's own confidence at surface time (optional)."},
+    "segment": {
+      "type": "object",
+      "description": "The customer-context dimensions lift is conditioned on. Keep these stable and low-cardinality -- they are the 'for which customer type' axis of the moat.",
+      "additionalProperties": {"type": ["string", "number", "boolean", "null"]},
+      "minProperties": 1
+    },
+    "context": {"type": "object", "description": "Optional feature snapshot the mapping saw (for later debugging/retraining)."}
+  }
+}
