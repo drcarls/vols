@@ -1,0 +1,191 @@
+<title>The Package</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --bg:#eef1f5; --surface:#fff; --surface-2:#f5f8fc; --border:#d8e0ea; --border-strong:#c3cedb;
+    --ink:#141b23; --ink-2:#55616f; --ink-3:#8b96a4;
+    --accent:#0d6e8c; --accent-soft:#e0f0f5; --accent-ink:#0a556d;
+    --hot:#c0490f; --hot-soft:#fbe7dc; --warn:#9a6b12; --warn-soft:#f7ecd4;
+    --good:#12795a; --good-soft:#dcefe7; --crit:#b02a2f; --crit-soft:#f8e0e1;
+    --shadow:0 1px 2px rgba(20,27,35,.06),0 10px 30px rgba(20,27,35,.07);
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --sans:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --bg:#0c1116; --surface:#141b22; --surface-2:#1b242d; --border:#28323d; --border-strong:#37444f;
+    --ink:#e7ecf2; --ink-2:#9aa6b3; --ink-3:#67727f;
+    --accent:#38aacb; --accent-soft:#10303b; --accent-ink:#7fd0e6;
+    --hot:#f0854a; --hot-soft:#3721152e; --warn:#d6a63e; --warn-soft:#2f26112e;
+    --good:#46c199; --good-soft:#102c232e; --crit:#e57078; --crit-soft:#3316192e;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px rgba(0,0,0,.45);
+  }}
+  :root[data-theme="dark"]{
+    --bg:#0c1116; --surface:#141b22; --surface-2:#1b242d; --border:#28323d; --border-strong:#37444f;
+    --ink:#e7ecf2; --ink-2:#9aa6b3; --ink-3:#67727f;
+    --accent:#38aacb; --accent-soft:#10303b; --accent-ink:#7fd0e6;
+    --hot:#f0854a; --hot-soft:#3721152e; --warn:#d6a63e; --warn-soft:#2f26112e;
+    --good:#46c199; --good-soft:#102c232e; --crit:#e57078; --crit-soft:#3316192e;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px rgba(0,0,0,.45);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5;font-size:15px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:900px;margin:0 auto;padding:26px clamp(14px,3.5vw,32px) 64px}
+  a{color:inherit;text-decoration:none}
+
+  header{display:flex;align-items:center;gap:13px;padding-bottom:16px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand svg{width:30px;height:30px;display:block}
+  .brand .n{font-weight:700;font-size:16px;letter-spacing:-.01em}
+  .brand .n small{display:block;font-weight:500;font-size:12.5px;color:var(--ink-2)}
+  .sp{flex:1}
+  .tbtn{font:inherit;font-size:13px;color:var(--ink-2);background:var(--surface);border:1px solid var(--border-strong);border-radius:8px;padding:6px 11px;cursor:pointer}
+  .tbtn:hover{color:var(--ink);border-color:var(--accent)} .tbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  .hero{margin:24px 0 6px}
+  .hero h1{font-size:clamp(24px,4.4vw,33px);line-height:1.12;letter-spacing:-.02em;margin:0 0 10px;text-wrap:balance;max-width:20ch}
+  .hero p{font-size:16px;color:var(--ink-2);max-width:62ch;margin:0}
+
+  section{margin-top:30px}
+  .eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--accent-ink);margin:0 0 3px}
+  h2{font-size:19px;letter-spacing:-.01em;margin:0 0 3px}
+  .lede{color:var(--ink-2);margin:0 0 14px;font-size:14px;max-width:60ch}
+
+  .cards{display:flex;flex-direction:column;gap:11px}
+  .card{display:grid;grid-template-columns:38px 1fr auto;gap:15px;align-items:center;
+    background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);
+    padding:15px 17px;transition:border-color .12s,transform .12s}
+  .card:hover{border-color:var(--accent);transform:translateY(-1px)}
+  .card:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .num{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;
+    background:var(--accent-soft);color:var(--accent-ink);border:1px solid color-mix(in srgb,var(--accent) 22%,transparent);font-variant-numeric:tabular-nums}
+  .num.g{background:var(--surface-2);color:var(--ink-2);border-color:var(--border-strong)}
+  .body .t{font-weight:680;font-size:15.5px;letter-spacing:-.01em;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .role{font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 7px;border-radius:5px;border:1px solid transparent}
+  .role.hook{color:var(--hot);background:var(--hot-soft);border-color:color-mix(in srgb,var(--hot) 28%,transparent)}
+  .role.model{color:var(--accent-ink);background:var(--accent-soft);border-color:color-mix(in srgb,var(--accent) 26%,transparent)}
+  .role.proof{color:var(--good);background:var(--good-soft);border-color:color-mix(in srgb,var(--good) 28%,transparent)}
+  .role.ask{color:var(--warn);background:var(--warn-soft);border-color:color-mix(in srgb,var(--warn) 28%,transparent)}
+  .body .d{font-size:13px;color:var(--ink-2);margin-top:3px}
+  .body .kind{font-size:11.5px;color:var(--ink-3);margin-top:4px;font-family:var(--mono)}
+  .open{font-size:13px;color:var(--accent-ink);font-weight:600;white-space:nowrap;display:flex;align-items:center;gap:4px}
+  .open .ar{font-size:15px}
+  @media(max-width:560px){.card{grid-template-columns:32px 1fr}.open{grid-column:2;justify-self:start;margin-top:2px}.num{width:32px;height:32px}}
+
+  .flow{margin-top:22px;background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 24%,transparent);border-radius:13px;padding:14px 17px}
+  .flow p{margin:0;font-size:13.5px;color:var(--ink)}
+  .flow b{color:var(--accent-ink)}
+  .flow .seq{font-family:var(--mono);font-size:12.5px;margin-top:6px;color:var(--ink-2)}
+
+  footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--border);font-size:12.5px;color:var(--ink-2);display:flex;flex-direction:column;gap:7px}
+  footer .hd{color:var(--ink);font-weight:600}
+  footer code{font-family:var(--mono);font-size:11.5px;background:var(--surface-2);padding:1px 5px;border-radius:4px;border:1px solid var(--border)}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <path d="M16 2.5 27 6.4v8.1c0 6.9-4.5 12.4-11 15-6.5-2.6-11-8.1-11-15V6.4L16 2.5Z" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="M10.7 16.2 14.4 20l7-7.6" stroke="var(--accent)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="n">Cyber Defencely<small>The package · every piece, one place</small></div>
+    </div>
+    <span class="sp"></span>
+    <button class="tbtn" id="theme" type="button" aria-label="Toggle theme"><span id="ti">◐</span> Theme</button>
+  </header>
+
+  <div class="hero">
+    <h1>Everything, in one place.</h1>
+    <p>Six pieces, two groups. The <b>package</b> is the running proof to send a founder, in order. The <b>strategy</b> is how it generalizes beyond cyber. Click any card to open it in a new tab.</p>
+  </div>
+
+  <section>
+    <p class="eyebrow">The package · send in this order</p>
+    <h2>Hook → Model → Proof → Ask</h2>
+    <p class="lede">The four-piece set for the Cyber Defencely founder — the prototype that's running today.</p>
+    <div class="cards">
+      <a class="card" href="https://claude.ai/code/artifact/b9e2296d-5f60-48c1-8ef0-aee5951e830b" target="_blank" rel="noopener">
+        <span class="num">1</span>
+        <span class="body">
+          <span class="t">Prospect Brief <span class="role hook">Hook</span></span>
+          <span class="d">10 ranked Swedish energy &amp; transport prospects · 5 hiring a CISO · supplier map · verified Atea spotlight.</span>
+          <span class="kind">one-pager</span>
+        </span>
+        <span class="open">Open <span class="ar">↗</span></span>
+      </a>
+      <a class="card" href="https://claude.ai/code/artifact/fb59f55d-d6d4-47bf-b49d-9f1313433da4" target="_blank" rel="noopener">
+        <span class="num">2</span>
+        <span class="body">
+          <span class="t">How It Works <span class="role model">Model</span></span>
+          <span class="d">The flow — registry → engine → Clay → UpliftIQ → CD, with the feedback loop drawn as the moat.</span>
+          <span class="kind">one-pager · diagram</span>
+        </span>
+        <span class="open">Open <span class="ar">↗</span></span>
+      </a>
+      <a class="card" href="https://claude.ai/code/artifact/38b843a4-aecf-4586-8a94-db2c4cf83401" target="_blank" rel="noopener">
+        <span class="num">3</span>
+        <span class="body">
+          <span class="t">Sources &amp; Method <span class="role proof">Proof</span></span>
+          <span class="d">Every signal's public source, automation, confidence, limits — plus the data-ethics &amp; legal basis.</span>
+          <span class="kind">one-pager</span>
+        </span>
+        <span class="open">Open <span class="ar">↗</span></span>
+      </a>
+      <a class="card" href="https://claude.ai/code/artifact/21d103b0-fc3f-46e5-946b-4ff4633c6a5a" target="_blank" rel="noopener">
+        <span class="num">4</span>
+        <span class="body">
+          <span class="t">Getting It Live <span class="role ask">Ask</span></span>
+          <span class="d">The three inputs to go live — registry feed, a 30-min crosswalk, a ground-truth seed.</span>
+          <span class="kind">one-pager</span>
+        </span>
+        <span class="open">Open <span class="ar">↗</span></span>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">The strategy · how it generalizes</p>
+    <h2>The thesis &amp; the platform</h2>
+    <p class="lede">For a broader conversation — investor, or "this isn't one tool." Lead with these, then drop into the package as evidence.</p>
+    <div class="cards">
+      <a class="card" href="https://claude.ai/code/artifact/c9ac0456-3297-4713-a3c1-d4866e5cb811" target="_blank" rel="noopener">
+        <span class="num g">A</span>
+        <span class="body">
+          <span class="t">The Score-to-Fix Pattern</span>
+          <span class="d">Give away the score, charge for the fix. Context mapping is the layer you build. Same shape across cyber &amp; retail.</span>
+          <span class="kind">one-pager · diagram</span>
+        </span>
+        <span class="open">Open <span class="ar">↗</span></span>
+      </a>
+      <a class="card" href="https://claude.ai/code/artifact/c3882da2-c591-453b-9af0-5cc8ccddafe2" target="_blank" rel="noopener">
+        <span class="num g">B</span>
+        <span class="body">
+          <span class="t">Cyber Defencely Playbook</span>
+          <span class="d">Seven use cases across the customer lifecycle, anchored by a real-data competitive-benchmarking slide.</span>
+          <span class="kind">deck · 11 slides · ← / → to navigate</span>
+        </span>
+        <span class="open">Open <span class="ar">↗</span></span>
+      </a>
+    </div>
+  </section>
+
+  <div class="flow">
+    <p><b>Two ways to use the set:</b></p>
+    <p class="seq">Send a founder   →   1 Brief · 2 How It Works · 3 Sources · 4 Getting It Live</p>
+    <p class="seq">Pitch the vision →   A Pattern · B Playbook   →   then the package as proof</p>
+  </div>
+
+  <footer>
+    <span class="hd">Under all of it: the code.</span>
+    <span>The engine, tests (38 passing), and the source of every page live on branch <code>claude/cyber-defencely-presales-scraper-dx4q9k</code> under <code>presales_scout/</code> — collectors, the registry harvest, the Clay <code>/enrich</code> endpoint, the benchmark scorer, and these pages in <code>docs/</code>.</span>
+    <span>Every signal is passive and public; the benchmark scores are computed, not hand-set. Instance one is running today.</span>
+  </footer>
+</div>
+
+<script>
+  const root=document.documentElement,tb=document.getElementById("theme"),ti=document.getElementById("ti");
+  let m="system";
+  tb.addEventListener("click",()=>{m=m==="system"?"light":m==="light"?"dark":"system";
+    if(m==="system")root.removeAttribute("data-theme");else root.setAttribute("data-theme",m);
+    ti.textContent=m==="light"?"☀":m==="dark"?"☾":"◐";});
+</script>
