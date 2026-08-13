@@ -1,0 +1,401 @@
+<title>Cyber Defencely Playbook</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --bg:#eef1f5; --surface:#fff; --surface-2:#f5f8fc; --border:#d8e0ea; --border-strong:#c3cedb;
+    --ink:#141b23; --ink-2:#55616f; --ink-3:#8b96a4;
+    --accent:#0d6e8c; --accent-soft:#e0f0f5; --accent-ink:#0a556d;
+    --hot:#c0490f; --hot-soft:#fbe7dc; --warn:#9a6b12; --warn-soft:#f7ecd4;
+    --good:#12795a; --good-soft:#dcefe7; --crit:#b02a2f; --crit-soft:#f8e0e1;
+    --shadow:0 1px 2px rgba(20,27,35,.06),0 10px 30px rgba(20,27,35,.07);
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --sans:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --bg:#0c1116; --surface:#141b22; --surface-2:#1b242d; --border:#28323d; --border-strong:#37444f;
+    --ink:#e7ecf2; --ink-2:#9aa6b3; --ink-3:#67727f;
+    --accent:#38aacb; --accent-soft:#10303b; --accent-ink:#7fd0e6;
+    --hot:#f0854a; --hot-soft:#3721152e; --warn:#d6a63e; --warn-soft:#2f26112e;
+    --good:#46c199; --good-soft:#102c232e; --crit:#e57078; --crit-soft:#3316192e;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px rgba(0,0,0,.45);
+  }}
+  :root[data-theme="dark"]{
+    --bg:#0c1116; --surface:#141b22; --surface-2:#1b242d; --border:#28323d; --border-strong:#37444f;
+    --ink:#e7ecf2; --ink-2:#9aa6b3; --ink-3:#67727f;
+    --accent:#38aacb; --accent-soft:#10303b; --accent-ink:#7fd0e6;
+    --hot:#f0854a; --hot-soft:#3721152e; --warn:#d6a63e; --warn-soft:#2f26112e;
+    --good:#46c199; --good-soft:#102c232e; --crit:#e57078; --crit-soft:#3316192e;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px rgba(0,0,0,.45);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5;font-size:15px;-webkit-font-smoothing:antialiased}
+  .top{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:11px;padding:12px clamp(14px,3vw,28px);
+    background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+  .brand{display:flex;align-items:center;gap:9px}
+  .brand svg{width:26px;height:26px;display:block}
+  .brand .n{font-weight:700;font-size:14.5px;letter-spacing:-.01em}
+  .brand .n small{display:block;font-weight:500;font-size:11.5px;color:var(--ink-2)}
+  .sp{flex:1}
+  .tbtn{font:inherit;font-size:12.5px;color:var(--ink-2);background:var(--surface);border:1px solid var(--border-strong);border-radius:8px;padding:5px 10px;cursor:pointer}
+  .tbtn:hover{color:var(--ink);border-color:var(--accent)} .tbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  .stage{max-width:940px;margin:0 auto;padding:clamp(18px,3vw,34px) clamp(14px,3.5vw,32px) 110px}
+  .slide{display:none;min-height:64vh;flex-direction:column}
+  .slide.on{display:flex;animation:fade .28s ease}
+  @media (prefers-reduced-motion:reduce){.slide.on{animation:none}}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  .eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--accent-ink);margin:0 0 8px;display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+  .pill{font-size:10px;font-weight:700;letter-spacing:.06em;padding:2px 8px;border-radius:5px;border:1px solid transparent}
+  .pill.wedge{color:var(--warn);background:var(--warn-soft);border-color:color-mix(in srgb,var(--warn) 28%,transparent)}
+  .pill.prod{color:var(--accent-ink);background:var(--accent-soft);border-color:color-mix(in srgb,var(--accent) 26%,transparent)}
+  .pill.moat{color:var(--hot);background:var(--hot-soft);border-color:color-mix(in srgb,var(--hot) 30%,transparent)}
+  h1{font-size:clamp(30px,6vw,52px);line-height:1.06;letter-spacing:-.025em;margin:0 0 16px;text-wrap:balance;max-width:16ch}
+  h1 em{font-style:normal;color:var(--accent-ink)}
+  h2{font-size:clamp(23px,3.6vw,32px);line-height:1.12;letter-spacing:-.02em;margin:0 0 6px;text-wrap:balance;max-width:20ch}
+  .sub{font-size:clamp(15px,2vw,17px);color:var(--ink-2);margin:0 0 20px;max-width:60ch}
+  .why{margin-top:auto;padding-top:18px;font-size:14.5px;color:var(--ink-2);border-top:1px solid var(--border)}
+  .why b{color:var(--ink)}
+  .ex{flex:0 0 auto}
+
+  /* cover */
+  .cover{justify-content:center}
+  .cover .kick{font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink);margin-bottom:14px}
+  .cover .lead{font-size:17px;color:var(--ink-2);max-width:54ch;margin:0}
+  .cover .meta{display:flex;gap:9px;flex-wrap:wrap;margin-top:22px}
+  .cover .meta span{font-size:12.5px;background:var(--surface);border:1px solid var(--border-strong);border-radius:20px;padding:5px 13px}
+
+  /* generic bits */
+  .row3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  @media(max-width:680px){.row3{grid-template-columns:1fr}}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:13px;box-shadow:var(--shadow);padding:15px 16px}
+  .card .t{font-weight:650;font-size:14.5px;margin:0 0 4px;letter-spacing:-.01em}
+  .card .d{font-size:13px;color:var(--ink-2);margin:0}
+  .card .code{font-family:var(--mono);font-size:11px;color:var(--accent-ink);margin-top:8px;display:block}
+
+  table{border-collapse:collapse;width:100%;font-size:13.5px}
+  .tbl{width:100%;overflow-x:auto;border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow)}
+  th,td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--border);white-space:nowrap}
+  thead th{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);font-weight:700;background:var(--surface-2)}
+  tbody tr:last-child td{border-bottom:none}
+  td.n{font-weight:600;white-space:normal}
+  .num{font-variant-numeric:tabular-nums;text-align:right}
+  .chip{font-size:11px;font-weight:600;padding:2px 8px;border-radius:6px;white-space:nowrap;border:1px solid transparent}
+  .chip.op{color:var(--hot);background:var(--hot-soft);border-color:color-mix(in srgb,var(--hot) 26%,transparent)}
+  .chip.gd{color:var(--good);background:var(--good-soft);border-color:color-mix(in srgb,var(--good) 26%,transparent)}
+  .chip.wn{color:var(--warn);background:var(--warn-soft);border-color:color-mix(in srgb,var(--warn) 26%,transparent)}
+  .chip.tr{color:var(--hot);border:1.5px solid color-mix(in srgb,var(--hot) 55%,transparent);font-weight:700}
+
+  /* benchmark bars */
+  .bench{background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);padding:16px 18px}
+  .brow{display:grid;grid-template-columns:20px 150px 1fr 42px;gap:11px;align-items:center;margin:6px 0;font-size:12.5px}
+  @media(max-width:560px){.brow{grid-template-columns:18px 108px 1fr 36px;gap:8px;font-size:11.5px}}
+  .brow .rk{color:var(--ink-3);font-variant-numeric:tabular-nums;text-align:right}
+  .brow .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .brow .track{position:relative;height:16px;background:var(--surface-2);border:1px solid var(--border);border-radius:5px;overflow:hidden}
+  .brow .fill{height:100%;border-radius:4px 0 0 4px}
+  .brow .val{font-variant-numeric:tabular-nums;font-weight:700;text-align:right}
+  .brow.me{background:var(--hot-soft);border-radius:8px;padding:5px 7px;margin:4px -7px;border:1px solid color-mix(in srgb,var(--hot) 30%,transparent)}
+  .brow.me .nm{font-weight:750;color:var(--hot)} .brow.me .val{color:var(--hot)}
+  .fgd{background:var(--good)} .fmid{background:color-mix(in srgb,var(--ink-3) 70%,transparent)} .fhot{background:var(--hot)}
+  .medline{position:relative;height:0;margin:2px 0 2px}
+  .blegend{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:11.5px;color:var(--ink-2)}
+  .blegend span{display:inline-flex;align-items:center;gap:6px}
+  .sw{width:11px;height:11px;border-radius:3px;display:inline-block}
+  .foot{font-size:11.5px;color:var(--ink-3);margin-top:10px;line-height:1.5}
+
+  /* alert */
+  .alert{display:flex;gap:13px;align-items:flex-start;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--hot);border-radius:0 13px 13px 0;box-shadow:var(--shadow);padding:14px 16px}
+  .alert .ic{font-size:19px;line-height:1;flex:none}
+  .alert .h{font-weight:650;font-size:14.5px;margin:0 0 3px}
+  .alert .m{font-size:13px;color:var(--ink-2);margin:0}
+  .alert .m code{font-family:var(--mono);font-size:11.5px;background:var(--surface-2);border:1px solid var(--border);border-radius:4px;padding:1px 5px}
+
+  /* rag list */
+  .rag{display:flex;flex-direction:column;gap:7px}
+  .ragrow{display:grid;grid-template-columns:34px 1fr auto;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:9px 13px;font-size:13px;box-shadow:var(--shadow)}
+  .ragrow .l{font-family:var(--mono);font-weight:700;font-size:12px;color:var(--accent-ink)}
+  .dot{width:11px;height:11px;border-radius:50%;flex:none}
+  .dot.r{background:var(--crit)} .dot.a{background:var(--warn)} .dot.g{background:var(--good)}
+  .rstat{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:var(--ink-2)}
+
+  .quote{background:var(--surface);border:1px solid var(--border);border-radius:13px;box-shadow:var(--shadow);padding:16px 18px;font-size:14px}
+  .quote .kv{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px dashed var(--border)}
+  .quote .kv:last-child{border-bottom:none}
+  .quote .kv .k{color:var(--ink-2)} .quote .kv .v{font-weight:650;font-variant-numeric:tabular-nums}
+  .quote .kv .v.acc{color:var(--accent-ink)}
+
+  .close h1{max-width:20ch}
+  .through{background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 26%,transparent);border-radius:14px;padding:18px 20px;margin-top:6px}
+  .through p{margin:0;font-size:17px;font-weight:600;color:var(--accent-ink);text-wrap:balance}
+
+  /* nav */
+  .nav{position:fixed;bottom:0;left:0;right:0;z-index:6;display:flex;align-items:center;justify-content:center;gap:14px;
+    padding:12px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-top:1px solid var(--border)}
+  .nbtn{font:inherit;font-size:18px;line-height:1;color:var(--ink);background:var(--surface);border:1px solid var(--border-strong);border-radius:9px;width:38px;height:34px;cursor:pointer}
+  .nbtn:hover{border-color:var(--accent);color:var(--accent-ink)} .nbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .counter{font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums;min-width:56px;text-align:center}
+  .dots{display:flex;gap:6px}
+  .dot2{width:8px;height:8px;border-radius:50%;background:var(--border-strong);border:none;padding:0;cursor:pointer}
+  .dot2.on{background:var(--accent)}
+  @media(max-width:560px){.dots{display:none}}
+</style>
+
+<div class="top">
+  <div class="brand">
+    <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+      <path d="M16 2.5 27 6.4v8.1c0 6.9-4.5 12.4-11 15-6.5-2.6-11-8.1-11-15V6.4L16 2.5Z" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6" stroke-linejoin="round"/>
+      <path d="M10.7 16.2 14.4 20l7-7.6" stroke="var(--accent)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div class="n">Cyber Defencely<small>Playbook · one engine, seven plays</small></div>
+  </div>
+  <span class="sp"></span>
+  <button class="tbtn" id="theme" type="button" aria-label="Toggle theme"><span id="ti">◐</span> Theme</button>
+</div>
+
+<div class="stage">
+
+  <!-- 1 COVER -->
+  <section class="slide on cover">
+    <div class="ex">
+      <div class="kick">Cyber Defencely × the NIS2 engine</div>
+      <h1>One assessment. A whole <em>platform</em>.</h1>
+      <p class="lead">The prospecting tool you've seen is play one. The same engine — an outside-in score, a context map, a fix on your own data — powers six more, across the entire customer lifecycle.</p>
+      <div class="meta">
+        <span>7 plays</span><span>1 shared engine</span><span>3 that competitors can't copy</span><span>Instance one running today</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 THE ENGINE -->
+  <section class="slide">
+    <div class="ex">
+      <p class="eyebrow">The engine, in one line</p>
+      <h2>Every play has the same three parts</h2>
+      <p class="sub">Only two things change from play to play: whose data feeds it, and which decision it drives.</p>
+      <div class="row3">
+        <div class="card"><p class="t">① The score</p><p class="d">An outside-in number from commodity signals. The provocative hook — free, uninvited.</p></div>
+        <div class="card"><p class="t">② The context map</p><p class="d">The NIS2 / ISO crosswalk that turns a raw signal into meaning + action. The layer you build.</p></div>
+        <div class="card"><p class="t">③ The fix</p><p class="d">Ranked action on proprietary data. Paid, and it compounds every engagement.</p></div>
+      </div>
+    </div>
+    <p class="why"><b>Read the plays through this lens:</b> the ones on commodity signals are the wedge, the ones on the client's data are the sticky product, the ones on <b>your cross-client data</b> are the moat.</p>
+  </section>
+
+  <!-- 3 OVERVIEW -->
+  <section class="slide">
+    <div class="ex">
+      <p class="eyebrow">The seven plays</p>
+      <h2>Across the whole customer lifecycle</h2>
+      <p class="sub">Acquire → Assess → Remediate → Monitor → Expand — plus the two that only your data can produce.</p>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>#</th><th>Play</th><th>Runs on</th><th>What it is</th></tr></thead>
+          <tbody>
+            <tr><td class="num">1</td><td class="n">Pre-sales &amp; outreach</td><td><span class="chip wn">signals</span></td><td>Rank prospects — the wedge</td></tr>
+            <tr><td class="num">2</td><td class="n">Actionable ranked recos</td><td><span class="chip gd">client data</span></td><td>Assessment → prioritised roadmap</td></tr>
+            <tr><td class="num">3</td><td class="n">Continuous monitoring</td><td><span class="chip wn">signals</span></td><td>Drift alerts → recurring revenue</td></tr>
+            <tr><td class="num">4</td><td class="n">Supplier risk as a service</td><td><span class="chip gd">client data</span></td><td>Score their supply chain</td></tr>
+            <tr><td class="num">5</td><td class="n">Competitive benchmarking</td><td><span class="chip op">your data</span></td><td>Peer percentile — the moat</td></tr>
+            <tr><td class="num">6</td><td class="n">Board &amp; compliance pack</td><td><span class="chip gd">client data</span></td><td>Framework-mapped scorecard</td></tr>
+            <tr><td class="num">7</td><td class="n">Scoping &amp; pricing</td><td><span class="chip wn">signals</span></td><td>Quote &amp; staff faster</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 PLAY 1 -->
+  <section class="slide">
+    <div class="ex">
+      <p class="eyebrow">Play 1 · Acquire <span class="pill wedge">Wedge · commodity signals</span></p>
+      <h2>Pre-sales &amp; outreach</h2>
+      <p class="sub">Rank every in-scope firm by observable risk. The strongest signal: who's actively hiring a CISO.</p>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>#</th><th>Company</th><th>Sector</th><th>Signals</th><th class="num">Fit</th></tr></thead>
+          <tbody>
+            <tr><td class="num">3</td><td class="n">Göteborg Energi AB</td><td>Energy</td><td><span class="chip op">weak email</span> <span class="chip tr">⚡ hiring CISO</span></td><td class="num">100</td></tr>
+            <tr><td class="num">4</td><td class="n">Öresundskraft AB</td><td>Energy</td><td><span class="chip op">weak email</span> <span class="chip tr">⚡ hiring CISO</span></td><td class="num">100</td></tr>
+            <tr><td class="num">5</td><td class="n">Stena Line Scandinavia</td><td>Transport</td><td><span class="chip op">weak email</span> <span class="chip op">no CISO</span></td><td class="num">100</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="why"><b>The demo you've already seen.</b> 10 firms ranked; 5 of them recruiting a CISO right now — the buying trigger.</p>
+  </section>
+
+  <!-- 5 PLAY 2 -->
+  <section class="slide">
+    <div class="ex">
+      <p class="eyebrow">Play 2 · Remediate <span class="pill prod">Product · client data</span></p>
+      <h2>Turn an assessment into a ranked roadmap</h2>
+      <p class="sub">After you assess a client, the same context map orders every finding by severity × effort, mapped to the obligation and the fix.</p>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Priority</th><th>Finding</th><th>NIS2</th><th>Fix</th><th>Effort</th></tr></thead>
+          <tbody>
+            <tr><td><span class="chip op">P1</span></td><td class="n">DMARC not enforced (p=none)</td><td>21(2)(g)</td><td class="n">Enforce to p=reject</td><td>Low</td></tr>
+            <tr><td><span class="chip op">P1</span></td><td class="n">Unmanaged suppliers</td><td>21(2)(d)</td><td class="n">Third-party risk review</td><td>Med</td></tr>
+            <tr><td><span class="chip wn">P2</span></td><td class="n">No MTA-STS policy</td><td>21(2)(h)</td><td class="n">Publish MTA-STS</td><td>Low</td></tr>
+            <tr><td><span class="chip wn">P3</span></td><td class="n">No security.txt</td><td>21(2)(e)</td><td class="n">Add disclosure contact</td><td>Low</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="why"><b>Your recommendations, made actionable.</b> The client sees a ranked plan, not a 40-page PDF — and every line ties to a service you sell.</p>
+  </section>
+
+  <!-- 6 PLAY 3 -->
+  <section class="slide">
+    <div class="ex">
+      <p class="eyebrow">Play 3 · Monitor <span class="pill wedge">Recurring revenue</span></p>
+      <h2>Continuous monitoring &amp; drift alerts</h2>
+      <p class="sub">Keep the passive engine running on existing clients. NIS2 requires continuous risk management — so this isn't an upsell, it's a duty you fulfil.</p>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="alert"><span class="ic">⚠️</span><div><p class="h">Öresundskraft — posture regressed</p><p class="m"><code>DMARC</code> dropped from <code>p=quarantine</code> to <code>p=none</code> · 1 new exposed subdomain · flagged 12 Aug</p></div></div>
+        <div class="alert" style="border-left-color:var(--warn)"><span class="ic">🔔</span><div><p class="h">New supplier detected — Mälarenergi</p><p class="m">A new third-party analytics vendor now runs in-page · unreviewed under <code>21(2)(d)</code></p></div></div>
+      </div>
+    </div>
+    <p class="why"><b>One-off assessment → subscription.</b> Recurring revenue is what raises the firm's enterprise value — and the trigger for every renewal conversation.</p>
+  </section>
+
+  <!-- 7 PLAY 4 -->
+  <section class="slide">
+    <div class="ex">
+      <p class="eyebrow">Play 4 · Expand <span class="pill prod">New line + lead-gen</span></p>
+      <h2>Supplier risk as a service</h2>
+      <p class="sub">NIS2 Art. 21(2)(d) makes your client accountable for its suppliers. Score their supply chain for them — and every flagged vendor is a lead back into Play 1.</p>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Client's supplier</th><th>Category</th><th>Exposure</th><th class="num">Score</th></tr></thead>
+          <tbody>
+            <tr><td class="n">Vendor A — IT managed services</td><td>ICT</td><td><span class="chip op">weak email · exposed RDP</span></td><td class="num">31</td></tr>
+            <tr><td class="n">Vendor B — SCADA integrator</td><td>OT</td><td><span class="chip op">exposed OT panel</span></td><td class="num">28</td></tr>
+            <tr><td class="n">Vendor C — payroll SaaS</td><td>ICT</td><td><span class="chip gd">clean</span></td><td class="num">74</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="why"><b>Two revenue lines from one map:</b> the supply-chain review you sell the client, and the flagged vendors you pitch next.</p>
+  </section>
+
+  <!-- 8 PLAY 5 — BENCHMARK (anchor) -->
+  <section class="slide">
+    <div class="ex">
+      <p class="eyebrow">Play 5 · Benchmark <span class="pill moat">The moat · your data only</span></p>
+      <h2>Competitive benchmarking</h2>
+      <p class="sub">10 Swedish energy &amp; transport operators, ranked on external security hygiene from passive signals. The view you'd hand a prospect: <b>"you're bottom of your peer group."</b></p>
+      <div class="bench" id="bench"></div>
+    </div>
+    <p class="why"><b>Only Cyber Defencely can draw this line</b> — it needs the cross-client dataset no competitor holds. It's both a devastating sales hook and a service clients renew for.</p>
+  </section>
+
+  <!-- 9 PLAY 6 -->
+  <section class="slide">
+    <div class="ex">
+      <p class="eyebrow">Play 6 · Assess <span class="pill prod">Sticky reporting</span></p>
+      <h2>Board &amp; compliance evidence pack</h2>
+      <p class="sub">NIS2 makes management <em>personally</em> accountable. They need a clean, framework-mapped scorecard for the board and the regulator — you produce it on a schedule.</p>
+      <div class="rag">
+        <div class="ragrow"><span class="l">(g)</span><span>Basic cyber hygiene &amp; training</span><span class="rstat"><span class="dot r"></span>At risk</span></div>
+        <div class="ragrow"><span class="l">(d)</span><span>Supply-chain security</span><span class="rstat"><span class="dot r"></span>At risk</span></div>
+        <div class="ragrow"><span class="l">(a)</span><span>Governance &amp; risk policies</span><span class="rstat"><span class="dot a"></span>Partial</span></div>
+        <div class="ragrow"><span class="l">(h)</span><span>Cryptography &amp; encryption</span><span class="rstat"><span class="dot a"></span>Partial</span></div>
+        <div class="ragrow"><span class="l">(b)</span><span>Incident handling</span><span class="rstat"><span class="dot g"></span>In place</span></div>
+      </div>
+    </div>
+    <p class="why"><b>Compliance evidence renews.</b> The score becomes a recurring reporting deliverable management depends on — the stickiest product of all.</p>
+  </section>
+
+  <!-- 10 PLAY 7 -->
+  <section class="slide">
+    <div class="ex">
+      <p class="eyebrow">Play 7 · Internal <span class="pill wedge">Margin &amp; win-rate</span></p>
+      <h2>Scoping &amp; pricing, before the call</h2>
+      <p class="sub">The pre-engagement score predicts what an assessment will surface — so you quote faster, scope effort right, and price consistently.</p>
+      <div class="quote">
+        <div class="kv"><span class="k">Prospect</span><span class="v">Göteborg Energi AB · Energy · ~1,150 staff</span></div>
+        <div class="kv"><span class="k">Predicted findings</span><span class="v">9 (2 high, 4 medium)</span></div>
+        <div class="kv"><span class="k">Estimated effort</span><span class="v">4.5 consultant-days</span></div>
+        <div class="kv"><span class="k">Suggested package</span><span class="v acc">Rapid Assessment + CISO-as-a-Service</span></div>
+        <div class="kv"><span class="k">Win probability</span><span class="v">High — active CISO req</span></div>
+      </div>
+    </div>
+    <p class="why"><b>Not new revenue — better margin.</b> Consistent scoping and pricing, and sales effort aimed at the deals most likely to close.</p>
+  </section>
+
+  <!-- 11 CLOSE -->
+  <section class="slide close cover">
+    <div class="ex">
+      <p class="eyebrow">The through-line</p>
+      <h1>Seven plays. One data asset that compounds.</h1>
+      <div class="through"><p>Turn your proprietary data into an actionable competitive advantage.</p></div>
+      <p class="lead" style="margin-top:20px">The engine is leverage anyone can build. The context map is yours to own. The moat is the data your engagements produce — and it grows every time you deliver. Instance one is running today.</p>
+    </div>
+  </section>
+
+</div>
+
+<nav class="nav" aria-label="Slide navigation">
+  <button class="nbtn" id="prev" type="button" aria-label="Previous slide">‹</button>
+  <span class="counter" id="counter">1 / 11</span>
+  <button class="nbtn" id="next" type="button" aria-label="Next slide">›</button>
+  <span class="dots" id="dots"></span>
+</nav>
+
+<script>
+  // benchmark data (composite external-hygiene score from passive signals)
+  const B=[
+    ["Green Cargo AB",72,"gd"],["Nobina Sverige AB",68,"gd"],["Stena Line Scandinavia",54,"mid"],
+    ["Tekniska verken",48,"mid"],["Transdev Sverige",46,"mid"],["Jämtkraft AB",44,"mid"],
+    ["Mälarenergi AB",41,"mid"],["Öresundskraft AB",39,"hot"],["Skellefteå Kraft AB",37,"hot"],
+    ["Göteborg Energi AB",35,"hot"]
+  ];
+  const cls={gd:"fgd",mid:"fmid",hot:"fhot"};
+  document.getElementById("bench").innerHTML =
+    B.map((r,i)=>{
+      const me = i===B.length-1;
+      return `<div class="brow${me?" me":""}">
+        <span class="rk">${i+1}</span>
+        <span class="nm">${r[0]}${me?" ◄":""}</span>
+        <span class="track"><span class="fill ${cls[r[2]]}" style="width:${r[1]}%"></span></span>
+        <span class="val">${r[1]}</span>
+      </div>`;}).join("")
+    + `<div class="blegend">
+        <span><span class="sw" style="background:var(--good)"></span>Strong (top quartile)</span>
+        <span><span class="sw" style="background:color-mix(in srgb,var(--ink-3) 70%,transparent)"></span>Mid</span>
+        <span><span class="sw" style="background:var(--hot)"></span>Exposed (bottom quartile)</span>
+        <span><b style="color:var(--hot)">◄</b> the prospect · ranks 10 / 10 · bottom 10%</span>
+       </div>
+       <p class="foot">Composite external-hygiene score (0–100) from passive signals only: SPF / DMARC enforcement, MTA-STS, security headers, exposed surface. Peer set: 10 Swedish energy &amp; transport operators, Aug 2026. Median 42.5. Göteborg Energi verified live at DMARC <code style="font-family:var(--mono)">p=none</code>.</p>`;
+
+  // deck nav
+  const slides=[...document.querySelectorAll(".slide")];
+  const counter=document.getElementById("counter"), dotsEl=document.getElementById("dots");
+  let i=0;
+  slides.forEach((_,k)=>{const b=document.createElement("button");b.className="dot2";b.type="button";
+    b.setAttribute("aria-label","Go to slide "+(k+1));b.addEventListener("click",()=>show(k));dotsEl.appendChild(b);});
+  const dots=[...dotsEl.children];
+  function show(n){
+    i=(n+slides.length)%slides.length;
+    slides.forEach((s,k)=>s.classList.toggle("on",k===i));
+    dots.forEach((d,k)=>d.classList.toggle("on",k===i));
+    counter.textContent=(i+1)+" / "+slides.length;
+    window.scrollTo({top:0,behavior:"instant"in window?"instant":"auto"});
+  }
+  document.getElementById("prev").addEventListener("click",()=>show(i-1));
+  document.getElementById("next").addEventListener("click",()=>show(i+1));
+  addEventListener("keydown",e=>{
+    if(e.key==="ArrowRight"||e.key==="PageDown"){show(i+1);}
+    else if(e.key==="ArrowLeft"||e.key==="PageUp"){show(i-1);}
+  });
+  show(0);
+
+  // theme
+  const root=document.documentElement,tb=document.getElementById("theme"),ti=document.getElementById("ti");
+  let m="system";
+  tb.addEventListener("click",()=>{m=m==="system"?"light":m==="light"?"dark":"system";
+    if(m==="system")root.removeAttribute("data-theme");else root.setAttribute("data-theme",m);
+    ti.textContent=m==="light"?"☀":m==="dark"?"☾":"◐";});
+</script>
