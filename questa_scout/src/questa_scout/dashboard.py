@@ -1,156 +1,221 @@
 from __future__ import annotations
 
-"""Render a ranked prospect list into a self-contained HTML dashboard --
-the "Prospect Scout for Questa" view. No external assets, theme-aware,
-generated straight from ProspectReport data so it always matches the CSV.
+"""Render ranked prospects into a self-contained, interactive HTML app --
+the "Prospect Scout for Questa" view.
+
+An operator-facing single page: a branded header with a theme toggle, the
+scoring "recipe" as chips, summary stat tiles, signal filters, and one
+expandable row per prospect. Each row opens to a pre-sales brief plus an
+evidence panel that shows the *actual* live queries behind every signal
+(the LinkedIn jobs and governance SERP queries, the homepage findings).
+No external assets; theme-aware; generated straight from ProspectReport
+data so it always matches the CSV.
 """
 
 import html
 from typing import Iterable
 
+from .collectors.serp.query import build_governance_query, build_jobs_query
 from .context_map import derive_findings
 from .models import ProspectReport
 
 _CSS = """
 :root{
-  --bg:#F5F6FA; --surface:#FFFFFF; --surface-2:#F0F2F7;
-  --ink:#171B24; --muted:#5A6172; --border:#E3E6EE;
-  --accent:#5A4FE0; --accent-soft:#ECEAFB; --accent-ink:#FFFFFF;
-  --live:#DE6B1F; --live-soft:#FBEBDD;
-  --crit:#D6403A; --high:#C9791A; --med:#5A6172;
-  --phi:#0E8F84; --financial:#3457C4; --legal:#8A4FB0; --pii:#5A6172;
-  --shadow:0 1px 2px rgba(20,24,34,.06),0 8px 24px rgba(20,24,34,.05);
+  --bg:#eef0f6; --surface:#ffffff; --surface-2:#f5f6fc;
+  --border:#e0e3ee; --border-strong:#cbd0e2;
+  --ink:#171b24; --ink-2:#565f72; --ink-3:#8b93a6;
+  --accent:#5a4fe0; --accent-soft:#ecebfb; --accent-ink:#4a40c4;
+  --hot:#d6521a; --hot-soft:#fbe8dd;
+  --warn:#9a6b12; --warn-soft:#f6ecd6;
+  --good:#12795a; --good-soft:#dcefe8;
+  --crit:#b02a2f; --crit-soft:#f7e0e1;
+  --shadow:0 1px 2px rgba(20,27,35,.06),0 8px 24px rgba(20,27,35,.06);
+  --mono:ui-monospace,"SF Mono","SFMono-Regular",Menlo,Consolas,monospace;
+  --sans:"Inter","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
 }
-:root:not([data-theme="light"]){ }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --bg:#101219; --surface:#191C24; --surface-2:#20242E;
-    --ink:#EEF0F6; --muted:#9AA1B2; --border:#2A2F3B;
-    --accent:#8F88F2; --accent-soft:#23233A; --accent-ink:#11121A;
-    --live:#EE8A44; --live-soft:#2E2418;
-    --crit:#EA6A63; --high:#E0A24A; --med:#9AA1B2;
-    --phi:#3FB5A8; --financial:#7C97E8; --legal:#B788D6; --pii:#9AA1B2;
-    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.35);
+    --bg:#0c0f16; --surface:#151a24; --surface-2:#1c2230;
+    --border:#28303f; --border-strong:#3a4356;
+    --ink:#e9ebf3; --ink-2:#9aa1b4; --ink-3:#69707f;
+    --accent:#8f88f2; --accent-soft:#22223c; --accent-ink:#b3adf7;
+    --hot:#ef8a4c; --hot-soft:#33210f80; --warn:#d6a63e; --warn-soft:#2c250f80;
+    --good:#46c199; --good-soft:#0f2b2280; --crit:#e5707a; --crit-soft:#33161980;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
   }
 }
 :root[data-theme="dark"]{
-  --bg:#101219; --surface:#191C24; --surface-2:#20242E;
-  --ink:#EEF0F6; --muted:#9AA1B2; --border:#2A2F3B;
-  --accent:#8F88F2; --accent-soft:#23233A; --accent-ink:#11121A;
-  --live:#EE8A44; --live-soft:#2E2418;
-  --crit:#EA6A63; --high:#E0A24A; --med:#9AA1B2;
-  --phi:#3FB5A8; --financial:#7C97E8; --legal:#B788D6; --pii:#9AA1B2;
-  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.35);
+  --bg:#0c0f16; --surface:#151a24; --surface-2:#1c2230;
+  --border:#28303f; --border-strong:#3a4356;
+  --ink:#e9ebf3; --ink-2:#9aa1b4; --ink-3:#69707f;
+  --accent:#8f88f2; --accent-soft:#22223c; --accent-ink:#b3adf7;
+  --hot:#ef8a4c; --hot-soft:#33210f80; --warn:#d6a63e; --warn-soft:#2c250f80;
+  --good:#46c199; --good-soft:#0f2b2280; --crit:#e5707a; --crit-soft:#33161980;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
 }
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{
-  margin:0;background:var(--bg);color:var(--ink);
-  font-family:"Inter","Helvetica Neue",Helvetica,Arial,system-ui,sans-serif;
-  line-height:1.5;font-size:15px;
-  -webkit-font-smoothing:antialiased;
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+  line-height:1.5;font-size:15px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto;padding:22px clamp(14px,3vw,30px) 60px}
+header{display:flex;align-items:center;gap:14px;padding-bottom:18px;margin-bottom:20px;
+  border-bottom:1px solid var(--border);flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:11px}
+.brand svg{width:30px;height:30px;display:block}
+.brand .name{font-weight:700;letter-spacing:-.01em;font-size:16px}
+.brand .name small{display:block;font-weight:500;color:var(--ink-2);font-size:12.5px}
+.tag{font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--good);background:var(--good-soft);padding:3px 8px;border-radius:5px;
+  border:1px solid color-mix(in srgb,var(--good) 30%,transparent)}
+.spacer{flex:1 1 auto}
+.tbtn{font:inherit;font-size:13px;color:var(--ink-2);background:var(--surface);
+  border:1px solid var(--border-strong);border-radius:8px;padding:7px 12px;cursor:pointer;
+  display:inline-flex;align-items:center;gap:7px}
+.tbtn:hover{color:var(--ink);border-color:var(--accent)}
+.tbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.recipe{margin-bottom:20px}
+.recipe .lead{font-size:13.5px;color:var(--ink-2);margin-bottom:9px}
+.recipe .lead b{color:var(--ink);font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.qchip{font-size:13px;padding:5px 11px;border-radius:20px;background:var(--surface);
+  border:1px solid var(--border-strong);color:var(--ink);display:inline-flex;align-items:center;gap:6px}
+.qchip .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.qchip.trig{border-color:color-mix(in srgb,var(--hot) 40%,transparent);color:var(--hot)}
+.qchip.trig .dot{background:var(--hot)}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:26px}
+@media(max-width:720px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:14px 15px;box-shadow:var(--shadow)}
+.stat .k{font-size:26px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.stat .k.hot{color:var(--hot)}.stat .k.ac{color:var(--accent)}
+.stat .l{font-size:12px;color:var(--ink-2);margin-top:2px}
+.toolbar{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.fbtn{font:inherit;font-size:13px;color:var(--ink-2);background:transparent;
+  border:1px solid var(--border-strong);border-radius:8px;padding:6px 12px;cursor:pointer}
+.fbtn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+.fbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.count{font-size:13px;color:var(--ink-3);margin-left:auto}
+.list{display:flex;flex-direction:column;gap:10px}
+.row{background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  box-shadow:var(--shadow);overflow:hidden}
+.rhead{display:grid;align-items:center;gap:14px;
+  grid-template-columns:34px minmax(0,1fr) auto 210px 22px;padding:13px 16px;cursor:pointer;
+  width:100%;text-align:left;background:none;border:0;font:inherit;color:inherit}
+.rhead:hover{background:var(--surface-2)}
+.rhead:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+@media(max-width:820px){
+  .rhead{grid-template-columns:28px minmax(0,1fr) 22px;row-gap:10px}
+  .rhead .chipset,.rhead .fit{grid-column:1 / -1}
+  .rhead .fit{width:100%}
 }
-.mono{font-family:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
-  font-variant-numeric:tabular-nums}
-.wrap{max-width:1060px;margin:0 auto;padding:40px 24px 72px}
-header.top{display:flex;flex-direction:column;gap:6px;margin-bottom:28px}
-.eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);
-  font-weight:700}
-h1{font-size:30px;line-height:1.1;margin:2px 0 0;font-weight:800;letter-spacing:-.02em;
-  text-wrap:balance}
-.sub{color:var(--muted);max-width:64ch}
-.meta{color:var(--muted);font-size:12.5px;margin-top:4px}
-.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:22px 0 8px}
-.tile{background:var(--surface);border:1px solid var(--border);border-radius:12px;
-  padding:14px 16px;box-shadow:var(--shadow)}
-.tile .k{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
-.tile .v{font-size:26px;font-weight:800;margin-top:4px;letter-spacing:-.02em}
-.tile .v small{font-size:13px;font-weight:600;color:var(--muted)}
-.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:22px 0 14px}
-.controls .lbl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
-  font-weight:700;margin-right:2px}
-.chipbtn{font:inherit;font-size:12.5px;cursor:pointer;border:1px solid var(--border);
-  background:var(--surface);color:var(--ink);padding:5px 11px;border-radius:999px;transition:.15s}
-.chipbtn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
-.chipbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.list{display:flex;flex-direction:column;gap:12px}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;
-  padding:16px 18px;box-shadow:var(--shadow);display:grid;
-  grid-template-columns:44px 1fr 190px;gap:14px 16px;align-items:start}
-.rank{font-weight:800;font-size:15px;color:var(--muted);padding-top:2px}
-.rank .n{display:block;font-size:19px;color:var(--ink)}
-.head{display:flex;flex-direction:column;gap:2px;min-width:0}
-.name{font-size:17px;font-weight:700;letter-spacing:-.01em}
-.loc{color:var(--muted);font-size:12.5px}
-.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
-.chip{font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:999px;border:1px solid transparent;
-  display:inline-flex;align-items:center;gap:5px;line-height:1.4}
-.chip .dot{width:6px;height:6px;border-radius:50%}
-.chip.data{background:var(--surface-2);border-color:var(--border);color:var(--ink)}
-.chip.opening{background:var(--accent-soft);color:var(--accent);border-color:transparent}
-.chip.live{background:var(--live-soft);color:var(--live)}
-.chip.muted{background:var(--surface-2);color:var(--muted)}
-.angle{margin:11px 0 0;font-size:14px;color:var(--ink)}
-.angle b{color:var(--accent)}
-.finds{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-.find{font-size:11px;padding:3px 8px;border-radius:6px;border:1px solid var(--border);
-  background:var(--surface-2);display:inline-flex;gap:6px;align-items:center}
-.find .sev{width:7px;height:7px;border-radius:2px}
-.sev.critical{background:var(--crit)}.sev.high{background:var(--high)}
-.sev.medium{background:var(--med)}.sev.low{background:var(--med)}.sev.info{background:var(--med)}
-.right{display:flex;flex-direction:column;gap:9px;align-items:stretch}
-.score{display:flex;align-items:baseline;gap:7px;justify-content:flex-end}
-.score .num{font-size:30px;font-weight:800;letter-spacing:-.02em}
-.score .den{color:var(--muted);font-size:12px}
-.meter{height:7px;border-radius:999px;background:var(--surface-2);overflow:hidden;border:1px solid var(--border)}
-.meter>i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent),color-mix(in oklab,var(--accent),var(--live) 35%))}
-.prod{font-size:12px;font-weight:700;text-align:center;padding:6px 8px;border-radius:9px;
-  border:1px solid var(--border);background:var(--surface-2)}
-.prod.blackbox{color:var(--financial)}.prod.developer{color:var(--phi)}.prod.cloud{color:var(--legal)}
-.verify{font-size:11.5px;color:var(--muted)}
-footer{margin-top:34px;color:var(--muted);font-size:12px;border-top:1px solid var(--border);padding-top:16px}
-footer code{font-family:ui-monospace,Menlo,monospace;background:var(--surface-2);padding:1px 5px;border-radius:4px}
-.empty{display:none;color:var(--muted);padding:26px;text-align:center;border:1px dashed var(--border);border-radius:12px}
-@media(max-width:680px){
-  .card{grid-template-columns:38px 1fr;}
-  .right{grid-column:1 / -1;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:space-between}
-  .score{justify-content:flex-start}.meter{flex:1 1 160px}
-}
+.rank{font-variant-numeric:tabular-nums;font-weight:700;color:var(--ink-3);font-size:15px;text-align:center}
+.co .cn{font-weight:650;letter-spacing:-.01em}
+.co .cm{font-size:12.5px;color:var(--ink-2);margin-top:1px}
+.co .cm .code{font-family:var(--mono);font-size:11.5px;color:var(--ink-3)}
+.chipset{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:6px;border:1px solid transparent;
+  white-space:nowrap;display:inline-flex;gap:5px;align-items:center}
+.chip.op{color:var(--hot);background:var(--hot-soft);border-color:color-mix(in srgb,var(--hot) 26%,transparent)}
+.chip.wn{color:var(--warn);background:var(--warn-soft);border-color:color-mix(in srgb,var(--warn) 26%,transparent)}
+.chip.gd{color:var(--good);background:var(--good-soft);border-color:color-mix(in srgb,var(--good) 26%,transparent)}
+.chip.ac{color:var(--accent-ink);background:var(--accent-soft);border-color:color-mix(in srgb,var(--accent) 26%,transparent)}
+.chip.mu{color:var(--ink-3);background:var(--surface-2);border-color:var(--border)}
+.chip.tr{color:var(--hot);background:transparent;border:1.5px solid color-mix(in srgb,var(--hot) 55%,transparent);font-weight:700}
+.fit{display:flex;align-items:center;gap:10px}
+.meter{flex:1 1 auto;height:8px;border-radius:5px;background:var(--surface-2);border:1px solid var(--border);overflow:hidden}
+.meter>i{display:block;height:100%;border-radius:5px}
+.fitnum{font-variant-numeric:tabular-nums;font-weight:700;font-size:16px;width:30px;text-align:right}
+.band{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:4px}
+.band.hot{color:var(--hot);background:var(--hot-soft)}
+.band.warm{color:var(--accent-ink);background:var(--accent-soft)}
+.band.cool{color:var(--ink-3);background:var(--surface-2)}
+.caret{color:var(--ink-3);transition:transform .18s ease;justify-self:center}
+.row.open .caret{transform:rotate(90deg)}
+.detail{border-top:1px solid var(--border);padding:0 16px}
+.detail-inner{padding:16px 0 18px;display:grid;gap:16px;grid-template-columns:1.15fr 1fr}
+@media(max-width:820px){.detail-inner{grid-template-columns:1fr}}
+.panel h4{margin:0 0 8px;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3)}
+.brief{font-size:14px}
+.brief .angle{margin-top:10px}.brief .angle b{color:var(--accent-ink)}
+.brief .prod{display:inline-block;margin-top:10px;font-size:12px;font-weight:700;color:var(--accent-ink);
+  background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 26%,transparent);
+  padding:3px 9px;border-radius:6px}
+.ev{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
+.ev li{display:grid;grid-template-columns:15px 1fr;gap:9px;font-size:13px;align-items:start}
+.ev .ei{margin-top:3px;width:9px;height:9px;border-radius:50%}
+.ev .lbl{font-weight:600}.ev .sub{color:var(--ink-2)}
+.q{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);background:var(--surface-2);
+  border:1px solid var(--border);border-radius:7px;padding:8px 10px;margin-top:6px;overflow-x:auto;white-space:nowrap}
+.verify{font-size:12px;color:var(--warn);margin-top:8px;display:flex;gap:6px;align-items:center}
+.trignote{font-size:12.5px;color:var(--hot);margin-top:8px;font-weight:600;display:flex;gap:6px;align-items:center}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:11.5px;color:var(--ink-2);margin:20px 2px 0}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+footer{margin-top:28px;padding-top:18px;border-top:1px solid var(--border);font-size:12.5px;
+  color:var(--ink-2);display:flex;flex-direction:column;gap:8px}
+footer .hd{color:var(--ink);font-weight:600}
+footer code{font-family:var(--mono);font-size:11.5px;background:var(--surface-2);padding:1px 5px;
+  border-radius:4px;border:1px solid var(--border)}
+.empty{display:none;color:var(--ink-2);padding:26px;text-align:center;border:1px dashed var(--border-strong);border-radius:12px;margin-top:10px}
+@media(prefers-reduced-motion:reduce){*{transition:none !important}}
 """
 
 _JS = """
 (function(){
-  var cards=[].slice.call(document.querySelectorAll('.card'));
-  var empty=document.querySelector('.empty');
-  var state={product:'all',hifi:false};
-  function apply(){
-    var shown=0;
-    cards.forEach(function(c){
-      var okP=state.product==='all'||c.dataset.product===state.product;
-      var okH=!state.hifi||parseFloat(c.dataset.score)>=80;
-      var vis=okP&&okH;c.style.display=vis?'':'none';if(vis)shown++;
-    });
-    if(empty)empty.style.display=shown?'none':'block';
-  }
-  document.querySelectorAll('[data-filter]').forEach(function(b){
-    b.addEventListener('click',function(){
-      var g=b.dataset.filter,v=b.dataset.value;
-      if(g==='hifi'){state.hifi=!state.hifi;b.setAttribute('aria-pressed',state.hifi);}
-      else{state.product=v;document.querySelectorAll('[data-filter="product"]').forEach(function(o){
-        o.setAttribute('aria-pressed',o.dataset.value===v);});}
-      apply();
+  document.querySelectorAll('.rhead').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var row=btn.closest('.row'),det=row.querySelector('.detail');
+      var open=row.classList.toggle('open');
+      btn.setAttribute('aria-expanded',open?'true':'false');det.hidden=!open;
     });
   });
-  apply();
+  var rows=[].slice.call(document.querySelectorAll('.row')),
+      countEl=document.getElementById('count'),
+      empty=document.querySelector('.empty'),
+      total=rows.length;
+  function apply(f){
+    var shown=0;
+    rows.forEach(function(r){
+      var ok = f==='all'
+        || (f==='hifi'    && parseFloat(r.dataset.score)>=80)
+        || (f==='chatbot' && r.dataset.chatbot==='true')
+        || (f==='genai'   && r.dataset.genai==='true');
+      r.style.display=ok?'':'none';if(ok)shown++;
+    });
+    countEl.textContent='Showing '+shown+' of '+total;
+    if(empty)empty.style.display=shown?'none':'block';
+  }
+  var fbtns=document.querySelectorAll('.fbtn');
+  fbtns.forEach(function(b){b.addEventListener('click',function(){
+    fbtns.forEach(function(x){x.setAttribute('aria-pressed','false');});
+    b.setAttribute('aria-pressed','true');apply(b.dataset.filter);
+  });});
+  apply('all');
+  var root=document.documentElement,tb=document.getElementById('theme'),
+      tl=document.getElementById('themeLabel'),ti=document.getElementById('themeIcon'),mode='system';
+  tb.addEventListener('click',function(){
+    mode = mode==='system'?'light':mode==='light'?'dark':'system';
+    if(mode==='system')root.removeAttribute('data-theme');else root.setAttribute('data-theme',mode);
+    tl.textContent=mode.charAt(0).toUpperCase()+mode.slice(1);
+    ti.textContent=mode==='light'?'\\u2600':mode==='dark'?'\\u263e':'\\u25d0';
+  });
 })();
 """
 
-_DATA_LABEL = {"PHI": "PHI · HIPAA", "financial": "Financial · GLBA",
-               "legal_privileged": "Privileged · state", "consumer_pii": "Consumer PII · state"}
-_DATA_CLASS = {"PHI": "phi", "financial": "financial", "legal_privileged": "legal", "consumer_pii": "pii"}
-_ADOPTION = {"active": "AI adoption: active", "emerging": "AI adoption: emerging",
-             "none": "No AI signal", "unknown": "AI signal: unknown"}
-_GOV = {"none_found": "No governance owner", "uncertain": "Governance unclear", "governed": "Has governance owner"}
+_SHIELD = (
+    '<svg viewBox="0 0 32 32" fill="none" aria-hidden="true">'
+    '<path d="M16 2.5 27 6.4v8.1c0 6.9-4.5 12.4-11 15-6.5-2.6-11-8.1-11-15V6.4L16 2.5Z" '
+    'fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6" stroke-linejoin="round"/>'
+    '<path d="M16 10.5v11M11 16h10" stroke="var(--accent)" stroke-width="2.1" stroke-linecap="round"/>'
+    '</svg>'
+)
+
+_DATA_LABEL = {"PHI": "Health · PHI/HIPAA", "financial": "Finance · GLBA",
+               "legal_privileged": "Legal · privilege", "consumer_pii": "Consumer PII · state"}
+_ADOPT_LABEL = {"active": "AI · active", "emerging": "AI · emerging",
+                "none": "AI · none", "unknown": "AI · unknown"}
+_GOV_LABEL = {"none_found": "No governance owner", "uncertain": "Governance unclear",
+              "governed": "Governance · owner"}
 
 
 def _esc(s) -> str:
@@ -166,77 +231,127 @@ def _product_key(product: str) -> str:
     return "blackbox"
 
 
-def _card(rank: int, r: ProspectReport) -> str:
+def _band(fit: float):
+    if fit >= 80:
+        return "hot", "Hot"
+    if fit >= 60:
+        return "warm", "Warm"
+    return "cool", "Cool"
+
+
+def _meter_color(fit: float) -> str:
+    if fit >= 80:
+        return "var(--hot)"
+    if fit >= 55:
+        return "var(--accent)"
+    return "var(--ink-3)"
+
+
+def _row(rank: int, r: ProspectReport) -> str:
     c = r.company
     ds, ad, gov = r.data_scope, r.adoption, r.governance
     findings = derive_findings(r)
-    pkey = _product_key(r.product)
+    fit = r.fit_score
+    bandc, bandt = _band(fit)
 
+    # header chips
     chips = []
     if ds.data_class and ds.verdict in ("in_scope", "likely_in_scope"):
-        chips.append(f'<span class="chip data"><span class="dot" style="background:var(--{_DATA_CLASS.get(ds.data_class,"pii")})"></span>{_esc(_DATA_LABEL.get(ds.data_class, ds.data_class))}</span>')
+        chips.append(f'<span class="chip ac">{_esc(_DATA_LABEL.get(ds.data_class, ds.data_class))}</span>')
     elif ds.verdict == "out_of_scope":
-        chips.append('<span class="chip muted">Out of scope</span>')
-    if ad.level in ("active", "emerging"):
-        chips.append(f'<span class="chip live">{_esc(_ADOPTION[ad.level])}</span>')
-    else:
-        chips.append(f'<span class="chip muted">{_esc(_ADOPTION.get(ad.level, ad.level))}</span>')
-    if gov.status in ("none_found", "uncertain"):
-        chips.append(f'<span class="chip opening">{_esc(_GOV[gov.status])} · opening</span>')
-    else:
-        chips.append(f'<span class="chip muted">{_esc(_GOV.get(gov.status, gov.status))}</span>')
+        chips.append('<span class="chip mu">Out of scope</span>')
+    ad_cls = {"active": "op", "emerging": "wn"}.get(ad.level, "mu")
+    chips.append(f'<span class="chip {ad_cls}">{_esc(_ADOPT_LABEL.get(ad.level, ad.level))}</span>')
+    gov_cls = {"none_found": "op", "uncertain": "wn", "governed": "gd"}.get(gov.status, "mu")
+    chips.append(f'<span class="chip {gov_cls}">{_esc(_GOV_LABEL.get(gov.status, gov.status))}</span>')
+    if ad.strong_hiring:
+        chips.append('<span class="chip tr">⚡ Building GenAI</span>')
 
-    angle = ""
-    if findings:
-        angle = f'<p class="angle"><b>Angle</b> — {_esc(findings[0].talking_point)}</p>'
+    # meta line
+    size = f"~{c.employees:,} employees" if c.employees else "size n/a"
+    sector = ds.sector or "unclassified"
+    meta = f'{_esc(sector)} · <span class="code">NAICS {_esc(c.naics_code or "?")}</span> · {_esc(size)}'
 
-    find_html = ""
-    if findings:
-        items = "".join(
-            f'<span class="find mono"><span class="sev {_esc(f.severity)}"></span>{_esc(f.finding_id)}</span>'
-            for f in findings[:4]
-        )
-        find_html = f'<div class="finds">{items}</div>'
-
-    loc = " · ".join(x for x in [c.state, (f"{c.employees:,} emp" if c.employees else "")] if x)
-    verify = ('<span class="verify">Verify governance gap before outreach</span>'
+    # brief
+    angle = findings[0].talking_point if findings else "Regulated-data org adopting AI."
+    scope_txt = (
+        f"a {_esc(ds.data_class)} handler ({_esc(sector)}, {_esc(ds.regime)})"
+        if ds.data_class else "scope unconfirmed"
+    )
+    adopt_txt = {
+        "active": "active AI adoption",
+        "emerging": "emerging AI adoption",
+        "none": "no public AI signal",
+        "unknown": "an unassessed AI posture",
+    }.get(ad.level, ad.level)
+    gov_txt = {
+        "none_found": " and no governance owner on show",
+        "uncertain": " and no clear governance owner",
+        "governed": " with a visible governance owner",
+    }.get(gov.status, "")
+    trig = ('<div class="trignote">⚡ Buying trigger — actively hiring GenAI/LLM/MLOps roles.</div>'
+            if ad.strong_hiring else "")
+    verify = ('<div class="verify">⚑ Verify the governance gap by hand before outreach.</div>'
               if gov.verify_recommended and gov.status != "governed" else "")
 
-    return f"""<article class="card" data-product="{pkey}" data-score="{r.fit_score:.0f}">
-  <div class="rank">#<span class="n">{rank}</span></div>
-  <div class="head">
-    <div class="name">{_esc(c.name)}</div>
-    <div class="loc">{_esc(loc) or "&nbsp;"}</div>
-    <div class="chips">{''.join(chips)}</div>
-    {angle}
-    {find_html}
+    # evidence
+    jobs_q = build_jobs_query(c.name)
+    gov_q = gov.query or build_governance_query(c.name)
+    adopt_ev = "; ".join(ad.findings) if ad.findings else "No adoption signal surfaced."
+    gov_ev = {
+        "none_found": "No company-tied privacy/AI-governance owner surfaced in public search.",
+        "uncertain": "Privacy/compliance staff found, but no clear owner tied to the company.",
+        "governed": "A named governance owner tied to the company was found.",
+    }.get(gov.status, "")
+    scope_ev = (
+        f"Regulated-data sector ({_esc(sector)}, NAICS {_esc(c.naics_code or '?')}) → "
+        f"{_esc(ds.data_class or 'n/a')} under {_esc(ds.regime or 'n/a')}."
+        if ds.data_class else "Not mapped to a regulated-data sector on current data."
+    )
+    adopt_dot = {"active": "var(--hot)", "emerging": "var(--warn)"}.get(ad.level, "var(--ink-3)")
+    gov_dot = {"none_found": "var(--hot)", "uncertain": "var(--warn)", "governed": "var(--good)"}.get(gov.status, "var(--ink-3)")
+
+    return f"""<div class="row" data-score="{fit:.0f}" data-product="{_product_key(r.product)}"
+     data-chatbot="{'true' if ad.chatbot else 'false'}" data-genai="{'true' if ad.strong_hiring else 'false'}">
+  <button class="rhead" aria-expanded="false">
+    <span class="rank">{rank}</span>
+    <span class="co"><span class="cn">{_esc(c.name)}</span><span class="cm">{meta}</span></span>
+    <span class="chipset">{''.join(chips)}</span>
+    <span class="fit"><span class="band {bandc}">{bandt}</span><span class="meter"><i style="width:{max(3, min(100, fit)):.0f}%;background:{_meter_color(fit)}"></i></span><span class="fitnum">{fit:.0f}</span></span>
+    <span class="caret" aria-hidden="true">›</span>
+  </button>
+  <div class="detail" hidden>
+    <div class="detail-inner">
+      <div class="panel brief">
+        <h4>Pre-sales brief</h4>
+        <div>A {scope_txt} with {adopt_txt}{gov_txt}.</div>
+        <div class="angle"><b>Angle</b> — {_esc(angle)}</div>
+        <span class="prod">Lead: {_esc(r.product)}</span>
+        {trig}{verify}
+      </div>
+      <div class="panel">
+        <h4>Evidence</h4>
+        <ul class="ev">
+          <li><span class="ei" style="background:var(--accent)"></span><span><span class="lbl">Regulated-data scope</span><div class="sub">{scope_ev}</div></span></li>
+          <li><span class="ei" style="background:{adopt_dot}"></span><span><span class="lbl">AI adoption <span style="font-weight:400;color:var(--ink-3)">· live jobs SERP + homepage</span></span><div class="sub">{_esc(adopt_ev)}<div class="q">{_esc(jobs_q)}</div></div></span></li>
+          <li><span class="ei" style="background:{gov_dot}"></span><span><span class="lbl">Governance owner <span style="font-weight:400;color:var(--ink-3)">· live web search</span></span><div class="sub">{_esc(gov_ev)}<div class="q">{_esc(gov_q)}</div></div></span></li>
+        </ul>
+      </div>
+    </div>
   </div>
-  <div class="right">
-    <div class="score"><span class="num mono">{r.fit_score:.0f}</span><span class="den mono">/100</span></div>
-    <div class="meter"><i style="width:{max(2, min(100, r.fit_score)):.0f}%"></i></div>
-    <div class="prod {pkey}">{_esc(r.product)}</div>
-    {verify}
-  </div>
-</article>"""
+</div>"""
 
 
 def render_dashboard(reports: Iterable[ProspectReport], *, generated_note: str = "") -> str:
     reports = list(reports)
     total = len(reports)
     in_scope = sum(1 for r in reports if r.data_scope.verdict in ("in_scope", "likely_in_scope"))
-    hi = sum(1 for r in reports if r.fit_score >= 80)
-    ungoverned = sum(1 for r in reports if r.governance.status in ("none_found", "uncertain"))
     adopting = sum(1 for r in reports if r.adoption.level in ("active", "emerging"))
+    ungoverned = sum(1 for r in reports if r.governance.status in ("none_found", "uncertain"))
+    building = sum(1 for r in reports if r.adoption.strong_hiring)
 
-    products = sorted({_product_key(r.product) for r in reports})
-    prod_labels = {"blackbox": "Blackbox", "developer": "Developer", "cloud": "Cloud"}
-    prod_btns = "".join(
-        f'<button class="chipbtn" data-filter="product" data-value="{p}" aria-pressed="false">{prod_labels[p]}</button>'
-        for p in products
-    )
-
-    cards = "\n".join(_card(i + 1, r) for i, r in enumerate(reports))
-    note = f'<div class="meta">{_esc(generated_note)}</div>' if generated_note else ""
+    rows = "\n".join(_row(i + 1, r) for i, r in enumerate(reports))
+    lead = generated_note or f"{total} US organizations ranked by fit for Questa AI."
 
     return f"""<!doctype html>
 <html lang="en">
@@ -248,36 +363,60 @@ def render_dashboard(reports: Iterable[ProspectReport], *, generated_note: str =
 </head>
 <body>
 <div class="wrap">
-  <header class="top">
-    <div class="eyebrow">Questa AI · Pre-sales</div>
-    <h1>Prospect Scout</h1>
-    <p class="sub">US organizations ranked by fit for Questa's privacy firewall — scored on regulated-data exposure, active AI adoption, and the absence of an AI-governance owner. Passive OSINT only; a governance gap is a signal to verify, not proof.</p>
-    {note}
+  <header>
+    <div class="brand">
+      {_SHIELD}
+      <div class="name">Questa AI<small>Prospect Scout</small></div>
+    </div>
+    <span class="tag">Live run</span>
+    <span class="spacer"></span>
+    <button class="tbtn" id="theme" type="button" aria-label="Toggle colour theme"><span id="themeIcon">◐</span><span id="themeLabel">Theme</span></button>
   </header>
 
-  <section class="tiles" aria-label="summary">
-    <div class="tile"><div class="k">Prospects</div><div class="v mono">{total}</div></div>
-    <div class="tile"><div class="k">High fit (≥80)</div><div class="v mono">{hi} <small>/ {total}</small></div></div>
-    <div class="tile"><div class="k">In regulated scope</div><div class="v mono">{in_scope}</div></div>
-    <div class="tile"><div class="k">Actively adopting AI</div><div class="v mono">{adopting}</div></div>
-    <div class="tile"><div class="k">No governance owner</div><div class="v mono">{ungoverned}</div></div>
+  <section class="recipe">
+    <div class="lead"><b>{_esc(lead)}</b> Scored on regulated-data exposure, active AI adoption, and the absence of an AI-governance owner — passive OSINT, a governance gap is a signal to verify, not proof.</div>
+    <div class="chips">
+      <span class="qchip"><span class="dot"></span>Regulated data · HIPAA/GLBA/state</span>
+      <span class="qchip"><span class="dot"></span>Active AI adoption</span>
+      <span class="qchip"><span class="dot"></span>No governance owner</span>
+      <span class="qchip trig"><span class="dot"></span>Trigger: building GenAI</span>
+    </div>
   </section>
 
-  <div class="controls">
-    <span class="lbl">Product</span>
-    <button class="chipbtn" data-filter="product" data-value="all" aria-pressed="true">All</button>
-    {prod_btns}
-    <span class="lbl" style="margin-left:10px">View</span>
-    <button class="chipbtn" data-filter="hifi" aria-pressed="false">High-fit only</button>
+  <section class="stats" aria-label="Run summary">
+    <div class="stat"><div class="k">{total}</div><div class="l">Companies run</div></div>
+    <div class="stat"><div class="k ac">{in_scope}</div><div class="l">In regulated scope</div></div>
+    <div class="stat"><div class="k">{adopting}</div><div class="l">Actively adopting AI</div></div>
+    <div class="stat"><div class="k">{ungoverned}</div><div class="l">No governance owner</div></div>
+    <div class="stat"><div class="k hot">{building}</div><div class="l">Building GenAI</div></div>
+  </section>
+
+  <div class="toolbar">
+    <div class="filters" role="group" aria-label="Filter prospects">
+      <button class="fbtn" data-filter="all" aria-pressed="true">All</button>
+      <button class="fbtn" data-filter="hifi" aria-pressed="false">High fit</button>
+      <button class="fbtn" data-filter="chatbot" aria-pressed="false">Chatbot exposed</button>
+      <button class="fbtn" data-filter="genai" aria-pressed="false">Building GenAI</button>
+    </div>
+    <span class="count" id="count"></span>
   </div>
 
-  <main class="list">
-{cards}
-  </main>
-  <div class="empty">No prospects match these filters.</div>
+  <div class="list">
+{rows}
+  </div>
+  <div class="empty">No prospects match this filter.</div>
+
+  <div class="legend" aria-label="Signal legend">
+    <span><i style="background:var(--hot)"></i>Opportunity / buying trigger</span>
+    <span><i style="background:var(--warn)"></i>Unclear — verify</span>
+    <span><i style="background:var(--good)"></i>Already covered</span>
+    <span><i style="background:var(--accent)"></i>Regulated scope</span>
+  </div>
 
   <footer>
-    Generated by <code>questa_scout</code> — <code>questa discover --html</code>. Fit = data-scope (qualifier) + AI-adoption (trigger) + governance-gap (opening), sensitivity as tie-break. Findings map each signal to its US regulation, Questa product, and talking point.
+    <span class="hd">Real signals, live sources.</span>
+    <span>Regulated-data scope from <b>NAICS</b> + size (EDGAR-buildable). AI adoption from live <b>LinkedIn job postings</b> (Bright Data SERP) and a passive <b>homepage</b> read for advertised AI + chatbot widgets. Governance owner from live <b>web search</b> (<code>site:linkedin.com/in …</code>). Findings map each signal to its US regulation, a Questa product, and a talking point.</span>
+    <span><b>Note:</b> the governance signal under-detects a company's own owner via public search, so most read <i>no owner — verify</i>; and “building GenAI” is the buying trigger the run catches in passing.</span>
   </footer>
 </div>
 <script>{_JS}</script>

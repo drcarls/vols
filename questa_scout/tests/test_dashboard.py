@@ -24,10 +24,20 @@ def test_dashboard_is_self_contained_html():
     assert "{r.fit_score" not in html
 
 
-def test_dashboard_renders_a_card_per_prospect():
+def test_dashboard_renders_an_expandable_row_per_prospect():
     reports = _reports()
     html = render_dashboard(reports)
-    assert html.count('class="card"') == len(reports)
+    assert html.count('class="row"') == len(reports)
     assert "Cascade Health Partners" in html
-    # the top prospect's headline finding code should surface
-    assert "AI_SHADOW_RISK" in html
+    # interactive affordances present
+    assert 'id="theme"' in html and 'data-filter="genai"' in html
+    assert 'class="detail"' in html
+
+
+def test_dashboard_shows_the_live_queries_as_evidence():
+    html = render_dashboard(_reports())
+    # the actual SERP queries behind the signals are surfaced in the evidence
+    assert "site:linkedin.com/jobs" in html
+    assert "site:linkedin.com/in" in html
+    # the pre-sales angle (talking point) is rendered
+    assert "Angle" in html
