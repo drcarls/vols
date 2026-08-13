@@ -91,6 +91,15 @@
 
   footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--border);font-size:12.5px;color:var(--ink-2);display:flex;flex-direction:column;gap:8px}
   footer .hd{color:var(--ink);font-weight:600}
+
+  .epts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+  @media(max-width:720px){.epts{grid-template-columns:1fr}}
+  .ept{background:var(--surface);border:1px solid var(--border);border-radius:13px;box-shadow:var(--shadow);padding:15px 16px}
+  .ept .eh{font-weight:650;font-size:14px;margin:0 0 6px;letter-spacing:-.01em}
+  .ept p{margin:0;font-size:12.8px;color:var(--ink-2)}
+  .ept b{color:var(--ink)}
+  .ept code{font-family:var(--mono);font-size:11px;color:var(--accent-ink);background:var(--surface-2);border:1px solid var(--border);border-radius:4px;padding:1px 5px}
+  .note{font-size:12.5px;color:var(--ink-3);margin-top:14px;font-style:italic;max-width:72ch}
 </style>
 
 <div class="wrap">
@@ -146,6 +155,40 @@
     <div class="pitch">
       <p><b>And it's built to feed the stack.</b> The same collectors run behind one <code>POST /enrich</code> call — a domain in, this whole signal bundle out as flat JSON — so it drops straight into <b>Clay</b>'s enrichment waterfall and on into <b>UpliftIQ</b>'s scoring. The signal isn't the moat; wiring it into the systems that close the loop is — the way you <b>turn your proprietary data into an actionable competitive advantage</b>.</p>
     </div>
+  </section>
+
+  <!-- ================= DATA ETHICS & LEGAL BASIS ================= -->
+  <section>
+    <p class="eyebrow">Defensibility on the record</p>
+    <h2>Data ethics &amp; legal basis</h2>
+    <p class="lede">Built passive-and-public by design. The line that keeps it clean: it reads records published to the world — it never touches anyone's systems.</p>
+
+    <div class="band" style="border-left-color:var(--good)">
+      <span class="lead">Reading published records ≠ accessing systems.</span>
+      <span class="no">
+        <span><b>No</b> scanning</span>
+        <span><b>No</b> probing</span>
+        <span><b>No</b> login or auth</span>
+        <span><b>Nothing</b> they'd see as directed at them</span>
+      </span>
+    </div>
+
+    <div class="epts">
+      <div class="ept">
+        <div class="eh">Personal data — GDPR</div>
+        <p>The only signal about named people (CISO / hiring) is handled as <b>minimal, retention-limited, legitimate-interest B2B</b> processing — role + company, not a dossier; opt-outs honoured; a documented basis. Reading search results rather than scraping LinkedIn stays clear of platform terms. Public ≠ unregulated, so this is the one area to confirm with a data-protection advisor.</p>
+      </div>
+      <div class="ept">
+        <div class="eh">Benchmarking others</div>
+        <p>Peer comparisons in a client deliverable keep peers <b>anonymised</b> (Peer A–J) and the score <b>method-based and factual</b> — public-data-derived, not an accusation. Computed, not asserted (<code>presales_scout.benchmark</code>).</p>
+      </div>
+      <div class="ept">
+        <div class="eh">Screening, not adjudication</div>
+        <p>The NIS2 verdict is a screening heuristic, not a legal determination; "no visible CISO" is a confidence signal to verify, never a published claim about a person. Findings describe observable posture, nothing more.</p>
+      </div>
+    </div>
+
+    <p class="note">Not legal advice — an accurate description of what the tool reads, so you and a data-protection advisor can confirm how it's used. A short GDPR sanity-check on the personal-data handling is the one worthwhile step before scaling.</p>
   </section>
 
   <footer>

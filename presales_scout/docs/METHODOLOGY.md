@@ -116,6 +116,30 @@ account-specific is the credential/export itself: plug in Cyber Defencely's regi
 access and the 50–100 list generates itself. This is the honest scaling boundary,
 and now the code path to cross it.
 
+## Data ethics & legal basis
+
+Built passive-and-public by design. The line that keeps it clean: **it reads
+records published to the world — it never touches anyone's systems.** No scanning,
+no probing, no login or auth, nothing the target would see as directed at them.
+
+- **Personal data (GDPR).** The only signal about named individuals (CISO / hiring)
+  is handled as **minimal, retention-limited, legitimate-interest B2B** processing:
+  role + company, not a dossier; a documented basis; opt-outs honoured. Reading
+  search results rather than scraping LinkedIn directly stays clear of platform
+  terms. *Public does not mean unregulated* for personal data — this is the one
+  area to confirm with a data-protection advisor before scaling.
+- **Benchmarking others.** Peer comparisons in any client-facing deliverable keep
+  peers **anonymised** (Peer A–J) and the score **method-based and factual** —
+  public-data-derived, not an accusation. Computed, not asserted
+  (`presales_scout.benchmark`).
+- **Screening, not adjudication.** The NIS2 verdict is a screening heuristic, not a
+  legal determination; "no visible CISO" is a confidence signal to verify, never a
+  published claim about a person. Findings describe observable posture, nothing more.
+
+*Not legal advice* — an accurate description of what the tool reads, so you and a
+data-protection advisor can confirm how it's used. A short GDPR sanity-check on the
+personal-data handling is the one worthwhile step before scale.
+
 ## What "passive & public" means, precisely
 
 - Public DNS records (SPF/DMARC/DNSSEC/CAA/MX/NS) over DoH.
