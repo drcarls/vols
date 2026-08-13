@@ -1,0 +1,178 @@
+<title>Getting It Live</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg:#eef1f5; --surface:#fff; --surface-2:#f5f8fc; --border:#d8e0ea; --border-strong:#c3cedb;
+    --ink:#141b23; --ink-2:#55616f; --ink-3:#8b96a4;
+    --accent:#0d6e8c; --accent-soft:#e0f0f5; --accent-ink:#0a556d;
+    --hot:#c0490f; --hot-soft:#fbe7dc; --warn:#9a6b12; --warn-soft:#f7ecd4;
+    --good:#12795a; --good-soft:#dcefe7; --crit:#b02a2f; --crit-soft:#f8e0e1;
+    --shadow:0 1px 2px rgba(20,27,35,.06),0 10px 30px rgba(20,27,35,.07);
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --sans:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --bg:#0c1116; --surface:#141b22; --surface-2:#1b242d; --border:#28323d; --border-strong:#37444f;
+    --ink:#e7ecf2; --ink-2:#9aa6b3; --ink-3:#67727f;
+    --accent:#38aacb; --accent-soft:#10303b; --accent-ink:#7fd0e6;
+    --hot:#f0854a; --hot-soft:#37211550; --warn:#d6a63e; --warn-soft:#2f261150;
+    --good:#46c199; --good-soft:#102c2350; --crit:#e57078; --crit-soft:#33161950;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px rgba(0,0,0,.4);
+  }}
+  :root[data-theme="dark"]{
+    --bg:#0c1116; --surface:#141b22; --surface-2:#1b242d; --border:#28323d; --border-strong:#37444f;
+    --ink:#e7ecf2; --ink-2:#9aa6b3; --ink-3:#67727f;
+    --accent:#38aacb; --accent-soft:#10303b; --accent-ink:#7fd0e6;
+    --hot:#f0854a; --hot-soft:#37211550; --warn:#d6a63e; --warn-soft:#2f261150;
+    --good:#46c199; --good-soft:#102c2350; --crit:#e57078; --crit-soft:#33161950;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px rgba(0,0,0,.4);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;font-size:15px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:920px;margin:0 auto;padding:26px clamp(14px,3.5vw,32px) 64px}
+  a{color:var(--accent-ink)}
+
+  header{display:flex;align-items:center;gap:13px;padding-bottom:16px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand svg{width:30px;height:30px;display:block}
+  .brand .n{font-weight:700;font-size:16px;letter-spacing:-.01em}
+  .brand .n small{display:block;font-weight:500;font-size:12.5px;color:var(--ink-2)}
+  .tag{font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--hot);background:var(--hot-soft);padding:3px 8px;border-radius:5px;border:1px solid color-mix(in srgb,var(--hot) 30%,transparent)}
+  .sp{flex:1}
+  .tbtn{font:inherit;font-size:13px;color:var(--ink-2);background:var(--surface);border:1px solid var(--border-strong);border-radius:8px;padding:6px 11px;cursor:pointer}
+  .tbtn:hover{color:var(--ink);border-color:var(--accent)} .tbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  .hero{margin:26px 0 8px}
+  .hero h1{font-size:clamp(23px,4.2vw,32px);line-height:1.13;letter-spacing:-.02em;margin:0 0 12px;text-wrap:balance;max-width:22ch}
+  .hero p{font-size:16px;color:var(--ink-2);max-width:64ch;margin:0}
+  .hero p b{color:var(--ink)}
+
+  .asks{display:flex;flex-direction:column;gap:14px;margin-top:26px}
+  .ask{background:var(--surface);border:1px solid var(--border);border-radius:15px;box-shadow:var(--shadow);padding:18px 20px;
+    display:grid;grid-template-columns:44px 1fr;gap:4px 16px}
+  .ask .num{grid-row:1/span 2;width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:18px;font-variant-numeric:tabular-nums;background:var(--accent-soft);color:var(--accent-ink);
+    border:1px solid color-mix(in srgb,var(--accent) 24%,transparent)}
+  .ask.p1 .num{background:var(--hot-soft);color:var(--hot);border-color:color-mix(in srgb,var(--hot) 30%,transparent)}
+  .ask .eb{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:2px 0 0}
+  .ask .p1eb{color:var(--hot)}
+  .ask h3{margin:1px 0 8px;font-size:17px;letter-spacing:-.01em}
+  .ask .body{grid-column:2}
+  .rowl{display:grid;grid-template-columns:120px 1fr;gap:4px 12px;font-size:13.5px;margin:5px 0}
+  @media(max-width:560px){.ask{grid-template-columns:1fr}.ask .num{grid-row:auto;margin-bottom:6px}.ask .body{grid-column:1}.rowl{grid-template-columns:1fr}}
+  .rowl .k{font-weight:650;color:var(--ink-2);font-size:12px;text-transform:uppercase;letter-spacing:.04em;padding-top:1px}
+  .rowl .v{color:var(--ink)} .rowl .v b{color:var(--accent-ink)}
+  .pick{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:11px 13px;margin-top:10px}
+  .pick .ph{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin:0 0 6px}
+  .pick .opt{font-size:13px;margin:6px 0}
+  .pick .opt b{color:var(--ink)}
+  .pick code{font-family:var(--mono);font-size:12px;color:var(--accent-ink);background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:1px 6px;line-height:1.9}
+
+  .deal{margin-top:24px;background:var(--good-soft);border:1px solid color-mix(in srgb,var(--good) 26%,transparent);border-left:3px solid var(--good);
+    border-radius:0 15px 15px 0;padding:17px 20px}
+  .deal h3{margin:0 0 8px;font-size:16px;color:var(--good)}
+  .deal ul{margin:0;padding-left:18px} .deal li{font-size:14px;margin:4px 0}
+  .deal li b{color:var(--ink)}
+
+  .later{margin-top:18px;background:var(--surface);border:1px dashed var(--border-strong);border-radius:13px;padding:14px 18px}
+  .later .lh{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin:0 0 6px}
+  .later p{margin:4px 0;font-size:13.5px;color:var(--ink-2)}
+  .later b{color:var(--ink)}
+
+  footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--border);font-size:12.5px;color:var(--ink-2);display:flex;flex-direction:column;gap:7px}
+  footer .hd{color:var(--ink);font-weight:600}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <path d="M16 2.5 27 6.4v8.1c0 6.9-4.5 12.4-11 15-6.5-2.6-11-8.1-11-15V6.4L16 2.5Z" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="M10.7 16.2 14.4 20l7-7.6" stroke="var(--accent)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="n">Cyber Defencely<small>What I need from you · to switch this on</small></div>
+    </div>
+    <span class="tag">Action</span>
+    <span class="sp"></span>
+    <button class="tbtn" id="theme" type="button" aria-label="Toggle theme"><span id="ti">◐</span> Theme</button>
+  </header>
+
+  <div class="hero">
+    <h1>The prototype's built. Three inputs turn it into a live engine.</h1>
+    <p>Everything you've seen — the ranked prospects, the supplier map, the flow — runs on a hand-verified set of 10. To scale it to 50–100+ and let it start learning, I need three things from you. <b>All three are yours to provide; none of them are code.</b> Roughly in priority order.</p>
+  </div>
+
+  <div class="asks">
+
+    <!-- ASK 1 -->
+    <div class="ask p1">
+      <div class="num">1</div>
+      <p class="eb p1eb">The scale unlock</p>
+      <h3>A company-registry feed</h3>
+      <div class="body">
+        <div class="rowl"><span class="k">What</span><span class="v">A way to pull <b>every Swedish energy &amp; transport firm ≥50 staff</b> — name, org number, SNI code, size, domain. This is the one thing the engine can't source passively.</span></div>
+        <div class="rowl"><span class="k">Why it matters</span><span class="v">It's the single unlock for the 50–100+ list. Everything downstream already works — the harvest command is built and waiting for a feed.</span></div>
+        <div class="rowl"><span class="k">Costs you</span><span class="v">A paid registry account/API key, <em>or</em> one filtered export. Minutes, not weeks.</span></div>
+        <div class="pick">
+          <p class="ph">Pick whichever you already have</p>
+          <p class="opt"><b>A. Roaring API</b> — the "Company Prospecting / Company Search" product. I need client credentials and these fields returnable, filterable by SNI + employees: <code>companyName</code> <code>orgNumber</code> <code>sniCode</code> <code>numberOfEmployees</code> <code>turnover</code> <code>status=ACTIVE</code> <code>website</code>.</p>
+          <p class="opt"><b>B. allabolag / Bolagsverket export</b> — a CSV filtered to energy+transport SNI, ≥50 staff, with columns: <code>name</code> <code>orgnr</code> <code>SNI</code> <code>anställda</code> <code>omsättning</code> <code>webbplats</code>. I'll ingest it as-is.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ASK 2 -->
+    <div class="ask">
+      <div class="num">2</div>
+      <p class="eb">Make the mapping yours</p>
+      <h3>30 minutes on the crosswalk</h3>
+      <div class="body">
+        <div class="rowl"><span class="k">What</span><span class="v">Sit with me once to confirm the <b>finding → NIS2 measure → ISO control → your service → price tier</b> mapping reflects how <em>you</em> actually sell and scope.</span></div>
+        <div class="rowl"><span class="k">Why it matters</span><span class="v">This table is the part a competitor can't copy from a repo — it's your commercial model. It also makes every talking point accurate to your catalog.</span></div>
+        <div class="rowl"><span class="k">Costs you</span><span class="v">One 30-minute call. You leave with the crosswalk tuned to your services and pricing.</span></div>
+      </div>
+    </div>
+
+    <!-- ASK 3 -->
+    <div class="ask">
+      <div class="num">3</div>
+      <p class="eb">Seed the feedback loop</p>
+      <h3>One known prospect + a past engagement or two</h3>
+      <div class="body">
+        <div class="rowl"><span class="k">What</span><span class="v">(a) One firm you know well, to sanity-check the fit score against reality. (b) The anonymised outcome of 1–2 past assessments — <b>what was actually wrong</b>, and whether it closed.</span></div>
+        <div class="rowl"><span class="k">Why it matters</span><span class="v">These are the first data points in the loop that becomes the real moat — the model learning which signals predict a genuine gap and a won deal, on <em>your</em> outcomes.</span></div>
+        <div class="rowl"><span class="k">Costs you</span><span class="v">A short conversation. No client names need to leave the room — outcomes can be anonymised.</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="deal">
+    <h3>What you get back</h3>
+    <ul>
+      <li><b>Ask 1</b> → a ranked 50–100+ prospect list you can work immediately, refreshed on demand.</li>
+      <li><b>Ask 2</b> → talking points and service recommendations in your own voice and pricing.</li>
+      <li><b>Ask 3</b> → a fit score you can trust, and the start of a data asset that compounds with every engagement.</li>
+    </ul>
+  </div>
+
+  <div class="later">
+    <p class="lh">Nice-to-have, once we're live</p>
+    <p><b>Clay + UpliftIQ access</b> — to wire the <code style="font-family:var(--mono);font-size:12px">/enrich</code> endpoint into the enrichment + scoring stack.</p>
+    <p><b>One CRM field for "assessment outcome"</b> — the pipe that feeds Ask 3 back automatically, so the loop closes without manual work.</p>
+  </div>
+
+  <footer>
+    <span class="hd">The honest framing.</span>
+    <span>The engine isn't the moat — it's leverage. The moat is operating it first, in the NIS2 window that's open now, and letting it learn from delivery data only you hold. These three inputs are what turn a good demo into that advantage.</span>
+    <span>Companion to the Prospect Brief, How It Works, and Sources &amp; Method.</span>
+  </footer>
+</div>
+
+<script>
+  const root=document.documentElement,tb=document.getElementById("theme"),ti=document.getElementById("ti");
+  let m="system";
+  tb.addEventListener("click",()=>{m=m==="system"?"light":m==="light"?"dark":"system";
+    if(m==="system")root.removeAttribute("data-theme");else root.setAttribute("data-theme",m);
+    ti.textContent=m==="light"?"☀":m==="dark"?"☾":"◐";});
+</script>
