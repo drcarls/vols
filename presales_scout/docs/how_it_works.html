@@ -1,0 +1,203 @@
+<title>How It Works</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg:#eef1f5; --surface:#fff; --surface-2:#f5f8fc; --border:#d8e0ea; --border-strong:#c3cedb;
+    --ink:#141b23; --ink-2:#55616f; --ink-3:#8b96a4;
+    --accent:#0d6e8c; --accent-soft:#e0f0f5; --accent-ink:#0a556d;
+    --hot:#c0490f; --hot-soft:#fbe7dc; --warn:#9a6b12; --warn-soft:#f7ecd4;
+    --good:#12795a; --good-soft:#dcefe7; --crit:#b02a2f; --crit-soft:#f8e0e1;
+    --shadow:0 1px 2px rgba(20,27,35,.06),0 10px 30px rgba(20,27,35,.07);
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --sans:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --bg:#0c1116; --surface:#141b22; --surface-2:#1b242d; --border:#28323d; --border-strong:#37444f;
+    --ink:#e7ecf2; --ink-2:#9aa6b3; --ink-3:#67727f;
+    --accent:#38aacb; --accent-soft:#10303b; --accent-ink:#7fd0e6;
+    --hot:#f0854a; --hot-soft:#37211550; --warn:#d6a63e; --warn-soft:#2f261150;
+    --good:#46c199; --good-soft:#102c2350; --crit:#e57078; --crit-soft:#33161950;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px rgba(0,0,0,.4);
+  }}
+  :root[data-theme="dark"]{
+    --bg:#0c1116; --surface:#141b22; --surface-2:#1b242d; --border:#28323d; --border-strong:#37444f;
+    --ink:#e7ecf2; --ink-2:#9aa6b3; --ink-3:#67727f;
+    --accent:#38aacb; --accent-soft:#10303b; --accent-ink:#7fd0e6;
+    --hot:#f0854a; --hot-soft:#37211550; --warn:#d6a63e; --warn-soft:#2f261150;
+    --good:#46c199; --good-soft:#102c2350; --crit:#e57078; --crit-soft:#33161950;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px rgba(0,0,0,.4);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;font-size:15px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1000px;margin:0 auto;padding:26px clamp(14px,3.5vw,32px) 64px}
+  a{color:var(--accent-ink)}
+
+  header{display:flex;align-items:center;gap:13px;padding-bottom:16px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand svg{width:30px;height:30px;display:block}
+  .brand .n{font-weight:700;font-size:16px;letter-spacing:-.01em}
+  .brand .n small{display:block;font-weight:500;font-size:12.5px;color:var(--ink-2)}
+  .tag{font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent-soft);padding:3px 8px;border-radius:5px;border:1px solid color-mix(in srgb,var(--accent) 30%,transparent)}
+  .sp{flex:1}
+  .tbtn{font:inherit;font-size:13px;color:var(--ink-2);background:var(--surface);border:1px solid var(--border-strong);border-radius:8px;padding:6px 11px;cursor:pointer}
+  .tbtn:hover{color:var(--ink);border-color:var(--accent)} .tbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  .hero{margin:26px 0 22px}
+  .hero h1{font-size:clamp(24px,4.4vw,34px);line-height:1.12;letter-spacing:-.02em;margin:0 0 12px;text-wrap:balance;max-width:20ch}
+  .hero h1 em{font-style:normal;color:var(--accent-ink)}
+  .hero p{font-size:16px;color:var(--ink-2);max-width:64ch;margin:0}
+
+  figure{margin:22px 0 0;background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);padding:20px clamp(12px,3vw,26px) 8px}
+  figure svg{display:block;width:100%;height:auto;color:var(--ink)}
+  figure svg text{font-family:var(--sans)}
+  figcaption{font-size:13px;color:var(--ink-2);margin:6px 4px 8px;text-wrap:pretty}
+  figcaption b{color:var(--ink)}
+
+  section{margin-top:34px}
+  .eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--accent-ink);margin:0 0 4px}
+  h2{font-size:20px;letter-spacing:-.01em;margin:0 0 12px;text-wrap:balance}
+
+  .steps{display:grid;grid-template-columns:repeat(5,1fr);gap:11px}
+  @media(max-width:760px){.steps{grid-template-columns:repeat(2,1fr)}}
+  .step{background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);padding:13px 14px}
+  .step .no{font-size:11px;font-weight:700;color:var(--accent-ink);font-variant-numeric:tabular-nums;letter-spacing:.04em}
+  .step .t{font-weight:650;font-size:13.5px;margin:3px 0 4px;letter-spacing:-.01em}
+  .step .d{font-size:12px;color:var(--ink-2)}
+
+  .moat{display:flex;gap:14px;align-items:flex-start;background:var(--hot-soft);border:1px solid color-mix(in srgb,var(--hot) 26%,transparent);
+    border-left:3px solid var(--hot);border-radius:0 14px 14px 0;padding:16px 19px;margin-top:16px}
+  .moat .ic{font-size:20px;line-height:1;flex:none;filter:grayscale(.1)}
+  .moat p{margin:0;font-size:14.5px} .moat b{color:var(--hot)}
+
+  footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--border);font-size:12.5px;color:var(--ink-2);display:flex;flex-direction:column;gap:8px}
+  footer .hd{color:var(--ink);font-weight:600}
+  footer code{font-family:var(--mono);font-size:11.5px;background:var(--surface-2);padding:1px 5px;border-radius:4px;border:1px solid var(--border)}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <path d="M16 2.5 27 6.4v8.1c0 6.9-4.5 12.4-11 15-6.5-2.6-11-8.1-11-15V6.4L16 2.5Z" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="M10.7 16.2 14.4 20l7-7.6" stroke="var(--accent)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="n">Cyber Defencely<small>How It Works · companion to the Prospect Brief</small></div>
+    </div>
+    <span class="tag">The flow</span>
+    <span class="sp"></span>
+    <button class="tbtn" id="theme" type="button" aria-label="Toggle theme"><span id="ti">◐</span> Theme</button>
+  </header>
+
+  <div class="hero">
+    <h1>One pipeline, from <em>raw registry</em> to a self-sharpening lead engine.</h1>
+    <p>The engine is the part I built: it turns a registry of Swedish firms into ranked, context-mapped prospects using only passive public signals. The value isn't the scraper — it's that this signal plugs into your GTM stack and gets sharper every time you close a deal.</p>
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 1000 290" role="img" aria-label="How the tool works: a registry feed harvests candidates; the presales_scout engine adds passive NIS2, email, CISO, attack-surface and supplier signals mapped to compliance controls; that feeds Clay enrichment and UpliftIQ scoring into Cyber Defencely's CRM and real assessments — whose outcomes feed back to sharpen the fit model. That feedback loop is the moat.">
+      <defs>
+        <marker id="ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="currentColor" fill-opacity=".55"/>
+        </marker>
+        <marker id="ahm" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--hot)"/>
+        </marker>
+      </defs>
+
+      <!-- band brackets -->
+      <g fill="currentColor" fill-opacity=".62" font-size="10.5" font-weight="700" letter-spacing=".7" text-anchor="middle">
+        <text x="202" y="23">THE ENGINE — WHAT I BUILT</text>
+        <text x="707" y="23">THE GTM STACK IT FEEDS</text>
+      </g>
+      <g stroke="currentColor" stroke-opacity=".28" fill="none" stroke-width="1.2">
+        <path d="M15 40 L15 33 L389 33 L389 40"/>
+        <path d="M453 40 L453 33 L961 33 L961 40"/>
+      </g>
+
+      <!-- inter-node arrows -->
+      <g stroke="currentColor" stroke-opacity=".55" stroke-width="1.7" marker-end="url(#ah)">
+        <line x1="151" y1="119" x2="203" y2="119"/>
+        <line x1="395" y1="119" x2="447" y2="119"/>
+        <line x1="579" y1="119" x2="631" y2="119"/>
+        <line x1="763" y1="119" x2="815" y2="119"/>
+      </g>
+      <g fill="currentColor" fill-opacity=".8" font-size="9.5" text-anchor="middle" font-style="italic">
+        <text x="177" y="110">candidates</text>
+        <text x="421" y="105">leads +</text>
+        <text x="421" y="116">vulns</text>
+        <text x="605" y="110">enriched</text>
+        <text x="789" y="110">prioritised</text>
+      </g>
+
+      <!-- nodes -->
+      <g fill="var(--surface)" stroke="currentColor">
+        <rect x="15"  y="64" width="130" height="110" rx="12" stroke-opacity=".45" stroke-width="1.3"/>
+        <rect x="209" y="64" width="180" height="110" rx="13" stroke-opacity=".9"  stroke-width="2.3"/>
+        <rect x="453" y="64" width="120" height="110" rx="12" stroke-opacity=".45" stroke-width="1.3"/>
+        <rect x="637" y="64" width="120" height="110" rx="12" stroke-opacity=".45" stroke-width="1.3"/>
+        <rect x="821" y="64" width="140" height="110" rx="12" stroke-opacity=".45" stroke-width="1.3"/>
+      </g>
+
+      <!-- node text -->
+      <g fill="currentColor" text-anchor="middle">
+        <!-- N0 Registry -->
+        <text x="80" y="103" font-size="12.5" font-weight="650">Registry</text>
+        <text x="80" y="121" font-size="9.5" fill-opacity=".62">Roaring / allabolag</text>
+        <text x="80" y="134" font-size="9.5" fill-opacity=".62">candidate universe</text>
+        <!-- N1 engine -->
+        <text x="299" y="92"  font-size="12.5" font-weight="700">presales_scout engine</text>
+        <text x="299" y="110" font-size="9.5" fill-opacity=".72">NIS2 · email · CISO + hiring</text>
+        <text x="299" y="124" font-size="9.5" fill-opacity=".72">attack surface · suppliers</text>
+        <text x="299" y="146" font-size="9.5" fill-opacity=".9" font-style="italic">→ mapped to NIS2 / ISO + service</text>
+        <!-- N2 Clay -->
+        <text x="513" y="104" font-size="12.5" font-weight="650">Clay</text>
+        <text x="513" y="123" font-size="9.5" fill-opacity=".62">waterfall enrichment</text>
+        <text x="513" y="136" font-size="9.5" fill-opacity=".62">contacts · emails</text>
+        <!-- N3 UpliftIQ -->
+        <text x="697" y="104" font-size="12.5" font-weight="650">UpliftIQ</text>
+        <text x="697" y="123" font-size="9.5" fill-opacity=".62">scores + ranks</text>
+        <text x="697" y="136" font-size="9.5" fill-opacity=".62">fit + vuln signal</text>
+        <!-- N4 Cyber Defencely -->
+        <text x="891" y="104" font-size="11.5" font-weight="650">Cyber Defencely</text>
+        <text x="891" y="123" font-size="9.5" fill-opacity=".62">CRM + real</text>
+        <text x="891" y="136" font-size="9.5" fill-opacity=".62">assessments</text>
+      </g>
+
+      <!-- feedback loop = the moat -->
+      <path d="M891 174 C 891 244, 299 244, 299 176" fill="none" stroke="var(--hot)" stroke-width="2.4" marker-end="url(#ahm)"/>
+      <text x="595" y="268" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--hot)">assessment ground truth  →  sharpens the fit model  ·  the moat</text>
+    </svg>
+    <figcaption><b>Left to right:</b> a registry feed becomes NIS2-qualified candidates; the engine adds passive risk signals already mapped to the NIS2 / ISO obligation and the service that closes it; that feeds Clay's enrichment and UpliftIQ's scoring into your CRM and delivery. <b>The orange loop is the moat</b> — every real assessment is ground truth that retrains which signals predict a real gap and a won deal, on data only Cyber Defencely holds.</figcaption>
+  </figure>
+
+  <section>
+    <p class="eyebrow">What moves through it</p>
+    <h2>Five stages, clean seams between them</h2>
+    <div class="steps">
+      <div class="step"><div class="no">STAGE 0</div><div class="t">Harvest</div><div class="d">Registry → every energy/transport firm in scope, by SNI code + size.</div></div>
+      <div class="step"><div class="no">STAGE 1–4</div><div class="t">Enrich</div><div class="d">Passive signals per firm: NIS2, email, CISO + hiring, attack surface, suppliers.</div></div>
+      <div class="step"><div class="no">STAGE 5</div><div class="t">Context-map</div><div class="d">Each finding → its NIS2 measure, ISO control, severity, and CD service.</div></div>
+      <div class="step"><div class="no">STAGE 6</div><div class="t">Integrate</div><div class="d">One JSON call feeds Clay's waterfall and UpliftIQ's scoring.</div></div>
+      <div class="step"><div class="no">STAGE 7</div><div class="t">Close the loop</div><div class="d">Assessment outcomes retrain the fit model — sharper every deal.</div></div>
+    </div>
+
+    <div class="moat">
+      <span class="ic">🔁</span>
+      <p><b>Why it compounds.</b> Anyone can check a DMARC record. What can't be copied is this signal wired into <b>your</b> conversion and assessment data — so the prediction improves with every engagement, on a dataset that lives on no competitor's servers. Each seam between stages is clean JSON/CSV, so no single box is the lock-in; the loop closing is.</p>
+    </div>
+  </section>
+
+  <footer>
+    <span class="hd">Built and running today.</span>
+    <span>The engine (Stages 0–5) is code you can run now — <code>presales harvest</code> → <code>discover</code>, plus a <code>POST /enrich</code> endpoint that returns the whole bundle as JSON. Stages 6–7 are the integration and the feedback capture: they need a registry credential and one field in your CRM, both yours to switch on.</span>
+    <span>Every engine signal is passive and public — no scanning, no probing, nothing behind a login. Full provenance in the <b>Sources &amp; Method</b> companion.</span>
+  </footer>
+</div>
+
+<script>
+  const root=document.documentElement,tb=document.getElementById("theme"),ti=document.getElementById("ti");
+  let m="system";
+  tb.addEventListener("click",()=>{m=m==="system"?"light":m==="light"?"dark":"system";
+    if(m==="system")root.removeAttribute("data-theme");else root.setAttribute("data-theme",m);
+    ti.textContent=m==="light"?"☀":m==="dark"?"☾":"◐";});
+</script>
