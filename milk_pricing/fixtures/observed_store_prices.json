@@ -1,0 +1,1352 @@
+[
+  {
+    "sku": "10450114",
+    "price": 2.47,
+    "store_id": "1580",
+    "city": "Indianapolis",
+    "state": "IN",
+    "zip": "46239",
+    "price_per_gal": 2.47
+  },
+  {
+    "sku": "10450114",
+    "price": 3.52,
+    "store_id": "2735",
+    "city": "Sacramento",
+    "state": "CA",
+    "zip": "95820",
+    "price_per_gal": 3.52
+  },
+  {
+    "sku": "10450114",
+    "price": 2.47,
+    "store_id": "3529",
+    "city": "Mccordsville",
+    "state": "IN",
+    "zip": "46055",
+    "price_per_gal": 2.47
+  },
+  {
+    "sku": "10450114",
+    "price": 3.46,
+    "store_id": "5753",
+    "city": "Oxon Hill",
+    "state": "VA",
+    "zip": "20745",
+    "price_per_gal": 3.46
+  },
+  {
+    "sku": "10450114",
+    "price": 3.52,
+    "store_id": "3081",
+    "city": "Sacramento",
+    "state": "CA",
+    "zip": "95829",
+    "price_per_gal": 3.52
+  },
+  {
+    "sku": "10450114",
+    "price": 3.14,
+    "store_id": "5381",
+    "city": "Pittsburgh",
+    "state": "PA",
+    "zip": "15210",
+    "price_per_gal": 3.14
+  },
+  {
+    "sku": "10450114",
+    "price": 3.46,
+    "store_id": "4064",
+    "city": "Virginia Beach",
+    "state": "VA",
+    "zip": "23455",
+    "price_per_gal": 3.46
+  },
+  {
+    "sku": "10450114",
+    "price": 2.97,
+    "store_id": "2010",
+    "city": "Niles",
+    "state": "MI",
+    "zip": "49120",
+    "price_per_gal": 2.97
+  },
+  {
+    "sku": "10450114",
+    "price": 3.13,
+    "store_id": "1015",
+    "city": "El Paso",
+    "state": "TX",
+    "zip": "79912",
+    "price_per_gal": 3.13
+  },
+  {
+    "sku": "10450114",
+    "price": 5.09,
+    "store_id": "2141",
+    "city": "Philadelphia",
+    "state": "PA",
+    "zip": "19121",
+    "price_per_gal": 5.09
+  },
+  {
+    "sku": "10450114",
+    "price": 3.17,
+    "store_id": "2362",
+    "city": "Highland Hills",
+    "state": "OH",
+    "zip": "44122",
+    "price_per_gal": 3.17
+  },
+  {
+    "sku": "10450114",
+    "price": 2.92,
+    "store_id": "1180",
+    "city": "Milroy",
+    "state": "IN",
+    "zip": "46156",
+    "price_per_gal": 2.92
+  },
+  {
+    "sku": "10450114",
+    "price": 4.14,
+    "store_id": "970",
+    "city": "Carriere",
+    "state": "MS",
+    "zip": "39426",
+    "price_per_gal": 4.14
+  },
+  {
+    "sku": "10450114",
+    "price": 2.94,
+    "store_id": "1560",
+    "city": "Las Vegas",
+    "state": "NV",
+    "zip": "89119",
+    "price_per_gal": 2.94
+  },
+  {
+    "sku": "10450114",
+    "price": 3.32,
+    "store_id": "808",
+    "city": "Lake Jackson",
+    "state": "TX",
+    "zip": "77566",
+    "price_per_gal": 3.32
+  },
+  {
+    "sku": "10450114",
+    "price": 2.73,
+    "store_id": "1821",
+    "city": "Charlotte",
+    "state": "NC",
+    "zip": "28215",
+    "price_per_gal": 2.73
+  },
+  {
+    "sku": "10450114",
+    "price": 3.67,
+    "store_id": "26",
+    "city": "Leavenworth",
+    "state": "KS",
+    "zip": "66048",
+    "price_per_gal": 3.67
+  },
+  {
+    "sku": "10450114",
+    "price": 2.92,
+    "store_id": "1104",
+    "city": "Inverness",
+    "state": "FL",
+    "zip": "34452",
+    "price_per_gal": 2.92
+  },
+  {
+    "sku": "10450114",
+    "price": 5.09,
+    "store_id": "5103",
+    "city": "Philadelphia",
+    "state": "PA",
+    "zip": "19140",
+    "price_per_gal": 5.09
+  },
+  {
+    "sku": "10450114",
+    "price": 2.74,
+    "store_id": "586",
+    "city": "Conway",
+    "state": "SC",
+    "zip": "29526",
+    "price_per_gal": 2.74
+  },
+  {
+    "sku": "10450114",
+    "price": 3.76,
+    "store_id": "1899",
+    "city": "Moreno Valley",
+    "state": "CA",
+    "zip": "92557",
+    "price_per_gal": 3.76
+  },
+  {
+    "sku": "10450114",
+    "price": 3.72,
+    "store_id": "5071",
+    "city": "Lawton",
+    "state": "OK",
+    "zip": "73505",
+    "price_per_gal": 3.72
+  },
+  {
+    "sku": "10450114",
+    "price": 3.52,
+    "store_id": "2144",
+    "city": "Torrington",
+    "state": "CT",
+    "zip": "06790",
+    "price_per_gal": 3.52
+  },
+  {
+    "sku": "10450114",
+    "price": 2.32,
+    "store_id": "3720",
+    "city": "Baltimore",
+    "state": "MD",
+    "zip": "21230",
+    "price_per_gal": 2.32
+  },
+  {
+    "sku": "10450114",
+    "price": 3.32,
+    "store_id": "5236",
+    "city": "Hadley",
+    "state": "KY",
+    "zip": "42101",
+    "price_per_gal": 3.32
+  },
+  {
+    "sku": "10450114",
+    "price": 2.62,
+    "store_id": "5312",
+    "city": "Fort Worth",
+    "state": "TX",
+    "zip": "76102",
+    "price_per_gal": 2.62
+  },
+  {
+    "sku": "10450114",
+    "price": 2.16,
+    "store_id": "2512",
+    "city": "Phoenix",
+    "state": "AZ",
+    "zip": "85022",
+    "price_per_gal": 2.16
+  },
+  {
+    "sku": "10450114",
+    "price": 3.53,
+    "store_id": "271",
+    "city": "Bowie",
+    "state": "TX",
+    "zip": "76230",
+    "price_per_gal": 3.53
+  },
+  {
+    "sku": "10450114",
+    "price": 4.18,
+    "store_id": "1014",
+    "city": "Independence",
+    "state": "MO",
+    "zip": "64057",
+    "price_per_gal": 4.18
+  },
+  {
+    "sku": "10450114",
+    "price": 3.72,
+    "store_id": "5886",
+    "city": "Carlsbad",
+    "state": "CA",
+    "zip": "92009",
+    "price_per_gal": 3.72
+  },
+  {
+    "sku": "10450114",
+    "price": 4.52,
+    "store_id": "1163",
+    "city": "New Orleans",
+    "state": "LA",
+    "zip": "70114",
+    "price_per_gal": 4.52
+  },
+  {
+    "sku": "10450114",
+    "price": 4.23,
+    "store_id": "3520",
+    "city": "New York",
+    "state": "NJ",
+    "zip": "10118",
+    "price_per_gal": 4.23
+  },
+  {
+    "sku": "10450114",
+    "price": 3.53,
+    "store_id": "2282",
+    "city": "Enfield",
+    "state": "CT",
+    "zip": "06082",
+    "price_per_gal": 3.53
+  },
+  {
+    "sku": "10450114",
+    "price": 4.12,
+    "store_id": "1265",
+    "city": "St. Louis",
+    "state": "MO",
+    "zip": "63115",
+    "price_per_gal": 4.12
+  },
+  {
+    "sku": "10450114",
+    "price": 3.28,
+    "store_id": "3035",
+    "city": "Silver Spring",
+    "state": "DC",
+    "zip": "20904",
+    "price_per_gal": 3.28
+  },
+  {
+    "sku": "10450114",
+    "price": 4.54,
+    "store_id": "839",
+    "city": "Baton Rouge",
+    "state": "LA",
+    "zip": "70812",
+    "price_per_gal": 4.54
+  },
+  {
+    "sku": "10450114",
+    "price": 2.77,
+    "store_id": "1287",
+    "city": "Whitsett",
+    "state": "NC",
+    "zip": "27377",
+    "price_per_gal": 2.77
+  },
+  {
+    "sku": "10450114",
+    "price": 3.27,
+    "store_id": "613",
+    "city": "Holly Hill",
+    "state": "FL",
+    "zip": "32117",
+    "price_per_gal": 3.27
+  },
+  {
+    "sku": "10450114",
+    "price": 3.07,
+    "store_id": "1702",
+    "city": "Melbourne",
+    "state": "FL",
+    "zip": "32935",
+    "price_per_gal": 3.07
+  },
+  {
+    "sku": "10450114",
+    "price": 3.02,
+    "store_id": "2786",
+    "city": "Clermont",
+    "state": "IN",
+    "zip": "46234",
+    "price_per_gal": 3.02
+  },
+  {
+    "sku": "10450114",
+    "price": 2.62,
+    "store_id": "1801",
+    "city": "Arlington",
+    "state": "TX",
+    "zip": "76014",
+    "price_per_gal": 2.62
+  },
+  {
+    "sku": "10450114",
+    "price": 3.52,
+    "store_id": "6467",
+    "city": "Tyler",
+    "state": "TX",
+    "zip": "75701",
+    "price_per_gal": 3.52
+  },
+  {
+    "sku": "10450114",
+    "price": 2.72,
+    "store_id": "2447",
+    "city": "Cincinnati",
+    "state": "OH",
+    "zip": "45238",
+    "price_per_gal": 2.72
+  },
+  {
+    "sku": "10450114",
+    "price": 4.32,
+    "store_id": "3491",
+    "city": "North Andover",
+    "state": "MA",
+    "zip": "01845",
+    "price_per_gal": 4.32
+  },
+  {
+    "sku": "10450114",
+    "price": 3.62,
+    "store_id": "1212",
+    "city": "Saraland",
+    "state": "AL",
+    "zip": "36571",
+    "price_per_gal": 3.62
+  },
+  {
+    "sku": "10450114",
+    "price": 2.32,
+    "store_id": "3799",
+    "city": "Mesa",
+    "state": "AZ",
+    "zip": "85210",
+    "price_per_gal": 2.32
+  },
+  {
+    "sku": "10450114",
+    "price": 3.24,
+    "store_id": "755",
+    "city": "Amarillo",
+    "state": "TX",
+    "zip": "79109",
+    "price_per_gal": 3.24
+  },
+  {
+    "sku": "10450114",
+    "price": 4.16,
+    "store_id": "157",
+    "city": "Searcy",
+    "state": "AR",
+    "zip": "72143",
+    "price_per_gal": 4.16
+  },
+  {
+    "sku": "10450114",
+    "price": 3.72,
+    "store_id": "795",
+    "city": "Williston",
+    "state": "SC",
+    "zip": "29853",
+    "price_per_gal": 3.72
+  },
+  {
+    "sku": "10450114",
+    "price": 3.07,
+    "store_id": "974",
+    "city": "Melbourne",
+    "state": "FL",
+    "zip": "32901",
+    "price_per_gal": 3.07
+  },
+  {
+    "sku": "10450114",
+    "price": 2.62,
+    "store_id": "220",
+    "city": "Cross Timber",
+    "state": "TX",
+    "zip": "76028",
+    "price_per_gal": 2.62
+  },
+  {
+    "sku": "10450114",
+    "price": 2.97,
+    "store_id": "1802",
+    "city": "Maple Hill",
+    "state": "KS",
+    "zip": "66507",
+    "price_per_gal": 2.97
+  },
+  {
+    "sku": "10450114",
+    "price": 3.24,
+    "store_id": "3503",
+    "city": "Thomasville",
+    "state": "NC",
+    "zip": "27360",
+    "price_per_gal": 3.24
+  },
+  {
+    "sku": "10450114",
+    "price": 4.52,
+    "store_id": "244",
+    "city": "Winnfield",
+    "state": "LA",
+    "zip": "71483",
+    "price_per_gal": 4.52
+  },
+  {
+    "sku": "10450114",
+    "price": 3.17,
+    "store_id": "2859",
+    "city": "Rochester",
+    "state": "NY",
+    "zip": "14611",
+    "price_per_gal": 3.17
+  },
+  {
+    "sku": "10450114",
+    "price": 2.78,
+    "store_id": "7326",
+    "city": "Oklahoma City",
+    "state": "OK",
+    "zip": "73159",
+    "price_per_gal": 2.78
+  },
+  {
+    "sku": "10450114",
+    "price": 3.52,
+    "store_id": "5192",
+    "city": "Sacramento",
+    "state": "CA",
+    "zip": "95842",
+    "price_per_gal": 3.52
+  },
+  {
+    "sku": "10450114",
+    "price": 4.18,
+    "store_id": "2857",
+    "city": "Northmoor",
+    "state": "MO",
+    "zip": "64151",
+    "price_per_gal": 4.18
+  },
+  {
+    "sku": "10450114",
+    "price": 3.0,
+    "store_id": "764",
+    "city": "Bessemer",
+    "state": "AL",
+    "zip": "35020",
+    "price_per_gal": 3.0
+  },
+  {
+    "sku": "10450114",
+    "price": 2.16,
+    "store_id": "1598",
+    "city": "Phoenix",
+    "state": "AZ",
+    "zip": "85050",
+    "price_per_gal": 2.16
+  },
+  {
+    "sku": "10450114",
+    "price": 4.44,
+    "store_id": "495",
+    "city": "Columbus",
+    "state": "MS",
+    "zip": "39702",
+    "price_per_gal": 4.44
+  },
+  {
+    "sku": "10450114",
+    "price": 3.62,
+    "store_id": "5956",
+    "city": "Visalia",
+    "state": "CA",
+    "zip": "93277",
+    "price_per_gal": 3.62
+  },
+  {
+    "sku": "10450114",
+    "price": 2.67,
+    "store_id": "849",
+    "city": "Spring",
+    "state": "TX",
+    "zip": "77388",
+    "price_per_gal": 2.67
+  },
+  {
+    "sku": "10450114",
+    "price": 2.74,
+    "store_id": "2712",
+    "city": "Myrtle Beach",
+    "state": "SC",
+    "zip": "29579",
+    "price_per_gal": 2.74
+  },
+  {
+    "sku": "10450114",
+    "price": 3.72,
+    "store_id": "3522",
+    "city": "West Covina",
+    "state": "CA",
+    "zip": "91790",
+    "price_per_gal": 3.72
+  },
+  {
+    "sku": "10450114",
+    "price": 2.72,
+    "store_id": "3502",
+    "city": "Hamilton",
+    "state": "OH",
+    "zip": "45011",
+    "price_per_gal": 2.72
+  },
+  {
+    "sku": "10450114",
+    "price": 4.23,
+    "store_id": "3291",
+    "city": "Mt Olive",
+    "state": "NJ",
+    "zip": "07828",
+    "price_per_gal": 4.23
+  },
+  {
+    "sku": "10450114",
+    "price": 2.88,
+    "store_id": "4483",
+    "city": "White House",
+    "state": "TN",
+    "zip": "37188",
+    "price_per_gal": 2.88
+  },
+  {
+    "sku": "10450114",
+    "price": 2.22,
+    "store_id": "201",
+    "city": "Swansea",
+    "state": "IL",
+    "zip": "62221",
+    "price_per_gal": 2.22
+  },
+  {
+    "sku": "10450114",
+    "price": 3.26,
+    "store_id": "1967",
+    "city": "Springfield",
+    "state": "MA",
+    "zip": "01119",
+    "price_per_gal": 3.26
+  },
+  {
+    "sku": "10450114",
+    "price": 4.94,
+    "store_id": "1550",
+    "city": "Gunnison",
+    "state": "CO",
+    "zip": "84189",
+    "price_per_gal": 4.94
+  },
+  {
+    "sku": "10450114",
+    "price": 4.23,
+    "store_id": "5867",
+    "city": "New York",
+    "state": "NJ",
+    "zip": "10004",
+    "price_per_gal": 4.23
+  },
+  {
+    "sku": "10450114",
+    "price": 3.28,
+    "store_id": "1397",
+    "city": "Albuquerque",
+    "state": "NM",
+    "zip": "87114",
+    "price_per_gal": 3.28
+  },
+  {
+    "sku": "10450114",
+    "price": 2.97,
+    "store_id": "5196",
+    "city": "Memphis",
+    "state": "TN",
+    "zip": "38116",
+    "price_per_gal": 2.97
+  },
+  {
+    "sku": "10450114",
+    "price": 3.12,
+    "store_id": "994",
+    "city": "New Pt Richey",
+    "state": "FL",
+    "zip": "34653",
+    "price_per_gal": 3.12
+  },
+  {
+    "sku": "10450114",
+    "price": 2.34,
+    "store_id": "1751",
+    "city": "Raleigh",
+    "state": "NC",
+    "zip": "27613",
+    "price_per_gal": 2.34
+  },
+  {
+    "sku": "10450114",
+    "price": 2.87,
+    "store_id": "4358",
+    "city": "Omaha",
+    "state": "NE",
+    "zip": "68114",
+    "price_per_gal": 2.87
+  },
+  {
+    "sku": "10450114",
+    "price": 2.88,
+    "store_id": "1248",
+    "city": "Memphis",
+    "state": "TN",
+    "zip": "38111",
+    "price_per_gal": 2.88
+  },
+  {
+    "sku": "10450114",
+    "price": 2.37,
+    "store_id": "2139",
+    "city": "Boston",
+    "state": "MA",
+    "zip": "02128",
+    "price_per_gal": 2.37
+  },
+  {
+    "sku": "10450114",
+    "price": 2.57,
+    "store_id": "5436",
+    "city": "Wilmington",
+    "state": "DE",
+    "zip": "19895",
+    "price_per_gal": 2.57
+  },
+  {
+    "sku": "10450114",
+    "price": 2.5,
+    "store_id": "1118",
+    "city": "Mesquite",
+    "state": "TX",
+    "zip": "75149",
+    "price_per_gal": 2.5
+  },
+  {
+    "sku": "10450114",
+    "price": 2.77,
+    "store_id": "389",
+    "city": "Edmond",
+    "state": "OK",
+    "zip": "73034",
+    "price_per_gal": 2.77
+  },
+  {
+    "sku": "10450114",
+    "price": 2.67,
+    "store_id": "3584",
+    "city": "Houston",
+    "state": "TX",
+    "zip": "77081",
+    "price_per_gal": 2.67
+  },
+  {
+    "sku": "10450114",
+    "price": 2.36,
+    "store_id": "2045",
+    "city": "Baltimore",
+    "state": "MD",
+    "zip": "21218",
+    "price_per_gal": 2.36
+  },
+  {
+    "sku": "10450114",
+    "price": 3.17,
+    "store_id": "1943",
+    "city": "Lincoln",
+    "state": "NE",
+    "zip": "68521",
+    "price_per_gal": 3.17
+  },
+  {
+    "sku": "10450114",
+    "price": 2.67,
+    "store_id": "1103",
+    "city": "Houston",
+    "state": "TX",
+    "zip": "77073",
+    "price_per_gal": 2.67
+  },
+  {
+    "sku": "10450114",
+    "price": 3.57,
+    "store_id": "2181",
+    "city": "Chiriaco Summit",
+    "state": "CA",
+    "zip": "92201",
+    "price_per_gal": 3.57
+  },
+  {
+    "sku": "10450114",
+    "price": 3.94,
+    "store_id": "47",
+    "city": "Muldrow",
+    "state": "OK",
+    "zip": "74948",
+    "price_per_gal": 3.94
+  },
+  {
+    "sku": "10450114",
+    "price": 3.52,
+    "store_id": "3455",
+    "city": "Pinole",
+    "state": "CA",
+    "zip": "94564",
+    "price_per_gal": 3.52
+  },
+  {
+    "sku": "10450114",
+    "price": 2.94,
+    "store_id": "3473",
+    "city": "Las Vegas",
+    "state": "NV",
+    "zip": "89107",
+    "price_per_gal": 2.94
+  },
+  {
+    "sku": "10450114",
+    "price": 5.09,
+    "store_id": "2830",
+    "city": "Woolwich Township",
+    "state": "PA",
+    "zip": "08085",
+    "price_per_gal": 5.09
+  },
+  {
+    "sku": "10450114",
+    "price": 3.57,
+    "store_id": "1906",
+    "city": "New Bedford",
+    "state": "MA",
+    "zip": "02745",
+    "price_per_gal": 3.57
+  },
+  {
+    "sku": "10450114",
+    "price": 4.89,
+    "store_id": "5200",
+    "city": "Mount Joy",
+    "state": "PA",
+    "zip": "17552",
+    "price_per_gal": 4.89
+  },
+  {
+    "sku": "10450114",
+    "price": 3.12,
+    "store_id": "3093",
+    "city": "Meridian",
+    "state": "ID",
+    "zip": "83642",
+    "price_per_gal": 3.12
+  },
+  {
+    "sku": "10450114",
+    "price": 3.62,
+    "store_id": "1583",
+    "city": "Madera",
+    "state": "CA",
+    "zip": "93637",
+    "price_per_gal": 3.62
+  },
+  {
+    "sku": "10450114",
+    "price": 3.32,
+    "store_id": "2605",
+    "city": "Gallipolis",
+    "state": "OH",
+    "zip": "45631",
+    "price_per_gal": 3.32
+  },
+  {
+    "sku": "10450114",
+    "price": 2.36,
+    "store_id": "4583",
+    "city": "Greer",
+    "state": "SC",
+    "zip": "29650",
+    "price_per_gal": 2.36
+  },
+  {
+    "sku": "10450114",
+    "price": 3.52,
+    "store_id": "2224",
+    "city": "Shelburne",
+    "state": "VT",
+    "zip": "05482",
+    "price_per_gal": 3.52
+  },
+  {
+    "sku": "10450114",
+    "price": 3.12,
+    "store_id": "1926",
+    "city": "Oswego",
+    "state": "NY",
+    "zip": "13126",
+    "price_per_gal": 3.12
+  },
+  {
+    "sku": "10450114",
+    "price": 2.97,
+    "store_id": "4303",
+    "city": "Miami",
+    "state": "FL",
+    "zip": "33147",
+    "price_per_gal": 2.97
+  },
+  {
+    "sku": "10450114",
+    "price": 2.94,
+    "store_id": "5070",
+    "city": "Las Vegas",
+    "state": "NV",
+    "zip": "89148",
+    "price_per_gal": 2.94
+  },
+  {
+    "sku": "10450114",
+    "price": 3.72,
+    "store_id": "3180",
+    "city": "South Gate",
+    "state": "CA",
+    "zip": "90280",
+    "price_per_gal": 3.72
+  },
+  {
+    "sku": "10450114",
+    "price": 2.97,
+    "store_id": "4588",
+    "city": "Orlando",
+    "state": "FL",
+    "zip": "32805",
+    "price_per_gal": 2.97
+  },
+  {
+    "sku": "10450114",
+    "price": 4.18,
+    "store_id": "14",
+    "city": "Lebanon",
+    "state": "MO",
+    "zip": "65536",
+    "price_per_gal": 4.18
+  },
+  {
+    "sku": "10450114",
+    "price": 3.02,
+    "store_id": "535",
+    "city": "Clyde",
+    "state": "TX",
+    "zip": "79510",
+    "price_per_gal": 3.02
+  },
+  {
+    "sku": "10450114",
+    "price": 2.72,
+    "store_id": "1510",
+    "city": "Florence",
+    "state": "KY",
+    "zip": "41042",
+    "price_per_gal": 2.72
+  },
+  {
+    "sku": "10450114",
+    "price": 2.67,
+    "store_id": "630",
+    "city": "Florence",
+    "state": "SC",
+    "zip": "29501",
+    "price_per_gal": 2.67
+  },
+  {
+    "sku": "10450114",
+    "price": 3.46,
+    "store_id": "1023",
+    "city": "Galax",
+    "state": "VA",
+    "zip": "24333",
+    "price_per_gal": 3.46
+  },
+  {
+    "sku": "10450114",
+    "price": 5.09,
+    "store_id": "5495",
+    "city": "Philadelphia",
+    "state": "PA",
+    "zip": "19139",
+    "price_per_gal": 5.09
+  },
+  {
+    "sku": "10450114",
+    "price": 3.56,
+    "store_id": "2751",
+    "city": "Littleton",
+    "state": "CO",
+    "zip": "80120",
+    "price_per_gal": 3.56
+  },
+  {
+    "sku": "10450114",
+    "price": 3.36,
+    "store_id": "350",
+    "city": "York",
+    "state": "NE",
+    "zip": "68467",
+    "price_per_gal": 3.36
+  },
+  {
+    "sku": "10450114",
+    "price": 3.46,
+    "store_id": "2403",
+    "city": "Puyallup",
+    "state": "WA",
+    "zip": "98374",
+    "price_per_gal": 3.46
+  },
+  {
+    "sku": "10450114",
+    "price": 3.17,
+    "store_id": "2228",
+    "city": "Windsor",
+    "state": "MA",
+    "zip": "01270",
+    "price_per_gal": 3.17
+  },
+  {
+    "sku": "10450114",
+    "price": 2.02,
+    "store_id": "1419",
+    "city": "Fort Wayne",
+    "state": "IN",
+    "zip": "46825",
+    "price_per_gal": 2.02
+  },
+  {
+    "sku": "10450114",
+    "price": 2.17,
+    "store_id": "2806",
+    "city": "Inman",
+    "state": "SC",
+    "zip": "29349",
+    "price_per_gal": 2.17
+  },
+  {
+    "sku": "10450114",
+    "price": 3.87,
+    "store_id": "2927",
+    "city": "Gresham",
+    "state": "OR",
+    "zip": "97030",
+    "price_per_gal": 3.87
+  },
+  {
+    "sku": "10450114",
+    "price": 2.62,
+    "store_id": "1930",
+    "city": "Haverhill",
+    "state": "NH",
+    "zip": "01830",
+    "price_per_gal": 2.62
+  },
+  {
+    "sku": "10450114",
+    "price": 2.67,
+    "store_id": "4298",
+    "city": "Humble",
+    "state": "TX",
+    "zip": "77396",
+    "price_per_gal": 2.67
+  },
+  {
+    "sku": "10450114",
+    "price": 3.14,
+    "store_id": "2531",
+    "city": "Peekskill",
+    "state": "NY",
+    "zip": "10566",
+    "price_per_gal": 3.14
+  },
+  {
+    "sku": "10450114",
+    "price": 3.36,
+    "store_id": "1683",
+    "city": "Tabor",
+    "state": "IA",
+    "zip": "51653",
+    "price_per_gal": 3.36
+  },
+  {
+    "sku": "10450114",
+    "price": 3.24,
+    "store_id": "821",
+    "city": "Clovis",
+    "state": "NM",
+    "zip": "88101",
+    "price_per_gal": 3.24
+  },
+  {
+    "sku": "10450114",
+    "price": 3.52,
+    "store_id": "1615",
+    "city": "Pittsburg",
+    "state": "CA",
+    "zip": "94565",
+    "price_per_gal": 3.52
+  },
+  {
+    "sku": "10450114",
+    "price": 3.52,
+    "store_id": "2648",
+    "city": "Oakland",
+    "state": "CA",
+    "zip": "94603",
+    "price_per_gal": 3.52
+  },
+  {
+    "sku": "10450114",
+    "price": 2.87,
+    "store_id": "5361",
+    "city": "Omaha",
+    "state": "NE",
+    "zip": "68144",
+    "price_per_gal": 2.87
+  },
+  {
+    "sku": "10450114",
+    "price": 4.62,
+    "store_id": "1102",
+    "city": "Baton Rouge",
+    "state": "LA",
+    "zip": "70807",
+    "price_per_gal": 4.62
+  },
+  {
+    "sku": "10450114",
+    "price": 2.72,
+    "store_id": "2441",
+    "city": "Hamilton",
+    "state": "OH",
+    "zip": "45013",
+    "price_per_gal": 2.72
+  },
+  {
+    "sku": "10450114",
+    "price": 3.12,
+    "store_id": "5218",
+    "city": "St. Petersburg",
+    "state": "FL",
+    "zip": "33712",
+    "price_per_gal": 3.12
+  },
+  {
+    "sku": "10450114",
+    "price": 2.74,
+    "store_id": "2134",
+    "city": "Charlotte",
+    "state": "NC",
+    "zip": "28213",
+    "price_per_gal": 2.74
+  },
+  {
+    "sku": "10450114",
+    "price": 2.74,
+    "store_id": "4443",
+    "city": "Belton",
+    "state": "SC",
+    "zip": "29627",
+    "price_per_gal": 2.74
+  },
+  {
+    "sku": "10450114",
+    "price": 3.13,
+    "store_id": "5233",
+    "city": "Kearns",
+    "state": "UT",
+    "zip": "84118",
+    "price_per_gal": 3.13
+  },
+  {
+    "sku": "10450114",
+    "price": 3.72,
+    "store_id": "4132",
+    "city": "Downey",
+    "state": "CA",
+    "zip": "90242",
+    "price_per_gal": 3.72
+  },
+  {
+    "sku": "10450114",
+    "price": 2.97,
+    "store_id": "5325",
+    "city": "Pompano Beach",
+    "state": "FL",
+    "zip": "33093",
+    "price_per_gal": 2.97
+  },
+  {
+    "sku": "10450114",
+    "price": 2.88,
+    "store_id": "1561",
+    "city": "Memphis",
+    "state": "TN",
+    "zip": "38128",
+    "price_per_gal": 2.88
+  },
+  {
+    "sku": "10450114",
+    "price": 3.14,
+    "store_id": "2236",
+    "city": "Neiffer",
+    "state": "PA",
+    "zip": "19473",
+    "price_per_gal": 3.14
+  },
+  {
+    "sku": "10450114",
+    "price": 3.44,
+    "store_id": "1039",
+    "city": "Mt Airy",
+    "state": "NC",
+    "zip": "27030",
+    "price_per_gal": 3.44
+  },
+  {
+    "sku": "10450114",
+    "price": 3.66,
+    "store_id": "2163",
+    "city": "Shelton",
+    "state": "CT",
+    "zip": "06484",
+    "price_per_gal": 3.66
+  },
+  {
+    "sku": "10450114",
+    "price": 2.87,
+    "store_id": "2846",
+    "city": "Olive Branch",
+    "state": "MS",
+    "zip": "38654",
+    "price_per_gal": 2.87
+  },
+  {
+    "sku": "10450114",
+    "price": 2.92,
+    "store_id": "5772",
+    "city": "Pine Ridge",
+    "state": "FL",
+    "zip": "34465",
+    "price_per_gal": 2.92
+  },
+  {
+    "sku": "10450114",
+    "price": 3.0,
+    "store_id": "1578",
+    "city": "Roswell",
+    "state": "GA",
+    "zip": "30076",
+    "price_per_gal": 3.0
+  },
+  {
+    "sku": "10450114",
+    "price": 2.87,
+    "store_id": "3283",
+    "city": "Wichita",
+    "state": "KS",
+    "zip": "67212",
+    "price_per_gal": 2.87
+  },
+  {
+    "sku": "10450114",
+    "price": 2.72,
+    "store_id": "930",
+    "city": "Montgomery",
+    "state": "AL",
+    "zip": "36116",
+    "price_per_gal": 2.72
+  },
+  {
+    "sku": "10450114",
+    "price": 3.66,
+    "store_id": "3543",
+    "city": "Redding",
+    "state": "CT",
+    "zip": "06896",
+    "price_per_gal": 3.66
+  },
+  {
+    "sku": "10450114",
+    "price": 2.97,
+    "store_id": "5854",
+    "city": "Miami",
+    "state": "FL",
+    "zip": "33173",
+    "price_per_gal": 2.97
+  },
+  {
+    "sku": "10450114",
+    "price": 3.52,
+    "store_id": "1984",
+    "city": "Clarksburg",
+    "state": "MA",
+    "zip": "01247",
+    "price_per_gal": 3.52
+  },
+  {
+    "sku": "10450114",
+    "price": 2.74,
+    "store_id": "2005",
+    "city": "Kannapolis",
+    "state": "NC",
+    "zip": "28083",
+    "price_per_gal": 2.74
+  },
+  {
+    "sku": "10450114",
+    "price": 2.47,
+    "store_id": "2787",
+    "city": "Indianapolis",
+    "state": "IN",
+    "zip": "46220",
+    "price_per_gal": 2.47
+  },
+  {
+    "sku": "10450114",
+    "price": 2.97,
+    "store_id": "2814",
+    "city": "Doral",
+    "state": "FL",
+    "zip": "33178",
+    "price_per_gal": 2.97
+  },
+  {
+    "sku": "10450114",
+    "price": 3.12,
+    "store_id": "1536",
+    "city": "St. Petersburg",
+    "state": "FL",
+    "zip": "33709",
+    "price_per_gal": 3.12
+  },
+  {
+    "sku": "10450114",
+    "price": 2.72,
+    "store_id": "5499",
+    "city": "Madeira",
+    "state": "OH",
+    "zip": "45243",
+    "price_per_gal": 2.72
+  },
+  {
+    "sku": "10450114",
+    "price": 3.88,
+    "store_id": "378",
+    "city": "Holton",
+    "state": "KS",
+    "zip": "66436",
+    "price_per_gal": 3.88
+  }
+]
