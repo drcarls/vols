@@ -89,6 +89,45 @@ entirely on the Walmart-to-Walmart comparison, which is real ($2.17 vs $3.72,
 same SKU, same chain) — but the shopper's actual best local option is not
 established.
 
+**Dollar-channel prices, measured.** Dollar General's product sitemap is
+readable (32,475 products, 167 candidate dairy-milk URLs) and its Bright Data
+dataset returns prices:
+
+| Product | Size | Price |
+|---|---|---:|
+| Meadow Gold Whole Milk w/ Vitamin D | 1 gal | $3.25 |
+| Meadow Gold 2% | 1 gal | $3.20 |
+| Cascade Homogenized Whole Milk | 1 gal | $4.00 |
+| Price's Whole Milk | half gal | $2.00 |
+| Lehigh Valley Whole Milk | half gal | $1.40 |
+
+**This bracket ($3.20–$4.00 a gallon) straddles Walmart's Williston price of
+$3.72.** Two caveats keep it from being a Williston number: the records carry
+`store_id: None` and `zipcode: None`, so they are default-catalog prices with no
+store context, and the brands are regional dairies from outside the Southeast
+(Meadow Gold, Cascade, Creamland, Lehigh Valley), which means the catalog is
+defaulting to some other region entirely.
+
+It is still enough to retire the assumption underneath the original claim. I had
+reasoned that dollar stores would not discipline milk price the way a hard
+discounter does. On these numbers Dollar General sells gallon milk in the same
+band Walmart charges in Williston, and possibly below it. Walmart is not
+self-evidently the low-price option there.
+
+Note also that DG carries national and regional dairy brands rather than a
+private-label white gallon — the only Clover Valley white milk in the sitemap is
+a 64 oz lactose-free. So a DG-to-Walmart comparison is brand-tier mismatched:
+Great Value against Meadow Gold. For a Williston shopper choosing where to buy a
+gallon, the tier mismatch does not matter; for a like-for-like pricing
+benchmark, it does.
+
+**Family Dollar and Dollar Tree could not be measured.** Both run fully
+client-rendered storefronts that expose no products or prices in server HTML
+(Family Dollar returns a 17 KB shell with no title). No Bright Data dataset
+exists for Family Dollar; the Dollar Tree dataset supports no discovery mode,
+and its sitemap host is unreachable. Their Williston milk prices, if they carry
+milk at all, remain unknown.
+
 **What survives.** Two narrower statements are still supported: Walmart charges
 $1.55/gal more at its Williston store than at its Inman store on the identical
 SKU, and Aldi — whose presence coincides with Walmart's lowest SC prices — does

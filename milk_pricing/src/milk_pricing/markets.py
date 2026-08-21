@@ -81,10 +81,17 @@ RETAILERS: tuple[Retailer, ...] = (
 # read "not in our retailer list" as "no competition in the market" and drew a
 # conclusion that had to be withdrawn.
 #
-# They are listed here rather than in RETAILERS because none is collectable yet:
-# dollargeneral.com renders client-side and does not expose per-store prices,
-# and pigglywigglysc.com is unreachable. Treat any market-level competitive
-# claim that relies on their absence as unsupported until they are measured.
+# Collection status, tested:
+#   Dollar General  — product sitemap readable (32k products) and its Bright
+#                     Data dataset returns prices, but with no store or ZIP
+#                     context, and the catalog defaults to non-Southeast
+#                     regional dairy brands. National band, not an SC price.
+#   Family Dollar   — fully client-rendered, no dataset exists. Not collectable.
+#   Dollar Tree     — client-rendered, dataset has no discovery mode, sitemap
+#                     host unreachable. Not collectable.
+#   Piggly Wiggly   — unreachable.
+# DG's measured gallon band ($3.20-$4.00) straddles Walmart's Williston price
+# of $3.72, so the dollar channel cannot be assumed to price above Walmart.
 UNMEASURED_CHANNELS: tuple[Retailer, ...] = (
     Retailer("dollar-general", "Dollar General", "dollar", ("Clover Valley",)),
     Retailer("family-dollar", "Family Dollar", "dollar", ("Family Gourmet",)),
