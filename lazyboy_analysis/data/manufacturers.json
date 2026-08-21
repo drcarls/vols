@@ -39,8 +39,21 @@
   "skus": {}
  },
  "Ashley": {
-  "source": "unavailable",
-  "reason": "403 on every request, sitemaps included"
+  "source": "user-supplied scrape",
+  "total": 135,
+  "motion_split": "n/a",
+  "models": {
+   "Recliners": 135
+  },
+  "skus": {
+   "Recliners": 135
+  },
+  "materials": {
+   "performance": 20,
+   "leather": 28,
+   "unknown": 87
+  },
+  "excluded_non_furniture": 45
  },
  "Best Home Furnishings": {
   "source": "unavailable",

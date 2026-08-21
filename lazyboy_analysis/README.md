@@ -199,6 +199,14 @@ same fixed set instead of erroring, so each subcategory was verified by
 checking its products link back through it, and only products carrying the
 subcategory in their own URL are kept.
 
+Ashley's own catalogue is a user-supplied export, collected through a
+residential-proxy scraper -- this environment gets a 403 from every Ashley
+domain, sitemaps and robots.txt included. It carries Ashley's own material
+labels, which are used directly rather than re-inferred from product text. Its
+"recliner" listing is a department rather than a category, so 45 third-party
+nursery gliders, massage chairs and battery packs are excluded to put it on the
+same footing as a dealer's recliner wall: 135 comparable products, not 180.
+
 `scrape_manufacturers.py` does the equivalent for the competitive set, so a
 dealer's model count can be read against the maker's own. Coverage is uneven
 because the sites are: Flexsteel exposes a Shopify feed, Southern Motion and

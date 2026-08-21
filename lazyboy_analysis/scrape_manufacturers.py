@@ -29,14 +29,28 @@ SITEMAPS = {
     "Southern Motion": "https://www.southernmotion.com/product-sitemap.xml",
     "Franklin": "https://franklincorp.com/wp-sitemap-posts-product-1.xml",
 }
+# Ashley hard-blocks this environment (403 on every request, sitemaps and
+# robots.txt included), so its catalogue comes from a file supplied by the
+# user, collected through a residential-proxy scraper. Its own material labels
+# are carried through rather than re-inferred from text.
+LOCAL_FILES = {
+    "Ashley": ("data/ashley_own_recliners.csv", "user-supplied scrape"),
+}
+
 BLOCKED = {
-    "Ashley": "403 on every request, sitemaps included",
     "Best Home Furnishings": "no machine-readable product index",
     "Catnapper": "no machine-readable product index",
     "Bassett": "Salesforce Commerce, no open product feed",
 }
 
 LOC_RE = re.compile(r"<loc>([^<]+)</loc>")
+
+# An "Ashley recliner" listing is a department, not a category: it carries
+# third-party nursery gliders, massage chairs and battery packs alongside the
+# furniture. Counting those against a dealer's recliner wall would overstate
+# the maker's line by a third.
+NOT_FURNITURE = re.compile(r"massage chair|osaki|titan .*vibe|amamedic|power pack", re.I)
+NOT_CATEGORY = {"Nursery Gliders", "Chaise Lounge"}
 
 # Whether a source discloses motion-vs-stationary for upholstered seating.
 # Flexsteel names the action in its product titles. Southern Motion builds
@@ -110,6 +124,26 @@ def from_sitemap(url, policy):
     return counts, Counter(), len(locs)
 
 
+def from_local_csv(path):
+    """A supplied catalogue export, filtered to the same footing as the rest."""
+    import csv as _csv
+    models, skus, dropped = Counter(), Counter(), 0
+    materials = Counter()
+    for r in _csv.DictReader(open(path)):
+        if not r.get("product_id"):
+            continue
+        if NOT_FURNITURE.search(r.get("name", "")) or r.get("subcategory") in NOT_CATEGORY:
+            dropped += 1
+            continue
+        cat = categorise(r.get("name", "") + " " + r.get("subcategory", ""))
+        if cat == "Other":
+            cat = "Recliners"
+        models[cat] += 1
+        skus[cat] += 1
+        materials[r.get("material", "unknown")] += 1
+    return models, skus, sum(models.values()), dropped, materials
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default="data/manufacturers.json")
@@ -130,6 +164,14 @@ if __name__ == "__main__":
                       "models": dict(counts), "skus": {}}
         print(f"  {brand:<22} {total:>5} products  {dict(counts)}", flush=True)
         time.sleep(1)
+    for brand, (path, note) in LOCAL_FILES.items():
+        counts, skus, total, dropped, mats = from_local_csv(path)
+        out[brand] = {"source": note, "total": total, "motion_split": "n/a",
+                      "models": dict(counts), "skus": dict(skus),
+                      "materials": dict(mats), "excluded_non_furniture": dropped}
+        print(f"  {brand:<22} {total:>5} products  {dict(counts)}"
+              f"   (excluded {dropped} non-furniture)", flush=True)
+
     for brand, why in BLOCKED.items():
         out[brand] = {"source": "unavailable", "reason": why}
         print(f"  {brand:<22}    -- unavailable: {why}")
