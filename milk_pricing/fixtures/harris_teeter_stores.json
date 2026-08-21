@@ -1,0 +1,184 @@
+[
+  {
+    "zip": "19966",
+    "state": null,
+    "store_number": "00336",
+    "store_name": "Long Neck | 26370 Bay Farm Rd",
+    "whole_gal": 4.39
+  },
+  {
+    "zip": "20112",
+    "state": null,
+    "store_number": "00316",
+    "store_name": "Shops at County Center | 12745 Galveston Ct",
+    "whole_gal": 4.39
+  },
+  {
+    "zip": "20132",
+    "state": null,
+    "store_number": "00388",
+    "store_name": "Purcellville Gateway | 105 Purcellville Gateway Dr",
+    "whole_gal": 4.39
+  },
+  {
+    "zip": "20148",
+    "state": null,
+    "store_number": "00284",
+    "store_name": "Broadlands Marketplace | 43300 Southern Walk Plz",
+    "whole_gal": 4.29
+  },
+  {
+    "zip": "21224",
+    "state": null,
+    "store_number": "00392",
+    "store_name": "The Shops at Canton Crossing | 3779 Boston St",
+    "whole_gal": 4.39
+  },
+  {
+    "zip": "28607",
+    "state": "NC",
+    "store_number": "00165",
+    "store_name": null,
+    "whole_gal": 4.39
+  },
+  {
+    "zip": "28801",
+    "state": "NC",
+    "store_number": "00348",
+    "store_name": "Village at Chestnut Street | 136 Merrimon Ave",
+    "whole_gal": 2.99
+  },
+  {
+    "zip": "29605",
+    "state": "SC",
+    "store_number": "00420",
+    "store_name": "Lewis Plaza | 1720 Augusta St",
+    "whole_gal": 2.99
+  },
+  {
+    "zip": "21042",
+    "state": null,
+    "store_number": "00382",
+    "store_name": "Turf Valley Towne Square | 11075 Resort Rd",
+    "whole_gal": 4.39
+  },
+  {
+    "zip": "23320",
+    "state": null,
+    "store_number": "00465",
+    "store_name": "Orchard Square | 1400 Kempsville Rd Ste 109",
+    "whole_gal": 3.89
+  },
+  {
+    "zip": "23322",
+    "state": null,
+    "store_number": "00051",
+    "store_name": "Hanbury Village | 237 Hanbury Rd E",
+    "whole_gal": null
+  },
+  {
+    "zip": "23451",
+    "state": null,
+    "store_number": "00181",
+    "store_name": "Arctic Avenue | 2800 Arctic Ave",
+    "whole_gal": 3.89
+  },
+  {
+    "zip": "28054",
+    "state": "NC",
+    "store_number": "00281",
+    "store_name": "Kendrick Crossing | 3350 Robinwood Rd",
+    "whole_gal": 3.29
+  },
+  {
+    "zip": "28078",
+    "state": "NC",
+    "store_number": "00209",
+    "store_name": "Rosedale | 9925 Rose Commons Dr",
+    "whole_gal": 3.29
+  },
+  {
+    "zip": "29485",
+    "state": "SC",
+    "store_number": "00363",
+    "store_name": "The Corner at Wescott | 9500 Dorchester Rd",
+    "whole_gal": 3.39
+  },
+  {
+    "zip": "32034",
+    "state": null,
+    "store_number": "00034",
+    "store_name": "Amelia Market | 4800 First Coast Hwy",
+    "whole_gal": null
+  },
+  {
+    "zip": "21230",
+    "state": null,
+    "store_number": "00376",
+    "store_name": "McHenry Row | 1801 Whetstone Way",
+    "whole_gal": 4.39
+  },
+  {
+    "zip": "22207",
+    "state": null,
+    "store_number": "00023",
+    "store_name": "Lee Harrison | 2425 N Harrison St",
+    "whole_gal": 4.39
+  },
+  {
+    "zip": "22314",
+    "state": null,
+    "store_number": "00398",
+    "store_name": "Old Town Alexandria | 735 N Saint Asaph St",
+    "whole_gal": 4.29
+  },
+  {
+    "zip": "28451",
+    "state": "NC",
+    "store_number": "00225",
+    "store_name": "Waterford Village | 2021 Olde Regent Way",
+    "whole_gal": 2.89
+  },
+  {
+    "zip": "29707",
+    "state": "SC",
+    "store_number": "00372",
+    "store_name": "Carolina Commons | 6271 Carolina Commons Dr",
+    "whole_gal": null
+  },
+  {
+    "zip": "20152",
+    "state": null,
+    "store_number": "00309",
+    "store_name": "East Gate Marketplace | 25401 Eastern Marketplace Plz",
+    "whole_gal": 4.29
+  },
+  {
+    "zip": "22203",
+    "state": null,
+    "store_number": "00486",
+    "store_name": "Arlington | 624B N Glebe Rd",
+    "whole_gal": 4.39
+  },
+  {
+    "zip": "22903",
+    "state": null,
+    "store_number": "00332",
+    "store_name": "Blue Ridge | 545 Radford Ln Bldg A",
+    "whole_gal": 4.19
+  },
+  {
+    "zip": "28306",
+    "state": "NC",
+    "store_number": "00393",
+    "store_name": "Traemoor Village | 3050 Traemoor Village Dr",
+    "whole_gal": 3.79
+  },
+  {
+    "zip": "29464",
+    "state": "SC",
+    "store_number": "00019",
+    "store_name": "Village Pointe | 920 Houston Northcutt Blvd Ste N",
+    "whole_gal": 3.39
+  }
+]

@@ -37,3 +37,20 @@ def test_was_price_is_not_picked_up():
 
 def test_rate_limit_body_yields_nothing():
     assert parse_search("A global adaptive rate limit has been applied.") == []
+
+
+def test_store_context_reads_zip_and_number():
+    """SC ZIPs are 29xxx; the Pickup-at line alone never says which state."""
+    from milk_pricing.sources.harris_teeter import store_context
+    page = PAGE + '"postalCode":"29401""storeNumber":"00337"'
+    c = store_context(page)
+    assert c["zip"] == "29401"
+    assert c["store_number"] == "00337"
+    assert c["state_guess"] == "SC"
+
+
+def test_state_guess_distinguishes_carolinas():
+    from milk_pricing.sources.harris_teeter import store_context
+    assert store_context('"postalCode":"28801"')["state_guess"] == "NC"
+    assert store_context('"postalCode":"30076"')["state_guess"] == "GA"
+    assert store_context('"postalCode":"99999"')["state_guess"] is None

@@ -29,6 +29,10 @@ _TILE_SPLIT = re.compile(r"Sign In to Add")
 _PRICE = re.compile(r"\$(\d+\.\d{2})")
 _SIZE = re.compile(r"(\d+(?:\.\d+)?\s*(?:fl oz|oz|gal|ct)|1/2\s*gal|half gallon)", re.I)
 _STORE = re.compile(r"Pickup at (.{5,60}?) (?:Weekly|Shop|Cart|$)")
+# The "Pickup at" line gives a street address with no city or state, so the
+# store's identity comes from the embedded JSON instead.
+_POSTAL = re.compile(r'"postalCode"\s*:\s*"(\d{5})"')
+_STORENUM = re.compile(r'"storeNumber"\s*:\s*"(\d{3,6})"')
 _NOISE = re.compile(
     r"\b(Discounted From|SNAP EBT|Sponsored|Featured|Add to List|Buy \d)\b", re.I)
 
@@ -46,6 +50,26 @@ def visible_text(page_html: str) -> str:
 def store_name(page_html: str) -> str | None:
     m = _STORE.search(visible_text(page_html))
     return m.group(1).strip() if m else None
+
+
+def store_context(page_html: str) -> dict:
+    """Which store served this page: postal code, store number, display name.
+
+    Needed because the store is whatever the proxy exit resolved to. SC ZIPs
+    are 29xxx; the neighbouring Harris Teeter states are NC (27-28) and GA (30).
+    """
+    z = _POSTAL.search(page_html)
+    n = _STORENUM.search(page_html)
+    zip_code = z.group(1) if z else None
+    return {
+        "zip": zip_code,
+        "store_number": n.group(1) if n else None,
+        "store_name": store_name(page_html),
+        "state_guess": ("SC" if zip_code and zip_code.startswith("29")
+                        else "NC" if zip_code and zip_code[:2] in ("27", "28")
+                        else "GA" if zip_code and zip_code.startswith("30")
+                        else None),
+    }
 
 
 def parse_search(page_html: str) -> list[dict]:
