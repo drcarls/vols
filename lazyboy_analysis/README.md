@@ -231,6 +231,21 @@ product pages rather than assumed from the name.
 The own-store feature score reads titles only -- no descriptions were captured
 -- so it is not comparable with the dealer figure, which reads both.
 
+## Reading it by retailer
+
+`reseller_scorecard.py` turns the maker-first view around: for one store and
+one category, every brand on the floor, how much of that maker's line it
+represents, and what the selection looks like on price, features and material.
+
+Two columns needed care. Line share is blank, never estimated, where a maker's
+own catalogue could not be collected -- Best, Catnapper, Bassett and most of
+Steinhafels' unresolved vendor codes. And leather share is taken over the whole
+shelf rather than over the SKUs whose material is named: listings name leather
+far more reliably than fabric, so a share taken over named-only ran high enough
+to report Southern Motion as 100% leather off 14 named SKUs. Over the shelf
+every brand sits on one denominator -- exact for La-Z-Boy, whose cover codes
+validate the convention, and a floor for everyone else.
+
 ## Caveats
 
 - **Not carried, so not covered:** Palliser and Stressless appear at neither
