@@ -39,6 +39,28 @@ Keyword discovery is also **incomplete**: Great Value Whole Vitamin D Milk,
 Gallon — the single most important SKU in the category — was absent from the
 308-record discovery set and only appeared via a direct product URL.
 
+## The marketplace substitution trap
+
+Walmart serves the requested product URL even when the resolved local store
+does not stock the item, filling the page with a **third-party marketplace
+offer** under the same product title. That is a national shipped price, not a
+shelf price.
+
+In live sampling **7 of 12 fetches were substitutions**. They defeat every
+obvious sanity check: the price is internally consistent with the stated
+cents-per-fl-oz, availability reads `IN_STOCK`, and the page title is the
+product requested. Taken at face value they produced an identical $9.97
+across four states and a fake 259% national price spread.
+
+The only reliable discriminator is item identity: on a genuine store page the
+requested SKU is the page's *primary* item and appears first. Presence
+somewhere on the page is not enough — the seller's id takes the primary slot
+and the canonical SKU is merely referenced further down.
+`sources/walmart_page.py` enforces this, and two tests pin both variants.
+
+With the guard on, the same sample gives a credible **$2.74–$4.23/gal across
+5 verified stores, median $3.52**.
+
 ## Why Bright Data is required
 
 Instacart's storefront landing page is server-rendered, but **search and aisle
