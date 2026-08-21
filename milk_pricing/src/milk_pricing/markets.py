@@ -27,7 +27,9 @@ SC_MARKETS: tuple[Market, ...] = (
     Market("Charleston", "Lowcountry", ("29401", "29407", "29414", "29464"),
            "Highest-income SC metro; Publix and Harris Teeter over-index."),
     Market("Greenville", "Upstate", ("29601", "29607", "29615"),
-           "Fastest-growing SC metro; Lidl and Aldi both present."),
+           "Fastest-growing SC metro. Aldi present; Lidl is NOT — its SC "
+           "footprint is 7 stores, all Midlands/Lowcountry plus the Charlotte "
+           "spillover. The 'Greenville Lidl' is Greenville NC."),
     Market("Spartanburg", "Upstate", ("29301", "29306")),
     Market("Myrtle Beach", "Grand Strand", ("29577", "29572"),
            "Tourist demand; seasonal price and assortment swings."),

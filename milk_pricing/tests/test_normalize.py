@@ -125,3 +125,17 @@ def test_parser_handles_white_label_product_hrefs():
         assert len(rows) == 1, href
         assert rows[0]["price"] == 2.15
         assert rows[0]["id"] == "123"
+
+
+@pytest.mark.parametrize("name", [
+    "Friendly Farms Whole Milk Ricotta Cheese",
+    "Whole Milk Mozzarella",
+    "Whole Milk Greek Yogurt",
+    "Whole Milk Cottage Cheese",
+    "Whole Milk Kefir",
+])
+def test_dairy_products_named_whole_milk_are_excluded(name):
+    """These carry 'whole milk' in the name and pass every fat and size check.
+    A 15 oz ricotta tub once normalised to $23.47/gal and became a market's
+    benchmark, so the exclusion is load-bearing, not cosmetic."""
+    assert classify_category(name)[0] == "excluded"

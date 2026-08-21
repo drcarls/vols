@@ -71,11 +71,17 @@ def parse_size_fl_oz(size_text: str | None) -> tuple[float | None, int]:
 # A "milk" search is mostly not milk. Order matters: exclusions run first.
 _PLANT = ("almond", "oat", "soy", "coconut", "cashew", "rice milk", "pea ",
           "hemp", "macadamia", "pistachio", "flax", "banana milk")
+# Dairy products whose names legitimately contain "whole milk" — ricotta is
+# literally "Whole Milk Ricotta Cheese" — and which a fat/size classifier will
+# otherwise wave straight through into the milk benchmark. One such item priced
+# a 15 oz tub at $23.47/gal and became a market's benchmark before this guard.
 _NOT_MILK = ("creamer", "half and half", "half & half", "heavy cream",
              "whipping cream", "sour cream", "condensed", "evaporated",
              "buttermilk", "eggnog", "milkshake", "milk chocolate",
              "powdered milk", "dry milk", "milk bone", "coconut cream",
-             "cream cheese", "ice cream", "milk duds")
+             "cream cheese", "ice cream", "milk duds",
+             "ricotta", "mozzarella", "cheese", "yogurt", "yoghurt",
+             "cottage", "kefir", "butter", "pudding", "custard")
 # Walmart lists the same SKU in English and Spanish, so the flavour tells have
 # to cover both or a chocolate gallon lands in the white-milk benchmark.
 _FLAVORED = ("chocolate", "strawberry", "vanilla", "banana", "cookies",

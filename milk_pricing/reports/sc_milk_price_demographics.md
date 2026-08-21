@@ -4,30 +4,41 @@ Tests whether the milk prices collected in this project vary with the racial com
 
 **Headline: no evidence that Aldi charges more in ZIPs with a higher Black population share. The Walmart sample is far too small to support any claim, and what signal it contains tracks income and rurality more strongly than race.**
 
-## Aldi — the clean test
+## Aldi — 350 ZIPs, no race-linked price gap
 
-Aldi is ZIP-pinned, so this compares ZIPs *inside one metro*, holding local competition, cost and urbanity roughly constant.
+The original version of this section rested on 18 ZIPs across three metros and
+concluded that Aldi prices metros as flat zones, so demographics could not
+enter the price. The flat-zone claim was wrong — a full 538-ZIP sweep shows
+Aldi's SC whole-gallon price ranging **$2.19–$4.19** — but the substantive
+finding survives on far better evidence.
 
-| Metro | ZIPs | Black share range | Prices | Result |
-|---|---:|---|---|---|
-| Columbia | 7 | 16.7% – 80.1% | $2.85 only | no variation |
-| Greenville | 5 | 9.9% – 29.9% | $2.65 only | no variation |
-| Charleston | 6 | 5.8% – 54.0% | $2.95 / $2.99 / $4.05 | varies, runs *opposite* |
+Joining the sweep to ACS gives **n = 350** SC ZIPs with both a price and
+demographics:
 
-Columbia is the sharpest case. Seven ZIPs spanning **16.7% to 80.1% Black** — including 29203 at 80.1% and 29205 at 16.7% — all return the **identical $2.85**. Same in Greenville. Aldi prices these metros as single zones, so neighbourhood demographics cannot enter the price at all.
-
-Charleston is the one metro with real intra-metro variation ($1.10 on the identical SKU), and it points the other way:
-
-| ZIP | Black share | Median income | $/gal |
+| Relationship | Pearson | Spearman | t |
 |---|---:|---:|---:|
-| 29405 | 54.0% | $56,600 | $2.95 |
-| 29403 | 30.2% | $66,944 | $2.95 |
-| 29407 | 26.8% | $85,367 | $4.05 |
-| 29414 | 12.3% | $99,529 | $2.99 |
-| 29401 | 9.4% | $99,667 | $4.05 |
-| 29492 | 5.8% | $110,509 | $2.95 |
+| Black share vs price | **-0.011** | +0.020 | 0.21 |
+| Median income vs price | +0.035 | -0.031 | 0.66 |
 
-The two most expensive ZIPs (29401, 29407) are **9.4% and 26.8% Black with the highest incomes in the set**. The most heavily Black ZIP (29405, 54%) sits at the low price. Correlation with Black share is **-0.225** (negative); with income it is **+0.236** (positive). Directionally this is a higher-income premium, not a race penalty — though with six ZIPs and three price points, neither is statistically meaningful on its own.
+At n=350, |t| above ~1.97 would be significant at p<0.05. Neither comes close.
+
+Median price by Black-share quintile:
+
+| Quintile | Black share | n | Median $/gal |
+|---|---|---:|---:|
+| Q1 | 0.0–8.7% | 70 | $2.90 |
+| Q2 | 8.8–19.7% | 70 | $2.90 |
+| Q3 | 19.7–29.2% | 70 | $2.95 |
+| Q4 | 29.2–44.1% | 70 | $2.95 |
+| Q5 | 44.3–100% | 70 | $2.95 |
+
+A five-cent spread from the whitest to the Blackest quintile of South Carolina
+ZIP codes, with no monotonic trend. Income quintiles are equally flat
+($2.89–$2.95 from poorest to richest).
+
+Aldi's SC price does vary — by two dollars a gallon across the state — but that
+variation is uncorrelated with either the racial composition or the median
+income of the ZIP. Whatever drives it is something else.
 
 ## Walmart — underpowered, and confounded
 
