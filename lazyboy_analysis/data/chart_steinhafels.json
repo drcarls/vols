@@ -1,0 +1,173 @@
+[
+ {
+  "category": "Recliners",
+  "brands": [
+   {
+    "brand": "Ashley",
+    "n": 25,
+    "lo": 413,
+    "hi": 1338,
+    "med": 539.99
+   },
+   {
+    "brand": "Jackson",
+    "n": 4,
+    "lo": 686,
+    "hi": 738,
+    "med": 710.99
+   },
+   {
+    "brand": "Cheers",
+    "n": 18,
+    "lo": 673,
+    "hi": 1004,
+    "med": 894.43
+   },
+   {
+    "brand": "Catnapper",
+    "n": 15,
+    "lo": 720,
+    "hi": 1459,
+    "med": 955.54
+   },
+   {
+    "brand": "Franklin",
+    "n": 13,
+    "lo": 853,
+    "hi": 1378,
+    "med": 1033.32
+   },
+   {
+    "brand": "Best Home Furnishings",
+    "n": 8,
+    "lo": 899,
+    "hi": 1497,
+    "med": 1179.99
+   },
+   {
+    "brand": "Southern Motion",
+    "n": 8,
+    "lo": 913,
+    "hi": 1448,
+    "med": 1196.99
+   },
+   {
+    "brand": "HomeStretch",
+    "n": 29,
+    "lo": 855,
+    "hi": 1728,
+    "med": 1199.99
+   },
+   {
+    "brand": "Barcalounger",
+    "n": 22,
+    "lo": 1180,
+    "hi": 1533,
+    "med": 1219.99
+   },
+   {
+    "brand": "Kuka Home",
+    "n": 9,
+    "lo": 972,
+    "hi": 1550,
+    "med": 1249.99
+   },
+   {
+    "brand": "La-Z-Boy",
+    "n": 37,
+    "lo": 800,
+    "hi": 1900,
+    "med": 1299.99
+   },
+   {
+    "brand": "Elran",
+    "n": 4,
+    "lo": 1756,
+    "hi": 2732,
+    "med": 2196.44
+   },
+   {
+    "brand": "Flexsteel",
+    "n": 43,
+    "lo": 1566,
+    "hi": 3218,
+    "med": 2299.99
+   },
+   {
+    "brand": "Bassett",
+    "n": 4,
+    "lo": 2013,
+    "hi": 3498,
+    "med": 2454.99
+   }
+  ]
+ },
+ {
+  "category": "Motion Sofas",
+  "brands": [
+   {
+    "brand": "Cheers",
+    "n": 15,
+    "lo": 1009,
+    "hi": 1509,
+    "med": 1299.99
+   },
+   {
+    "brand": "Ashley",
+    "n": 4,
+    "lo": 800,
+    "hi": 2300,
+    "med": 1549.99
+   },
+   {
+    "brand": "Catnapper",
+    "n": 14,
+    "lo": 1000,
+    "hi": 2371,
+    "med": 1699.99
+   },
+   {
+    "brand": "HomeStretch",
+    "n": 22,
+    "lo": 1200,
+    "hi": 2696,
+    "med": 1999.99
+   },
+   {
+    "brand": "Franklin",
+    "n": 4,
+    "lo": 2000,
+    "hi": 2000,
+    "med": 1999.99
+   },
+   {
+    "brand": "Southern Motion",
+    "n": 7,
+    "lo": 1694,
+    "hi": 2540,
+    "med": 2033.99
+   },
+   {
+    "brand": "Kuka Home",
+    "n": 12,
+    "lo": 1460,
+    "hi": 2649,
+    "med": 2034.99
+   },
+   {
+    "brand": "La-Z-Boy",
+    "n": 16,
+    "lo": 2150,
+    "hi": 3275,
+    "med": 2422.21
+   },
+   {
+    "brand": "Flexsteel",
+    "n": 32,
+    "lo": 2297,
+    "hi": 3747,
+    "med": 3274.99
+   }
+  ]
+ }
+]

@@ -1,0 +1,181 @@
+<title>Steinhafels Price Ladder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,500;0,600;1,500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --ground:#F2EFE9; --surface:#FBFAF7; --line:#E2DCD1; --grid:#E7E1D6;
+  --ink:#1F1D1A; --ink-2:#5C574F; --ink-3:#8A847A;
+  --ctx:#C4BFB5; --ctx-dot:#9E988D; --band:#EDE5D4;
+  --s1:#EB6834; --s2:#1BAF7A; --s3:#4A3AA7;
+  --focus:#1F1D1A;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#171614; --surface:#201E1B; --line:#332F2A; --grid:#2C2924;
+    --ink:#F4F1EA; --ink-2:#B8B2A6; --ink-3:#8A847A;
+    --ctx:#4A453E; --ctx-dot:#7A746A; --band:#332D20;
+    --s1:#D95926; --s2:#199E70; --s3:#9085E9;
+    --focus:#F4F1EA;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#171614; --surface:#201E1B; --line:#332F2A; --grid:#2C2924;
+  --ink:#F4F1EA; --ink-2:#B8B2A6; --ink-3:#8A847A;
+  --ctx:#4A453E; --ctx-dot:#7A746A; --band:#332D20;
+  --s1:#D95926; --s2:#199E70; --s3:#9085E9;
+  --focus:#F4F1EA;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-variant-numeric:tabular-nums; line-height:1.5;
+  padding:clamp(20px,4vw,48px);
+}
+.wrap{max-width:1080px; margin:0 auto; display:flex; flex-direction:column; gap:26px}
+h1{
+  font-family:Spectral,Georgia,"Times New Roman",serif;
+  font-weight:600; font-size:clamp(1.6rem,3.4vw,2.3rem);
+  margin:0; letter-spacing:-.01em; text-wrap:balance;
+}
+.sub{margin:6px 0 0; color:var(--ink-2); font-size:.95rem; max-width:66ch}
+.legend{display:flex; flex-wrap:wrap; gap:8px 22px; align-items:center; margin-top:4px}
+.lg{display:inline-flex; align-items:center; gap:7px; font-size:.83rem; color:var(--ink-2)}
+.sw{width:11px; height:11px; border-radius:2px; flex:none}
+.lg.on{color:var(--ink); font-weight:600}
+.card{
+  background:var(--surface); border:1px solid var(--line); border-radius:12px;
+  padding:clamp(16px,2.4vw,26px); overflow-x:auto;
+}
+h2{
+  font-family:Spectral,Georgia,serif; font-weight:600; font-size:1.12rem;
+  margin:0 0 2px; letter-spacing:-.005em;
+}
+.cap{margin:0 0 18px; color:var(--ink-3); font-size:.79rem}
+.plot{min-width:560px; position:relative}
+.row{display:grid; grid-template-columns:150px 1fr; align-items:center; gap:14px;
+     padding:11px 0; position:relative; border-radius:7px}
+.row.focus{background:var(--band); box-shadow:0 0 0 8px var(--band)}
+.bl{text-align:right; font-size:.83rem; color:var(--ink-3); white-space:nowrap;
+    overflow:hidden; text-overflow:ellipsis}
+.row.focus .bl{color:var(--ink); font-weight:600}
+.row.s1 .bl{color:var(--s1)} .row.s2 .bl{color:var(--s2)} .row.s3 .bl{color:var(--s3)}
+.track{position:relative; height:22px}
+.bar{position:absolute; top:10px; height:3px; border-radius:2px; background:var(--ctx)}
+.row.focus .bar{background:var(--focus); opacity:.55; height:4px; top:9.5px}
+.row.s1 .bar{background:var(--s1); opacity:.4}
+.row.s2 .bar{background:var(--s2); opacity:.4}
+.row.s3 .bar{background:var(--s3); opacity:.4}
+.dot{position:absolute; top:5.5px; width:11px; height:11px; border-radius:50%;
+     background:var(--ctx-dot); margin-left:-5.5px; box-shadow:0 0 0 2px var(--surface)}
+.row.focus .dot{background:var(--focus); width:13px; height:13px; top:4.5px; margin-left:-6.5px;
+                box-shadow:0 0 0 2px var(--band)}
+.row.s1 .dot{background:var(--s1)} .row.s2 .dot{background:var(--s2)} .row.s3 .dot{background:var(--s3)}
+.val{position:absolute; bottom:19px; transform:translateX(-50%); font-size:.72rem;
+     color:var(--ink-3); white-space:nowrap; pointer-events:none}
+.row.focus .val{color:var(--ink); font-weight:600; font-size:.76rem}
+.row.s1 .val{color:var(--s1)} .row.s2 .val{color:var(--s2)} .row.s3 .val{color:var(--s3)}
+.grid{position:absolute; inset:0; margin-left:164px; pointer-events:none}
+.gl{position:absolute; top:0; bottom:26px; width:1px; background:var(--grid)}
+.axis{display:grid; grid-template-columns:150px 1fr; gap:14px; margin-top:8px}
+.ax{position:relative; height:18px}
+.tk{position:absolute; transform:translateX(-50%); font-size:.74rem; color:var(--ink-3)}
+.hit{position:absolute; inset:-6px 0; cursor:default}
+.tip{
+  position:fixed; z-index:9; pointer-events:none; opacity:0; transition:opacity .1s;
+  background:var(--ink); color:var(--ground); padding:7px 10px; border-radius:6px;
+  font-size:.76rem; line-height:1.45; white-space:nowrap;
+  box-shadow:0 4px 14px rgba(0,0,0,.2);
+}
+.tip.on{opacity:1}
+.tip b{font-weight:600}
+details{margin-top:2px}
+summary{cursor:pointer; font-size:.83rem; color:var(--ink-2); padding:8px 0}
+summary:focus-visible{outline:2px solid var(--s3); outline-offset:3px; border-radius:4px}
+table{border-collapse:collapse; width:100%; font-size:.81rem; margin-top:10px}
+th,td{text-align:right; padding:7px 10px; border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--ink-3); font-weight:500; font-size:.74rem; text-transform:uppercase; letter-spacing:.05em}
+tr.focus td{background:var(--band); font-weight:600}
+.foot{color:var(--ink-3); font-size:.76rem; max-width:70ch; margin:0}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>La-Z-Boy at Steinhafels &mdash; recliners &amp; motion sofas</h1>
+    <p class="sub">Each brand&rsquo;s price range (bar, 10th&ndash;90th percentile) and median (dot), sorted low to high on a shared scale. La-Z-Boy highlighted &mdash; watch where it sits.</p>
+    <div class="legend">
+      <span class="lg on"><span class="sw" style="background:var(--focus)"></span>La-Z-Boy</span>
+      <span class="lg" style="color:var(--s1)"><span class="sw" style="background:var(--s1)"></span>Ashley (value floor)</span>
+      <span class="lg" style="color:var(--s2)"><span class="sw" style="background:var(--s2)"></span>Southern Motion</span>
+      <span class="lg" style="color:var(--s3)"><span class="sw" style="background:var(--s3)"></span>Flexsteel (premium ceiling)</span>
+      <span class="lg"><span class="sw" style="background:var(--ctx-dot)"></span>Other brands on the floor</span>
+    </div>
+  </header>
+  <div id="charts"></div>
+  <details>
+    <summary>View the numbers as a table</summary>
+    <div id="tables"></div>
+  </details>
+  <p class="foot">Source: Steinhafels public catalogue, single snapshot. Brands with fewer than 4 SKUs in a category are omitted. Bars span the 10th&ndash;90th percentile so a single clearance item does not stretch a brand across the chart.</p>
+</div>
+<div class="tip" id="tip"></div>
+
+<script>
+const DATA=[{"category":"Recliners","brands":[{"brand":"Ashley","n":25,"lo":413,"hi":1338,"med":539.99,"k":"s1"},{"brand":"Jackson","n":4,"lo":686,"hi":738,"med":710.99,"k":"ctx"},{"brand":"Cheers","n":18,"lo":673,"hi":1004,"med":894.43,"k":"ctx"},{"brand":"Catnapper","n":15,"lo":720,"hi":1459,"med":955.54,"k":"ctx"},{"brand":"Franklin","n":13,"lo":853,"hi":1378,"med":1033.32,"k":"ctx"},{"brand":"Best Home Furnishings","n":8,"lo":899,"hi":1497,"med":1179.99,"k":"ctx"},{"brand":"Southern Motion","n":8,"lo":913,"hi":1448,"med":1196.99,"k":"s2"},{"brand":"HomeStretch","n":29,"lo":855,"hi":1728,"med":1199.99,"k":"ctx"},{"brand":"Barcalounger","n":22,"lo":1180,"hi":1533,"med":1219.99,"k":"ctx"},{"brand":"Kuka Home","n":9,"lo":972,"hi":1550,"med":1249.99,"k":"ctx"},{"brand":"La-Z-Boy","n":37,"lo":800,"hi":1900,"med":1299.99,"k":"focus"},{"brand":"Elran","n":4,"lo":1756,"hi":2732,"med":2196.44,"k":"ctx"},{"brand":"Flexsteel","n":43,"lo":1566,"hi":3218,"med":2299.99,"k":"s3"},{"brand":"Bassett","n":4,"lo":2013,"hi":3498,"med":2454.99,"k":"ctx"}]},{"category":"Motion Sofas","brands":[{"brand":"Cheers","n":15,"lo":1009,"hi":1509,"med":1299.99,"k":"ctx"},{"brand":"Ashley","n":4,"lo":800,"hi":2300,"med":1549.99,"k":"s1"},{"brand":"Catnapper","n":14,"lo":1000,"hi":2371,"med":1699.99,"k":"ctx"},{"brand":"HomeStretch","n":22,"lo":1200,"hi":2696,"med":1999.99,"k":"ctx"},{"brand":"Franklin","n":4,"lo":2000,"hi":2000,"med":1999.99,"k":"ctx"},{"brand":"Southern Motion","n":7,"lo":1694,"hi":2540,"med":2033.99,"k":"s2"},{"brand":"Kuka Home","n":12,"lo":1460,"hi":2649,"med":2034.99,"k":"ctx"},{"brand":"La-Z-Boy","n":16,"lo":2150,"hi":3275,"med":2422.21,"k":"focus"},{"brand":"Flexsteel","n":32,"lo":2297,"hi":3747,"med":3274.99,"k":"s3"}]}];
+const MAX=4000, TICKS=[1000,2000,3000,4000];
+const money=n=>"$"+n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+const money0=n=>"$"+Math.round(n).toLocaleString("en-US");
+const pos=v=>Math.max(0,Math.min(100,v/MAX*100));
+
+const charts=document.getElementById("charts");
+charts.style.cssText="display:flex;flex-direction:column;gap:26px";
+DATA.forEach(f=>{
+  const card=document.createElement("section"); card.className="card";
+  const rows=f.brands.map(b=>{
+    const l=pos(b.lo), r=pos(b.hi), m=pos(b.med);
+    return `<div class="row ${b.k}">
+      <div class="bl">${b.brand}</div>
+      <div class="track">
+        <div class="bar" style="left:${l}%;width:${Math.max(r-l,.4)}%"></div>
+        <div class="val" style="left:${m}%">${money(b.med)}</div>
+        <div class="dot" style="left:${m}%"></div>
+        <div class="hit" data-t="${b.brand} · ${b.n} SKUs&#10;median ${money(b.med)}&#10;p10–p90 ${money0(b.lo)}–${money0(b.hi)}"></div>
+      </div></div>`;
+  }).join("");
+  card.innerHTML=`<h2>${f.category}</h2><p class="cap">${f.brands.length} brands · sorted by median</p>
+    <div class="plot"><div class="grid">${TICKS.map(t=>`<div class="gl" style="left:${pos(t)}%"></div>`).join("")}</div>
+    ${rows}
+    <div class="axis"><div></div><div class="ax">${TICKS.map(t=>`<span class="tk" style="left:${pos(t)}%">${money0(t)}</span>`).join("")}</div></div>
+    </div>`;
+  charts.appendChild(card);
+});
+
+const tables=document.getElementById("tables");
+DATA.forEach(f=>{
+  const t=document.createElement("table");
+  t.innerHTML=`<caption style="text-align:left;font-weight:600;padding:14px 0 4px;font-size:.9rem">${f.category}</caption>
+   <thead><tr><th>Brand</th><th>SKUs</th><th>p10</th><th>Median</th><th>p90</th></tr></thead>
+   <tbody>${f.brands.map(b=>`<tr class="${b.k}"><td>${b.brand}</td><td>${b.n}</td><td>${money0(b.lo)}</td><td>${money(b.med)}</td><td>${money0(b.hi)}</td></tr>`).join("")}</tbody>`;
+  tables.appendChild(t);
+});
+
+const tip=document.getElementById("tip");
+document.addEventListener("pointerover",e=>{
+  const h=e.target.closest(".hit"); if(!h) return;
+  tip.innerHTML=h.dataset.t.split("\n").map((s,i)=>i?s:"<b>"+s+"</b>").join("<br>");
+  tip.classList.add("on");
+});
+document.addEventListener("pointermove",e=>{
+  if(!tip.classList.contains("on")) return;
+  const p=14, w=tip.offsetWidth, h=tip.offsetHeight;
+  tip.style.left=Math.min(e.clientX+p, innerWidth-w-8)+"px";
+  tip.style.top=Math.max(8, e.clientY-h-p)+"px";
+});
+document.addEventListener("pointerout",e=>{ if(e.target.closest(".hit")) tip.classList.remove("on"); });
+</script>
