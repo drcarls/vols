@@ -34,7 +34,8 @@ SITEMAPS = {
 # user, collected through a residential-proxy scraper. Its own material labels
 # are carried through rather than re-inferred from text.
 LOCAL_FILES = {
-    "Ashley": ("data/ashley_own_recliners.csv", "user-supplied scrape"),
+    "Ashley": [("data/ashley_own_recliners.csv", "user-supplied scrape"),
+               ("data/ashley_own_motion_sofas_catalog.csv", "constructor.io browse")],
 }
 
 BLOCKED = {
@@ -135,7 +136,8 @@ def from_local_csv(path):
         if NOT_FURNITURE.search(r.get("name", "")) or r.get("subcategory") in NOT_CATEGORY:
             dropped += 1
             continue
-        cat = categorise(r.get("name", "") + " " + r.get("subcategory", ""))
+        cat = (r["subcategory"] if r.get("subcategory") in ("Motion sofas", "Recliners")
+               else categorise(r.get("name", "") + " " + r.get("subcategory", "")))
         if cat == "Other":
             cat = "Recliners"
         models[cat] += 1
@@ -164,12 +166,18 @@ if __name__ == "__main__":
                       "models": dict(counts), "skus": {}}
         print(f"  {brand:<22} {total:>5} products  {dict(counts)}", flush=True)
         time.sleep(1)
-    for brand, (path, note) in LOCAL_FILES.items():
-        counts, skus, total, dropped, mats = from_local_csv(path)
-        out[brand] = {"source": note, "total": total, "motion_split": "n/a",
+    for brand, files in LOCAL_FILES.items():
+        counts, skus, mats = Counter(), Counter(), Counter()
+        dropped, notes = 0, []
+        for path, note in files:
+            c, sk, _, dr, mt = from_local_csv(path)
+            counts += c; skus += sk; mats += mt; dropped += dr
+            notes.append(note)
+        out[brand] = {"source": " + ".join(sorted(set(notes))),
+                      "total": sum(counts.values()), "motion_split": "n/a",
                       "models": dict(counts), "skus": dict(skus),
                       "materials": dict(mats), "excluded_non_furniture": dropped}
-        print(f"  {brand:<22} {total:>5} products  {dict(counts)}"
+        print(f"  {brand:<22} {sum(counts.values()):>5} products  {dict(counts)}"
               f"   (excluded {dropped} non-furniture)", flush=True)
 
     for brand, why in BLOCKED.items():

@@ -199,9 +199,20 @@ same fixed set instead of erroring, so each subcategory was verified by
 checking its products link back through it, and only products carrying the
 subcategory in their own URL are kept.
 
-Ashley's own catalogue is a user-supplied export, collected through a
-residential-proxy scraper -- this environment gets a 403 from every Ashley
-domain, sitemaps and robots.txt included. It carries Ashley's own material
+Ashley's recliner catalogue is a user-supplied export. Its motion sofas were
+scraped here by `scrape_ashley.py`: Ashley refuses a desktop user-agent but
+serves a mobile one, and its browse runs on Constructor.io, whose public API
+returns the catalogue with dimensions and descriptions -- though deliberately
+without price, which varies by store.
+
+Model counts and materials from that API are complete (188 motion sofas, read
+from product descriptions). Prices are not: they need one product-page fetch
+each, and Ashley IP-blocked this container partway through, leaving 100 of 188
+priced. The missing ones are ordinary sofas and loveseats that returned prices
+earlier in the run, so the priced subset is biased by fetch order and should
+not be read as a price distribution. Anything resting on Ashley motion-sofa
+model counts or material shares is sound; anything resting on their price
+levels is not. It carries Ashley's own material
 labels, which are used directly rather than re-inferred from product text. Its
 "recliner" listing is a department rather than a category, so 45 third-party
 nursery gliders, massage chairs and battery packs are excluded to put it on the

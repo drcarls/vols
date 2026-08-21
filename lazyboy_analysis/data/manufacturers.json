@@ -39,21 +39,24 @@
   "skus": {}
  },
  "Ashley": {
-  "source": "user-supplied scrape",
-  "total": 135,
+  "source": "constructor.io browse + user-supplied scrape",
+  "total": 316,
   "motion_split": "n/a",
   "models": {
-   "Recliners": 135
+   "Recliners": 135,
+   "Motion sofas": 181
   },
   "skus": {
-   "Recliners": 135
+   "Recliners": 135,
+   "Motion sofas": 181
   },
   "materials": {
-   "performance": 20,
-   "leather": 28,
-   "unknown": 87
+   "performance": 45,
+   "leather": 139,
+   "unknown": 88,
+   "fabric": 44
   },
-  "excluded_non_furniture": 45
+  "excluded_non_furniture": 52
  },
  "Best Home Furnishings": {
   "source": "unavailable",
