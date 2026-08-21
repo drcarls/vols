@@ -140,6 +140,16 @@ two: it undercuts La-Z-Boy on sofas and loveseats (91-95%) and sits well above
 it on recliners (172% at Slumberland). A single index figure would have
 averaged that away into "roughly level".
 
+Flexsteel has no entry-point SKUs at either retailer against the full shelf --
+150 of its 181 seating SKUs are premium anchors and the other 31 are
+mid-ladder. It never plays the value role.
+
+Where it sits at the top depends on the store, though. At Slumberland it is the
+ceiling: only Ultra Comfort prices above it, and then only on recliners. At
+Steinhafels it is upper-mid, with a real premium tier above it -- King Hickory
+(107-169), Hooker, Elran, and several unresolved codes. Steinhafels is not
+simply swapping Flexsteel in for La-Z-Boy; it runs a deeper ladder overall.
+
 Against the full shelf La-Z-Boy has 32 entry-point SKUs, not the 8 the truncated
 peer set showed. The clearest cases are deeply discounted rocker recliners at
 Slumberland -- Morrison, Liam and Brooks at $630-650 and 42-46% off -- each with
