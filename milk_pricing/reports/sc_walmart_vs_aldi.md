@@ -1,3 +1,5 @@
+> **Superseded** by `sc_walmart_official_analysis.md` (92 Walmart stores, 84 matched against the full Aldi sweep).
+
 # Walmart vs Aldi — SC milk, private-label whole gallon
 
 Aldi is ZIP-pinned via its Instacart-powered storefront (`?zipcode=`), one verified pricing zone per market. Walmart is sampled opportunistically from random proxy exits, so it is **one store per trade area, not a zone average**.

@@ -1,3 +1,5 @@
+> **Superseded** by `sc_walmart_official_analysis.md`, which uses a 92-store file with correct store ZIPs instead of this report's 7 sampled stores.
+
 # Walmart milk pricing — South Carolina
 
 **Benchmark SKU:** Great Value Whole Vitamin D Milk, Gallon (usItemId 10450114), $/gal.

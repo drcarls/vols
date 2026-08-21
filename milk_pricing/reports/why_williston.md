@@ -1,3 +1,5 @@
+> **Superseded.** This analysis rested on 7 randomly-sampled Walmart stores. A 92-store file supplied by the user shows my sampling recorded the proxy exit's ZIP rather than the store's (wrong in 5 of 7) and read a price systematically $0.14-$0.15 low. The "Williston" store is Barnwell 29812. See `sc_walmart_official_analysis.md`.
+
 # Why is Walmart high where Aldi is compressed?
 
 Short answer: **it isn't, and Aldi isn't compressed.** Both halves of the premise dissolve against the full data, and what's left is a single store.

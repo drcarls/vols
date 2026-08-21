@@ -1,0 +1,93 @@
+zip,store_id,store_address,county,geo,whole_milk,milk_2pct,milk_1pct,milk_fatfree,pct_black,pct_white,pct_hisp,median_income,population,class_I_diff_cwt
+29020,634,"2240 W Dekalb St, Camden, SC 29020",Kershaw,rural,3.82,,,,28.6,61.3,5.0,55972.0,22021,6.0
+29033,5378,"1355 Knox Abbott Dr, Cayce, SC 29033",Lexington,urban,2.72,,,,26.3,58.6,7.5,57007.0,12890,6.0
+29063,4440,"1180 Dutch Fork Rd, Irmo, SC 29063",Lexington,rural,2.7,,,,25.3,66.7,1.8,90243.0,38754,6.0
+29070,4420,"115 E Church St, Leesville, SC 29070",Lexington,rural,3.82,,,,12.5,75.4,7.0,59192.0,16357,6.0
+29072,881,5556 Sunset Blvd,Lexington,rural,2.72,,,,6.5,82.8,4.5,100803.0,67669,6.0
+29073,4521,1780 S Lake Dr,Lexington,rural,2.72,,,,14.1,73.4,5.6,69454.0,49849,6.0
+29102,1017,"2010 Paxville Hwy, Manning, SC 29102",Clarendon,rural,4.0,,,,43.1,49.7,3.7,45084.0,15831,6.0
+29108,624,"2812 Main St, Newberry, SC 29108",Newberry,rural,3.82,,,,40.1,45.2,13.0,51180.0,19857,5.8
+29115,3724,332 Stone Wall Jackson Blvd,Orangeburg,rural,2.76,,,,72.6,22.9,2.0,31473.0,27024,6.0
+29118,616,2795 North Rd,Calhoun,rural,2.76,,,,62.6,28.1,5.3,54599.0,16051,6.0
+29150,377|5383|511,343 Pinewood Rd,Sumter,rural,3.78,,,,48.9,40.9,5.2,46133.0,38738,6.0
+29169,1183,"2401 Augusta Rd, West Columbia, SC 29169",Lexington,urban,2.72,,,,18.9,64.9,9.8,51496.0,22039,6.0
+29170,5291,1019 Old Barnwell Rd,Lexington,rural,2.72,,,,16.5,69.3,7.2,69880.0,21279,6.0
+29203,4506,321 Killian Rd,Richland,rural,2.72,,,,81.2,11.8,4.1,39015.0,41205,6.0
+29206,2214,5420 Forest Dr,Richland,urban,2.72,,,,13.8,73.8,4.5,83708.0,18746,6.0
+29209,1286,7520 Garners Ferry Rd,Richland,rural,2.76,,,,50.8,39.2,4.0,57969.0,36979,6.0
+29210,4379,1326 Bush River Rd,Lexington,urban,2.72,,,,55.2,34.8,3.2,49100.0,40923,6.0
+29212,1164,360 Harbison Blvd,Lexington,urban,2.7,,,,26.1,63.9,4.2,71968.0,27310,6.0
+29223,1339,10060 Two Notch Rd,Richland,urban,2.72,,,,58.5,25.2,8.2,52603.0,51354,6.0
+29301,1035,141 Dorman Centre Dr,Spartanburg,urban,2.32,,,,32.2,45.8,12.6,55011.0,35380,5.6
+29302,3338,203 Cedar Springs Road,Spartanburg,rural,2.32,,,,16.1,73.4,3.4,70557.0,17897,5.6
+29307,1281,2151 E Main St,Cherokee,rural,2.32,,,,21.4,71.9,3.1,62523.0,18759,5.6
+29316,2806,"4000 Hwy 9, Boiling Springs, SC 29316",Spartanburg,urban,2.32,,,,13.8,74.6,4.8,75933.0,30283,5.6
+29341,638,"165 Walton Dr, Gaffney, SC 29341",Cherokee,rural,3.82,,,,25.1,61.2,8.4,50487.0,20027,5.6
+29360,1130,"922 E Main St, Laurens, SC 29360",Laurens,rural,3.82,,,,26.4,65.3,4.4,51456.0,21819,5.8
+29379,629,"513 N Duncan Byp, Union, SC 29379",Union,rural,3.82,,,,31.3,61.5,1.7,41200.0,17380,5.8
+29406,1359,7400 Rivers Ave,Berkeley,urban,2.86,,,,42.5,33.8,16.1,45797.0,32570,6.0
+29412,2348,1231 Folly Rd,Charleston,urban,3.86,,,,15.2,76.0,3.5,95627.0,40307,6.0
+29414,1748,3951 W Ashley Cir,Charleston,urban,3.86,,,,15.3,73.8,4.6,85434.0,44196,6.0
+29418,3367,4920 Centre Pointe Dr,Charleston,urban,2.86,,,,50.3,34.4,9.9,58404.0,24386,6.0
+29440,625,"1310 N Fraser St, Georgetown, SC 29440",Georgetown,rural,3.86,,,,46.1,49.6,2.5,50101.0,26302,6.0
+29445,3646|3899|2928,1635 Red Bank Road,Berkeley,urban,2.86,,,,23.0,56.0,10.4,77235.0,60419,6.0
+29456,3713,"3685 Ladson Rd, Ladson, SC 29456",Berkeley,urban,2.86,,,,28.9,48.9,12.1,74074.0,35871,6.0
+29461,1146,"511 N Highway 52, Moncks Corner, SC 29461",Berkeley,rural,2.86,,,,28.2,64.4,3.0,78329.0,42217,6.0
+29464,632,1481 N Highway 17,Charleston,urban,3.07,,,,5.5,89.1,2.2,104366.0,51259,6.0
+29466,4384,3000 Proprietors Pl,Charleston,urban,3.07,,,,7.3,86.3,2.3,121840.0,43233,6.0
+29483,5279|1037,1616 Central Ave,Berkeley,rural,2.86,,,,18.5,71.0,5.4,75698.0,56758,6.0
+29485,6174|628,10635 Dorchester Road,Charleston,urban,2.86,,,,22.0,63.9,5.9,78363.0,58946,6.0
+29488,1358,"2110 Bells Hwy, Walterboro, SC 29488",Colleton,rural,3.86,,,,38.6,55.1,3.5,46170.0,22354,6.0
+29501,3638|630,804 S. Cashua Drive,Darlington,rural,2.82,,,,35.8,56.2,2.3,64616.0,47406,6.0
+29505,2703,2014 S Irby St,Florence,rural,2.82,,,,39.6,52.7,4.4,65404.0,24562,6.0
+29512,4457,"1250 Bennettsville Sq, Bennettsville, SC 29512",Marlboro,rural,3.97,,,,55.1,34.7,3.7,37104.0,17736,5.8
+29520,642,"1040 Chesterfield Hwy, Cheraw, SC 29520",Chesterfield,rural,3.82,,,,41.1,49.2,3.6,40724.0,12575,5.8
+29526,586|4664,2709 Church St Ste A,Horry,rural,2.88,,,,14.1,74.4,6.6,59194.0,49383,6.0
+29532,7188,"251 Andover Pl, Darlington, SC 29532",Darlington,rural,3.82,,,,55.7,38.4,3.6,39553.0,20000,6.0
+29536,627,"805 Enterprise Rd, Dillon, SC 29536",Dillon,rural,3.82,,,,50.7,39.9,3.8,42835.0,15690,6.0
+29550,1135,"1150 S 4th St, Hartsville, SC 29550",Chesterfield,rural,3.82,,,,29.4,63.2,3.2,52525.0,29776,5.8
+29560,621,"900 Us 52 Hwy, Lake City, SC 29560",Clarendon,rural,3.82,,,,52.9,40.9,1.6,49141.0,12073,6.0
+29572,643,10820 Kings Rd,Horry,urban,2.88,,,,3.7,83.9,7.5,67594.0,11441,6.0
+29574,1829,"305 Commerce Dr, Marion, SC 29574",Dillon,rural,3.97,,,,57.9,39.0,1.7,34859.0,9842,6.0
+29575,2887|574,125 Maryport Drive,Horry,urban,2.88,,,,2.9,87.8,3.8,68031.0,19511,6.0
+29576,5705|3442,"545 Garden City Connector, Garden City Beach, SC 29576",Georgetown,rural,2.88,,,,1.6,91.8,3.9,65890.0,32817,6.0
+29577,2870|5367|5923|2712,3915 N Kings Hwy,Horry,urban,2.88,,,,17.0,66.1,12.4,47107.0,34384,6.0
+29582,5087,"550 Highway 17 N, North Myrtle Beach, SC 29582",Horry,rural,2.97,,,,3.2,83.1,9.1,68741.0,19701,6.0
+29607,640,1451 Woodruff Rd,Greenville,urban,2.5,,,,26.4,61.9,5.3,65712.0,43466,5.6
+29611,641|3192,6134 White Horse Rd,Anderson,urban,2.5,,,,28.2,45.1,20.0,45291.0,32925,5.6
+29615,2328|4583,2014 Wade Hampton Blvd,Greenville,urban,2.5,,,,9.5,74.2,7.5,72494.0,39164,5.6
+29617,4452,5009 Old Buncombe Road,Greenville,urban,2.5,,,,14.6,57.8,23.2,50976.0,26649,5.6
+29621,4443|396,2003 E Greenville St,Anderson,rural,2.88,,,,16.6,74.1,3.2,71438.0,44260,5.6
+29624,644,651 Highway 28 Byp,Anderson,rural,2.88,,,,41.9,47.6,7.9,29953.0,14746,5.6
+29630,3222,"1286 Eighteen Mile Rd, Central, SC 29630",Anderson,rural,3.26,,,,6.6,77.4,5.0,50864.0,15638,5.6
+29631,4445,"680 Old Greenville Hwy, Clemson, SC 29631",Anderson,urban,3.26,,,,7.6,79.0,3.1,50348.0,16313,5.6
+29640,631,"115 Rolling Hills Cir, Easley, SC 29640",Pickens,rural,2.5,,,,6.8,82.6,7.4,58980.0,32397,5.6
+29646,6887,300 Bypass 25 Ne,Abbeville,rural,2.82,,,,40.8,45.4,11.4,39899.0,28014,5.8
+29649,1382,508 Nw Bypass 72,Abbeville,rural,2.82,,,,29.0,63.6,3.0,51155.0,26696,5.8
+29650,4145,805 W Wade Hampton Blvd Ste B,Greenville,urban,2.5,,,,8.1,72.7,9.2,91439.0,38725,5.6
+29651,2687,14055 E Wade Hampton Blvd,Greenville,rural,2.5,,,,10.6,73.8,9.8,73505.0,53804,5.6
+29671,3191,"2637 Gentry Memorial Hwy, Pickens, SC 29671",Pickens,rural,3.82,,,,5.1,89.5,1.4,63430.0,19318,5.6
+29678,1123,"1636 Sandifer Blvd, Seneca, SC 29678",Oconee,rural,3.26,,,,16.8,73.7,5.2,45665.0,23359,5.6
+29680,5371|2265,1401 West Georgia Rd.,Greenville,urban,2.52,,,,25.1,60.6,7.6,85911.0,33768,5.6
+29681,3628,115 Highway 14,Greenville,urban,2.5,,,,11.8,74.1,7.5,104235.0,66168,5.6
+29687,1244,"3027 Wade Hampton Blvd, Taylors, SC 29687",Greenville,rural,2.5,,,,11.2,73.3,10.1,71133.0,43398,5.6
+29690,5487,"9 Benton Rd, Travelers Rest, SC 29690",Greenville,rural,2.5,,,,8.4,81.2,4.6,63506.0,26362,5.6
+29706,1603,"1691 J A Cochran Byp, Chester, SC 29706",Chester,rural,3.82,,,,40.6,54.3,2.7,50942.0,19470,5.8
+29707,4237,"10048 Charlotte Hwy, Indian Land, SC 29707",Lancaster,urban,2.62,,,,6.0,79.3,8.6,108322.0,31826,5.8
+29708,3733,"1151 Stonecrest Blvd, Tega Cay, SC 29708",York,urban,3.32,,,,8.9,72.3,7.8,125677.0,42028,5.6
+29710,5745,"175 Highway 274, Lake Wylie, SC 29710",York,rural,3.82,,,,9.7,80.3,6.3,82554.0,38528,5.6
+29715,3359,"500 N Dobys Bridge Road, Fort Mill, SC 29715",York,urban,2.62,,,,12.2,68.9,8.9,103892.0,41581,5.6
+29720,1030,"805 Hwy 9 Bypass Wes, Lancaster, SC 29720",Lancaster,rural,3.38,,,,27.9,62.1,6.2,58549.0,52308,5.8
+29730,6962|585,1225 Cherry Rd,Chester,rural,3.32,,,,38.8,51.0,4.8,57488.0,56727,5.8
+29732,4593,4875 Old York Rd,York,urban,3.32,,,,20.0,67.8,6.7,77601.0,57182,5.6
+29745,1144,"970 E Liberty St, York, SC 29745",York,rural,3.82,,,,14.6,76.0,4.5,73416.0,34352,5.6
+29801,4487,3581 Richland Ave W,Aiken,rural,2.67,,,,42.6,49.1,5.7,52973.0,30148,6.0
+29803,514,2035 Whiskey Rd,Aiken,rural,2.67,,,,17.5,72.7,4.1,77868.0,38849,6.0
+29812,795,"11391 Dunbarton Blvd, Barnwell, SC 29812",Allendale,rural,3.86,,,,40.2,52.7,3.2,42038.0,10773,6.0
+29841,1270,1201 Knox Ave,Aiken,urban,2.67,,,,19.4,70.2,6.3,64079.0,32505,6.0
+29860,6576,1041 Edgefield Rd,Aiken,rural,2.67,,,,15.8,74.3,5.3,88591.0,17149,6.0
+29906,1383,350 Robert Smalls Pkwy,Beaufort,rural,3.86,,,,36.3,48.0,12.7,60041.0,25772,6.0
+29907,7181,265 Sea Island Parkway,Beaufort,rural,3.86,,,,12.1,78.2,4.0,85203.0,14580,6.0
+29910,6395,"4 Bluffton Rd, Bluffton, SC 29910",Beaufort,rural,3.38,,,,6.8,71.9,17.2,92421.0,47927,6.0
+29926,728,"25 Pembroke Dr, Hilton Head Island, SC 29926",Beaufort,rural,3.86,,,,9.8,69.7,17.7,95090.0,25384,6.0
+29927,2832,"4400 Us Highway 278, Hardeeville, SC 29927",Beaufort,rural,3.86,,,,29.9,40.2,26.7,69635.0,10297,6.0
