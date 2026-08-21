@@ -177,6 +177,24 @@ is the part that survives. What this cannot do is separate a tersely listed
 product from a genuinely plain one -- Barcalounger scores 0.2 on both measures
 because its listings say almost nothing.
 
+## Dealers against the brand's own store
+
+Section 4 of `assortment.py` sets the dealer shelves beside La-Z-Boy.com. The
+column that matters is covers per model: a dealer stocks 1.4-1.8 colourways of
+a model, while the brand's own store shows 6.0-6.4 -- and that is only the
+covers rendered server-side, so the real range is wider still.
+
+The own-store figures come from a 34-product sample. La-Z-Boy.com's top-level
+category pages serve a fixed set and paginate the rest in JavaScript, and its
+subcategory paths fall back to that same fixed set rather than erroring, so a
+complete own-store catalogue was not reachable. That makes "not on
+la-z-boy.com" a statement about the sample, never about the brand's line.
+Comparisons that hold the sample fixed and vary the dealer are sound: against
+the same 17 recliner families, Slumberland stocks 13 and Steinhafels 4.
+
+The own-store feature score reads titles only -- no descriptions were captured
+-- so it is not comparable with the dealer figure, which reads both.
+
 ## Caveats
 
 - **Not carried, so not covered:** Palliser and Stressless appear at neither

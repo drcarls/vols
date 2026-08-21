@@ -146,9 +146,9 @@ def section_differences(rows, focus, minn):
         for r in sub:
             by[r["brand"]].append(r)
         print(f"\n-- {cat} (both retailers) --")
-        print(f"{'brand':<24}{'SKUs':>6}{'median $':>11}{'feats':>7}"
-              f"{'% power':>9}{'% headrest':>12}{'% leather':>11}")
-        print("-" * 80)
+        print(f"{'brand':<24}{'SKUs':>6}{'models':>8}{'SKU/mdl':>9}{'median $':>11}"
+              f"{'feats':>7}{'% power':>9}{'% headrest':>12}{'% leather':>11}")
+        print("-" * 97)
         ordered = sorted((b for b, v in by.items() if len(v) >= minn),
                          key=lambda b: -st.mean([x["feats"] for x in by[b]]))
         for b in ordered:
@@ -157,7 +157,9 @@ def section_differences(rows, focus, minn):
             hr = sum(1 for x in v if re.search(FEATURES["headrest"], f"{x['product']}", re.I))
             lea = sum(1 for x in v if x["mat"] == "Leather")
             mark = "  <<" if b == focus else ""
-            print(f"{b:<24}{len(v):>6}{st.median([x['price'] for x in v]):>11,.0f}"
+            mdl = len({x["product_id"] for x in v})
+            print(f"{b:<24}{len(v):>6}{mdl:>8}{len(v)/mdl:>9.1f}"
+                  f"{st.median([x['price'] for x in v]):>11,.0f}"
                   f"{st.mean([x['feats'] for x in v]):>7.1f}{pw/len(v)*100:>8.0f}%"
                   f"{hr/len(v)*100:>11.0f}%{lea/len(v)*100:>10.0f}%{mark}")
 
@@ -176,9 +178,9 @@ def section_roles(rows, focus, window):
                 continue
             pop = [r["price"] for r in peers]
             print(f"\n-- {ret} · {cat} — {len(mine)} {focus} SKUs vs {len(pop)} competitor SKUs --")
-            print(f"{'role':<22}{'material':<10}{'SKUs':>6}{'median $':>11}"
+            print(f"{'role':<22}{'material':<10}{'SKUs':>6}{'models':>8}{'median $':>11}"
                   f"{'feats':>7}{'cheaper below':>15}{'within +' + str(int(window)) + '%':>13}")
-            print("-" * 84)
+            print("-" * 92)
             buckets = defaultdict(list)
             for r in mine:
                 pct = pctile(r["price"], pop)
@@ -195,9 +197,79 @@ def section_roles(rows, focus, window):
                              if r["price"] < x["price"] <= r["price"] * (1 + window / 100)})
                         for r, _ in g])
                     print(f"{role:<22}{mat:<10}{len(g):>6}"
+                          f"{len({r['product_id'] for r, _ in g}):>8}"
                           f"{st.median([r['price'] for r, _ in g]):>11,.0f}"
                           f"{st.mean([r['feats'] for r, _ in g]):>7.1f}"
                           f"{below:>15.0f}{above:>13.0f}")
+
+
+def own_store_category(title):
+    """Same two categories, read off a La-Z-Boy.com product name."""
+    t = title or ""
+    if re.search(r"sofa|loveseat|sectional", t, re.I):
+        return "Motion sofas" if re.search(r"reclin|power|duo", t, re.I) else None
+    if re.search(r"recliner|reclining chair", t, re.I):
+        return "Recliners"
+    return None
+
+
+def section_own_store(rows, covers_path, descriptions, focus):
+    """La-Z-Boy's own store against the same brand on dealer shelves.
+
+    The dealer figures are what a shopper can buy off that floor. The
+    La-Z-Boy.com figures are what the brand itself puts in front of the same
+    shopper, and the covers-per-model column is the comparison that matters:
+    a dealer stocks a handful of colourways, the brand offers its full range.
+    """
+    by_product = defaultdict(list)
+    meta = {}
+    for r in csv.DictReader(open(covers_path)):
+        cat = own_store_category(r["product"])
+        if not cat:
+            continue
+        by_product[r["product"]].append(float(r["price"]))
+        meta[r["product"]] = cat
+
+    print("\n\n" + "=" * 96)
+    print(f"4. {focus.upper()} DEALERS vs {focus.upper()}.COM".center(96))
+    print("=" * 96)
+    print(f"\n{'channel':<26}{'category':<15}{'models':>8}{'SKUs/covers':>13}"
+          f"{'per model':>11}{'median $':>11}{'feats':>7}")
+    print("-" * 91)
+
+    for cat in ("Recliners", "Motion sofas"):
+        for ret in ("slumberland", "steinhafels"):
+            v = [r for r in rows if r["retailer"] == ret and r["cat"] == cat
+                 and r["brand"] == focus]
+            if not v:
+                continue
+            mdl = len({x["product_id"] for x in v})
+            print(f"{ret + ' (dealer)':<26}{cat:<15}{mdl:>8}{len(v):>13}"
+                  f"{len(v)/mdl:>11.1f}{st.median([x['price'] for x in v]):>11,.0f}"
+                  f"{st.mean([x['feats'] for x in v]):>7.1f}")
+        own = {p: v for p, v in by_product.items() if meta[p] == cat}
+        if own:
+            covers = sum(len(v) for v in own.values())
+            base = [min(v) for v in own.values()]
+            feats = st.mean([sum(1 for pat in FEATURES.values()
+                                 if re.search(pat, p, re.I)) for p in own])
+            print(f"{'la-z-boy.com (own)':<26}{cat:<15}{len(own):>8}{covers:>13}"
+                  f"{covers/len(own):>11.1f}{st.median(base):>11,.0f}{feats:>7.1f}")
+        print()
+
+    print("  Dealer 'per model' counts colourways actually stocked; la-z-boy.com")
+    print("  counts covers offered, and only those rendered server-side, so the")
+    print("  brand's true range is wider than shown. Own-store price is the base")
+    print("  cover. Own-store features come from the title alone -- no description")
+    print("  was captured -- so that column is not comparable with the dealer one,")
+    print("  which reads titles and descriptions together.")
+
+    print(f"\n\n  -- within-model cover ladder on la-z-boy.com --\n")
+    print(f"  {'model':<50}{'covers':>8}{'base $':>9}{'top $':>9}{'spread':>9}")
+    print("  " + "-" * 83)
+    for pnm, v in sorted(by_product.items(), key=lambda kv: -max(kv[1]) / min(kv[1]))[:10]:
+        print(f"  {pnm[:49]:<50}{len(v):>8}{min(v):>9,.0f}{max(v):>9,.0f}"
+              f"{max(v)/min(v):>8.1f}x")
 
 
 if __name__ == "__main__":
@@ -206,8 +278,11 @@ if __name__ == "__main__":
     ap.add_argument("--brand", default="La-Z-Boy")
     ap.add_argument("--min-n", type=int, default=8)
     ap.add_argument("--window", type=float, default=30.0)
+    ap.add_argument("--covers", default="data/lazboy_covers.csv")
     a = ap.parse_args()
-    rows = load(a.skus, load_descriptions())
+    descriptions = load_descriptions()
+    rows = load(a.skus, descriptions)
     section_counts(rows, a.brand, a.min_n)
     section_differences(rows, a.brand, a.min_n)
     section_roles(rows, a.brand, a.window)
+    section_own_store(rows, a.covers, descriptions, a.brand)
