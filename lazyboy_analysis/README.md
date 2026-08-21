@@ -246,6 +246,23 @@ to report Southern Motion as 100% leather off 14 named SKUs. Over the shelf
 every brand sits on one denominator -- exact for La-Z-Boy, whose cover codes
 validate the convention, and a floor for everyone else.
 
+## Pricing
+
+`pricing.py` reads each brand twice. Both retailers publish a list price and a
+selling price on essentially every SKU (1,000 of 1,003 in the two categories),
+so a brand can be placed where it positions itself and where it actually
+transacts. The gap between those two is the finding.
+
+It reports discount depth and dispersion separately, because they say different
+things: Franklin discounts deeper than La-Z-Boy on recliners, 48% against 40%,
+but within an 11-point band against La-Z-Boy's 42. Depth alone would call
+Franklin the least disciplined brand on the floor; it is the most.
+
+The value pass divides street price by advertised features. It measures what a
+listing claims rather than a teardown, so it rewards brands that describe their
+products fully -- Barcalounger's $5,368 per feature is terse copy, not a bare
+chair.
+
 ## Caveats
 
 - **Not carried, so not covered:** Palliser and Stressless appear at neither
