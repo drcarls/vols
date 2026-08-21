@@ -56,3 +56,33 @@ The reason is collinearity and sample size. In these 92 stores %Black correlates
 ## What would settle it
 
 Pool the neighbouring states. SC alone cannot separate race from income and rurality; NC, GA and VA together would give roughly the n needed, and would add ZIPs that break SC's specific race-income collinearity — high-income majority-Black suburbs, low-income majority-white rural areas. That variation is what identifies the coefficient, and South Carolina does not have enough of it.
+
+## Matched pairs
+
+You asked for matched pairs as well. Matching each high-Black store to the nearest low-Black store on income and population within the same geo stratum, greedy nearest-neighbour, no control reused:
+
+| Contrast | Pairs | Mean diff | Median | t | High-Black dearer |
+|---|---:|---:|---:|---:|---:|
+| ≥40% vs ≤20% Black, ±$10k income, ±15k pop | 7 | +$0.100 | +$0.140 | 0.75 | 5 of 7 |
+| ≥35% vs ≤20%, looser calipers | 16 | +$0.186 | +$0.070 | 1.32 | 8 of 16 |
+| ≥30% vs ≤25%, loosest | 21 | +$0.271 | +$0.140 | 1.49 | 11 of 21 |
+
+Same pattern as the regressions: **positive every time, significant none of them**, and the win/loss counts are near coin-flips once the sample is big enough to count (8-6, 11-10).
+
+But the matched pairs also show *why*. The matches cross Walmart's price zones — Darlington at $3.82 paired against Oconee at $3.26, different regions entirely. Matching on income and population without matching on geography compares across zones, and the zone is what sets the price.
+
+## The structural answer: price is assigned by zone, and zones are mixed
+
+Walmart's SC prices fall on twelve discrete points. Within any one of them, demographics vary enormously and the price does not vary at all:
+
+| Price | Store-ZIPs | Black share range | Income range |
+|---|---:|---|---|
+| $3.82 | 15 | **5.1% – 55.7%** | $39.6k – $82.6k |
+| $2.50 | 10 | 6.8% – 28.2% | $45.3k – $104.2k |
+| $2.72 | 9 | **6.5% – 81.2%** | $39.0k – $100.8k |
+| $3.86 | 9 | 9.8% – 46.1% | $42.0k – $95.6k |
+| $2.88 | 7 | 1.6% – 41.9% | $30.0k – $71.4k |
+
+Inside the $3.82 zone, Darlington (**55.7% Black, $39.6k income**) and Pickens (**5.1% Black, $63.4k**) pay **exactly the same price**. All fifteen are rural. Inside the $2.72 zone the Black share runs from 6.5% to 81.2% at one price.
+
+That is the mechanism. Walmart sets a price per zone; zones are geographic and demographically heterogeneous. The raw race correlation comes entirely from *which zones* are dearer — rural ones — not from any differentiation within a zone. There is no pricing lever here that could act on race even in principle, because the unit of pricing is a region containing both 5% and 56% Black ZIPs.
