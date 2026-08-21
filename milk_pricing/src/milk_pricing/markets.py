@@ -62,7 +62,11 @@ RETAILERS: tuple[Retailer, ...] = (
     Retailer("walmart", "Walmart", "mass", ("Great Value",), markup="none"),
     Retailer("publix", "Publix", "conventional", ("Publix", "GreenWise")),
     Retailer("food-lion", "Food Lion", "conventional", ("Food Lion", "Nature's Promise")),
-    Retailer("harris-teeter", "Harris Teeter", "conventional", ("Harris Teeter", "HT Traders")),
+    # Reachable without Premium domains — its earlier failure was a transient
+    # rate limit, not a permission block. Store follows the proxy exit and no
+    # ZIP parameter pins it, so SC coverage needs sampling (see harvest.py).
+    Retailer("harris-teeter", "Harris Teeter", "conventional",
+             ("Harris Teeter", "HT Traders", "Highland Crest")),
     Retailer("ingles", "Ingles", "conventional", ("Laura Lynn",)),
     Retailer("lowes-foods", "Lowes Foods", "conventional", ("Lowes Foods",)),
     Retailer("aldi", "Aldi", "hard_discount", ("Friendly Farms", "Simply Nature")),

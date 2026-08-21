@@ -58,10 +58,23 @@ and raises otherwise.
 Verified across 21 SC ZIPs: 20 honoured, resolving to 12 distinct Instacart
 `zoneId`s, with ZIPs inside a market correctly sharing one zone.
 
-Reachability as tested: aldi.us works and is Instacart-powered. lidl.com,
-ingles-markets.com and lowesfoods.com are reachable but run their own site
-tech and need separate parsers. publix.com, foodlion.com and harristeeter.com
-are blocked.
+Reachability as tested:
+
+| Site | Status |
+|---|---|
+| aldi.us | works, Instacart-powered, ZIP-pinnable |
+| harristeeter.com | **works** — no Premium needed; see below |
+| lidl.com, ingles-markets.com, lowesfoods.com | reachable, own site tech, need parsers |
+| foodlion.com | Premium domains required |
+| publix.com, samsclub.com | return empty |
+
+**Harris Teeter was mis-categorised as blocked.** Its failure was a transient
+"global adaptive rate limit" (a 77-byte body), not a permission error, and it
+clears on retry with backoff. It needs no Premium permission. Its store follows
+the proxy exit and no URL parameter pins it — `zipcode`, `zip`, `storeCode` and
+`locationId` were all tested — so it carries the same limitation as Walmart and
+needs sampling for SC coverage. Every row must be read alongside the store the
+page names in "Pickup at ...".
 
 ## The marketplace substitution trap
 
