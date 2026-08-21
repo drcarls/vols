@@ -19,7 +19,6 @@ import statistics as st
 from collections import defaultdict, Counter
 
 SEATING = {"Recliner", "Sofa", "Loveseat", "Sectional"}
-FOCUS = "La-Z-Boy"
 
 # Spare parts and add-ons carry a seating category but are not furniture, and
 # at $40-$150 they would otherwise look like the cheapest seat in the store.
@@ -37,20 +36,20 @@ def pct_rank(value, population):
     return round(below / len(population) * 100, 1)
 
 
-def analyse(rows, window):
+def analyse(rows, window, focus):
     """Per focus-brand SKU: its rank in the local ladder and what sits just above."""
     peers = defaultdict(list)          # (retailer, form) -> competitor prices
     peer_rows = defaultdict(list)
     for r in rows:
         if r["form"] not in SEATING:
             continue
-        if r["brand"] != FOCUS:
+        if r["brand"] != focus:
             peers[(r["retailer"], r["form"])].append(r["price"])
             peer_rows[(r["retailer"], r["form"])].append(r)
 
     out = []
     for r in rows:
-        if r["brand"] != FOCUS or r["form"] not in SEATING:
+        if r["brand"] != focus or r["form"] not in SEATING:
             continue
         key = (r["retailer"], r["form"])
         pop = peers[key]
@@ -85,7 +84,7 @@ def analyse(rows, window):
     return out
 
 
-def main(path, window):
+def main(path, window, focus):
     rows, dropped = [], 0
     for r in csv.DictReader(open(path)):
         if ACCESSORY_RE.search(r["product"]):
@@ -117,9 +116,9 @@ def main(path, window):
     tot_t = sum(skus[("steinhafels", b)] for b in brands)
     print("-" * 68)
     print(f"{'TOTAL':<24}{tot_s:>10}{'':>12}{tot_t:>10}{'':>12}")
-    print(f"\nLa-Z-Boy share of tracked SKUs: "
-          f"Slumberland {skus[('slumberland', FOCUS)] / tot_s * 100:.0f}%, "
-          f"Steinhafels {skus[('steinhafels', FOCUS)] / tot_t * 100:.0f}%")
+    fs, ft = skus[("slumberland", focus)], skus[("steinhafels", focus)]
+    print(f"\n{focus} share of tracked SKUs: "
+          f"Slumberland {fs / tot_s * 100:.0f}%, Steinhafels {ft / tot_t * 100:.0f}%")
 
     # ---- lineup differences ----------------------------------------------
     print("\n\n=== LINEUP DIFFERENCES ===\n")
@@ -129,18 +128,18 @@ def main(path, window):
     print(f"  Steinhafels only : {', '.join(only_t) or '-'}")
     print(f"  Both             : {', '.join(b for b in brands if skus[('slumberland', b)] and skus[('steinhafels', b)])}")
 
-    print(f"\n  La-Z-Boy form mix (SKUs):")
+    print(f"\n  {focus} form mix (SKUs):")
     print(f"  {'form':<12}{'Slumberland':>13}{'Steinhafels':>13}")
     fm = defaultdict(Counter)
     for r in rows:
-        if r["brand"] == FOCUS and r["form"] in SEATING:
+        if r["brand"] == focus and r["form"] in SEATING:
             fm[r["form"]][r["retailer"]] += 1
     for f in sorted(fm, key=lambda f: -sum(fm[f].values())):
         print(f"  {f:<12}{fm[f]['slumberland']:>13}{fm[f]['steinhafels']:>13}")
 
     # ---- ladder role ------------------------------------------------------
-    res = analyse(rows, window)
-    print(f"\n\n=== HOW LA-Z-BOY SKUs SIT IN THE LADDER (step-up window +{window}%) ===\n")
+    res = analyse(rows, window, focus)
+    print(f"\n\n=== HOW {focus.upper()} SKUs SIT IN THE LADDER (step-up window +{window}%) ===\n")
     print(f"{'retailer':<14}{'role':<22}{'SKUs':>6}{'median $':>11}{'competitor SKUs teed up':>26}")
     print("-" * 79)
     for ret in ("slumberland", "steinhafels"):
@@ -161,7 +160,7 @@ def main(path, window):
     # prices are dense. It reads as teeing up competitors when the SKU is also
     # near the bottom of its ladder -- cheap enough to be the shopper's first
     # stop, with competitor product stacked just above it.
-    print(f"\n\n=== ENTRY-POINT SKUs: bottom-quartile La-Z-Boy, competitors stacked above ===\n")
+    print(f"\n\n=== ENTRY-POINT SKUs: bottom-quartile {focus}, competitors stacked above ===\n")
     entry = sorted([r for r in res if r["role"] == "Opening price point"],
                    key=lambda r: -r["tees_up_n"])
     print(f"{'retailer':<13}{'model':<30}{'form':<11}{'price':>8}{'disc':>6}"
@@ -195,7 +194,7 @@ def main(path, window):
     for r in res:
         for b, pid in r["_models"]:
             pairs[b].add((r["retailer"], r["product"], b, pid))
-    print(f"\n\n=== WHICH BRANDS SIT ONE STEP ABOVE A LA-Z-BOY MODEL ===\n")
+    print(f"\n\n=== WHICH BRANDS SIT ONE STEP ABOVE A {focus.upper()} MODEL ===\n")
     print(f"{'brand':<24}{'model pairs within +' + str(int(window)) + '%':>26}")
     print("-" * 50)
     for b, v in sorted(pairs.items(), key=lambda kv: -len(kv[1])):
@@ -209,9 +208,10 @@ if __name__ == "__main__":
     ap.add_argument("--skus", default="data/skus.csv")
     ap.add_argument("--window", type=float, default=30.0,
                     help="how far above a SKU still counts as one step up (%%)")
+    ap.add_argument("--brand", default="La-Z-Boy", help="brand to analyse")
     ap.add_argument("--out", default="data/teeup_by_sku.csv")
     args = ap.parse_args()
-    res = main(args.skus, args.window)
+    res = main(args.skus, args.window, args.brand)
     cols = ["retailer", "brand", "sku", "product", "variant", "form", "material",
             "price", "list_price", "discount_pct", "available", "peer_n",
             "price_pctile", "role", "tees_up_n", "tees_up_brands",
@@ -220,4 +220,4 @@ if __name__ == "__main__":
         w = csv.DictWriter(fh, fieldnames=cols, extrasaction="ignore")
         w.writeheader()
         w.writerows(sorted(res, key=lambda r: -r["tees_up_n"]))
-    print(f"\n\nper-SKU detail -> {args.out} ({len(res)} La-Z-Boy SKUs)")
+    print(f"\n\nper-SKU detail -> {args.out} ({len(res)} {args.brand} SKUs)")

@@ -36,7 +36,9 @@ python3 analyze.py --catalog data/catalog.csv
 python3 scrape_lazboy_covers.py --out data/lazboy_covers.csv
 python3 match_channels.py                     # three-channel comparison
 python3 build_skus.py --data data --out data/skus.csv
-python3 teeup.py --skus data/skus.csv --window 30
+python3 teeup.py --skus data/skus.csv --brand La-Z-Boy
+python3 teeup.py --skus data/skus.csv --brand Flexsteel
+python3 ladder.py --skus data/skus.csv --brand La-Z-Boy
 ```
 
 ## Data
@@ -97,6 +99,28 @@ A raw step-up count on its own is misleading: the highest counts belong to
 mid-ladder SKUs that simply sit where competitor prices are dense. Position and
 count have to be read together, which is why the entry-point table filters to
 the bottom quartile first.
+
+## Where each brand sits
+
+`ladder.py` answers two questions that can disagree, so it reports them apart:
+each brand's median indexed to the focus brand (structural position), and how
+many competitor models sit within one step below versus above the focus
+brand's own SKUs (adjacency). A median hides overlap when two brands span a
+wide range; adjacency catches it.
+
+The two retailers agree on the shape. Flexsteel is the ceiling — 119% to 211%
+of La-Z-Boy depending on store and category, with nothing above it but Bassett.
+La-Z-Boy holds the middle. Ashley is the floor at 22% to 53%. Run with
+`--brand Flexsteel` and every brand in the set undercuts it except Bassett.
+
+The exception worth knowing is Southern Motion, which is not one position but
+two: it undercuts La-Z-Boy on sofas and loveseats (91-95%) and sits well above
+it on recliners (172% at Slumberland). A single index figure would have
+averaged that away into "roughly level".
+
+`teeup.py --brand Flexsteel` finds zero entry-point SKUs against La-Z-Boy's
+eight: 165 of 181 Flexsteel SKUs are premium anchors. Flexsteel never plays the
+value role at either retailer.
 
 ## Caveats
 
