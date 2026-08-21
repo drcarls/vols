@@ -35,6 +35,8 @@ python3 build_dataset.py --data data --out data/catalog.csv
 python3 analyze.py --catalog data/catalog.csv
 python3 scrape_lazboy_covers.py --out data/lazboy_covers.csv
 python3 match_channels.py                     # three-channel comparison
+python3 build_skus.py --data data --out data/skus.csv
+python3 teeup.py --skus data/skus.csv --window 30
 ```
 
 ## Data
@@ -67,6 +69,35 @@ runs the other way on the sale side, which makes the -25% the conservative,
 robust half of the finding. What neither explains is the dispersion: identical
 model and configuration ranges from -50% to +50% depending on where you buy it.
 
+## Assortment and ladder position
+
+`build_skus.py` expands the catalogues to SKU level (2,643 rows); `teeup.py`
+reports what each retailer carries and where La-Z-Boy sits in its price ladder.
+
+For each La-Z-Boy SKU it finds the competitor SKUs in the same store and
+category priced within one step above it, and ranks the SKU against that
+competitor price distribution. Three roles fall out: **opening price point**
+(bottom quartile), **mid-ladder**, **premium anchor** (top quartile).
+
+Only 8 of 244 La-Z-Boy SKUs are opening price points. The rest sit mid-ladder
+(173) or above most of the competitive set (63). La-Z-Boy is not being used as
+a cheap draw at either retailer.
+
+Two things this measures carefully, and one it does not:
+
+- Competitor **models** are counted, not colourways — six covers of one sofa is
+  one alternative on the floor.
+- Role is assigned by percentile, so it is invariant to the step-up window; at
+  +15%, +30% and +50% the split is identical and only the counts scale.
+- It does **not** measure intent. "Tees up N competitors" means N competitor
+  models sit one step above in the same store and category. Whether the
+  retailer merchandises it that way is not observable from a catalogue feed.
+
+A raw step-up count on its own is misleading: the highest counts belong to
+mid-ladder SKUs that simply sit where competitor prices are dense. Position and
+count have to be read together, which is why the entry-point table filters to
+the bottom quartile first.
+
 ## Caveats
 
 - **Not carried, so not covered:** Palliser and Stressless appear at neither
@@ -83,5 +114,8 @@ model and configuration ranges from -50% to +50% depending on where you buy it.
   it shows is a floor, not the true range.
 - **Channel matches are model-level, not SKU-level**, and n=27. Treat individual
   rows as leads to verify against internal data, not as settled numbers.
+- Parts and add-ons (handles, bases, sheet sets) carry a seating category in
+  the feed and are excluded by title, not by a price floor, so that genuinely
+  cheap furniture is kept.
 - Prices are a single snapshot and furniture promotions move weekly. Re-run
   before quoting any number externally.

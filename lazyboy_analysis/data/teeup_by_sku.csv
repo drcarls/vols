@@ -1,0 +1,245 @@
+retailer,brand,sku,product,variant,form,material,price,list_price,discount_pct,available,peer_n,price_pctile,role,tees_up_n,tees_up_brands,cheaper_competitors
+steinhafels,La-Z-Boy,207PKG523,Ava 5-Pc. Power Headrest Reclining Modular With Wireless Remote,Left-Facing,Sectional,Unspecified,3302.99,5533.33,40.3,Y,170,58.2,Mid-ladder,17,Jackson/Catnapper(6); Flexsteel(6); Ashley(5),99
+steinhafels,La-Z-Boy,302PKG221,Ava 5-Pc. Power Headrest Reclining Modular With Wireless Remote,Right-Facing,Sectional,Unspecified,3302.99,5533.33,40.3,Y,170,58.2,Mid-ladder,17,Jackson/Catnapper(6); Flexsteel(6); Ashley(5),99
+steinhafels,La-Z-Boy,853PKG577,Ava 6-Pc. Power Headrest Reclining Modular With Wireless Remote,Default Title,Sectional,Unspecified,3488.39,5839.94,40.3,Y,170,62.9,Mid-ladder,17,Flexsteel(9); Ashley(5); Jackson/Catnapper(3),107
+steinhafels,La-Z-Boy,375PKG657,Ava 6-Pc. Power Headrest Reclining Chaise Modular With Wireless Remote,Right-Facing / 2 Reclining Seats,Sectional,Unspecified,3697.19,6193.32,40.3,Y,170,65.9,Mid-ladder,16,Flexsteel(7); Jackson/Catnapper(5); Ashley(4),112
+steinhafels,La-Z-Boy,491ZPKG41,Ava 6-Pc. Power Headrest Reclining Chaise Modular With Wireless Remote,Right-Facing / 3 Reclining Seats,Sectional,Unspecified,3759.99,6333.32,40.6,Y,170,67.6,Mid-ladder,16,Flexsteel(7); Jackson/Catnapper(5); Ashley(4),115
+steinhafels,La-Z-Boy,481QPKG32,Ava 6-Pc. Power Headrest Reclining Chaise Modular With Wireless Remote,Left-Facing / 3 Reclining Seats,Sectional,Unspecified,3759.99,6333.32,40.6,Y,170,67.6,Mid-ladder,16,Flexsteel(7); Jackson/Catnapper(5); Ashley(4),115
+steinhafels,La-Z-Boy,639PKG980,Ava 6-Pc. Power Headrest Reclining Chaise Modular With Wireless Remote,Left-Facing / 2 Reclining Seats,Sectional,Unspecified,3704.39,6193.32,40.2,Y,170,65.9,Mid-ladder,16,Flexsteel(7); Jackson/Catnapper(5); Ashley(4),112
+slumberland,La-Z-Boy,QK1032034,Astor Tri-Power Rocker Recliner,Mocha,Recliner,Unspecified,1579.99,2279.99,30.7,Y,73,61.6,Mid-ladder,13,Southern Motion(7); Flexsteel(5); Ashley(1),45
+steinhafels,La-Z-Boy,647Z83715,Acadia Leather Power Headrest Zero Gravity Recliner,LB206379 Dean Shitake,Recliner,Leather,2277.77,2277.77,,Y,93,73.1,Mid-ladder,13,Flexsteel(11); Bassett(2),68
+steinhafels,La-Z-Boy,520010718,Pinnacle Power Headrest Rocker Recliner with Wireless Remote,Default Title,Recliner,Leather,1349.99,1499.99,10.0,Y,93,39.8,Mid-ladder,13,Flexsteel(5); Southern Motion(3); Ashley(2); Best Home Furnishings(2); Natuzzi(1),37
+steinhafels,La-Z-Boy,273Z06786,Cade Fully Loaded Recliner With Wireless Remote,Default Title,Recliner,Unspecified,1349.99,1499.99,10.0,Y,93,39.8,Mid-ladder,13,Flexsteel(5); Southern Motion(3); Ashley(2); Best Home Furnishings(2); Natuzzi(1),37
+slumberland,La-Z-Boy,QK1040728,Randell Leather Rocker Recliner,Harvest,Recliner,Leather,1599.99,2349.99,31.9,Y,73,61.6,Mid-ladder,12,Southern Motion(7); Flexsteel(4); Ashley(1),45
+steinhafels,La-Z-Boy,193Z77078,Trouper Leather Fully Loaded Rocker Recliner with Wireless Remote,Default Title,Recliner,Leather,1699.99,1888.88,10.0,Y,93,53.8,Mid-ladder,12,Flexsteel(9); Ashley(1); Best Home Furnishings(1); Bassett(1),50
+steinhafels,La-Z-Boy,869PKG031,Ava 3-Pc. Power Headrest Reclining Chaise Sofa,Right-Facing,Sectional,Unspecified,2229.29,3733.35,40.3,Y,170,31.2,Mid-ladder,12,Jackson/Catnapper(7); Ashley(4); Natuzzi(1),53
+steinhafels,La-Z-Boy,867PKG192,Ava 3-Pc. Power Headrest Reclining Chaise Sofa,Left-Facing,Sectional,Unspecified,2229.29,3733.35,40.3,Y,170,31.2,Mid-ladder,12,Jackson/Catnapper(7); Ashley(4); Natuzzi(1),53
+steinhafels,La-Z-Boy,908494189,Randall Rocker Recliner,Default Title,Recliner,Unspecified,1388.88,1388.88,,Y,93,39.8,Mid-ladder,12,Flexsteel(5); Southern Motion(3); Ashley(2); Best Home Furnishings(1); Natuzzi(1),37
+steinhafels,La-Z-Boy,933Z10968,Belmont Leather Fully Loaded Recliner With Wireless Remote,Default Title,Recliner,Leather,1799.99,1999.99,10.0,Y,93,57.0,Mid-ladder,12,Flexsteel(9); Bassett(2); Ashley(1),53
+slumberland,La-Z-Boy,QK1081523,James Reclining Loveseat With Console,Silt,Loveseat,Unspecified,1699.99,2549.99,33.3,Y,82,59.8,Mid-ladder,11,Southern Motion(9); Ashley(1); Flexsteel(1),49
+slumberland,La-Z-Boy,QK1101745,Pinnacle Tri-Power Recliner,Brownstone,Recliner,Unspecified,1499.99,2499.99,40.0,Y,73,61.6,Mid-ladder,11,Flexsteel(5); Southern Motion(5); Ashley(1),45
+slumberland,La-Z-Boy,QK1101746,Pinnacle Tri-Power Recliner,Gray,Recliner,Unspecified,1499.99,2499.99,40.0,Y,73,61.6,Mid-ladder,11,Flexsteel(5); Southern Motion(5); Ashley(1),45
+slumberland,La-Z-Boy,QK1064471,Astor Leather Rocker Recliner,Chestnut,Recliner,Leather,1499.99,2499.99,40.0,Y,73,61.6,Mid-ladder,11,Flexsteel(5); Southern Motion(5); Ashley(1),45
+slumberland,La-Z-Boy,QK1041689,Pinnacle Reclining Loveseat,Marble,Loveseat,Fabric,1779.99,3319.99,46.4,Y,82,61.0,Mid-ladder,11,Southern Motion(9); Ashley(1); Flexsteel(1),50
+steinhafels,La-Z-Boy,907Z28983,Ace Fully Loaded Wall Saver Rclnr w Wireless Remote,Default Title,Recliner,Leather,1849.99,2055.54,10.0,Y,93,57.0,Mid-ladder,11,Flexsteel(8); Bassett(2); Ashley(1),53
+steinhafels,La-Z-Boy,422Z04048,Clybourn Leather Power Headrest Zero Gravity High Leg Recliner,LB206077 Cognac,Recliner,Leather,1899.99,2111.1,10.0,Y,93,60.2,Mid-ladder,11,Flexsteel(10); Bassett(1),56
+steinhafels,La-Z-Boy,948360912,Clybourn Leather Power Headrest Zero Gravity High Leg Recliner,LB206087 Navy,Recliner,Leather,2111.1,2111.1,,Y,93,66.7,Mid-ladder,11,Flexsteel(9); Bassett(2),62
+steinhafels,La-Z-Boy,148438918,Acadia Leather Power Headrest Zero Gravity Recliner,LB206376 Dean Chestnut,Recliner,Leather,2049.99,2277.77,10.0,Y,93,63.4,Mid-ladder,11,Flexsteel(9); Bassett(2),59
+steinhafels,La-Z-Boy,381243245,Lennon Leather Fully Loaded Swivel Recliner With Wireless Remote,Default Title,Recliner,Leather,1899.99,2111.1,10.0,N,93,60.2,Mid-ladder,11,Flexsteel(10); Bassett(1),56
+slumberland,La-Z-Boy,QK1064411,Trouper Reclining Loveseat,Mink,Loveseat,Unspecified,1879.99,2979.99,36.9,Y,82,61.0,Mid-ladder,10,Southern Motion(8); Ashley(1); Flexsteel(1),50
+slumberland,La-Z-Boy,QK1064402,Trouper Reclining Loveseat,Sable,Loveseat,Unspecified,1879.99,2979.99,36.9,Y,82,61.0,Mid-ladder,10,Southern Motion(8); Ashley(1); Flexsteel(1),50
+slumberland,La-Z-Boy,QK1064443,Morrison Power Plus Reclining Loveseat,Marble,Loveseat,Unspecified,1879.99,3479.99,46.0,Y,82,61.0,Mid-ladder,10,Southern Motion(8); Ashley(1); Flexsteel(1),50
+slumberland,La-Z-Boy,QK1064449,Morrison Power Plus Reclining Loveseat,Graphite,Loveseat,Unspecified,1879.99,3479.99,46.0,Y,82,61.0,Mid-ladder,10,Southern Motion(8); Ashley(1); Flexsteel(1),50
+steinhafels,La-Z-Boy,124Z19080,Olympic Power Headrest Zero Gravity Recliner,E191765 i-Adario Taupe,Recliner,Unspecified,1299.99,1444.43,10.0,Y,93,39.8,Mid-ladder,10,Flexsteel(4); Southern Motion(3); Ashley(2); Best Home Furnishings(1),37
+steinhafels,La-Z-Boy,602968224,Jay Power Headrest Reclining Sofa With Dual Wireless Remotes,C180974 Mushroom,Sofa,Unspecified,2199.99,2444.43,10.0,Y,92,70.7,Mid-ladder,10,Ashley(5); Flexsteel(2); Natuzzi(1); Bassett(1); Southern Motion(1),65
+steinhafels,La-Z-Boy,183Z59781,Jay Fully Loaded Rocker Recliner With Wireless Remote,C180969 Granite,Recliner,Unspecified,1399.99,1555.54,10.0,Y,93,41.9,Mid-ladder,10,Flexsteel(4); Ashley(2); Southern Motion(2); Best Home Furnishings(1); Natuzzi(1),39
+steinhafels,La-Z-Boy,992Z90454,Olympic Power Headrest Zero Gravity Recliner,Default Title,Recliner,Unspecified,1444.43,1444.43,,Y,93,45.2,Mid-ladder,10,Flexsteel(5); Ashley(2); Southern Motion(1); Best Home Furnishings(1); Natuzzi(1),42
+steinhafels,La-Z-Boy,988Z14417,Morrison Fully Loaded Rocker Recliner With Wireless Remote,Default Title,Recliner,Fabric,1499.99,1499.99,,Y,93,45.2,Mid-ladder,10,Flexsteel(4); Ashley(2); Southern Motion(1); Best Home Furnishings(1); Natuzzi(1); Bassett(1),42
+steinhafels,La-Z-Boy,536Z43530,Lennon Leather Fully Loaded Recliner With Wireless Remote,Default Title,Recliner,Leather,1199.99,2055.54,41.6,Y,93,37.6,Mid-ladder,10,Southern Motion(4); Flexsteel(3); Best Home Furnishings(2); Ashley(1),35
+steinhafels,La-Z-Boy,390PKG962,Ava 3-Pc. Power Headrest Reclining Sofa,Default Title,Sectional,Unspecified,2021.39,3379.97,40.2,Y,170,29.4,Mid-ladder,10,Jackson/Catnapper(5); Ashley(4); Natuzzi(1),50
+steinhafels,La-Z-Boy,850Z26255,Kodie Fully Loaded Rocker Recliner With Wireless Remote,Default Title,Recliner,Fabric,1499.99,1666.66,10.0,Y,93,45.2,Mid-ladder,10,Flexsteel(4); Ashley(2); Southern Motion(1); Best Home Furnishings(1); Natuzzi(1); Bassett(1),42
+steinhafels,La-Z-Boy,875Z20763,Audrey High Leg Power Headrest Recliner with Wireless Remote,Default Title,Recliner,Unspecified,1499.99,1666.66,10.0,Y,93,45.2,Mid-ladder,10,Flexsteel(4); Ashley(2); Southern Motion(1); Best Home Furnishings(1); Natuzzi(1); Bassett(1),42
+slumberland,La-Z-Boy,QK1064415,Trouper Power Plus Reclining Console Loveseat,Mink,Loveseat,Unspecified,2599.99,4399.99,40.9,Y,82,75.6,Premium anchor,9,Southern Motion(5); Flexsteel(3); Ashley(1),62
+slumberland,La-Z-Boy,QK1064406,Trouper Power Plus Reclining Console Loveseat,Sable,Loveseat,Unspecified,2599.99,4399.99,40.9,Y,82,75.6,Premium anchor,9,Southern Motion(5); Flexsteel(3); Ashley(1),62
+slumberland,La-Z-Boy,QK1081504,James Leather Reclining Loveseat,Walnut,Loveseat,Leather,2579.99,3779.99,31.7,Y,82,75.6,Premium anchor,9,Southern Motion(5); Flexsteel(3); Ashley(1),62
+slumberland,La-Z-Boy,QK1042207,Bennett DUO Reclining Loveseat,Pewter,Loveseat,Unspecified,2579.99,4909.99,47.5,Y,82,75.6,Premium anchor,9,Southern Motion(5); Flexsteel(3); Ashley(1),62
+slumberland,La-Z-Boy,QK1060420,Dorian Reclining Loveseat,Sand,Loveseat,Unspecified,1979.99,3049.99,35.1,Y,82,62.2,Mid-ladder,9,Southern Motion(6); Flexsteel(2); Ashley(1),51
+slumberland,La-Z-Boy,QK1064455,Jay Power Plus Reclining Loveseat,Granite,Loveseat,Unspecified,1979.99,3479.99,43.1,Y,82,62.2,Mid-ladder,9,Southern Motion(6); Flexsteel(2); Ashley(1),51
+slumberland,La-Z-Boy,QK1064464,Jay Power Plus Reclining Loveseat,Mushroom,Loveseat,Unspecified,1979.99,3479.99,43.1,Y,82,62.2,Mid-ladder,9,Southern Motion(6); Flexsteel(2); Ashley(1),51
+steinhafels,La-Z-Boy,851Z73615,James Leather Swivel Rocker Recliner,Default Title,Recliner,Leather,1249.99,1388.88,10.0,Y,93,38.7,Mid-ladder,9,Southern Motion(3); Flexsteel(3); Best Home Furnishings(2); Ashley(1),36
+steinhafels,La-Z-Boy,605616782,Pinnacle Leather Rocker Recliner,Opulence Stone,Recliner,Leather,1249.99,1388.88,10.0,Y,93,38.7,Mid-ladder,9,Southern Motion(3); Flexsteel(3); Best Home Furnishings(2); Ashley(1),36
+steinhafels,La-Z-Boy,236Z95485,Pinnacle Leather Rocker Recliner,Opulence Umber,Recliner,Leather,1249.99,1388.88,10.0,Y,93,38.7,Mid-ladder,9,Southern Motion(3); Flexsteel(3); Best Home Furnishings(2); Ashley(1),36
+steinhafels,La-Z-Boy,949Z72003,Astor Rocker Recliner,Granite,Recliner,Unspecified,1222.21,1222.21,,Y,93,38.7,Mid-ladder,9,Southern Motion(3); Flexsteel(3); Best Home Furnishings(2); Ashley(1),36
+steinhafels,La-Z-Boy,954PKG000,Ava 7-Pc. Power Headrest Reclining Modular With Wireless Remote,Left-Facing,Sectional,Unspecified,4262.39,7133.31,40.2,Y,170,74.1,Mid-ladder,9,Flexsteel(4); Jackson/Catnapper(4); Ashley(1),126
+steinhafels,La-Z-Boy,330PKG438,Ava 7-Pc. Power Headrest Reclining Modular With Wireless Remote,Right-Facing,Sectional,Unspecified,4259.69,7133.31,40.3,Y,170,74.1,Mid-ladder,9,Flexsteel(4); Jackson/Catnapper(4); Ashley(1),126
+steinhafels,La-Z-Boy,913Z61838,Jay Fully Loaded Rocker Recliner With Wireless Remote,C180974 Mushroom,Recliner,Unspecified,1555.54,1555.54,,Y,93,50.5,Mid-ladder,9,Flexsteel(5); Ashley(1); Best Home Furnishings(1); Natuzzi(1); Bassett(1),47
+steinhafels,La-Z-Boy,831PKG201,Ava 3-Pc. Power Headrest Reclining Console Loveseat,Default Title,Sectional,Unspecified,2104.19,3519.97,40.2,Y,170,30.6,Mid-ladder,9,Jackson/Catnapper(5); Ashley(3); Natuzzi(1),52
+steinhafels,La-Z-Boy,806Z27167,Patrick Pwr Headrest Rkr Recl w Wireless Remote,Default Title,Recliner,Leather,1555.54,1555.54,,Y,93,50.5,Mid-ladder,9,Flexsteel(5); Ashley(1); Best Home Furnishings(1); Natuzzi(1); Bassett(1),47
+slumberland,La-Z-Boy,QK1064414,Trouper Power Plus Reclining Loveseat,Mink,Loveseat,Unspecified,2479.99,4279.99,42.1,Y,82,74.4,Mid-ladder,8,Southern Motion(5); Flexsteel(2); Ashley(1),61
+slumberland,La-Z-Boy,QK1064405,Trouper Power Plus Reclining Loveseat,Sable,Loveseat,Unspecified,2479.99,4279.99,42.1,Y,82,74.4,Mid-ladder,8,Southern Motion(5); Flexsteel(2); Ashley(1),61
+slumberland,La-Z-Boy,QK1096563,Redwood Tri-Power Rocker Recliner,Ash,Recliner,Unspecified,1769.99,3199.0,44.7,Y,73,75.3,Premium anchor,8,Southern Motion(5); Flexsteel(3),55
+slumberland,La-Z-Boy,QK1096564,Redwood Tri-Power Rocker Recliner,Mushroom,Recliner,Unspecified,1769.99,3199.0,44.7,Y,73,75.3,Premium anchor,8,Southern Motion(5); Flexsteel(3),55
+slumberland,La-Z-Boy,QK1064417,Trouper Tri-Power Reclining Loveseat,Mink,Loveseat,Unspecified,2679.99,4779.99,43.9,Y,82,75.6,Premium anchor,8,Southern Motion(4); Flexsteel(3); Ashley(1),62
+slumberland,La-Z-Boy,QK1041685,Pinnacle Reclining Sofa,Marble,Sofa,Fabric,1799.99,3439.99,47.7,Y,83,65.1,Mid-ladder,8,Southern Motion(5); Ashley(2); Flexsteel(1),54
+slumberland,La-Z-Boy,QK1041690,Pinnacle Power Reclining Loveseat,Marble,Loveseat,Fabric,2679.99,4019.99,33.3,Y,82,75.6,Premium anchor,8,Southern Motion(4); Flexsteel(3); Ashley(1),62
+slumberland,La-Z-Boy,QK1062102,Brooks Reclining Sofa,Muslin,Sofa,Unspecified,999.99,2399.99,58.3,Y,83,34.9,Mid-ladder,8,Ashley(8),29
+slumberland,La-Z-Boy,QK1064430,Trouper Leather Reclining Loveseat,Gray,Loveseat,Leather,2279.99,4479.99,49.1,Y,82,74.4,Mid-ladder,8,Southern Motion(4); Flexsteel(3); Ashley(1),61
+slumberland,La-Z-Boy,QK1064420,Trouper Leather Reclining Loveseat,Walnut,Loveseat,Leather,2279.99,4479.99,49.1,Y,82,74.4,Mid-ladder,8,Southern Motion(4); Flexsteel(3); Ashley(1),61
+slumberland,La-Z-Boy,QK1064458,Jay Tri-Power Reclining Loveseat,Granite,Loveseat,Unspecified,2179.99,3979.99,45.2,Y,82,70.7,Mid-ladder,8,Southern Motion(5); Flexsteel(2); Ashley(1),58
+slumberland,La-Z-Boy,QK1064467,Jay Tri-Power Reclining Loveseat,Mushroom,Loveseat,Unspecified,2179.99,3979.99,45.2,Y,82,70.7,Mid-ladder,8,Southern Motion(5); Flexsteel(2); Ashley(1),58
+slumberland,La-Z-Boy,QK1064459,Jay Tri-Power Reclining Console Loveseat,Granite,Loveseat,Unspecified,2299.99,4099.99,43.9,Y,82,74.4,Mid-ladder,8,Southern Motion(4); Flexsteel(3); Ashley(1),61
+slumberland,La-Z-Boy,QK1064468,Jay Tri-Power Reclining Console Loveseat,Mushroom,Loveseat,Unspecified,2299.99,4099.99,43.9,Y,82,74.4,Mid-ladder,8,Southern Motion(4); Flexsteel(3); Ashley(1),61
+steinhafels,La-Z-Boy,177426562,Pinnacle Rocker Recliner,D209562 Marble,Recliner,Fabric,899.99,999.99,10.0,Y,93,25.8,Mid-ladder,8,Best Home Furnishings(3); Ashley(2); Southern Motion(2); Flexsteel(1),24
+steinhafels,La-Z-Boy,147550223,Pinnacle Rocker Recliner,D209574 Hazel,Recliner,Fabric,899.99,999.99,10.0,Y,93,25.8,Mid-ladder,8,Best Home Furnishings(3); Ashley(2); Southern Motion(2); Flexsteel(1),24
+steinhafels,La-Z-Boy,408Z89797,Jean Lift Chair,Default Title,Recliner,Fabric,929.99,1033.32,10.0,Y,93,28.0,Mid-ladder,8,Best Home Furnishings(3); Ashley(2); Southern Motion(2); Flexsteel(1),26
+steinhafels,La-Z-Boy,734PKG678,Ava 2-Pc. Power Headrest Reclining Loveseat,Default Title,Sectional,Unspecified,1624.49,2719.98,40.3,Y,170,20.0,Opening price point,8,Ashley(6); Jackson/Catnapper(2),34
+slumberland,La-Z-Boy,QK1064450,Morrison Power Plus Reclining Console Loveseat,Graphite,Loveseat,Unspecified,1999.99,3599.99,44.4,Y,82,64.6,Mid-ladder,7,Southern Motion(4); Flexsteel(2); Ashley(1),53
+slumberland,La-Z-Boy,QK1064444,Morrison Power Plus Reclining Console Loveseat,Marble,Loveseat,Unspecified,1999.99,3599.99,44.4,Y,82,64.6,Mid-ladder,7,Southern Motion(4); Flexsteel(2); Ashley(1),53
+slumberland,La-Z-Boy,,Brooks Reclining Sofa and Recliner,Default Title,Sofa,Unspecified,1649.98,3599.98,54.2,Y,83,62.7,Mid-ladder,7,Southern Motion(4); Ashley(3),52
+slumberland,La-Z-Boy,,Morrison Reclining Sofa and Power Recliner,Marble / Marble,Sofa,Unspecified,2499.98,4079.98,38.7,Y,83,77.1,Premium anchor,7,Southern Motion(3); Flexsteel(3); Ashley(1),64
+slumberland,La-Z-Boy,,Morrison Reclining Sofa and Power Recliner,Marble / Graphite,Sofa,Unspecified,2499.98,4079.98,38.7,Y,83,77.1,Premium anchor,7,Southern Motion(3); Flexsteel(3); Ashley(1),64
+slumberland,La-Z-Boy,,Morrison Reclining Sofa and Power Recliner,Graphite / Marble,Sofa,Unspecified,2499.98,4079.98,38.7,Y,83,77.1,Premium anchor,7,Southern Motion(3); Flexsteel(3); Ashley(1),64
+slumberland,La-Z-Boy,,Morrison Reclining Sofa and Power Recliner,Graphite / Graphite,Sofa,Unspecified,2499.98,4079.98,38.7,Y,83,77.1,Premium anchor,7,Southern Motion(3); Flexsteel(3); Ashley(1),64
+slumberland,La-Z-Boy,QK1096559,Pinnacle Tri-Power Leather Rocker Recliner,Stone,Recliner,Leather,1749.99,2899.0,39.6,Y,73,75.3,Premium anchor,7,Southern Motion(5); Flexsteel(2),55
+slumberland,La-Z-Boy,QK1096560,Pinnacle Tri-Power Leather Rocker Recliner,Umber,Recliner,Leather,1749.99,2899.0,39.6,Y,73,75.3,Premium anchor,7,Southern Motion(5); Flexsteel(2),55
+slumberland,La-Z-Boy,QK1064403,Trouper Reclining Console Loveseat,Sable,Loveseat,Unspecified,1999.99,3099.99,35.5,Y,82,64.6,Mid-ladder,7,Southern Motion(4); Flexsteel(2); Ashley(1),53
+slumberland,La-Z-Boy,QK1064412,Trouper Reclining Console Loveseat,Mink,Loveseat,Unspecified,1999.99,3099.99,35.5,Y,82,64.6,Mid-ladder,7,Southern Motion(4); Flexsteel(2); Ashley(1),53
+slumberland,La-Z-Boy,QK1042206,Bennett DUO Reclining Sofa,Pewter,Sofa,Unspecified,2599.99,5029.99,48.3,Y,83,78.3,Premium anchor,7,Flexsteel(3); Southern Motion(3); Ashley(1),65
+slumberland,La-Z-Boy,QK1081503,James Leather Reclining Sofa,Walnut,Sofa,Leather,2599.99,3799.99,31.6,Y,83,78.3,Premium anchor,7,Flexsteel(3); Southern Motion(3); Ashley(1),65
+slumberland,La-Z-Boy,QK1081514,James Leather Reclining Console Loveseat,Charcoal,Loveseat,Leather,2699.99,3949.99,31.6,Y,82,76.8,Premium anchor,7,Flexsteel(3); Southern Motion(3); Ashley(1),63
+slumberland,La-Z-Boy,QK1081505,James Leather Reclining Console Loveseat,Walnut,Loveseat,Leather,2699.99,3949.99,31.6,Y,82,76.8,Premium anchor,7,Flexsteel(3); Southern Motion(3); Ashley(1),63
+slumberland,La-Z-Boy,QK1081521,James Reclining Sofa,Silt,Sofa,Unspecified,1599.99,2399.99,33.3,Y,83,62.7,Mid-ladder,7,Southern Motion(4); Ashley(3),52
+slumberland,La-Z-Boy,QK1032028,Pinnacle Power Plus Rocker Recliner,Espresso,Recliner,Unspecified,1279.99,1949.99,34.4,Y,73,52.1,Mid-ladder,7,Southern Motion(5); Flexsteel(2),38
+slumberland,La-Z-Boy,QK1032014,James Leather TriPower Recliner,Charcoal,Recliner,Leather,1699.99,2949.99,42.4,Y,73,64.4,Mid-ladder,7,Southern Motion(5); Flexsteel(2),47
+slumberland,La-Z-Boy,QK1032015,James Leather TriPower Recliner,Walnut,Recliner,Leather,1699.99,2949.99,42.4,Y,73,64.4,Mid-ladder,7,Southern Motion(5); Flexsteel(2),47
+slumberland,La-Z-Boy,QK1040724,Jay Power Plus Rocker Recliner,Granite,Recliner,Unspecified,1249.99,2149.99,41.9,Y,73,52.1,Mid-ladder,7,Southern Motion(5); Flexsteel(2),38
+slumberland,La-Z-Boy,QK1064401,Trouper Reclining Sofa,Sable,Sofa,Unspecified,1899.99,2999.99,36.7,Y,83,65.1,Mid-ladder,7,Southern Motion(4); Ashley(2); Flexsteel(1),54
+slumberland,La-Z-Boy,QK1064410,Trouper Reclining Sofa,Mink,Sofa,Unspecified,1899.99,2999.99,36.7,Y,83,65.1,Mid-ladder,7,Southern Motion(4); Ashley(2); Flexsteel(1),54
+slumberland,La-Z-Boy,QK1064438,Trouper Leather Tri-Power Rocker Recliner,Gray,Recliner,Leather,1699.99,2899.99,41.4,Y,73,64.4,Mid-ladder,7,Southern Motion(5); Flexsteel(2),47
+slumberland,La-Z-Boy,QK1064428,Trouper Leather Tri-Power Rocker Recliner,Walnut,Recliner,Leather,1699.99,2899.99,41.4,Y,73,64.4,Mid-ladder,7,Southern Motion(5); Flexsteel(2),47
+slumberland,La-Z-Boy,QK1064446,Morrison Reclining Loveseat,Graphite,Loveseat,Unspecified,1279.99,2179.99,41.3,Y,82,42.7,Mid-ladder,7,Ashley(5); Southern Motion(2),35
+slumberland,La-Z-Boy,QK1064440,Morrison Reclining Loveseat,Marble,Loveseat,Unspecified,1279.99,2179.99,41.3,Y,82,42.7,Mid-ladder,7,Ashley(5); Southern Motion(2),35
+slumberland,La-Z-Boy,QK1064448,Morrison Power Plus Reclining Sofa,Graphite,Sofa,Unspecified,1899.99,3499.99,45.7,Y,83,65.1,Mid-ladder,7,Southern Motion(4); Ashley(2); Flexsteel(1),54
+slumberland,La-Z-Boy,QK1064442,Morrison Power Plus Reclining Sofa,Marble,Sofa,Unspecified,1899.99,3499.99,45.7,Y,83,65.1,Mid-ladder,7,Southern Motion(4); Ashley(2); Flexsteel(1),54
+slumberland,La-Z-Boy,QK1064456,Jay Power Plus Reclining Console Loveseat,Granite,Loveseat,Unspecified,2099.99,3599.99,41.7,Y,82,68.3,Mid-ladder,7,Southern Motion(4); Flexsteel(2); Ashley(1),56
+slumberland,La-Z-Boy,QK1064465,Jay Power Plus Reclining Console Loveseat,Mushroom,Loveseat,Unspecified,2099.99,3599.99,41.7,Y,82,68.3,Mid-ladder,7,Southern Motion(4); Flexsteel(2); Ashley(1),56
+steinhafels,La-Z-Boy,905Z36334,Wynne Rocker Recliner With Contour Seat Cushion,D209669 Latte,Recliner,Fabric,1111.1,1111.1,,Y,93,36.6,Mid-ladder,7,Southern Motion(4); Best Home Furnishings(2); Flexsteel(1),34
+steinhafels,La-Z-Boy,591787465,Astor Rocker Recliner,Mushroom,Recliner,Unspecified,1099.99,1222.21,10.0,Y,93,34.4,Mid-ladder,7,Southern Motion(4); Best Home Furnishings(2); Flexsteel(1),32
+steinhafels,La-Z-Boy,815Z21045,Jay Power Headrest Reclining Console Loveseat With Dual Wireless Remotes,C180969 Granite,Loveseat,Unspecified,2999.99,2999.99,,Y,73,82.2,Premium anchor,7,Flexsteel(7),60
+steinhafels,La-Z-Boy,911Z61799,Cade Leather Rocker Recliner,LB206132 Oyster,Recliner,Leather,799.99,1033.32,22.6,Y,93,24.7,Opening price point,7,Southern Motion(3); Ashley(2); Best Home Furnishings(2),23
+steinhafels,La-Z-Boy,433011872,Cade Leather Rocker Recliner,LB206175 Stone,Recliner,Leather,799.99,1033.32,22.6,Y,93,24.7,Opening price point,7,Southern Motion(3); Ashley(2); Best Home Furnishings(2),23
+steinhafels,La-Z-Boy,203Z75908,Cade Fully Loaded Reclining Sofa With Wireless Remote,Default Title,Sofa,Unspecified,2399.99,2666.66,10.0,Y,92,76.1,Premium anchor,7,Flexsteel(2); Ashley(2); Natuzzi(1); Bassett(1); Southern Motion(1),70
+steinhafels,La-Z-Boy,470Z51134,Rheeves High Leg Recliner,Default Title,Recliner,Leather,1149.99,1277.77,10.0,Y,93,36.6,Mid-ladder,7,Southern Motion(4); Best Home Furnishings(2); Flexsteel(1),34
+slumberland,La-Z-Boy,QK1108334,Dutton Leather Rocker Recliner,Mocha,Recliner,Leather,1199.99,1899.0,36.8,Y,73,52.1,Mid-ladder,6,Southern Motion(5); Flexsteel(1),38
+slumberland,La-Z-Boy,QK1108335,Dutton Leather Rocker Recliner,Charcoal,Recliner,Leather,1199.99,1899.0,36.8,Y,73,52.1,Mid-ladder,6,Southern Motion(5); Flexsteel(1),38
+slumberland,La-Z-Boy,QK1082413,Redwood Rocker Recliner,Mushroom,Recliner,Unspecified,1169.99,1599.99,26.9,Y,73,52.1,Mid-ladder,6,Southern Motion(5); Flexsteel(1),38
+slumberland,La-Z-Boy,QK1082414,Redwood Rocker Recliner,Ash,Recliner,Unspecified,1169.99,1599.99,26.9,Y,73,52.1,Mid-ladder,6,Southern Motion(5); Flexsteel(1),38
+slumberland,La-Z-Boy,QK1101741,Belmont Rocker Recliner,Camel,Recliner,Leather,1199.99,1999.0,40.0,Y,73,52.1,Mid-ladder,6,Southern Motion(5); Flexsteel(1),38
+slumberland,La-Z-Boy,QK1101742,Belmont Rocker Recliner,Mineral,Recliner,Leather,1199.99,1999.0,40.0,Y,73,52.1,Mid-ladder,6,Southern Motion(5); Flexsteel(1),38
+slumberland,La-Z-Boy,QK1100590,Liam Power Lift Recliner,Mushroom,Recliner,Unspecified,1099.99,2249.99,51.1,Y,73,52.1,Mid-ladder,6,Southern Motion(5); Flexsteel(1),38
+slumberland,La-Z-Boy,QK1096561,Pinnacle Leather Rocker Recliner,Stone,Recliner,Leather,1099.99,1699.0,35.3,Y,73,52.1,Mid-ladder,6,Southern Motion(5); Flexsteel(1),38
+slumberland,La-Z-Boy,QK1096562,Pinnacle Leather Rocker Recliner,Umber,Recliner,Leather,1099.99,1699.0,35.3,Y,73,52.1,Mid-ladder,6,Southern Motion(5); Flexsteel(1),38
+slumberland,La-Z-Boy,QK1082405,Morrison Tri-Power Rocker Recliner,Marble,Recliner,Unspecified,1199.99,1879.99,36.2,Y,73,52.1,Mid-ladder,6,Southern Motion(5); Flexsteel(1),38
+slumberland,La-Z-Boy,QK1082406,Morrison Tri-Power Rocker Recliner,Graphite,Recliner,Unspecified,1199.99,1879.99,36.2,Y,73,52.1,Mid-ladder,6,Southern Motion(5); Flexsteel(1),38
+slumberland,La-Z-Boy,QK1095671,Collage Rocker Recliner,Fudge,Recliner,Unspecified,399.99,999.0,60.0,Y,73,12.3,Opening price point,6,Ashley(6),9
+slumberland,La-Z-Boy,QK1095672,Collage Rocker Recliner,Navy,Recliner,Unspecified,399.99,999.0,60.0,Y,73,12.3,Opening price point,6,Ashley(6),9
+slumberland,La-Z-Boy,QK1015065,Randell Rocker Recliner,Mocha,Recliner,Unspecified,1099.99,1599.99,31.3,Y,73,52.1,Mid-ladder,6,Southern Motion(5); Flexsteel(1),38
+slumberland,La-Z-Boy,QK1015066,Randell Rocker Recliner,Storm,Recliner,Unspecified,1099.99,1599.99,31.3,Y,73,52.1,Mid-ladder,6,Southern Motion(5); Flexsteel(1),38
+slumberland,La-Z-Boy,QK1034223,James Leather Rocker Recliner,Charcoal,Recliner,Leather,1099.99,1879.99,41.5,Y,73,52.1,Mid-ladder,6,Southern Motion(5); Flexsteel(1),38
+slumberland,La-Z-Boy,4452162,James Leather Rocker Recliner,Walnut,Recliner,Leather,1099.99,1879.99,41.5,Y,73,52.1,Mid-ladder,6,Southern Motion(5); Flexsteel(1),38
+slumberland,La-Z-Boy,QK1040716,Jay Power Plus Rocker Recliner,Mushroom,Recliner,Unspecified,1229.99,2149.99,42.8,Y,73,52.1,Mid-ladder,6,Southern Motion(5); Flexsteel(1),38
+slumberland,La-Z-Boy,QK1041686,Pinnacle Power Reclining Sofa,Marble,Sofa,Fabric,2699.99,4049.99,33.3,Y,83,78.3,Premium anchor,6,Flexsteel(3); Southern Motion(2); Ashley(1),65
+slumberland,La-Z-Boy,QK1064407,Trouper Tri-Power Reclining Sofa,Sable,Sofa,Unspecified,2699.99,4799.99,43.8,Y,83,78.3,Premium anchor,6,Flexsteel(3); Southern Motion(2); Ashley(1),65
+slumberland,La-Z-Boy,QK1064416,Trouper Tri-Power Reclining Sofa,Mink,Sofa,Unspecified,2699.99,4799.99,43.8,Y,83,78.3,Premium anchor,6,Flexsteel(3); Southern Motion(2); Ashley(1),65
+slumberland,La-Z-Boy,QK1064413,Trouper Power Plus Reclining Sofa,Mink,Sofa,Unspecified,2499.99,4299.99,41.9,Y,83,77.1,Premium anchor,6,Southern Motion(3); Flexsteel(2); Ashley(1),64
+slumberland,La-Z-Boy,QK1064404,Trouper Power Plus Reclining Sofa,Sable,Sofa,Unspecified,2499.99,4299.99,41.9,Y,83,77.1,Premium anchor,6,Southern Motion(3); Flexsteel(2); Ashley(1),64
+slumberland,La-Z-Boy,QK1064419,Trouper Leather Reclining Sofa,Walnut,Sofa,Leather,2299.99,4499.99,48.9,Y,83,77.1,Premium anchor,6,Flexsteel(3); Southern Motion(2); Ashley(1),64
+slumberland,La-Z-Boy,QK1064429,Trouper Leather Reclining Sofa,Gray,Sofa,Leather,2299.99,4499.99,48.9,Y,83,77.1,Premium anchor,6,Flexsteel(3); Southern Motion(2); Ashley(1),64
+steinhafels,La-Z-Boy,773Z57754,Pinnacle Rocker Recliner,D209586 Midnight,Recliner,Fabric,999.99,999.99,,Y,93,32.3,Mid-ladder,6,Southern Motion(2); Best Home Furnishings(2); Flexsteel(1); Ashley(1),30
+steinhafels,La-Z-Boy,567751209,Jasper Rocker Recliner,D210062 Taupe,Recliner,Fabric,729.99,811.1,10.0,Y,93,22.6,Opening price point,6,Ashley(2); Southern Motion(2); Jackson/Catnapper(1); Best Home Furnishings(1),21
+steinhafels,La-Z-Boy,395Z97977,Jasper Rocker Recliner,D210031 Sugarshow,Recliner,Fabric,729.99,811.1,10.0,Y,93,22.6,Opening price point,6,Ashley(2); Southern Motion(2); Jackson/Catnapper(1); Best Home Furnishings(1),21
+steinhafels,La-Z-Boy,156556607,Olympic Power Headrest Zero Gravity Reclining Loveseat,E191765 i-Adario Taupe,Loveseat,Unspecified,2060.99,2289.99,10.0,Y,73,67.1,Mid-ladder,6,Flexsteel(3); Southern Motion(2); Natuzzi(1),49
+steinhafels,La-Z-Boy,918426741,Olympic Power Headrest Zero Gravity Reclining Sofa,E191765 i-Adario Taupe,Sofa,Unspecified,2332.99,2332.99,,Y,92,76.1,Premium anchor,6,Ashley(2); Natuzzi(1); Flexsteel(1); Bassett(1); Southern Motion(1),70
+steinhafels,La-Z-Boy,173309451,Wynne Rocker Recliner With Contour Seat Cushion,D209631 Bone,Recliner,Fabric,999.99,1111.1,10.0,Y,93,32.3,Mid-ladder,6,Southern Motion(2); Best Home Furnishings(2); Flexsteel(1); Ashley(1),30
+steinhafels,La-Z-Boy,354050527,Jay Power Headrest Reclining Console Loveseat With Dual Wireless Remotes,C180974 Mushroom,Loveseat,Unspecified,2699.99,2999.99,10.0,Y,73,76.7,Premium anchor,6,Flexsteel(6),56
+steinhafels,La-Z-Boy,874Z81252,Jay Power Headrest Reclining Sofa With Dual Wireless Remotes,C180969 Granite,Sofa,Unspecified,2444.43,2444.43,,Y,92,77.2,Premium anchor,6,Flexsteel(2); Ashley(2); Natuzzi(1); Southern Motion(1),71
+steinhafels,La-Z-Boy,213141384,Acadia Leather Power Headrest Zero Gravity Reclining Loveseat,LB206379 Dean Shitake,Loveseat,Leather,3249.99,3611.1,10.0,Y,73,84.9,Premium anchor,6,Flexsteel(6),62
+steinhafels,La-Z-Boy,210747941,Acadia Leather Power Headrest Zero Gravity Reclining Loveseat,LB206376 Dean Chestnut,Loveseat,Leather,3249.99,3611.1,10.0,Y,73,84.9,Premium anchor,6,Flexsteel(6),62
+steinhafels,La-Z-Boy,338567277,Jay Power Headrest Reclining Loveseat,C180974 Mushroom,Loveseat,Unspecified,2099.99,2333.32,10.0,Y,73,67.1,Mid-ladder,6,Flexsteel(3); Southern Motion(2); Natuzzi(1),49
+steinhafels,La-Z-Boy,976Z19202,Cade Fully Loaded Recl Cons Love With Wireless Remote,Default Title,Sofa,Unspecified,2777.77,2777.77,,Y,92,85.9,Premium anchor,6,Flexsteel(4); Bassett(2),79
+steinhafels,La-Z-Boy,942Z09156,Olympic Power Headrest Zero Gravity Reclining Sofa,Default Title,Sofa,Unspecified,2332.99,2332.99,,Y,92,76.1,Premium anchor,6,Ashley(2); Natuzzi(1); Flexsteel(1); Bassett(1); Southern Motion(1),70
+slumberland,La-Z-Boy,QK1106089,Hawthorn Rocker Recliner,Storm,Recliner,Unspecified,499.99,999.99,50.0,Y,73,26.0,Mid-ladder,5,Ashley(5),19
+slumberland,La-Z-Boy,QK1098745,Ava 5 Piece Sectional,Oyster,Sectional,Unspecified,4399.99,6449.98,31.8,Y,114,92.1,Premium anchor,5,Flexsteel(5),105
+slumberland,La-Z-Boy,QK1100816,Armitage Dual Power Oversized Recliner,Marble,Recliner,Unspecified,1799.99,2629.99,31.6,Y,73,75.3,Premium anchor,5,Flexsteel(3); Southern Motion(2),55
+slumberland,La-Z-Boy,QK1064441,Morrison Reclining Console Loveseat,Marble,Loveseat,Unspecified,1399.99,2299.99,39.1,Y,82,54.9,Mid-ladder,5,Southern Motion(4); Ashley(1),45
+slumberland,La-Z-Boy,QK1064447,Morrison Reclining Console Loveseat,Graphite,Loveseat,Unspecified,1399.99,2299.99,39.1,Y,82,54.9,Mid-ladder,5,Southern Motion(4); Ashley(1),45
+slumberland,La-Z-Boy,QK1090832,Sparrow Rocker Recliner,Ash,Recliner,Unspecified,669.99,1499.0,55.3,Y,73,37.0,Mid-ladder,5,Ashley(4); Best Home Furnishings(1),27
+slumberland,La-Z-Boy,QK1090833,Sparrow Rocker Recliner,Bluestone,Recliner,Unspecified,669.99,1499.0,55.3,Y,73,37.0,Mid-ladder,5,Ashley(4); Best Home Furnishings(1),27
+slumberland,La-Z-Boy,QK1090834,Sparrow Rocker Recliner,Nutmeg,Recliner,Unspecified,669.99,1499.0,55.3,Y,73,37.0,Mid-ladder,5,Ashley(4); Best Home Furnishings(1),27
+slumberland,La-Z-Boy,QK1090831,Sparrow Rocker Recliner,Moss,Recliner,Unspecified,669.99,1499.0,55.3,Y,73,37.0,Mid-ladder,5,Ashley(4); Best Home Furnishings(1),27
+slumberland,La-Z-Boy,QK1090836,Joshua Rocker Recliner,Midnight,Recliner,Unspecified,699.99,1298.99,46.1,Y,73,38.4,Mid-ladder,5,Ashley(4); Best Home Furnishings(1),28
+slumberland,La-Z-Boy,QK1090835,Joshua Rocker Recliner,Pebble,Recliner,Unspecified,699.99,1298.99,46.1,Y,73,38.4,Mid-ladder,5,Ashley(4); Best Home Furnishings(1),28
+slumberland,La-Z-Boy,QK1088082,Morrison Rocker Recliner,Graphite,Recliner,Unspecified,629.99,1079.99,41.7,Y,73,37.0,Mid-ladder,5,Ashley(4); Best Home Furnishings(1),27
+slumberland,La-Z-Boy,1076653,Morrison Rocker Recliner,Silver,Recliner,Unspecified,629.99,1079.99,41.7,Y,73,37.0,Mid-ladder,5,Ashley(4); Best Home Furnishings(1),27
+slumberland,La-Z-Boy,1076676,Morrison Rocker Recliner,Cappuccino,Recliner,Unspecified,629.99,1079.99,41.7,Y,73,37.0,Mid-ladder,5,Ashley(4); Best Home Furnishings(1),27
+slumberland,La-Z-Boy,QK1088081,Morrison Rocker Recliner,Marble,Recliner,Unspecified,629.99,1079.99,41.7,Y,73,37.0,Mid-ladder,5,Ashley(4); Best Home Furnishings(1),27
+slumberland,La-Z-Boy,QK1087907,Vail Rocker Recliner,Desert,Recliner,Unspecified,499.99,1129.0,55.7,Y,73,26.0,Mid-ladder,5,Ashley(5),19
+slumberland,La-Z-Boy,QK1087908,Vail Rocker Recliner,Graystone,Recliner,Unspecified,499.99,1129.0,55.7,Y,73,26.0,Mid-ladder,5,Ashley(5),19
+slumberland,La-Z-Boy,QK1062105,Brooks Rocker Recliner,Muslin,Recliner,Unspecified,649.99,1199.99,45.8,Y,73,37.0,Mid-ladder,5,Ashley(4); Best Home Furnishings(1),27
+slumberland,La-Z-Boy,QK1028986,Jasper Rocker Recliner,Mocha,Recliner,Fabric,649.99,1079.99,39.8,Y,73,37.0,Mid-ladder,5,Ashley(4); Best Home Furnishings(1),27
+slumberland,La-Z-Boy,QK1028987,Jasper Rocker Recliner,Ice,Recliner,Fabric,649.99,1079.99,39.8,Y,73,37.0,Mid-ladder,5,Ashley(4); Best Home Furnishings(1),27
+slumberland,La-Z-Boy,QK1040720,Jay Rocker Recliner,Granite,Recliner,Fabric,699.99,1449.99,51.7,Y,73,38.4,Mid-ladder,5,Ashley(4); Best Home Furnishings(1),28
+slumberland,La-Z-Boy,QK1040712,Jay Rocker Recliner,Mushroom,Recliner,Fabric,699.99,1449.99,51.7,Y,73,38.4,Mid-ladder,5,Ashley(4); Best Home Furnishings(1),28
+slumberland,La-Z-Boy,QK1060418,Liam Rocker Recliner,Twilight,Recliner,Unspecified,629.99,1079.99,41.7,Y,73,37.0,Mid-ladder,5,Ashley(4); Best Home Furnishings(1),27
+slumberland,La-Z-Boy,QK1060417,Liam Rocker Recliner,Fawn,Recliner,Unspecified,629.99,1079.99,41.7,Y,73,37.0,Mid-ladder,5,Ashley(4); Best Home Furnishings(1),27
+slumberland,La-Z-Boy,QK1064461,Jay Reclining Loveseat,Mushroom,Loveseat,Unspecified,1379.99,2379.99,42.0,Y,82,54.9,Mid-ladder,5,Southern Motion(4); Ashley(1),45
+slumberland,La-Z-Boy,QK1064452,Jay Reclining Loveseat,Granite,Loveseat,Unspecified,1379.99,2379.99,42.0,Y,82,54.9,Mid-ladder,5,Southern Motion(4); Ashley(1),45
+slumberland,La-Z-Boy,QK1064466,Jay Tri-Power Reclining Sofa,Mushroom,Sofa,Unspecified,2199.99,3999.99,45.0,Y,83,73.5,Mid-ladder,5,Southern Motion(2); Flexsteel(2); Ashley(1),61
+slumberland,La-Z-Boy,QK1064457,Jay Tri-Power Reclining Sofa,Granite,Sofa,Unspecified,2199.99,3999.99,45.0,Y,83,73.5,Mid-ladder,5,Southern Motion(2); Flexsteel(2); Ashley(1),61
+slumberland,La-Z-Boy,QK1082415,Reed Rocker Recliner,Walnut,Recliner,Unspecified,699.99,1399.99,50.0,Y,73,38.4,Mid-ladder,5,Ashley(4); Best Home Furnishings(1),28
+slumberland,La-Z-Boy,QK1082416,Reed Rocker Recliner,Beige,Recliner,Unspecified,699.99,1399.99,50.0,Y,73,38.4,Mid-ladder,5,Ashley(4); Best Home Furnishings(1),28
+slumberland,La-Z-Boy,QK1082407,Roman Leather Reclining Sofa,Chocolate,Sofa,Leather,2199.99,3199.99,31.3,Y,83,73.5,Mid-ladder,5,Southern Motion(2); Flexsteel(2); Ashley(1),61
+slumberland,La-Z-Boy,QK1082409,Roman Leather Power Plus Reclining Sofa,Chocolate,Sofa,Leather,2799.99,3899.99,28.2,Y,83,79.5,Premium anchor,5,Flexsteel(4); Southern Motion(1),66
+steinhafels,La-Z-Boy,377Z32456,Acadia Leather Power Headrest Zero Gravity Reclining Sofa,LB206376 Dean Chestnut,Sofa,Leather,3299.99,3666.66,10.0,Y,92,90.2,Premium anchor,5,Flexsteel(4); Bassett(1),83
+steinhafels,La-Z-Boy,149039691,Acadia Leather Power Headrest Zero Gravity Reclining Sofa,LB206379 Dean Shitake,Sofa,Leather,3299.99,3666.66,10.0,Y,92,90.2,Premium anchor,5,Flexsteel(4); Bassett(1),83
+slumberland,La-Z-Boy,QK1097958,Liam Wall Recliner,Twilight,Recliner,Unspecified,679.99,1199.0,43.3,Y,73,37.0,Mid-ladder,4,Ashley(3); Best Home Furnishings(1),27
+slumberland,La-Z-Boy,QK1097959,Liam Wall Recliner,Fawn,Recliner,Unspecified,679.99,1199.0,43.3,Y,73,37.0,Mid-ladder,4,Ashley(3); Best Home Furnishings(1),27
+slumberland,La-Z-Boy,QK1064422,Trouper Leather Power Plus Reclining Sofa,Walnut,Sofa,Leather,2999.99,5899.99,49.2,Y,83,86.7,Premium anchor,4,Flexsteel(3); Southern Motion(1),72
+slumberland,La-Z-Boy,QK1064433,Trouper Leather Power Plus Reclining Loveseat,Gray,Loveseat,Leather,2979.99,5879.99,49.3,Y,82,86.6,Premium anchor,4,Flexsteel(3); Southern Motion(1),71
+slumberland,La-Z-Boy,QK1081520,James Leather Tri-Power Reclining Console Loveseat,Charcoal,Loveseat,Leather,3499.99,5549.99,36.9,Y,82,89.0,Premium anchor,4,Flexsteel(4),73
+slumberland,La-Z-Boy,QK1081507,James Leather Power Plus Reclining Loveseat,Walnut,Loveseat,Leather,3179.99,4579.99,30.6,Y,82,86.6,Premium anchor,4,Flexsteel(4),71
+slumberland,La-Z-Boy,QK1064436,Trouper Leather Tri-Power Reclining Loveseat,Gray,Loveseat,Leather,3279.99,6379.99,48.6,Y,82,87.8,Premium anchor,4,Flexsteel(4),72
+slumberland,La-Z-Boy,QK1081506,James Leather Power Plus Reclining Sofa,Walnut,Sofa,Leather,3199.99,4599.99,30.4,Y,83,86.7,Premium anchor,4,Flexsteel(4),72
+slumberland,La-Z-Boy,QK1082401,Rowan Rocker Recliner,Waterfall,Recliner,Unspecified,799.99,1199.99,33.3,Y,73,43.8,Mid-ladder,4,Southern Motion(2); Ashley(2),32
+slumberland,La-Z-Boy,QK1087078,Jean Power Lift Recliner,Dove,Recliner,Unspecified,849.99,1349.0,37.0,Y,73,45.2,Mid-ladder,4,Southern Motion(2); Ashley(2),33
+slumberland,La-Z-Boy,QK1016034,Trouper Rocker Recliner,Stucco,Recliner,Unspecified,749.99,1349.99,44.4,Y,73,39.7,Mid-ladder,4,Ashley(3); Best Home Furnishings(1),29
+slumberland,La-Z-Boy,1072465,Trouper Rocker Recliner,Sable,Recliner,Unspecified,749.99,1349.99,44.4,Y,73,39.7,Mid-ladder,4,Ashley(3); Best Home Furnishings(1),29
+slumberland,La-Z-Boy,1072467,Trouper Rocker Recliner,Mink,Recliner,Unspecified,749.99,1349.99,44.4,Y,73,39.7,Mid-ladder,4,Ashley(3); Best Home Furnishings(1),29
+slumberland,La-Z-Boy,QK1031491,Pinnacle Wall Recliner,Marble,Recliner,Unspecified,849.99,1349.99,37.0,Y,73,45.2,Mid-ladder,4,Southern Motion(2); Ashley(2),33
+slumberland,La-Z-Boy,QK1060419,Dorian Reclining Sofa,Sand,Sofa,Unspecified,1999.99,3079.99,35.1,Y,83,66.3,Mid-ladder,4,Southern Motion(2); Flexsteel(2),55
+slumberland,La-Z-Boy,QK1064453,Jay Reclining Console Loveseat,Granite,Loveseat,Unspecified,1499.99,2499.99,40.0,Y,82,56.1,Mid-ladder,4,Southern Motion(3); Ashley(1),46
+slumberland,La-Z-Boy,QK1064462,Jay Reclining Console Loveseat,Mushroom,Loveseat,Unspecified,1499.99,2499.99,40.0,Y,82,56.1,Mid-ladder,4,Southern Motion(3); Ashley(1),46
+slumberland,La-Z-Boy,QK1064463,Jay Power Plus Reclining Sofa,Mushroom,Sofa,Unspecified,1999.99,3499.99,42.9,Y,83,66.3,Mid-ladder,4,Southern Motion(2); Flexsteel(2),55
+slumberland,La-Z-Boy,QK1064454,Jay Power Plus Reclining Sofa,Granite,Sofa,Unspecified,1999.99,3499.99,42.9,Y,83,66.3,Mid-ladder,4,Southern Motion(2); Flexsteel(2),55
+slumberland,La-Z-Boy,QK1082411,Roman Leather Tri-Power Reclining Sofa,Chocolate,Sofa,Leather,2999.99,4599.99,34.8,Y,83,86.7,Premium anchor,4,Flexsteel(3); Southern Motion(1),72
+slumberland,La-Z-Boy,QK1031489,Pinnacle Rocker Recliner,Graphite,Recliner,Fabric,749.99,1199.99,37.5,Y,73,39.7,Mid-ladder,4,Ashley(3); Best Home Furnishings(1),29
+slumberland,La-Z-Boy,QK1031490,Pinnacle Rocker Recliner,Navy,Recliner,Fabric,749.99,1199.99,37.5,Y,73,39.7,Mid-ladder,4,Ashley(3); Best Home Furnishings(1),29
+steinhafels,La-Z-Boy,832753564,Jay Power Headrest Reclining Loveseat,C180969 Granite,Loveseat,Unspecified,2333.32,2333.32,,Y,73,74.0,Mid-ladder,4,Southern Motion(2); Flexsteel(2),54
+steinhafels,La-Z-Boy,198Z58930,Norton Rocker Recliner,Default Title,Recliner,Fabric,659.99,733.32,10.0,Y,93,19.4,Opening price point,4,Jackson/Catnapper(2); Ashley(1); Best Home Furnishings(1),18
+steinhafels,La-Z-Boy,530663722,Olympic Power Headrest Zero Gravity Reclining Loveseat,Default Title,Loveseat,Unspecified,2289.99,2289.99,,Y,73,74.0,Mid-ladder,4,Southern Motion(2); Flexsteel(2),54
+slumberland,La-Z-Boy,QK1106081,Norton Rocker Recliner,Cocoa,Recliner,Unspecified,599.99,1199.99,50.0,Y,73,37.0,Mid-ladder,3,Ashley(3),27
+slumberland,La-Z-Boy,QK1106082,Norton Rocker Recliner,Charcoal,Recliner,Unspecified,599.99,1199.99,50.0,Y,73,37.0,Mid-ladder,3,Ashley(3),27
+slumberland,La-Z-Boy,QK1102327,La-Z-Boy Sherman Rocker Recliner,Onyx,Recliner,Unspecified,599.99,1199.99,50.0,Y,73,37.0,Mid-ladder,3,Ashley(3),27
+slumberland,La-Z-Boy,QK1102328,La-Z-Boy Sherman Rocker Recliner,Mocha,Recliner,Unspecified,599.99,1199.99,50.0,Y,73,37.0,Mid-ladder,3,Ashley(3),27
+slumberland,La-Z-Boy,QK1098744,Ava 5 Piece Sectional with 1 Tri-Power End,Oyster,Sectional,Unspecified,4899.99,7049.98,30.5,Y,114,94.7,Premium anchor,3,Flexsteel(3),108
+slumberland,La-Z-Boy,QK1062104,Brooks Reclining Loveseat,Muslin,Loveseat,Unspecified,979.99,2379.99,58.8,Y,82,36.6,Mid-ladder,3,Ashley(3),30
+slumberland,La-Z-Boy,QK1087077,Neo Tri-Power Rocker Recliner,Ash,Recliner,Unspecified,1969.99,3099.0,36.4,Y,73,84.9,Premium anchor,3,Southern Motion(2); Flexsteel(1),62
+slumberland,La-Z-Boy,QK1081510,James Leather Tri-Power Reclining Loveseat,Walnut,Loveseat,Leather,3379.99,5379.99,37.2,Y,82,89.0,Premium anchor,3,Flexsteel(3),73
+slumberland,La-Z-Boy,QK1081517,James Leather Power Plus Reclining Console Loveseat,Charcoal,Loveseat,Leather,3299.99,4749.99,30.5,Y,82,87.8,Premium anchor,3,Flexsteel(3),72
+slumberland,La-Z-Boy,QK1081508,James Leather Power Plus Reclining Console Loveseat,Walnut,Loveseat,Leather,3299.99,4749.99,30.5,Y,82,87.8,Premium anchor,3,Flexsteel(3),72
+slumberland,La-Z-Boy,QK1081509,James Leather Tri-Power Reclining Sofa,Walnut,Sofa,Leather,3399.99,5399.99,37.0,Y,83,89.2,Premium anchor,3,Flexsteel(3),74
+slumberland,La-Z-Boy,5211865,James Rocker Recliner,Silt,Recliner,Leather,599.99,1349.99,55.6,Y,73,37.0,Mid-ladder,3,Ashley(3),27
+slumberland,La-Z-Boy,QK1059651,Clayton Gold Lux-Lift Heat and Massage Recliner,Charcoal,Recliner,Unspecified,2199.99,5162.06,57.4,Y,73,87.7,Premium anchor,3,Flexsteel(3),64
+slumberland,La-Z-Boy,QK1064435,Trouper Leather Tri-Power Reclining Sofa,Gray,Sofa,Leather,3299.99,6399.99,48.4,Y,83,88.0,Premium anchor,3,Flexsteel(3),73
+slumberland,La-Z-Boy,QK1064425,Trouper Leather Tri-Power Reclining Sofa,Walnut,Sofa,Leather,3299.99,6399.99,48.4,Y,83,88.0,Premium anchor,3,Flexsteel(3),73
+slumberland,La-Z-Boy,QK1064439,Morrison Reclining Sofa,Marble,Sofa,Unspecified,1299.99,2199.99,40.9,Y,83,51.8,Mid-ladder,3,Ashley(2); Southern Motion(1),43
+slumberland,La-Z-Boy,QK1064445,Morrison Reclining Sofa,Graphite,Sofa,Unspecified,1299.99,2199.99,40.9,Y,83,51.8,Mid-ladder,3,Ashley(2); Southern Motion(1),43
+slumberland,La-Z-Boy,QK1064451,Jay Reclining Sofa,Granite,Sofa,Unspecified,1399.99,2399.99,41.7,Y,83,56.6,Mid-ladder,3,Southern Motion(2); Ashley(1),47
+slumberland,La-Z-Boy,QK1064460,Jay Reclining Sofa,Mushroom,Sofa,Unspecified,1399.99,2399.99,41.7,Y,83,56.6,Mid-ladder,3,Southern Motion(2); Ashley(1),47
+slumberland,La-Z-Boy,QK1098743,Ava Rocker Recliner,Oyster,Recliner,Unspecified,899.99,1259.98,28.6,Y,73,47.9,Mid-ladder,2,Southern Motion(2),35
+slumberland,La-Z-Boy,QK1101743,Kodie Rocker Recliner,Dove Gray,Recliner,Unspecified,899.99,1499.0,40.0,Y,73,47.9,Mid-ladder,2,Southern Motion(2),35
+slumberland,La-Z-Boy,QK1101744,Kodie Rocker Recliner,Sable,Recliner,Unspecified,899.99,1499.0,40.0,Y,73,47.9,Mid-ladder,2,Southern Motion(2),35
+slumberland,La-Z-Boy,QK1096557,Fulton Rocker Recliner,Mushroom,Recliner,Unspecified,899.99,1399.0,35.7,Y,73,47.9,Mid-ladder,2,Southern Motion(2),35
+slumberland,La-Z-Boy,QK1090807,Trouper 3 Piece Reclining Sectional,Sable,Sectional,Fabric,3699.99,5719.99,35.3,Y,114,92.1,Premium anchor,2,Flexsteel(2),105
+slumberland,La-Z-Boy,QK1108338,Greyson Leather Tri-Power Rocker Recliner,Ice,Recliner,Leather,1999.99,3699.0,45.9,Y,73,84.9,Premium anchor,1,Flexsteel(1),62
+slumberland,La-Z-Boy,QK1108339,Greyson Leather Tri-Power Rocker Recliner,Chocolate,Recliner,Leather,1999.99,3699.0,45.9,Y,73,84.9,Premium anchor,1,Flexsteel(1),62
+slumberland,La-Z-Boy,,Trouper Leather Tri Power Reclining Sofa and Loveseat,Default Title,Loveseat,Leather,6579.98,12779.98,48.5,Y,82,98.8,Premium anchor,1,Flexsteel(1),81
+slumberland,La-Z-Boy,QK1098747,Ava 5 Piece Sectional with 2 Tri-Power Ends and 1 Tri-Power Armless,Oyster,Sectional,Unspecified,5699.99,8399.99,32.1,Y,114,99.1,Premium anchor,0,,113
+slumberland,La-Z-Boy,QK1100817,Armitage 6 Piece Dual Power Reclining Sectional,Marble,Sectional,Unspecified,6399.99,10999.99,41.8,Y,114,99.1,Premium anchor,0,,113
+slumberland,La-Z-Boy,QK1098746,Ava 3 Piece Sectional,Oyster,Sectional,Unspecified,3399.99,4949.98,31.3,Y,114,88.6,Premium anchor,0,,101
+slumberland,La-Z-Boy,QK1040725,Astor Rocker Recliner,Mushroom,Recliner,Unspecified,999.99,1399.99,28.6,Y,73,49.3,Mid-ladder,0,,36
+slumberland,La-Z-Boy,QK1040726,Astor Rocker Recliner,Ash,Recliner,Unspecified,999.99,1399.99,28.6,Y,73,49.3,Mid-ladder,0,,36
+slumberland,La-Z-Boy,QK1031467,Trouper Leather Rocker Recliner,Gray,Recliner,Leather,999.99,1879.99,46.8,Y,73,49.3,Mid-ladder,0,,36
+slumberland,La-Z-Boy,QK1031494,Trouper Leather Rocker Recliner,Walnut,Recliner,Leather,999.99,1879.99,46.8,Y,73,49.3,Mid-ladder,0,,36
+slumberland,La-Z-Boy,QK1060421,Dorian Rocker Recliner,Sand,Recliner,Fabric,999.99,1579.99,36.7,Y,73,49.3,Mid-ladder,0,,36
+slumberland,La-Z-Boy,QK1084748,James 5 Piece Tri-Power Right Chaise Reclining Sectional,Fawn,Sectional,Fabric,6299.99,8999.99,30.0,Y,114,99.1,Premium anchor,0,,113

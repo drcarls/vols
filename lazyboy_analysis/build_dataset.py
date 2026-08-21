@@ -53,6 +53,24 @@ FORM_RULES = [
     ("Ottoman",   r"ottoman|footstool"),
 ]
 
+# Steinhafels handles carry a department path ("living-room-sofas-sectionals-")
+# whose own name contains category words. Left in place it makes every living
+# room seat look like a sectional, so it is stripped before any matching.
+DEPARTMENT_RE = re.compile(
+    r"living-room-sofas-sectionals|living-room-chairs-ottomans|"
+    r"living-room-accents|sofas-sectionals|chairs-ottomans", re.I)
+
+# Steinhafels' own collection taxonomy, which is authoritative where present.
+CATEGORY_FORM = {
+    "recliners": "Recliner",
+    "reclining-sectionals": "Sectional",
+    "sectionals": "Sectional",
+    "sofas": "Sofa",
+    "loveseats": "Loveseat",
+    "accent-chairs": "Chair",
+    # "reclining-sofas-loveseats" is ambiguous and resolved from the title.
+}
+
 MOTION_RE = re.compile(r"reclin|power|motion|glide|lift chair|zecliner", re.I)
 POWER_RE = re.compile(r"\bpower\b|\bp[23]\b|powerrecline", re.I)
 LEATHER_RE = re.compile(r"leather", re.I)
@@ -66,6 +84,27 @@ def classify_form(text):
         if re.search(pattern, text, re.I):
             return name
     return "Other"
+
+
+def resolve_form(title, category, handle, product_type):
+    """Form, most trustworthy signal first.
+
+    The retailer's own category beats the title, and the title beats the URL
+    handle -- the handle is only a fallback because its department prefix
+    describes a whole floor of the store, not this product.
+    """
+    if category:
+        if category == "reclining-sofas-loveseats":
+            return "Loveseat" if re.search(r"loveseat", title or "", re.I) else "Sofa"
+        if category in CATEGORY_FORM:
+            return CATEGORY_FORM[category]
+
+    by_title = classify_form(title or "")
+    if by_title != "Other":
+        return by_title
+
+    tail = DEPARTMENT_RE.sub(" ", handle or "").replace("-", " ")
+    return classify_form(" ".join([tail, product_type or ""]))
 
 
 def classify_material(text):
@@ -116,12 +155,10 @@ def rows_for(retailer, products, categories=None):
         handle = p.get("handle", "")
         # Steinhafels titles are terse, so the handle's category path and the
         # collection it sits in both feed the classifier.
-        context = " ".join(filter(None, [
-            title,
-            handle.replace("-", " "),
-            p.get("product_type", ""),
-            (categories or {}).get(str(p.get("id")), ""),
-        ]))
+        category = (categories or {}).get(str(p.get("id")), "")
+        motion_text = " ".join(filter(None, [
+            title, category, DEPARTMENT_RE.sub(" ", handle).replace("-", " ")]))
+        context = " ".join(filter(None, [title, category, motion_text]))
         # Form and motion read cleanly off the title; material usually does not,
         # since upholstery is named in the description or the colourway.
         material_text = " ".join(filter(None, [
@@ -136,8 +173,9 @@ def rows_for(retailer, products, categories=None):
             "vendor_raw": vendor,
             "title": title,
             "sku": sku or "",
-            "form": classify_form(context),
-            "motion": "Motion" if MOTION_RE.search(context) else "Stationary",
+            "form": resolve_form(title, (categories or {}).get(str(p.get("id"))),
+                                 handle, p.get("product_type")),
+            "motion": "Motion" if MOTION_RE.search(motion_text) else "Stationary",
             "power": "Power" if POWER_RE.search(context) else "",
             "material": classify_material(material_text),
             "price": round(price, 2),
