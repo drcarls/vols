@@ -73,7 +73,7 @@ def _get(path: str, timeout: int = 180) -> tuple[int, bytes]:
 class WebUnlocker:
     """Fetch one rendered page through a Bright Data Web Unlocker zone."""
 
-    zone: str = os.environ.get("BRIGHTDATA_ZONE", "web_unlocker1")
+    zone: str = os.environ.get("BRIGHTDATA_ZONE", "unblocker")
     max_retries: int = 3
 
     def fetch(self, url: str, country: str = "us") -> str:

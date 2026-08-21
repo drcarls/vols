@@ -1,0 +1,41 @@
+{
+  "pack_size": {
+    "half gallon": {
+      "median_ppg": 4.06,
+      "n": 5
+    },
+    "gallon": {
+      "median_ppg": 3.46,
+      "n": 4
+    },
+    "half_gallon_premium_pct": 17.3,
+    "half_gallon_premium_usd": 0.6
+  },
+  "tiers": {
+    "baseline_private_label_ppg": 4.06,
+    "national_brand": {
+      "median_ppg": 9.48,
+      "premium_usd": 5.42,
+      "premium_pct": 133.5,
+      "n": 7
+    },
+    "lactose_free": {
+      "median_ppg": 8.96,
+      "premium_usd": 4.9,
+      "premium_pct": 120.7,
+      "n": 17
+    },
+    "organic": {
+      "median_ppg": 11.89,
+      "premium_usd": 7.83,
+      "premium_pct": 192.9,
+      "n": 11
+    }
+  },
+  "fat": {
+    "1%": 3.46,
+    "2%": 3.46,
+    "skim": 3.38
+  },
+  "n_white": 44
+}

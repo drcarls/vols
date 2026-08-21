@@ -15,6 +15,30 @@ drug-channel storefronts may carry an Instacart markup, so their numbers should
 be read as *delivered price*, which is an upper bound on their shelf price. The
 report states this caveat inline.
 
+## Collection status — read this before trusting an output
+
+Verified against the live Bright Data account (`hl_0aa1b78c`, zone `unblocker`):
+
+| Path | Result |
+|---|---|
+| Web Unlocker on instacart.com | **Blocked.** Requires the zone's *Premium domains* toggle |
+| Instacart Products dataset | **Product-URL only.** Search URLs return `dead_page` |
+| Walmart – products dataset | **Works.** Keyword discovery returned 308 priced records |
+| Walmart – price and availability | **Works.** Direct `/ip/` URLs |
+
+**The `zipcode` input does not work.** The Walmart dataset accepts and echoes
+it, but the same SKU across 11 SC ZIPs returned an identical $3.52 from an
+identical `store_id` (3081). `store_id` as an input and `?store=` on the URL
+were both tested and both ignored. Collection is therefore **not
+geo-differentiated**, and `analyze.py`'s market-by-market output must not be
+run against it — one store repeated N times would render as N markets that
+agree, which reads as a finding and is an artefact. Use `ladder.py` instead
+until a geo-capable source is wired in.
+
+Keyword discovery is also **incomplete**: Great Value Whole Vitamin D Milk,
+Gallon — the single most important SKU in the category — was absent from the
+308-record discovery set and only appeared via a direct product URL.
+
 ## Why Bright Data is required
 
 Instacart's storefront landing page is server-rendered, but **search and aisle
@@ -27,7 +51,7 @@ also implemented for large asynchronous pulls.
 
 ```bash
 export BRIGHTDATA_API_TOKEN='...'     # read from env only, never written to disk
-export BRIGHTDATA_ZONE='web_unlocker1'  # optional, defaults to web_unlocker1
+export BRIGHTDATA_ZONE='unblocker'  # optional, defaults to unblocker
 ```
 
 ## Use

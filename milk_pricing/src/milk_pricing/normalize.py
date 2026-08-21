@@ -29,9 +29,9 @@ _UNIT_FL_OZ = {
 _UNIT_RE = "|".join(sorted((re.escape(u) for u in _UNIT_FL_OZ), key=len, reverse=True))
 
 # "40 x 16.9 fl oz", "12 x 8 fl oz"
-_MULTI_RE = re.compile(rf"(\d+)\s*(?:x|×)\s*([\d.]+)\s*({_UNIT_RE})\b", re.I)
+_MULTI_RE = re.compile(rf"(\d+)\s*(?:x|×)\s*(\d+(?:\.\d+)?)\s*({_UNIT_RE})\b", re.I)
 # "1 gal", "0.5 gal", "64 fl oz", "1.89 L"
-_SINGLE_RE = re.compile(rf"([\d.]+)\s*({_UNIT_RE})\b", re.I)
+_SINGLE_RE = re.compile(rf"(\d+(?:\.\d+)?)\s*({_UNIT_RE})\b", re.I)
 # "half gallon", "1/2 gal"
 _FRACTION_RE = re.compile(r"(?:half|1/2)\s*(gal|gallon)\b", re.I)
 # A bare unit with no leading quantity ("gallon", "quart") means one of it.
@@ -76,7 +76,10 @@ _NOT_MILK = ("creamer", "half and half", "half & half", "heavy cream",
              "buttermilk", "eggnog", "milkshake", "milk chocolate",
              "powdered milk", "dry milk", "milk bone", "coconut cream",
              "cream cheese", "ice cream", "milk duds")
-_FLAVORED = ("chocolate", "strawberry", "vanilla", "banana", "cookies")
+# Walmart lists the same SKU in English and Spanish, so the flavour tells have
+# to cover both or a chocolate gallon lands in the white-milk benchmark.
+_FLAVORED = ("chocolate", "strawberry", "vanilla", "banana", "cookies",
+             "chocolatada", "chocolatado", "fresa", "sabor")
 
 
 @dataclass

@@ -94,3 +94,16 @@ def test_unparseable_size_yields_no_ppg():
     o = normalize_row({"name": "Milk", "size": "each", "price": 3.0},
                       "aldi", "29201")
     assert o.price_per_gal is None
+
+
+@pytest.mark.parametrize("text", [
+    "a2 Milk. Vitamin D",     # bare '.' once matched [\d.]+ and crashed float()
+    "Milk .",
+    "oz",
+    ". gal .",
+])
+def test_malformed_size_never_raises(text):
+    """Real marketplace titles are messy; parsing must degrade, not explode."""
+    oz, pack = parse_size_fl_oz(text)
+    assert pack == 1
+    assert oz is None or oz > 0
