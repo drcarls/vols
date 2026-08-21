@@ -54,11 +54,48 @@ Three reasons not to read the +0.759 as a race effect:
 
 With seven opportunistically-sampled stores, this analysis can rule nothing in and nothing out.
 
-## The finding that does hold: access, not price
+## Correction: the "no competition" claim was wrong
 
-Aldi shows no race-linked price gap partly **because Aldi is not there**. Its SC footprint concentrates in metros; Williston — the highest price in the entire SC dataset at $3.72, 44% Black, $44,983 median income — has a Walmart and no nearby Aldi. The discount floor that holds Walmart to $2.17 in Inman simply does not exist there.
+An earlier version of this report concluded that Williston's high price reflected
+an absence of competition, and called that the one finding that held. That was
+not supported, and it is withdrawn.
 
-So the disparity this data supports is not *the same retailer charging more in Black neighbourhoods*. It is that lower-income, higher-Black-share rural markets have **fewer competing retailers**, and Walmart's price is measurably higher where that competition is absent. That is a structural access gap, and it is visible in the numbers here.
+What was actually established was the absence of **Aldi**, because Aldi is what
+this project collects. That was then written up as the absence of *competition*,
+which is a different and much larger claim — and a wrong one. Verified since:
+
+| Retailer | Williston (29853) | Source |
+|---|---|---|
+| Dollar General | present | store page confirmed |
+| Family Dollar | present | store page confirmed |
+| Walmart | present (store 795) | sampled, $3.72/gal |
+| Aldi / Lidl | not present locally | absent from collection |
+
+Walmart's own store-795 page lists Barnwell, Aiken and Orangeburg as adjacent
+trade areas, so the surrounding retail set is wider still.
+
+The retailer universe in `markets.py` never included the **dollar channel** —
+Dollar General, Family Dollar, Dollar Tree — or rural independents such as
+Piggly Wiggly and IGA. In a town of Williston's size those are the grocery
+competitive set, and omitting them meant "not in my retailer list" was silently
+being read as "not in the market."
+
+**What remains open.** Dollar General does sell milk, and its price in Williston
+is unknown: its site is client-rendered and does not expose per-store prices, so
+this project has not measured it. Until it is measured, we cannot say whether
+Walmart's $3.72 is the local low, the local high, or in the middle. The claim
+that Williston shoppers face a worse milk price than Inman shoppers rests
+entirely on the Walmart-to-Walmart comparison, which is real ($2.17 vs $3.72,
+same SKU, same chain) — but the shopper's actual best local option is not
+established.
+
+**What survives.** Two narrower statements are still supported: Walmart charges
+$1.55/gal more at its Williston store than at its Inman store on the identical
+SKU, and Aldi — whose presence coincides with Walmart's lowest SC prices — does
+not operate in Williston. Whether the dollar channel exerts the same downward
+pressure on milk that a hard discounter does is a genuine open question, and it
+is the specific thing that would need measuring before any access argument can
+be made.
 
 ## Limits
 

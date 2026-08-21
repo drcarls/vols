@@ -73,6 +73,26 @@ RETAILERS: tuple[Retailer, ...] = (
     Retailer("cvs-pharmacy", "CVS", "drug", ("Gold Emblem",)),
 )
 
+# KNOWN GAP — the dollar channel and rural independents are absent above.
+#
+# In small SC markets these ARE the grocery competitive set: Williston (29853),
+# the highest Walmart milk price in the SC sample, has both a Dollar General and
+# a Family Dollar. Because they were missing from RETAILERS, an early analysis
+# read "not in our retailer list" as "no competition in the market" and drew a
+# conclusion that had to be withdrawn.
+#
+# They are listed here rather than in RETAILERS because none is collectable yet:
+# dollargeneral.com renders client-side and does not expose per-store prices,
+# and pigglywigglysc.com is unreachable. Treat any market-level competitive
+# claim that relies on their absence as unsupported until they are measured.
+UNMEASURED_CHANNELS: tuple[Retailer, ...] = (
+    Retailer("dollar-general", "Dollar General", "dollar", ("Clover Valley",)),
+    Retailer("family-dollar", "Family Dollar", "dollar", ("Family Gourmet",)),
+    Retailer("dollar-tree", "Dollar Tree", "dollar", ()),
+    Retailer("piggly-wiggly", "Piggly Wiggly", "rural_independent", ()),
+    Retailer("iga", "IGA", "rural_independent", ()),
+)
+
 BY_SLUG = {r.slug: r for r in RETAILERS}
 ALL_ZIPS = tuple(z for m in SC_MARKETS for z in m.zips)
 MARKET_OF_ZIP = {z: m.name for m in SC_MARKETS for z in m.zips}
