@@ -1,0 +1,244 @@
+<title>Where La-Z-Boy Actually Transacts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{color-scheme:light;
+ --ground:#F2EFE9;--surface:#FBFAF7;--line:#E2DCD1;--grid:#E7E1D6;
+ --ink:#1F1D1A;--ink-2:#5C574F;--ink-3:#8A847A;
+ --ctx:#C4BFB5;--ctx-dot:#9E988D;--band:#EDE5D4;
+ --s1:#EB6834;--s2:#1BAF7A;--s3:#4A3AA7;--focus:#1F1D1A;--pos:#1BAF7A;--neg:#EB6834}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;
+ --ground:#171614;--surface:#201E1B;--line:#332F2A;--grid:#2C2924;
+ --ink:#F4F1EA;--ink-2:#B8B2A6;--ink-3:#8A847A;
+ --ctx:#4A453E;--ctx-dot:#7A746A;--band:#332D20;
+ --s1:#D95926;--s2:#199E70;--s3:#9085E9;--focus:#F4F1EA;--pos:#199E70;--neg:#D95926}}
+:root[data-theme="dark"]{color-scheme:dark;
+ --ground:#171614;--surface:#201E1B;--line:#332F2A;--grid:#2C2924;
+ --ink:#F4F1EA;--ink-2:#B8B2A6;--ink-3:#8A847A;
+ --ctx:#4A453E;--ctx-dot:#7A746A;--band:#332D20;
+ --s1:#D95926;--s2:#199E70;--s3:#9085E9;--focus:#F4F1EA;--pos:#199E70;--neg:#D95926}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);
+ font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,sans-serif;
+ font-variant-numeric:tabular-nums;line-height:1.5;padding:clamp(20px,4vw,48px)}
+.wrap{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:24px}
+h1{font-family:Spectral,Georgia,serif;font-weight:600;font-size:clamp(1.6rem,3.4vw,2.25rem);
+ margin:0;letter-spacing:-.01em;text-wrap:balance}
+.sub{margin:8px 0 0;color:var(--ink-2);font-size:.95rem;max-width:68ch}
+.legend{display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center;margin-top:12px}
+.lg{display:inline-flex;align-items:center;gap:7px;font-size:.83rem;color:var(--ink-2)}
+.sw{width:11px;height:11px;border-radius:2px;flex:none}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;
+ padding:clamp(16px,2.4vw,26px);overflow-x:auto}
+h2{font-family:Spectral,Georgia,serif;font-weight:600;font-size:1.1rem;margin:0 0 3px}
+.cap{margin:0 0 20px;color:var(--ink-3);font-size:.79rem;max-width:76ch}
+.key{color:var(--ink);font-weight:600}
+.plot{min-width:540px;position:relative}
+.row{display:grid;grid-template-columns:150px 1fr;align-items:center;gap:14px;padding:9px 0;border-radius:7px}
+.row.focus{background:var(--band);box-shadow:0 0 0 7px var(--band)}
+.bl{text-align:right;font-size:.83rem;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row.focus .bl{color:var(--ink);font-weight:600}
+.row.s1 .bl{color:var(--s1)}.row.s2 .bl{color:var(--s2)}.row.s3 .bl{color:var(--s3)}
+.track{position:relative;height:22px}
+.bar{position:absolute;top:10px;height:3px;border-radius:2px;background:var(--ctx)}
+.row.focus .bar{background:var(--focus);opacity:.5;height:4px;top:9.5px}
+.row.s1 .bar{background:var(--s1);opacity:.4}.row.s2 .bar{background:var(--s2);opacity:.4}.row.s3 .bar{background:var(--s3);opacity:.4}
+.dot{position:absolute;top:5.5px;width:11px;height:11px;border-radius:50%;background:var(--ctx-dot);
+ margin-left:-5.5px;box-shadow:0 0 0 2px var(--surface)}
+.row.focus .dot{background:var(--focus);width:13px;height:13px;top:4.5px;margin-left:-6.5px;box-shadow:0 0 0 2px var(--band)}
+.row.s1 .dot{background:var(--s1)}.row.s2 .dot{background:var(--s2)}.row.s3 .dot{background:var(--s3)}
+.val{position:absolute;bottom:19px;transform:translateX(-50%);font-size:.72rem;color:var(--ink-3);white-space:nowrap;pointer-events:none}
+.row.focus .val{color:var(--ink);font-weight:600}
+.row.s1 .val{color:var(--s1)}.row.s2 .val{color:var(--s2)}.row.s3 .val{color:var(--s3)}
+.grid-l{position:absolute;inset:0;margin-left:164px;pointer-events:none}
+.gl{position:absolute;top:0;bottom:26px;width:1px;background:var(--grid)}
+.axis{display:grid;grid-template-columns:150px 1fr;gap:14px;margin-top:8px}
+.ax{position:relative;height:18px}
+.tk{position:absolute;transform:translateX(-50%);font-size:.74rem;color:var(--ink-3)}
+svg{display:block;width:100%;height:auto;overflow:visible}
+.sv-lab{font-size:11.5px;fill:var(--ink-3)}
+.sv-lab.on{fill:var(--ink);font-weight:600}
+.sv-ax{font-size:11px;fill:var(--ink-3)}
+.hit{position:absolute;inset:-6px 0;cursor:default}
+.tip{position:fixed;z-index:9;pointer-events:none;opacity:0;transition:opacity .1s;
+ background:var(--ink);color:var(--ground);padding:7px 10px;border-radius:6px;font-size:.76rem;
+ line-height:1.45;white-space:nowrap;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+.tip.on{opacity:1}
+.lad{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+@media(max-width:760px){.lad{grid-template-columns:1fr}}
+.lrow{display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:center;padding:5px 0;font-size:.78rem}
+.lbl{text-align:right;color:var(--ink-3);white-space:nowrap}
+.lbars{display:flex;flex-direction:column;gap:3px}
+.lb{height:9px;border-radius:2px;min-width:1px}
+.lb.mine{background:var(--focus)}
+.lb.theirs{background:var(--ctx)}
+.gapflag{color:var(--s1);font-weight:600;font-size:.72rem;margin-left:6px}
+details{margin-top:2px}
+summary{cursor:pointer;font-size:.83rem;color:var(--ink-2);padding:8px 0}
+summary:focus-visible{outline:2px solid var(--s3);outline-offset:3px;border-radius:4px}
+table{border-collapse:collapse;width:100%;font-size:.8rem;margin-top:10px}
+th,td{text-align:right;padding:6px 9px;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--ink-3);font-weight:500;font-size:.73rem;text-transform:uppercase;letter-spacing:.05em}
+.foot{color:var(--ink-3);font-size:.76rem;max-width:74ch;margin:0}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+ <header>
+  <h1>Where La-Z-Boy actually transacts</h1>
+  <p class="sub">Both retailers publish a list price and a selling price on essentially every SKU, so each brand can be read twice &mdash; where it positions itself, and where it lands. Slumberland recliners unless noted.</p>
+  <div class="legend">
+   <span class="lg" style="color:var(--ink);font-weight:600"><span class="sw" style="background:var(--focus)"></span>La-Z-Boy</span>
+   <span class="lg" style="color:var(--s2)"><span class="sw" style="background:var(--s2)"></span>Franklin</span>
+   <span class="lg" style="color:var(--s3)"><span class="sw" style="background:var(--s3)"></span>Flexsteel</span>
+   <span class="lg" style="color:var(--s1)"><span class="sw" style="background:var(--s1)"></span>Ashley</span>
+   <span class="lg"><span class="sw" style="background:var(--ctx-dot)"></span>Other brands</span>
+  </div>
+ </header>
+ <div id="charts"></div>
+ <details><summary>View the numbers as tables</summary><div id="tables"></div></details>
+ <p class="foot">Source: Slumberland and Steinhafels public catalogues, single snapshot, 1,000 of 1,003 seating SKUs carrying both a list and a selling price. Feature counts read what a listing advertises, not a teardown.</p>
+</div>
+<div class="tip" id="tip"></div>
+
+<script>
+const D={"slope":[{"brand":"Ultra Comfort","k":"ctx","n":12,"list":4630,"street":2250,"li":309,"si":250},{"brand":"Flexsteel","k":"s3","n":21,"list":2550,"street":1900,"li":170,"si":211},{"brand":"Southern Motion","k":"ctx","n":14,"list":2475,"street":1550,"li":165,"si":172},{"brand":"La-Z-Boy","k":"focus","n":84,"list":1499,"street":900,"li":100,"si":100},{"brand":"Franklin","k":"s2","n":68,"list":1500,"street":800,"li":100,"si":89},{"brand":"Ashley","k":"s1","n":37,"list":790,"street":480,"li":53,"si":53}],"disc":[{"brand":"La-Z-Boy","k":"focus","n":111,"med":40,"lo":10,"hi":52,"spread":42},{"brand":"Ashley","k":"s1","n":54,"med":33,"lo":10,"hi":51,"spread":41},{"brand":"[CATN]","k":"ctx","n":10,"med":10,"lo":10,"hi":44,"spread":34},{"brand":"Southern Motion","k":"ctx","n":22,"med":33,"lo":10,"hi":40,"spread":30},{"brand":"[VIOL]","k":"ctx","n":13,"med":10,"lo":10,"hi":37,"spread":27},{"brand":"[FRKL]","k":"ctx","n":9,"med":10,"lo":10,"hi":36,"spread":26},{"brand":"[MOTO]","k":"ctx","n":11,"med":10,"lo":10,"hi":34,"spread":24},{"brand":"Flexsteel","k":"s3","n":47,"med":18,"lo":10,"hi":33,"spread":23},{"brand":"Ultra Comfort","k":"ctx","n":12,"med":52,"lo":42,"hi":60,"spread":18},{"brand":"Franklin","k":"s2","n":68,"med":48,"lo":41,"hi":53,"spread":11},{"brand":"[IMGN]","k":"ctx","n":9,"med":10,"lo":10,"hi":15,"spread":5},{"brand":"[BARC]","k":"ctx","n":14,"med":10,"lo":10,"hi":10,"spread":0},{"brand":"[COZZ]","k":"ctx","n":13,"med":10,"lo":10,"hi":10,"spread":0},{"brand":"[CHRS]","k":"ctx","n":17,"med":10,"lo":10,"hi":10,"spread":0},{"brand":"HomeStretch","k":"ctx","n":14,"med":10,"lo":10,"hi":10,"spread":0}],"value":[{"brand":"La-Z-Boy","k":"focus","n":121,"price":1100,"feats":2.0,"per":559},{"brand":"Flexsteel","k":"s3","n":64,"price":2250,"feats":4.0,"per":558},{"brand":"Ashley","k":"s1","n":62,"price":495,"feats":1.5,"per":326},{"brand":"Franklin","k":"s2","n":68,"price":800,"feats":2.1,"per":386},{"brand":"Southern Motion","k":"ctx","n":22,"price":1400,"feats":2.8,"per":505},{"brand":"Ultra Comfort","k":"ctx","n":12,"price":2250,"feats":2.5,"per":900},{"brand":"Best Home Furnishings","k":"ctx","n":9,"price":1100,"feats":1.7,"per":660},{"brand":"[BARC]","k":"ctx","n":22,"price":1220,"feats":0.2,"per":5368},{"brand":"[COZZ]","k":"ctx","n":15,"price":9000,"feats":2.1,"per":4219},{"brand":"[FRKL]","k":"ctx","n":13,"price":1033,"feats":2.8,"per":373},{"brand":"[CATN]","k":"ctx","n":15,"price":956,"feats":2.8,"per":341},{"brand":"[CHRS]","k":"ctx","n":18,"price":894,"feats":1.7,"per":519},{"brand":"[VIOL]","k":"ctx","n":15,"price":1215,"feats":0.5,"per":2604},{"brand":"[HOKR]","k":"ctx","n":8,"price":2425,"feats":2.6,"per":924},{"brand":"HomeStretch","k":"ctx","n":29,"price":1200,"feats":2.5,"per":483},{"brand":"[IMGN]","k":"ctx","n":13,"price":2800,"feats":1.7,"per":1655},{"brand":"[MEGA]","k":"ctx","n":9,"price":1150,"feats":3.3,"per":345},{"brand":"[SYNG]","k":"ctx","n":8,"price":1088,"feats":4.8,"per":229},{"brand":"[MOTO]","k":"ctx","n":16,"price":1215,"feats":3.9,"per":314},{"brand":"[KUKA]","k":"ctx","n":9,"price":1250,"feats":3.1,"per":402}],"ladder":[{"retailer":"slumberland","cat":"Recliners","bands":[{"label":"$0\u2013750","mine":36,"theirs":65},{"label":"$750\u20131,250","mine":29,"theirs":51},{"label":"$1,250\u20131,750","mine":12,"theirs":26},{"label":"$1,750\u20132,500","mine":7,"theirs":22},{"label":"$2,500\u20133,500","mine":0,"theirs":8},{"label":"$3,500+","mine":0,"theirs":0}]},{"retailer":"steinhafels","cat":"Recliners","bands":[{"label":"$0\u2013750","mine":3,"theirs":38},{"label":"$750\u20131,250","mine":15,"theirs":113},{"label":"$1,250\u20131,750","mine":12,"theirs":72},{"label":"$1,750\u20132,500","mine":7,"theirs":41},{"label":"$2,500\u20133,500","mine":0,"theirs":36},{"label":"$3,500+","mine":0,"theirs":19}]},{"retailer":"slumberland","cat":"Motion sofas","bands":[{"label":"$0\u2013750","mine":0,"theirs":8},{"label":"$750\u20131,250","mine":2,"theirs":20},{"label":"$1,250\u20131,750","mine":15,"theirs":31},{"label":"$1,750\u20132,500","mine":41,"theirs":26},{"label":"$2,500\u20133,500","mine":27,"theirs":26},{"label":"$3,500+","mine":1,"theirs":17}]},{"retailer":"steinhafels","cat":"Motion sofas","bands":[{"label":"$0\u2013750","mine":0,"theirs":0},{"label":"$750\u20131,250","mine":0,"theirs":20},{"label":"$1,250\u20131,750","mine":0,"theirs":34},{"label":"$1,750\u20132,500","mine":9,"theirs":49},{"label":"$2,500\u20133,500","mine":7,"theirs":50},{"label":"$3,500+","mine":0,"theirs":8}]}]};
+const money=n=>"$"+Math.round(n).toLocaleString("en-US");
+const charts=document.getElementById("charts");
+charts.style.cssText="display:flex;flex-direction:column;gap:24px";
+const card=(title,cap,inner)=>{const c=document.createElement("section");c.className="card";
+ c.innerHTML=`<h2>${title}</h2><p class="cap">${cap}</p>${inner}`;charts.appendChild(c);return c;};
+
+/* 1 — slopegraph: list index -> street index */
+(()=>{
+ const d=D.slope, W=760,H=330,L=210,R=560,T=26,B=26;
+ const vals=d.flatMap(x=>[x.li,x.si]), mx=Math.max(...vals), mn=Math.min(...vals);
+ const y=v=>T+(mx-v)/(mx-mn)*(H-T-B);
+ // Two brands can share an index -- Franklin and La-Z-Boy both list at 100 --
+ // so label positions are nudged apart while the dots stay on their true value.
+ const spread=(items,get)=>{const MIN=15;const a=items.map((x,i)=>({i,y:get(x)}))
+   .sort((p,q)=>p.y-q.y);
+  for(let k=1;k<a.length;k++) if(a[k].y-a[k-1].y<MIN) a[k].y=a[k-1].y+MIN;
+  const out=[];a.forEach(o=>out[o.i]=o.y);return out;};
+ const ly=spread(d,x=>y(x.li)), ry=spread(d,x=>y(x.si));
+ const seg=d.map((x,i)=>{
+  const col=x.k==="focus"?"var(--focus)":x.k==="ctx"?"var(--ctx-dot)":`var(--${x.k})`;
+  const w=x.k==="ctx"?1.6:x.k==="focus"?3:2.4, op=x.k==="ctx"?.55:1;
+  return `<line x1="${L}" y1="${y(x.li)}" x2="${R}" y2="${y(x.si)}" stroke="${col}"
+     stroke-width="${w}" opacity="${op}" stroke-linecap="round"/>
+   <circle cx="${L}" cy="${y(x.li)}" r="${x.k==="focus"?5.5:4.5}" fill="${col}" opacity="${op}"
+     stroke="var(--surface)" stroke-width="2"/>
+   <circle cx="${R}" cy="${y(x.si)}" r="${x.k==="focus"?5.5:4.5}" fill="${col}" opacity="${op}"
+     stroke="var(--surface)" stroke-width="2"/>
+   <line x1="${L-9}" y1="${y(x.li)}" x2="${L-5}" y2="${ly[i]}" stroke="${col}" opacity="${op*.5}" stroke-width="1"/>
+   <text class="sv-lab ${x.k!=="ctx"?"on":""}" x="${L-12}" y="${ly[i]+4}" text-anchor="end"
+     ${x.k!=="ctx"&&x.k!=="focus"?`fill="var(--${x.k})"`:""}>${x.brand} ${x.li}</text>
+   <line x1="${R+5}" y1="${y(x.si)}" x2="${R+9}" y2="${ry[i]}" stroke="${col}" opacity="${op*.5}" stroke-width="1"/>
+   <text class="sv-lab ${x.k!=="ctx"?"on":""}" x="${R+12}" y="${ry[i]+4}"
+     ${x.k!=="ctx"&&x.k!=="focus"?`fill="var(--${x.k})"`:""}>${x.si}</text>`;}).join("");
+ card("Franklin lists one dollar off you, then sells 11% under",
+  `Median price indexed to La&#8209;Z&#8209;Boy = 100. Left is where each brand <span class="key">lists</span>; right is where it <span class="key">sells</span>. Franklin lists at $1,500 against La&#8209;Z&#8209;Boy&rsquo;s $1,499 on a 68&#8209;SKU line, then lands below it. Flexsteel&rsquo;s gap widens from 70% to 111% &mdash; not because Flexsteel raised price, but because La&#8209;Z&#8209;Boy discounted and it did not.`,
+  `<div class="plot"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Slope chart of list index versus street index by brand">
+    <line x1="${L}" y1="${T-14}" x2="${L}" y2="${H-B+6}" stroke="var(--grid)"/>
+    <line x1="${R}" y1="${T-14}" x2="${R}" y2="${H-B+6}" stroke="var(--grid)"/>
+    <text class="sv-ax" x="${L}" y="${T-20}" text-anchor="middle">LIST</text>
+    <text class="sv-ax" x="${R}" y="${T-20}" text-anchor="middle">STREET</text>${seg}</svg></div>`);
+})();
+
+/* 2 — discount range */
+(()=>{
+ const d=D.disc, MAX=60;
+ const pos=v=>Math.max(0,Math.min(100,v/MAX*100));
+ const TICKS=[0,20,40,60];
+ const rows=d.map(x=>`<div class="row ${x.k}">
+   <div class="bl">${x.brand}</div>
+   <div class="track">
+     <div class="bar" style="left:${pos(x.lo)}%;width:${Math.max(pos(x.hi)-pos(x.lo),.5)}%"></div>
+     <div class="val" style="left:${pos(x.med)}%">${x.med}%</div>
+     <div class="dot" style="left:${pos(x.med)}%"></div>
+     <div class="hit" data-t="${x.brand} · ${x.n} SKUs&#10;median ${x.med}% off&#10;p10–p90 ${x.lo}%–${x.hi}% (${x.spread}pt spread)"></div>
+   </div></div>`).join("");
+ card("The problem is not depth &mdash; it is spread",
+  `Discount off list, recliners, both retailers. Bar spans the 10th to 90th percentile; dot is the median. <span class="key">Franklin discounts deeper than La&#8209;Z&#8209;Boy &mdash; 48% against 40% &mdash; inside an 11&#8209;point band.</span> La&#8209;Z&#8209;Boy runs 42 points wide, the widest on the floor: two shoppers buying the same brand the same week get very different deals.`,
+  `<div class="plot"><div class="grid-l">${TICKS.map(t=>`<div class="gl" style="left:${pos(t)}%"></div>`).join("")}</div>
+    ${rows}
+    <div class="axis"><div></div><div class="ax">${TICKS.map(t=>`<span class="tk" style="left:${pos(t)}%">${t}%</span>`).join("")}</div></div></div>`);
+})();
+
+/* 3 — price vs features scatter */
+(()=>{
+ const d=D.value, W=760,H=390,L=64,R=724,T=22,B=52;
+ const px=d.map(x=>x.price), fx=d.map(x=>x.feats);
+ const xmax=Math.max(...px)*1.04, ymax=Math.max(...fx)+.5;
+ const X=v=>L+v/xmax*(R-L), Y=v=>H-B-v/ymax*(H-T-B);
+ const XT=[0,1000,2000,3000], YT=[0,1,2,3,4,5];
+ // Labelled points can land close together (Franklin and La-Z-Boy differ by
+ // 0.1 features), so labels alternate above and below when they would collide.
+ const named=d.filter(x=>x.k!=="ctx");
+ const off={};
+ named.forEach((x,i)=>{const near=named.slice(0,i).some(o=>
+   Math.abs(X(o.price)-X(x.price))<90 && Math.abs(Y(o.feats)-Y(x.feats))<16);
+   off[x.brand]=near?14:-2;});
+ const pts=d.map(x=>{
+  const col=x.k==="focus"?"var(--focus)":x.k==="ctx"?"var(--ctx-dot)":`var(--${x.k})`;
+  const r=x.k==="ctx"?4.5:6.5, op=x.k==="ctx"?.5:1;
+  const lab=x.k!=="ctx"?`<text class="sv-lab on" x="${X(x.price)+11}" y="${Y(x.feats)+4+(off[x.brand]||0)}"
+     ${x.k!=="focus"?`fill="var(--${x.k})"`:""}>${x.brand}</text>`:"";
+  return `<circle cx="${X(x.price)}" cy="${Y(x.feats)}" r="${r}" fill="${col}" opacity="${op}"
+    stroke="var(--surface)" stroke-width="2"><title>${x.brand}: ${money(x.price)}, ${x.feats} features, ${money(x.per)} per feature</title></circle>${lab}`;}).join("");
+ card("You cost what Flexsteel costs per feature, at half its price",
+  `Median selling price against mean advertised features, recliners. Up and to the left is more capability per dollar. <span class="key">La&#8209;Z&#8209;Boy delivers a feature for $559; Flexsteel for $558 &mdash; while sitting at twice the price. Franklin does it for $386.</span> The measure reflects what listings claim, so terse copy reads as a plain product.`,
+  `<div class="plot"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Scatter of median price against advertised feature count by brand">
+    ${XT.map(t=>`<line x1="${X(t)}" y1="${T}" x2="${X(t)}" y2="${H-B}" stroke="var(--grid)"/>
+      <text class="sv-ax" x="${X(t)}" y="${H-B+18}" text-anchor="middle">${money(t)}</text>`).join("")}
+    ${YT.map(t=>`<line x1="${L}" y1="${Y(t)}" x2="${R}" y2="${Y(t)}" stroke="var(--grid)"/>
+      <text class="sv-ax" x="${L-10}" y="${Y(t)+4}" text-anchor="end">${t}</text>`).join("")}
+    ${pts}
+    <text class="sv-ax" x="${(L+R)/2}" y="${H-10}" text-anchor="middle">median selling price</text>
+    <text class="sv-ax" x="14" y="${(T+H-B)/2}" text-anchor="middle" transform="rotate(-90 14 ${(T+H-B)/2})">advertised features</text>
+   </svg></div>`);
+})();
+
+/* 4 — ladder coverage */
+(()=>{
+ const mx=Math.max(...D.ladder.flatMap(g=>g.bands.flatMap(b=>[b.mine,b.theirs])));
+ const panels=D.ladder.map(g=>`<div><div style="font-size:.8rem;font-weight:600;margin-bottom:8px">
+   ${g.retailer} &middot; ${g.cat}</div>
+   ${g.bands.filter(b=>b.mine||b.theirs).map(b=>`<div class="lrow">
+     <div class="lbl">${b.label}</div>
+     <div class="lbars">
+       <div class="lb mine" style="width:${b.mine/mx*100}%" title="La-Z-Boy ${b.mine}"></div>
+       <div class="lb theirs" style="width:${b.theirs/mx*100}%" title="competitors ${b.theirs}"></div>
+     </div></div>
+     ${b.mine===0&&b.theirs>=8?`<div class="lrow"><div class="lbl"></div><div class="gapflag">no cover &mdash; ${b.theirs} competitor SKUs here</div></div>`:""}`).join("")}
+   </div>`).join("");
+ card("Where the ladder has holes",
+  `SKU counts by price band. Dark bar is La&#8209;Z&#8209;Boy, grey is every other brand on that floor. <span class="key">At Steinhafels there is no La&#8209;Z&#8209;Boy recliner above $2,278 while 55 competitor SKUs sit above it, and no motion sofa below $2,061 while 54 sit below.</span> Both ends of that floor belong to someone else.`,
+  `<div class="lad">${panels}</div>`);
+})();
+
+/* tables */
+const tables=document.getElementById("tables");
+const mkTable=(cap,head,body)=>{const t=document.createElement("table");
+ t.innerHTML=`<caption style="text-align:left;font-weight:600;padding:14px 0 4px;font-size:.88rem">${cap}</caption>
+ <thead><tr>${head.map(h=>`<th>${h}</th>`).join("")}</tr></thead><tbody>${body}</tbody>`;
+ tables.appendChild(t);};
+mkTable("List vs street position (Slumberland recliners)",["Brand","n","List","Street","List idx","Street idx"],
+ D.slope.map(x=>`<tr><td>${x.brand}</td><td>${x.n}</td><td>${money(x.list)}</td><td>${money(x.street)}</td><td>${x.li}</td><td>${x.si}</td></tr>`).join(""));
+mkTable("Discount depth and spread (recliners)",["Brand","n","p10","Median","p90","Spread"],
+ D.disc.map(x=>`<tr><td>${x.brand}</td><td>${x.n}</td><td>${x.lo}%</td><td>${x.med}%</td><td>${x.hi}%</td><td>${x.spread}pt</td></tr>`).join(""));
+mkTable("Price per advertised feature (recliners)",["Brand","n","Street","Features","$ / feature"],
+ D.value.slice().sort((a,b)=>a.per-b.per).map(x=>`<tr><td>${x.brand}</td><td>${x.n}</td><td>${money(x.price)}</td><td>${x.feats}</td><td>${money(x.per)}</td></tr>`).join(""));
+
+/* tooltip */
+const tip=document.getElementById("tip");
+document.addEventListener("pointerover",e=>{const h=e.target.closest(".hit");if(!h)return;
+ tip.innerHTML=h.dataset.t.split("\n").map((s,i)=>i?s:"<b>"+s+"</b>").join("<br>");tip.classList.add("on");});
+document.addEventListener("pointermove",e=>{if(!tip.classList.contains("on"))return;
+ const p=14,w=tip.offsetWidth,h=tip.offsetHeight;
+ tip.style.left=Math.min(e.clientX+p,innerWidth-w-8)+"px";
+ tip.style.top=Math.max(8,e.clientY-h-p)+"px";});
+document.addEventListener("pointerout",e=>{if(e.target.closest(".hit"))tip.classList.remove("on");});
+</script>

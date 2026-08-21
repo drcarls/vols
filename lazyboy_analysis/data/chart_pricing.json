@@ -1,0 +1,503 @@
+{
+ "slope": [
+  {
+   "brand": "Ultra Comfort",
+   "k": "ctx",
+   "n": 12,
+   "list": 4630,
+   "street": 2250,
+   "li": 309,
+   "si": 250
+  },
+  {
+   "brand": "Flexsteel",
+   "k": "s3",
+   "n": 21,
+   "list": 2550,
+   "street": 1900,
+   "li": 170,
+   "si": 211
+  },
+  {
+   "brand": "Southern Motion",
+   "k": "ctx",
+   "n": 14,
+   "list": 2475,
+   "street": 1550,
+   "li": 165,
+   "si": 172
+  },
+  {
+   "brand": "La-Z-Boy",
+   "k": "focus",
+   "n": 84,
+   "list": 1499,
+   "street": 900,
+   "li": 100,
+   "si": 100
+  },
+  {
+   "brand": "Franklin",
+   "k": "s2",
+   "n": 68,
+   "list": 1500,
+   "street": 800,
+   "li": 100,
+   "si": 89
+  },
+  {
+   "brand": "Ashley",
+   "k": "s1",
+   "n": 37,
+   "list": 790,
+   "street": 480,
+   "li": 53,
+   "si": 53
+  }
+ ],
+ "disc": [
+  {
+   "brand": "La-Z-Boy",
+   "k": "focus",
+   "n": 111,
+   "med": 40,
+   "lo": 10,
+   "hi": 52,
+   "spread": 42
+  },
+  {
+   "brand": "Ashley",
+   "k": "s1",
+   "n": 54,
+   "med": 33,
+   "lo": 10,
+   "hi": 51,
+   "spread": 41
+  },
+  {
+   "brand": "[CATN]",
+   "k": "ctx",
+   "n": 10,
+   "med": 10,
+   "lo": 10,
+   "hi": 44,
+   "spread": 34
+  },
+  {
+   "brand": "Southern Motion",
+   "k": "ctx",
+   "n": 22,
+   "med": 33,
+   "lo": 10,
+   "hi": 40,
+   "spread": 30
+  },
+  {
+   "brand": "[VIOL]",
+   "k": "ctx",
+   "n": 13,
+   "med": 10,
+   "lo": 10,
+   "hi": 37,
+   "spread": 27
+  },
+  {
+   "brand": "[FRKL]",
+   "k": "ctx",
+   "n": 9,
+   "med": 10,
+   "lo": 10,
+   "hi": 36,
+   "spread": 26
+  },
+  {
+   "brand": "[MOTO]",
+   "k": "ctx",
+   "n": 11,
+   "med": 10,
+   "lo": 10,
+   "hi": 34,
+   "spread": 24
+  },
+  {
+   "brand": "Flexsteel",
+   "k": "s3",
+   "n": 47,
+   "med": 18,
+   "lo": 10,
+   "hi": 33,
+   "spread": 23
+  },
+  {
+   "brand": "Ultra Comfort",
+   "k": "ctx",
+   "n": 12,
+   "med": 52,
+   "lo": 42,
+   "hi": 60,
+   "spread": 18
+  },
+  {
+   "brand": "Franklin",
+   "k": "s2",
+   "n": 68,
+   "med": 48,
+   "lo": 41,
+   "hi": 53,
+   "spread": 11
+  },
+  {
+   "brand": "[IMGN]",
+   "k": "ctx",
+   "n": 9,
+   "med": 10,
+   "lo": 10,
+   "hi": 15,
+   "spread": 5
+  },
+  {
+   "brand": "[BARC]",
+   "k": "ctx",
+   "n": 14,
+   "med": 10,
+   "lo": 10,
+   "hi": 10,
+   "spread": 0
+  },
+  {
+   "brand": "[COZZ]",
+   "k": "ctx",
+   "n": 13,
+   "med": 10,
+   "lo": 10,
+   "hi": 10,
+   "spread": 0
+  },
+  {
+   "brand": "[CHRS]",
+   "k": "ctx",
+   "n": 17,
+   "med": 10,
+   "lo": 10,
+   "hi": 10,
+   "spread": 0
+  },
+  {
+   "brand": "HomeStretch",
+   "k": "ctx",
+   "n": 14,
+   "med": 10,
+   "lo": 10,
+   "hi": 10,
+   "spread": 0
+  }
+ ],
+ "value": [
+  {
+   "brand": "La-Z-Boy",
+   "k": "focus",
+   "n": 121,
+   "price": 1100,
+   "feats": 2.0,
+   "per": 559
+  },
+  {
+   "brand": "Flexsteel",
+   "k": "s3",
+   "n": 64,
+   "price": 2250,
+   "feats": 4.0,
+   "per": 558
+  },
+  {
+   "brand": "Ashley",
+   "k": "s1",
+   "n": 62,
+   "price": 495,
+   "feats": 1.5,
+   "per": 326
+  },
+  {
+   "brand": "Franklin",
+   "k": "s2",
+   "n": 68,
+   "price": 800,
+   "feats": 2.1,
+   "per": 386
+  },
+  {
+   "brand": "Southern Motion",
+   "k": "ctx",
+   "n": 22,
+   "price": 1400,
+   "feats": 2.8,
+   "per": 505
+  },
+  {
+   "brand": "Ultra Comfort",
+   "k": "ctx",
+   "n": 12,
+   "price": 2250,
+   "feats": 2.5,
+   "per": 900
+  },
+  {
+   "brand": "Best Home Furnishings",
+   "k": "ctx",
+   "n": 9,
+   "price": 1100,
+   "feats": 1.7,
+   "per": 660
+  },
+  {
+   "brand": "[BARC]",
+   "k": "ctx",
+   "n": 22,
+   "price": 1220,
+   "feats": 0.2,
+   "per": 5368
+  },
+  {
+   "brand": "[COZZ]",
+   "k": "ctx",
+   "n": 15,
+   "price": 9000,
+   "feats": 2.1,
+   "per": 4219
+  },
+  {
+   "brand": "[FRKL]",
+   "k": "ctx",
+   "n": 13,
+   "price": 1033,
+   "feats": 2.8,
+   "per": 373
+  },
+  {
+   "brand": "[CATN]",
+   "k": "ctx",
+   "n": 15,
+   "price": 956,
+   "feats": 2.8,
+   "per": 341
+  },
+  {
+   "brand": "[CHRS]",
+   "k": "ctx",
+   "n": 18,
+   "price": 894,
+   "feats": 1.7,
+   "per": 519
+  },
+  {
+   "brand": "[VIOL]",
+   "k": "ctx",
+   "n": 15,
+   "price": 1215,
+   "feats": 0.5,
+   "per": 2604
+  },
+  {
+   "brand": "[HOKR]",
+   "k": "ctx",
+   "n": 8,
+   "price": 2425,
+   "feats": 2.6,
+   "per": 924
+  },
+  {
+   "brand": "HomeStretch",
+   "k": "ctx",
+   "n": 29,
+   "price": 1200,
+   "feats": 2.5,
+   "per": 483
+  },
+  {
+   "brand": "[IMGN]",
+   "k": "ctx",
+   "n": 13,
+   "price": 2800,
+   "feats": 1.7,
+   "per": 1655
+  },
+  {
+   "brand": "[MEGA]",
+   "k": "ctx",
+   "n": 9,
+   "price": 1150,
+   "feats": 3.3,
+   "per": 345
+  },
+  {
+   "brand": "[SYNG]",
+   "k": "ctx",
+   "n": 8,
+   "price": 1088,
+   "feats": 4.8,
+   "per": 229
+  },
+  {
+   "brand": "[MOTO]",
+   "k": "ctx",
+   "n": 16,
+   "price": 1215,
+   "feats": 3.9,
+   "per": 314
+  },
+  {
+   "brand": "[KUKA]",
+   "k": "ctx",
+   "n": 9,
+   "price": 1250,
+   "feats": 3.1,
+   "per": 402
+  }
+ ],
+ "ladder": [
+  {
+   "retailer": "slumberland",
+   "cat": "Recliners",
+   "bands": [
+    {
+     "label": "$0\u2013750",
+     "mine": 36,
+     "theirs": 65
+    },
+    {
+     "label": "$750\u20131,250",
+     "mine": 29,
+     "theirs": 51
+    },
+    {
+     "label": "$1,250\u20131,750",
+     "mine": 12,
+     "theirs": 26
+    },
+    {
+     "label": "$1,750\u20132,500",
+     "mine": 7,
+     "theirs": 22
+    },
+    {
+     "label": "$2,500\u20133,500",
+     "mine": 0,
+     "theirs": 8
+    },
+    {
+     "label": "$3,500+",
+     "mine": 0,
+     "theirs": 0
+    }
+   ]
+  },
+  {
+   "retailer": "steinhafels",
+   "cat": "Recliners",
+   "bands": [
+    {
+     "label": "$0\u2013750",
+     "mine": 3,
+     "theirs": 38
+    },
+    {
+     "label": "$750\u20131,250",
+     "mine": 15,
+     "theirs": 113
+    },
+    {
+     "label": "$1,250\u20131,750",
+     "mine": 12,
+     "theirs": 72
+    },
+    {
+     "label": "$1,750\u20132,500",
+     "mine": 7,
+     "theirs": 41
+    },
+    {
+     "label": "$2,500\u20133,500",
+     "mine": 0,
+     "theirs": 36
+    },
+    {
+     "label": "$3,500+",
+     "mine": 0,
+     "theirs": 19
+    }
+   ]
+  },
+  {
+   "retailer": "slumberland",
+   "cat": "Motion sofas",
+   "bands": [
+    {
+     "label": "$0\u2013750",
+     "mine": 0,
+     "theirs": 8
+    },
+    {
+     "label": "$750\u20131,250",
+     "mine": 2,
+     "theirs": 20
+    },
+    {
+     "label": "$1,250\u20131,750",
+     "mine": 15,
+     "theirs": 31
+    },
+    {
+     "label": "$1,750\u20132,500",
+     "mine": 41,
+     "theirs": 26
+    },
+    {
+     "label": "$2,500\u20133,500",
+     "mine": 27,
+     "theirs": 26
+    },
+    {
+     "label": "$3,500+",
+     "mine": 1,
+     "theirs": 17
+    }
+   ]
+  },
+  {
+   "retailer": "steinhafels",
+   "cat": "Motion sofas",
+   "bands": [
+    {
+     "label": "$0\u2013750",
+     "mine": 0,
+     "theirs": 0
+    },
+    {
+     "label": "$750\u20131,250",
+     "mine": 0,
+     "theirs": 20
+    },
+    {
+     "label": "$1,250\u20131,750",
+     "mine": 0,
+     "theirs": 34
+    },
+    {
+     "label": "$1,750\u20132,500",
+     "mine": 9,
+     "theirs": 49
+    },
+    {
+     "label": "$2,500\u20133,500",
+     "mine": 7,
+     "theirs": 50
+    },
+    {
+     "label": "$3,500+",
+     "mine": 0,
+     "theirs": 8
+    }
+   ]
+  }
+ ]
+}
