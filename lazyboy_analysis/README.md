@@ -155,6 +155,28 @@ peer set showed. The clearest cases are deeply discounted rocker recliners at
 Slumberland -- Morrison, Liam and Brooks at $630-650 and 42-46% off -- each with
 around 13 Franklin models priced directly above them.
 
+## Assortment, features and materials
+
+`assortment.py` works in the two categories where La-Z-Boy actually competes --
+recliners, and motion sofas (sofas and loveseats with a reclining action, which
+is how Steinhafels groups them). It answers three questions in order: how much
+shelf each brand holds, how the SKUs differ, and where La-Z-Boy's own SKUs land
+in the ladder that results.
+
+**Material.** La-Z-Boy names leather in the model title and does not name
+fabric. Steinhafels corroborates this independently: its variant codes carry an
+LB prefix on leather and D/E/C on fabric, and across 47 La-Z-Boy models the two
+never cross. "Leather" therefore means explicitly identified as leather, and
+every leather share here is a floor.
+
+**Features** are counted from the title and the product description together,
+out of ten named capabilities. Read from titles alone the measure mostly ranks
+naming conventions: Flexsteel moves from 8th to 2nd on recliners once
+descriptions are included. La-Z-Boy sits in the bottom third either way, which
+is the part that survives. What this cannot do is separate a tersely listed
+product from a genuinely plain one -- Barcalounger scores 0.2 on both measures
+because its listings say almost nothing.
+
 ## Caveats
 
 - **Not carried, so not covered:** Palliser and Stressless appear at neither
