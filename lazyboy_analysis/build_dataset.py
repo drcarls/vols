@@ -23,7 +23,39 @@ STEINHAFELS_BRANDS = {
     "SOMO": "Southern Motion",
     "JACK": "Jackson/Catnapper",
     "ASHY": "Ashley",
+    # Resolved the same way, for brands outside the named competitor set but
+    # sharing the same shelf. A price ladder is only meaningful against the
+    # whole shelf, not against a chosen subset of it.
+    "RCHD": "Drew & Jonathan Home",
+    "COSH": "Canadel",
+    "WITF": "Witmer",
+    "JONL": "Jonathan Louis",
+    "KINH": "King Hickory",
+    "HOMS": "HomeStretch",
 }
+
+# The nine brands originally asked about, plus La-Z-Boy. Everything else is
+# still carried in the data -- it competes for the same floor space -- but this
+# is the set the assortment tables report on.
+FOCUS_SET = {
+    "La-Z-Boy", "Flexsteel", "Ashley", "Southern Motion",
+    "Best Home Furnishings", "Bassett", "Natuzzi", "Jackson/Catnapper",
+    "Palliser", "Stressless",
+}
+
+
+def resolve_brand(retailer, vendor):
+    """Named brand where known, otherwise the retailer's own label.
+
+    Steinhafels codes that could not be resolved are kept verbatim and prefixed,
+    so an unresolved vendor is never silently dressed up as a brand name.
+    """
+    vendor = (vendor or "").strip()
+    if not vendor:
+        return None
+    if retailer == "steinhafels":
+        return STEINHAFELS_BRANDS.get(vendor) or f"[{vendor}]"
+    return SLUMBERLAND_BRANDS.get(vendor) or vendor
 
 # Slumberland publishes brand names directly; only aliasing is needed.
 SLUMBERLAND_BRANDS = {

@@ -100,6 +100,23 @@ mid-ladder SKUs that simply sit where competitor prices are dense. Position and
 count have to be read together, which is why the entry-point table filters to
 the bottom quartile first.
 
+## Scope of the peer set
+
+Everything the ladder scripts do is relative: a percentile, an adjacency count,
+a price index. All of it is meaningless unless the peer set is the whole shelf.
+
+An early version filtered the catalogues down to the nine brands originally
+asked about, which turned out to be 36% of the seating on offer -- 1,038 SKUs
+out of 2,872. Slumberland's second-largest seating brand (Franklin, 122 SKUs)
+and Steinhafels' largest (Drew & Jonathan Home, 374 SKUs) were both missing, so
+every percentile was computed against a partial floor and every "who sits below"
+count understated. The pipeline now carries every vendor.
+
+Steinhafels vendor codes that could not be resolved from its own brand
+collections are kept verbatim in brackets -- `[CHRS]`, `[MOTO]` -- rather than
+guessed at from product names. They count correctly in the ladder; they are
+just unlabelled.
+
 ## Where each brand sits
 
 `ladder.py` answers two questions that can disagree, so it reports them apart:
@@ -108,19 +125,25 @@ many competitor models sit within one step below versus above the focus
 brand's own SKUs (adjacency). A median hides overlap when two brands span a
 wide range; adjacency catches it.
 
-The two retailers agree on the shape. Flexsteel is the ceiling — 119% to 211%
-of La-Z-Boy depending on store and category, with nothing above it but Bassett.
-La-Z-Boy holds the middle. Ashley is the floor at 22% to 53%. Run with
-`--brand Flexsteel` and every brand in the set undercuts it except Bassett.
+Against the full shelf, La-Z-Boy sits mid-ladder with real traffic on both
+sides. Flexsteel is the largest brand above it (119-211%), but not alone:
+King Hickory, Ultra Comfort, Elran and Hooker all sit higher, and at Steinhafels
+several brands price above Flexsteel itself.
+
+Immediately below, the brand that matters is Franklin, not Ashley. Franklin
+runs 89% of La-Z-Boy on recliners at Slumberland ($800 against $900) -- close
+enough to be a genuine alternative for the same buyer. Ashley, at 32-53%, is a
+different tier competing for a different shopper.
 
 The exception worth knowing is Southern Motion, which is not one position but
 two: it undercuts La-Z-Boy on sofas and loveseats (91-95%) and sits well above
 it on recliners (172% at Slumberland). A single index figure would have
 averaged that away into "roughly level".
 
-`teeup.py --brand Flexsteel` finds zero entry-point SKUs against La-Z-Boy's
-eight: 165 of 181 Flexsteel SKUs are premium anchors. Flexsteel never plays the
-value role at either retailer.
+Against the full shelf La-Z-Boy has 32 entry-point SKUs, not the 8 the truncated
+peer set showed. The clearest cases are deeply discounted rocker recliners at
+Slumberland -- Morrison, Liam and Brooks at $630-650 and 42-46% off -- each with
+around 13 Franklin models priced directly above them.
 
 ## Caveats
 

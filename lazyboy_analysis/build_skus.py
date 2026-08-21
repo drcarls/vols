@@ -12,8 +12,8 @@ import argparse
 from pathlib import Path
 
 from build_dataset import (
-    STEINHAFELS_BRANDS, SLUMBERLAND_BRANDS, TAG_RE, DEPARTMENT_RE,
-    resolve_form, classify_material, MOTION_RE, POWER_RE,
+    TAG_RE, DEPARTMENT_RE, FOCUS_SET,
+    resolve_brand, resolve_form, classify_material, MOTION_RE, POWER_RE,
 )
 
 
@@ -21,8 +21,7 @@ def rows_for(retailer, products, categories=None):
     out = []
     for p in products:
         vendor = (p.get("vendor") or "").strip()
-        brand = (STEINHAFELS_BRANDS if retailer == "steinhafels"
-                 else SLUMBERLAND_BRANDS).get(vendor)
+        brand = resolve_brand(retailer, vendor)
         if not brand:
             continue
 
@@ -52,6 +51,7 @@ def rows_for(retailer, products, categories=None):
             out.append({
                 "retailer": retailer,
                 "brand": brand,
+                "focus_set": "Y" if brand in FOCUS_SET else "",
                 "sku": v.get("sku") or "",
                 "product_id": p.get("id"),
                 "product": title,
