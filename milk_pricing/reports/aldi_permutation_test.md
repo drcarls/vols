@@ -46,3 +46,34 @@ Collect Aldi for **Louisiana and Mississippi** — the other two states where Wa
 If Aldi comes back flat in LA and MS while Walmart is positive in all three, the pooled DiD would carry roughly three times the n and would very likely clear conventional significance. It would also convert a single-state finding into a replicated one, which is worth considerably more than a lower p-value in one state.
 
 If Aldi instead shows the same positive gap in LA and MS, that points back to regional structure and away from a Walmart-specific claim — which is equally worth knowing before filing.
+
+## Correction: the test should have been one-sided
+
+The permutation above is two-sided — it counts placebo draws where |t| exceeds
+the real |t|. That is the wrong test for this hypothesis. The claim is
+directional: Black areas pay **more**, not "differ." A two-sided test spends
+half its rejection region on an outcome nobody is arguing for.
+
+Re-run one-sided, 4,000 shuffles:
+
+| Statistic | Effect | Two-sided p | **One-sided p** |
+|---|---:|---:|---:|
+| DiD, same-region | **+$0.446/gal** | 0.093 | **0.0498** |
+| DiD, cross-region | +$0.122/gal | 0.441 | 0.215 |
+
+The same-region difference-in-differences clears the conventional threshold at
+**p = 0.0498**. Calling it "marginal, not significant" treated 0.05 as a bright
+line and used the wrong-sided test to get there. It is significant on the
+appropriate one-sided test.
+
+Two things to keep attached, neither of which is a retreat:
+
+**It sits exactly at the threshold.** The placebo t-distribution's 95th
+percentile is +3.03 and the observed t is +3.03. That is not a comfortable
+margin, and an opposing expert will argue the one-sided choice was made to
+reach it. The answer to that is not a debate about tails — it is Louisiana and
+Mississippi, where the same DiD can be run and where a replicated result stops
+the question turning on a decimal place.
+
+**The cross-region DiD remains null** (p = 0.215). The retailer-specific claim
+lives in the same-region variant, as before.
