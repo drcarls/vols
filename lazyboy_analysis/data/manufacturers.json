@@ -1,0 +1,57 @@
+{
+ "Flexsteel": {
+  "source": "shopify product feed",
+  "total": 1421,
+  "motion_split": "from-title",
+  "models": {
+   "Recliners": 323,
+   "Stationary sofas": 233,
+   "Motion sofas": 332,
+   "Other": 533
+  },
+  "skus": {
+   "Recliners": 323,
+   "Stationary sofas": 233,
+   "Motion sofas": 332,
+   "Other": 533
+  }
+ },
+ "Southern Motion": {
+  "source": "product sitemap",
+  "total": 88,
+  "motion_split": "all-motion",
+  "models": {
+   "Motion sofas": 28,
+   "Other": 20,
+   "Recliners": 40
+  },
+  "skus": {}
+ },
+ "Franklin": {
+  "source": "product sitemap",
+  "total": 203,
+  "motion_split": "undisclosed",
+  "models": {
+   "Sofas (action undisclosed)": 22,
+   "Recliners": 62,
+   "Other": 119
+  },
+  "skus": {}
+ },
+ "Ashley": {
+  "source": "unavailable",
+  "reason": "403 on every request, sitemaps included"
+ },
+ "Best Home Furnishings": {
+  "source": "unavailable",
+  "reason": "no machine-readable product index"
+ },
+ "Catnapper": {
+  "source": "unavailable",
+  "reason": "no machine-readable product index"
+ },
+ "Bassett": {
+  "source": "unavailable",
+  "reason": "Salesforce Commerce, no open product feed"
+ }
+}

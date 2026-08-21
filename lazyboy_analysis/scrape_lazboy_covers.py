@@ -22,18 +22,30 @@ UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/124.0 Safari/537.36")
 BASE = "https://www.la-z-boy.com"
 
+# Top-level category pages serve a fixed 36-product set and paginate the rest in
+# JavaScript, so the real assortment is only reachable through subcategories.
+# An invalid subcategory path serves that same fixed set instead of erroring, so
+# each one below was verified by checking its products link back through it, and
+# only products carrying the subcategory in their own URL are kept.
 CATEGORIES = [
-    "furniture/recliners",
-    "furniture/sofas",
-    "furniture/loveseats",
-    "furniture/sectionals",
-    "furniture/chairs",
+    "living-room/recliners/rocking-recliners",
+    "living-room/recliners/wall-recliners",
+    "living-room/recliners/high-leg-recliners",
+    "living-room/recliners/power-lift-chairs",
+    "living-room/loveseats",
+    "sofas-sectionals/reclining-sofas-sectionals/reclining-sofas",
+    "sofas-sectionals/reclining-sofas-sectionals/reclining-sectionals",
 ]
 
 COVER_TAG_RE = re.compile(r"<[^>]*data-cover-price=\"[^\"]*\"[^>]*>")
 ATTR_RE = re.compile(r"data-cover-([a-z-]+)=\"([^\"]*)\"")
 LINK_RE = re.compile(r'href="(/p/[^"]*)"')
 TITLE_RE = re.compile(r"<title>(.*?)</title>", re.S)
+DESC_RE = re.compile(
+    r'<meta name="description" content="([^"]*)"|'
+    r'<div[^>]*class="[^"]*(?:product-description|pdp-description|features)[^"]*"[^>]*>(.*?)</div>',
+    re.S | re.I)
+TAG_RE = re.compile(r"<[^>]+>")
 
 def fetch(url, retries=4):
     for attempt in range(retries):
@@ -65,13 +77,19 @@ def fetch(url, retries=4):
 
 
 def product_urls(category):
+    """Products genuinely under a subcategory.
+
+    A bad path serves the generic listing rather than an error, so a product
+    only counts when the subcategory appears in its own URL.
+    """
     html = fetch(f"{BASE}/c/{category}/")
     if not html:
         return []
+    leaf = category.rsplit("/", 1)[-1]
     seen = []
     for href in LINK_RE.findall(html):
         clean = href.split("?")[0]
-        if clean not in seen:
+        if leaf in clean and clean not in seen:
             seen.append(clean)
     return seen
 
@@ -82,6 +100,10 @@ def covers_for(url):
         return []
     tm = TITLE_RE.search(html)
     title = re.sub(r"\s+", " ", tm.group(1)).split("|")[0].strip() if tm else ""
+    # Description text, so feature counts are comparable with the dealer feeds
+    # (which read titles and descriptions together).
+    desc = " ".join(g for m in DESC_RE.findall(html) for g in m if g)
+    desc = re.sub(r"\s+", " ", TAG_RE.sub(" ", desc))[:1200]
 
     rows = []
     for tag in COVER_TAG_RE.findall(html):
@@ -99,6 +121,7 @@ def covers_for(url):
             "cover_name": a.get("name", ""),
             "cover_pattern": a.get("pattern", ""),
             "price": price,
+            "description": desc,
         })
     # One row per distinct cover.
     uniq = {r["cover_id"]: r for r in rows if r["cover_id"]}
@@ -132,7 +155,7 @@ if __name__ == "__main__":
     with open(args.out, "w", newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=[
             "category", "product", "product_url", "cover_id",
-            "cover_name", "cover_pattern", "price"])
+            "cover_name", "cover_pattern", "price", "description"])
         w.writeheader()
         w.writerows(all_rows)
     print(f"wrote {len(all_rows)} cover rows across {len(seen)} products -> {args.out}")

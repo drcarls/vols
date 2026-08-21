@@ -184,13 +184,22 @@ column that matters is covers per model: a dealer stocks 1.4-1.8 colourways of
 a model, while the brand's own store shows 6.0-6.4 -- and that is only the
 covers rendered server-side, so the real range is wider still.
 
-The own-store figures come from a 34-product sample. La-Z-Boy.com's top-level
-category pages serve a fixed set and paginate the rest in JavaScript, and its
-subcategory paths fall back to that same fixed set rather than erroring, so a
-complete own-store catalogue was not reachable. That makes "not on
-la-z-boy.com" a statement about the sample, never about the brand's line.
-Comparisons that hold the sample fixed and vary the dealer are sound: against
-the same 17 recliner families, Slumberland stocks 13 and Steinhafels 4.
+The own-store catalogue is 226 products and 1,322 covers, reached through
+subcategory pages. The top-level category pages serve a fixed 36-product set
+and paginate the rest in JavaScript; an invalid subcategory path serves that
+same fixed set instead of erroring, so each subcategory was verified by
+checking its products link back through it, and only products carrying the
+subcategory in their own URL are kept.
+
+`scrape_manufacturers.py` does the equivalent for the competitive set, so a
+dealer's model count can be read against the maker's own. Coverage is uneven
+because the sites are: Flexsteel exposes a Shopify feed, Southern Motion and
+Franklin expose product sitemaps, and Ashley returns 403 to everything
+including robots.txt, so it is absent rather than estimated. Where a source
+does not disclose whether seating is motion or stationary, the split is not
+forced -- Franklin's sofas are reported as one figure. Southern Motion's are
+counted as motion because the brand builds nothing else, verified on its
+product pages rather than assumed from the name.
 
 The own-store feature score reads titles only -- no descriptions were captured
 -- so it is not comparable with the dealer figure, which reads both.
