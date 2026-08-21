@@ -17,7 +17,11 @@ import html
 import re
 
 _TILE_RE = re.compile(r'<li[^>]*data-testid="item_list_item[^"]*"', re.I)
-_PRODUCT_HREF_RE = re.compile(r'href="/products/(\d+)-([^"?]+)', re.I)
+# instacart.com uses /products/<id>-<slug>; the white-label storefronts
+# (aldi.us, lidl.com and friends, all Instacart-powered) prefix it with
+# /store/<retailer>. Same DOM otherwise, so one pattern serves both.
+_PRODUCT_HREF_RE = re.compile(
+    r'href="(?:/store/[a-z0-9-]+)?/products/(\d+)-([^"?]+)', re.I)
 # The screen-reader node is the authoritative current price: it is the one the
 # page guarantees reflects the promo price rather than the struck-through was-price.
 _SR_PRICE_RE = re.compile(

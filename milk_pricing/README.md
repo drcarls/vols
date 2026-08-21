@@ -39,6 +39,30 @@ Keyword discovery is also **incomplete**: Great Value Whole Vitamin D Milk,
 Gallon — the single most important SKU in the category — was absent from the
 308-record discovery set and only appeared via a direct product URL.
 
+## Getting competitor prices past the Premium-domains gate
+
+`instacart.com` requires Bright Data's Premium domains permission. But several
+retailers run **Instacart white-label storefronts on their own domains**, and
+those are not gated. `aldi.us` is one: same DOM, same product URLs under a
+`/store/<retailer>` prefix, no premium permission needed.
+
+The lever that makes market-level comparison possible is the query parameter
+**`?zipcode=NNNNN`**, which pins the storefront to that ZIP's pricing zone.
+The spelling matters — `zip_code`, `postal_code` and `zip` are all accepted
+silently and then *ignored*, falling back to the proxy exit's location. A
+silently-ignored ZIP is indistinguishable from a successful pin, which would
+turn the whole comparison into one arbitrary store repeated across every row,
+so `instacart_storefront.verify_zip()` asserts the served postal code matches
+and raises otherwise.
+
+Verified across 21 SC ZIPs: 20 honoured, resolving to 12 distinct Instacart
+`zoneId`s, with ZIPs inside a market correctly sharing one zone.
+
+Reachability as tested: aldi.us works and is Instacart-powered. lidl.com,
+ingles-markets.com and lowesfoods.com are reachable but run their own site
+tech and need separate parsers. publix.com, foodlion.com and harristeeter.com
+are blocked.
+
 ## The marketplace substitution trap
 
 Walmart serves the requested product URL even when the resolved local store

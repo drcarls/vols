@@ -107,3 +107,21 @@ def test_malformed_size_never_raises(text):
     oz, pack = parse_size_fl_oz(text)
     assert pack == 1
     assert oz is None or oz > 0
+
+
+def test_parser_handles_white_label_product_hrefs():
+    """aldi.us and the other Instacart-powered storefronts prefix product
+    hrefs with /store/<retailer>; the same parser must read both forms."""
+    from milk_pricing.parse import parse_search_html
+    def tile(href):
+        return ('<li data-testid="item_list_item_items_1">'
+                f'<a href="{href}"></a>'
+                '<span class="screen-reader-only">Current price: $2.15</span>'
+                '<h3>Friendly Farms Whole Milk</h3><div>1 gal</div>'
+                '<div>Many in stock</div></li>')
+    for href in ("/products/123-friendly-farms-whole-milk-1-gal",
+                 "/store/aldi/products/123-friendly-farms-whole-milk-1-gal"):
+        rows = parse_search_html(tile(href))
+        assert len(rows) == 1, href
+        assert rows[0]["price"] == 2.15
+        assert rows[0]["id"] == "123"
