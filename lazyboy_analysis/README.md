@@ -166,8 +166,16 @@ in the ladder that results.
 **Material.** La-Z-Boy names leather in the model title and does not name
 fabric. Steinhafels corroborates this independently: its variant codes carry an
 LB prefix on leather and D/E/C on fabric, and across 47 La-Z-Boy models the two
-never cross. "Leather" therefore means explicitly identified as leather, and
-every leather share here is a floor.
+never cross. So for La-Z-Boy, an unnamed cover can be read as fabric.
+
+That convention is La-Z-Boy's, not the industry's, and an earlier version
+applied it to every brand. It made Ashley look 98% fabric, when Ashley simply
+names leather in the description rather than the title -- its real split is 34
+leather SKUs against 22 fabric across the two categories, a +53% premium that
+matches the +41% found independently in La-Z-Boy's own competitor benchmark.
+Every brand except La-Z-Boy is therefore three-state, and an unnamed cover is
+reported as unspecified rather than silently counted as fabric. Leather shares
+remain floors: named leather only.
 
 **Features** are counted from the title and the product description together,
 out of ten named capabilities. Read from titles alone the measure mostly ranks

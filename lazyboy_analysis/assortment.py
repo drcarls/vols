@@ -34,6 +34,9 @@ FEATURES = {
     "storage": r"storage|console|cup\s?holder",
 }
 LEATHER_RE = re.compile(r"leather", re.I)
+FABRIC_RE = re.compile(
+    r"fabric|chenille|linen|velvet|boucl|microfiber|polyester|tweed|weave|"
+    r"performance fabric|upholstery fabric", re.I)
 LB_CODE_RE = re.compile(r"^\s*LB\d", re.I)
 
 
@@ -45,10 +48,26 @@ def category(r):
     return None
 
 
-def material_of(r):
-    if LB_CODE_RE.match(r["variant"] or ""):
+def material_of(r, description=""):
+    """Leather / Fabric / Unspecified.
+
+    La-Z-Boy names leather in the model title and leaves fabric unnamed, and its
+    Steinhafels cover codes confirm it: LB prefixes leather, D/E/C fabric, and
+    across 47 models the two never cross. So for La-Z-Boy an unnamed cover can
+    be read as fabric.
+
+    That convention is La-Z-Boy's, not the industry's. Applying it to everyone
+    counted Ashley as 98% fabric, which is wrong -- Ashley simply names leather
+    in the description rather than the title. Every other brand therefore stays
+    three-state, and an unnamed cover is reported as unspecified rather than
+    silently becoming fabric.
+    """
+    blob = " ".join([r["product"] or "", r["variant"] or "", description])
+    if LB_CODE_RE.match(r["variant"] or "") or LEATHER_RE.search(blob):
         return "Leather"
-    return "Leather" if LEATHER_RE.search(r["product"] or "") else "Fabric"
+    if FABRIC_RE.search(blob):
+        return "Fabric"
+    return "Fabric" if r["brand"] == "La-Z-Boy" else "Unspecified"
 
 
 def load_descriptions(data_dir="data"):
@@ -82,7 +101,7 @@ def load(path, descriptions):
             continue
         r["price"] = float(r["price"])
         r["cat"] = cat
-        r["mat"] = material_of(r)
+        r["mat"] = material_of(r, descriptions.get(r["product_id"], ""))
         r["feats"] = feature_count(r, descriptions)
         rows.append(r)
     return rows
