@@ -1,0 +1,277 @@
+<title>The Blueprint</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --bg:#eef0f6; --surface:#fff; --surface-2:#f5f6fc; --border:#dcdcee; --border-strong:#c6c7e0;
+    --ink:#161726; --ink-2:#575a72; --ink-3:#8b8da8;
+    --accent:#4b56b3; --accent-soft:#e7e8f8; --accent-ink:#3a3f96;
+    --hot:#c0490f; --hot-soft:#fbe7dc; --warn:#9a6b12; --warn-soft:#f7ecd4;
+    --good:#12795a; --good-soft:#dcefe7; --crit:#b02a2f; --crit-soft:#f8e0e1;
+    --shadow:0 1px 2px rgba(22,23,38,.06),0 10px 30px rgba(22,23,38,.08);
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --sans:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --bg:#0b0c14; --surface:#15161f; --surface-2:#1c1e2b; --border:#2a2c3e; --border-strong:#3a3d55;
+    --ink:#e9eaf3; --ink-2:#9a9db6; --ink-3:#6a6d86;
+    --accent:#8b93e6; --accent-soft:#20214a; --accent-ink:#bcc1f2;
+    --hot:#f0854a; --hot-soft:#3721152e; --warn:#d6a63e; --warn-soft:#2f26112e;
+    --good:#46c199; --good-soft:#102c232e; --crit:#e57078; --crit-soft:#3316192e;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px rgba(0,0,0,.5);
+  }}
+  :root[data-theme="dark"]{
+    --bg:#0b0c14; --surface:#15161f; --surface-2:#1c1e2b; --border:#2a2c3e; --border-strong:#3a3d55;
+    --ink:#e9eaf3; --ink-2:#9a9db6; --ink-3:#6a6d86;
+    --accent:#8b93e6; --accent-soft:#20214a; --accent-ink:#bcc1f2;
+    --hot:#f0854a; --hot-soft:#3721152e; --warn:#d6a63e; --warn-soft:#2f26112e;
+    --good:#46c199; --good-soft:#102c232e; --crit:#e57078; --crit-soft:#3316192e;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px rgba(0,0,0,.5);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;font-size:15px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:960px;margin:0 auto;padding:26px clamp(14px,3.5vw,32px) 64px}
+  a{color:var(--accent-ink)}
+  header{display:flex;align-items:center;gap:13px;padding-bottom:16px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand svg{width:30px;height:30px;display:block}
+  .brand .n{font-weight:700;font-size:16px;letter-spacing:-.01em}
+  .brand .n small{display:block;font-weight:500;font-size:12.5px;color:var(--ink-2)}
+  .tag{font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent-soft);padding:3px 8px;border-radius:5px;border:1px solid color-mix(in srgb,var(--accent) 30%,transparent)}
+  .sp{flex:1}
+  .tbtn{font:inherit;font-size:13px;color:var(--ink-2);background:var(--surface);border:1px solid var(--border-strong);border-radius:8px;padding:6px 11px;cursor:pointer}
+  .tbtn:hover{color:var(--ink);border-color:var(--accent)} .tbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  .hero{margin:26px 0 8px}
+  .hero h1{font-size:clamp(24px,4.4vw,33px);line-height:1.12;letter-spacing:-.02em;margin:0 0 12px;text-wrap:balance;max-width:20ch}
+  .hero h1 em{font-style:normal;color:var(--accent-ink)}
+  .hero p{font-size:16px;color:var(--ink-2);max-width:64ch;margin:0}
+  .hero p b{color:var(--ink)}
+
+  section{margin-top:30px}
+  .eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--accent-ink);margin:0 0 4px}
+  h2{font-size:20px;letter-spacing:-.01em;margin:0 0 5px;text-wrap:balance}
+  .lede{color:var(--ink-2);margin:0 0 6px;max-width:66ch;font-size:14.5px}
+
+  figure{margin:14px 0 0;background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);padding:18px clamp(10px,2.5vw,22px) 8px}
+  figure svg{display:block;width:100%;height:auto;color:var(--ink)}
+  figure svg text{font-family:var(--sans)}
+  figcaption{font-size:13px;color:var(--ink-2);margin:8px 4px 6px;text-wrap:pretty}
+  figcaption b{color:var(--ink)}
+  .leg{display:flex;gap:16px;flex-wrap:wrap;margin:2px 4px 6px;font-size:12px;color:var(--ink-2)}
+  .leg span{display:inline-flex;align-items:center;gap:7px}
+  .sw{width:12px;height:12px;border-radius:3px;display:inline-block}
+
+  .line{margin-top:22px;background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 26%,transparent);border-radius:14px;padding:17px 20px}
+  .line p{margin:0;font-size:16px;font-weight:600;color:var(--accent-ink);text-wrap:balance;text-align:center}
+  footer{margin-top:32px;padding-top:18px;border-top:1px solid var(--border);font-size:12.5px;color:var(--ink-2);display:flex;flex-direction:column;gap:7px}
+  footer .hd{color:var(--ink);font-weight:600}
+  footer code{font-family:var(--mono);font-size:11.5px;background:var(--surface-2);padding:1px 5px;border-radius:4px;border:1px solid var(--border)}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect x="3.2" y="3.2" width="25.6" height="25.6" rx="7" stroke="var(--accent)" stroke-width="1.7"/>
+        <polyline points="7,19 12,19 15,9.5 19,24 22,15 25,15" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="n">CyberResilient <span style="color:var(--ink-3);font-weight:500">×</span> UpliftIQ<small>The blueprint · four capabilities, run on your side</small></div>
+    </div>
+    <span class="tag">Architecture</span>
+    <span class="sp"></span>
+    <button class="tbtn" id="theme" type="button" aria-label="Toggle theme"><span id="ti">◐</span> Theme</button>
+  </header>
+
+  <div class="hero">
+    <h1>Build <em>four</em>. Aim them many places. Run it all on your side.</h1>
+    <p>The nine use cases aren't nine things to build. They're <b>four core capabilities</b> pointed at different targets, cadences, and audiences — and the whole engine runs <b>inside your environment</b>, so customer data never leaves.</p>
+  </div>
+
+  <!-- ============ FIGURE A ============ -->
+  <section>
+    <p class="eyebrow">A · Build four, aim many</p>
+    <h2>Four capabilities → nine use cases</h2>
+    <p class="lede">Each use case is one of four capabilities aimed at a new target, cadence, or audience. Two capabilities are moat-grade — they run on the clustered cross-customer corpus.</p>
+    <figure>
+      <svg viewBox="0 0 1000 640" role="img" aria-label="Four core capabilities fan out into nine use cases. Observe (the sensor) becomes Outbound, Monitoring, and Supplier risk. Reconcile (evidence) becomes Enrich and Assurance. Cluster and Benchmark (moat) becomes Benchmark and Sector intelligence. Recommend and Optimize (moat) becomes Prioritization and internal GTM intelligence. The two moat capabilities run on the cross-customer corpus.">
+        <defs>
+          <marker id="m" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor" fill-opacity=".5"/></marker>
+          <marker id="ma" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker>
+        </defs>
+        <!-- column headers -->
+        <text x="150" y="20" text-anchor="middle" font-size="11" font-weight="700" letter-spacing=".6" fill="currentColor" fill-opacity=".55">FOUR CAPABILITIES</text>
+        <text x="805" y="20" text-anchor="middle" font-size="11" font-weight="700" letter-spacing=".6" fill="currentColor" fill-opacity=".55">NINE USE CASES</text>
+
+        <!-- connectors (draw first, under nodes) -->
+        <g fill="none">
+          <path d="M260 110 C 455 110 455 45 650 45" stroke="currentColor" stroke-opacity=".45" stroke-width="1.5" marker-end="url(#m)"/>
+          <path d="M260 110 C 455 110 455 115 650 115" stroke="currentColor" stroke-opacity=".45" stroke-width="1.5" marker-end="url(#m)"/>
+          <path d="M260 110 C 455 110 455 185 650 185" stroke="currentColor" stroke-opacity=".45" stroke-width="1.5" marker-end="url(#m)"/>
+          <path d="M260 285 C 455 285 455 255 650 255" stroke="currentColor" stroke-opacity=".45" stroke-width="1.5" marker-end="url(#m)"/>
+          <path d="M260 285 C 455 285 455 325 650 325" stroke="currentColor" stroke-opacity=".45" stroke-width="1.5" marker-end="url(#m)"/>
+          <path d="M260 425 C 455 425 455 395 650 395" stroke="var(--accent)" stroke-width="1.7" marker-end="url(#ma)"/>
+          <path d="M260 425 C 455 425 455 465 650 465" stroke="var(--accent)" stroke-width="1.7" marker-end="url(#ma)"/>
+          <path d="M260 565 C 455 565 455 535 650 535" stroke="var(--accent)" stroke-width="1.7" marker-end="url(#ma)"/>
+          <path d="M260 565 C 455 565 455 605 650 605" stroke="var(--accent)" stroke-width="1.7" marker-end="url(#ma)"/>
+        </g>
+
+        <!-- edge labels -->
+        <g font-size="9" font-style="italic" text-anchor="middle">
+          <g fill="currentColor" fill-opacity=".7">
+            <text x="455" y="75">target: prospects</text>
+            <text x="455" y="129">cadence: continuous</text>
+            <text x="455" y="163">target: suppliers</text>
+            <text x="455" y="267">the customer</text>
+            <text x="455" y="311">output: attestation</text>
+          </g>
+          <g fill="var(--accent-ink)">
+            <text x="455" y="407">the customer</text>
+            <text x="455" y="451">aggregate → regulator</text>
+            <text x="455" y="547">+ constraints</text>
+            <text x="455" y="591">subject: their funnel</text>
+          </g>
+        </g>
+
+        <!-- capability nodes -->
+        <g>
+          <rect x="40" y="84" width="220" height="52" rx="11" fill="var(--surface)" stroke="currentColor" stroke-opacity=".5" stroke-width="1.4"/>
+          <text x="150" y="106" text-anchor="middle" font-size="13" font-weight="700" fill="currentColor">1 · Observe</text>
+          <text x="150" y="122" text-anchor="middle" font-size="9.5" fill="currentColor" fill-opacity=".6">the sensor — passive, external</text>
+
+          <rect x="40" y="259" width="220" height="52" rx="11" fill="var(--surface)" stroke="currentColor" stroke-opacity=".5" stroke-width="1.4"/>
+          <text x="150" y="281" text-anchor="middle" font-size="13" font-weight="700" fill="currentColor">2 · Reconcile</text>
+          <text x="150" y="297" text-anchor="middle" font-size="9.5" fill="currentColor" fill-opacity=".6">observed vs self-reported</text>
+
+          <rect x="40" y="399" width="220" height="52" rx="11" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.2"/>
+          <text x="150" y="421" text-anchor="middle" font-size="13" font-weight="700" fill="var(--accent-ink)">3 · Cluster + Benchmark</text>
+          <text x="150" y="437" text-anchor="middle" font-size="9.5" fill="var(--accent-ink)" fill-opacity=".85">moat · cross-customer corpus</text>
+
+          <rect x="40" y="539" width="220" height="52" rx="11" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.2"/>
+          <text x="150" y="561" text-anchor="middle" font-size="13" font-weight="700" fill="var(--accent-ink)">4 · Recommend + Optimize</text>
+          <text x="150" y="577" text-anchor="middle" font-size="9.5" fill="var(--accent-ink)" fill-opacity=".85">moat · learns from outcomes</text>
+        </g>
+
+        <!-- use-case nodes -->
+        <g font-size="12.5" font-weight="600">
+          <!-- observe children -->
+          <rect x="650" y="23" width="310" height="44" rx="10" fill="var(--surface)" stroke="currentColor" stroke-opacity=".4" stroke-width="1.3"/>
+          <text x="668" y="50" font-size="12.5" fill="currentColor">#1 · Outbound outreach <tspan font-size="10" fill-opacity=".55" font-weight="400">(sales-prioritized)</tspan></text>
+          <rect x="650" y="93" width="310" height="44" rx="10" fill="var(--surface)" stroke="currentColor" stroke-opacity=".4" stroke-width="1.3"/>
+          <text x="668" y="120" font-size="12.5" fill="currentColor">#5 · Continuous monitoring <tspan font-size="10" fill-opacity=".55" font-weight="400">(drift)</tspan></text>
+          <rect x="650" y="163" width="310" height="44" rx="10" fill="var(--surface)" stroke="currentColor" stroke-opacity=".4" stroke-width="1.3"/>
+          <text x="668" y="190" font-size="12.5" fill="currentColor">#6 · Supplier / third-party risk</text>
+          <!-- reconcile children -->
+          <rect x="650" y="233" width="310" height="44" rx="10" fill="var(--surface)" stroke="currentColor" stroke-opacity=".4" stroke-width="1.3"/>
+          <text x="668" y="260" font-size="12.5" fill="currentColor">#2 · Enrich &amp; fact-check self-report</text>
+          <rect x="650" y="303" width="310" height="44" rx="10" fill="var(--surface)" stroke="currentColor" stroke-opacity=".4" stroke-width="1.3"/>
+          <text x="668" y="330" font-size="12.5" fill="currentColor">#8 · Assurance / attestation</text>
+          <!-- cluster children (moat) -->
+          <rect x="650" y="373" width="310" height="44" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/>
+          <text x="668" y="400" font-size="12.5" fill="var(--accent-ink)">#3 · Cross-customer benchmark <tspan font-size="9" font-weight="700">MOAT</tspan></text>
+          <rect x="650" y="443" width="310" height="44" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/>
+          <text x="668" y="470" font-size="12.5" fill="var(--accent-ink)">#7 · Sector / regulator intelligence <tspan font-size="9" font-weight="700">MOAT</tspan></text>
+          <!-- recommend children (moat) -->
+          <rect x="650" y="513" width="310" height="44" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/>
+          <text x="668" y="540" font-size="12.5" fill="var(--accent-ink)">#4 · Prioritization w/ constraints <tspan font-size="9" font-weight="700">MOAT</tspan></text>
+          <rect x="650" y="583" width="310" height="44" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/>
+          <text x="668" y="610" font-size="12.5" fill="var(--accent-ink)">#9 · Internal GTM intelligence <tspan font-size="9" font-weight="700">MOAT</tspan></text>
+        </g>
+      </svg>
+      <div class="leg">
+        <span><span class="sw" style="background:var(--accent)"></span> moat-grade — runs on the cross-customer corpus</span>
+        <span><span class="sw" style="background:color-mix(in srgb,var(--ink-3) 65%,transparent)"></span> wedge / evidence — replicable</span>
+      </div>
+      <figcaption><b>Nine use cases, four builds.</b> Observe and Reconcile are the wedge and the evidence layer — valuable, but replicable. Cluster+Benchmark and Recommend+Optimize run on your clustered cross-customer data, so they sharpen with scale and can't be copied. Two small features fall out — a diff/alert step (makes Observe continuous, #5) and an attestation step (makes Reconcile a badge, #8).</figcaption>
+    </figure>
+  </section>
+
+  <!-- ============ FIGURE B ============ -->
+  <section>
+    <p class="eyebrow">B · Runs where the data lives</p>
+    <h2>Embedded in your environment — data never leaves</h2>
+    <p class="lede">UpliftIQ deploys inside your tenant, not as a service you ship data to. Only two things cross the boundary: public signals in, and derived, anonymized results out. The customer corpus stays put.</p>
+    <figure>
+      <svg viewBox="0 0 1000 440" role="img" aria-label="UpliftIQ's four capabilities run embedded inside CyberResilient's Swedish sovereign environment, next to the customer corpus, exchanging data in-place with no egress. Public records flow inbound to the engine. Derived, anonymized outputs — scores, benchmarks, alerts — flow outbound to customers, sales, and regulators. Raw customer data never crosses the boundary.">
+        <defs>
+          <marker id="b1" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor" fill-opacity=".6"/></marker>
+          <marker id="b2" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker>
+        </defs>
+
+        <!-- sovereign boundary -->
+        <rect x="235" y="34" width="600" height="300" rx="18" fill="color-mix(in srgb,var(--accent) 6%,transparent)" stroke="var(--accent)" stroke-width="2" stroke-dasharray="7 5"/>
+        <text x="535" y="26" text-anchor="middle" font-size="12" font-weight="700" fill="var(--accent-ink)">🔒 CyberResilient environment · Sweden — sovereign boundary</text>
+
+        <!-- corpus -->
+        <rect x="270" y="98" width="215" height="150" rx="12" fill="var(--surface)" stroke="currentColor" stroke-opacity=".5" stroke-width="1.4"/>
+        <text x="377" y="126" text-anchor="middle" font-size="13" font-weight="700" fill="currentColor">Customer corpus</text>
+        <g font-size="10.5" text-anchor="middle" fill="currentColor" fill-opacity=".65">
+          <text x="377" y="150">self-assessments</text>
+          <text x="377" y="169">risk registers</text>
+          <text x="377" y="188">treatment outcomes</text>
+          <text x="377" y="207">observed signals</text>
+        </g>
+        <text x="377" y="233" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--good)">stays here</text>
+
+        <!-- engine -->
+        <rect x="545" y="90" width="255" height="200" rx="13" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.1"/>
+        <text x="672" y="116" text-anchor="middle" font-size="13" font-weight="700" fill="var(--accent-ink)">UpliftIQ · embedded</text>
+        <g font-size="11">
+          <rect x="565" y="128" width="215" height="30" rx="7" fill="var(--surface)" stroke="var(--accent)" stroke-opacity=".4"/>
+          <text x="672" y="148" text-anchor="middle" fill="currentColor">1 · Observe</text>
+          <rect x="565" y="164" width="215" height="30" rx="7" fill="var(--surface)" stroke="var(--accent)" stroke-opacity=".4"/>
+          <text x="672" y="184" text-anchor="middle" fill="currentColor">2 · Reconcile</text>
+          <rect x="565" y="200" width="215" height="30" rx="7" fill="var(--surface)" stroke="var(--accent)" stroke-opacity=".7"/>
+          <text x="672" y="220" text-anchor="middle" fill="var(--accent-ink)" font-weight="650">3 · Cluster + Benchmark</text>
+          <rect x="565" y="236" width="215" height="30" rx="7" fill="var(--surface)" stroke="var(--accent)" stroke-opacity=".7"/>
+          <text x="672" y="256" text-anchor="middle" fill="var(--accent-ink)" font-weight="650">4 · Recommend + Optimize</text>
+        </g>
+
+        <!-- corpus <-> engine, in place -->
+        <line x1="485" y1="178" x2="562" y2="178" stroke="currentColor" stroke-opacity=".55" stroke-width="1.7" marker-start="url(#b1)" marker-end="url(#b1)"/>
+        <text x="523" y="169" text-anchor="middle" font-size="9" font-style="italic" fill="currentColor" fill-opacity=".7">in-place</text>
+        <text x="523" y="193" text-anchor="middle" font-size="9" font-style="italic" fill="currentColor" fill-opacity=".7">no egress</text>
+
+        <!-- public records IN -->
+        <rect x="40" y="120" width="150" height="96" rx="12" fill="var(--surface)" stroke="currentColor" stroke-opacity=".45" stroke-width="1.3"/>
+        <text x="115" y="150" text-anchor="middle" font-size="12" font-weight="700" fill="currentColor">Public records</text>
+        <g font-size="9.5" text-anchor="middle" fill="currentColor" fill-opacity=".62">
+          <text x="115" y="171">DNS · cert logs</text>
+          <text x="115" y="188">procurement</text>
+          <text x="115" y="205">public web</text>
+        </g>
+        <path d="M190 150 C 300 150 470 140 563 143" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1.7" marker-end="url(#b1)"/>
+        <text x="360" y="133" text-anchor="middle" font-size="9.5" font-style="italic" fill="currentColor" fill-opacity=".75">reads public data · inbound</text>
+
+        <!-- derived outputs OUT -->
+        <rect x="360" y="384" width="350" height="44" rx="11" fill="var(--surface)" stroke="currentColor" stroke-opacity=".45" stroke-width="1.3"/>
+        <text x="535" y="404" text-anchor="middle" font-size="12" font-weight="650" fill="currentColor">Customers · sales · regulator</text>
+        <text x="535" y="419" text-anchor="middle" font-size="9.5" fill="currentColor" fill-opacity=".6">receive scores · benchmarks · alerts · attestations</text>
+        <path d="M672 290 C 672 350 600 360 560 384" fill="none" stroke="var(--accent)" stroke-width="1.9" marker-end="url(#b2)"/>
+        <text x="710" y="352" text-anchor="middle" font-size="9.5" font-style="italic" fill="var(--accent-ink)">derived · anonymized · outbound</text>
+
+        <!-- the claim -->
+        <rect x="300" y="300" width="300" height="26" rx="13" fill="var(--hot-soft)" stroke="var(--hot)" stroke-opacity=".5"/>
+        <text x="450" y="317" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--hot)">raw customer data never crosses the boundary</text>
+      </svg>
+      <figcaption><b>The intelligence comes to the data, not the other way around.</b> The four capabilities run beside the corpus inside your tenant; clustering across customers happens in-place, so there's no egress to break sovereignty. Public records flow in; only derived, anonymized results flow out. For a Sweden-only, MSB-grade buyer, that boundary is the whole deal.</figcaption>
+    </figure>
+  </section>
+
+  <div class="line">
+    <p>Four capabilities. Nine plays. One sovereign boundary — the data never leaves, and the intelligence runs where it lives.</p>
+  </div>
+
+  <footer>
+    <span class="hd">What this changes commercially.</span>
+    <span>Embedded/in-premise makes UpliftIQ the <b>brain inside the platform</b>, not a data-processing SaaS — a stickier, OEM-style relationship, and the only shape that keeps CyberResilient's sovereignty promise intact while enabling the cross-customer moat.</span>
+    <span>One requirement, not a caveat: the benchmark and sector plays need contractual consent plus a minimum cluster size (k-anonymity), so no output re-identifies a customer. On-prem removes egress risk; this removes re-identification risk. Both are part of the sovereignty story.</span>
+  </footer>
+</div>
+
+<script>
+  const root=document.documentElement,tb=document.getElementById("theme"),ti=document.getElementById("ti");
+  let m="system";
+  tb.addEventListener("click",()=>{m=m==="system"?"light":m==="light"?"dark":"system";
+    if(m==="system")root.removeAttribute("data-theme");else root.setAttribute("data-theme",m);
+    ti.textContent=m==="light"?"☀":m==="dark"?"☾":"◐";});
+</script>
