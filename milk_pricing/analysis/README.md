@@ -17,3 +17,4 @@ The `data/` directory is gitignored — regenerate it with the collectors in
 | `txca_memo.py` | `reports/tx_ca_metros.md` §3 — the memo's matched-pair design on TX/CA race and ethnicity tails |
 | `hisp_fe.py` | `reports/tx_ca_metros.md` §3 — within/between-county decomposition of the Hispanic gap |
 | `fb_within.py` | `reports/tx_ca_metros.md` §4 — same decomposition applied to the Finding B states |
+| `pricing_unit.py` | `reports/walmart_pricing_geography.md` §3–4 — recovers the geographic unit at which Walmart sets milk prices, and re-tests Finding B under four region definitions |
