@@ -1,0 +1,212 @@
+<title>The Objective Layer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --bg:#eef0f6; --surface:#fff; --surface-2:#f5f6fc; --border:#dcdcee; --border-strong:#c6c7e0;
+    --ink:#161726; --ink-2:#575a72; --ink-3:#8b8da8;
+    --accent:#4b56b3; --accent-soft:#e7e8f8; --accent-ink:#3a3f96;
+    --hot:#c0490f; --hot-soft:#fbe7dc; --warn:#9a6b12; --warn-soft:#f7ecd4;
+    --good:#12795a; --good-soft:#dcefe7; --crit:#b02a2f; --crit-soft:#f8e0e1;
+    --shadow:0 1px 2px rgba(22,23,38,.06),0 10px 30px rgba(22,23,38,.08);
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --sans:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --bg:#0b0c14; --surface:#15161f; --surface-2:#1c1e2b; --border:#2a2c3e; --border-strong:#3a3d55;
+    --ink:#e9eaf3; --ink-2:#9a9db6; --ink-3:#6a6d86;
+    --accent:#8b93e6; --accent-soft:#20214a; --accent-ink:#bcc1f2;
+    --hot:#f0854a; --hot-soft:#3721152e; --warn:#d6a63e; --warn-soft:#2f26112e;
+    --good:#46c199; --good-soft:#102c232e; --crit:#e57078; --crit-soft:#3316192e;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px rgba(0,0,0,.5);
+  }}
+  :root[data-theme="dark"]{
+    --bg:#0b0c14; --surface:#15161f; --surface-2:#1c1e2b; --border:#2a2c3e; --border-strong:#3a3d55;
+    --ink:#e9eaf3; --ink-2:#9a9db6; --ink-3:#6a6d86;
+    --accent:#8b93e6; --accent-soft:#20214a; --accent-ink:#bcc1f2;
+    --hot:#f0854a; --hot-soft:#3721152e; --warn:#d6a63e; --warn-soft:#2f26112e;
+    --good:#46c199; --good-soft:#102c232e; --crit:#e57078; --crit-soft:#3316192e;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px rgba(0,0,0,.5);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;font-size:15px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:960px;margin:0 auto;padding:26px clamp(14px,3.5vw,32px) 64px}
+  a{color:var(--accent-ink)}
+
+  header{display:flex;align-items:center;gap:13px;padding-bottom:16px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand svg{width:30px;height:30px;display:block}
+  .brand .n{font-weight:700;font-size:16px;letter-spacing:-.01em}
+  .brand .n small{display:block;font-weight:500;font-size:12.5px;color:var(--ink-2)}
+  .tag{font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent-soft);padding:3px 8px;border-radius:5px;border:1px solid color-mix(in srgb,var(--accent) 30%,transparent)}
+  .sp{flex:1}
+  .tbtn{font:inherit;font-size:13px;color:var(--ink-2);background:var(--surface);border:1px solid var(--border-strong);border-radius:8px;padding:6px 11px;cursor:pointer}
+  .tbtn:hover{color:var(--ink);border-color:var(--accent)} .tbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  .hero{margin:26px 0 8px}
+  .hero h1{font-size:clamp(24px,4.4vw,34px);line-height:1.12;letter-spacing:-.02em;margin:0 0 12px;text-wrap:balance;max-width:19ch}
+  .hero h1 em{font-style:normal;color:var(--accent-ink)}
+  .hero p{font-size:16px;color:var(--ink-2);max-width:64ch;margin:0}
+  .hero p b{color:var(--ink)}
+
+  figure{margin:22px 0 0;background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);padding:20px clamp(12px,3vw,24px) 8px}
+  figure svg{display:block;width:100%;height:auto;color:var(--ink)}
+  figure svg text{font-family:var(--sans)}
+  figcaption{font-size:13px;color:var(--ink-2);margin:8px 4px 8px;text-wrap:pretty}
+  figcaption b{color:var(--ink)}
+
+  section{margin-top:32px}
+  .eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--accent-ink);margin:0 0 4px}
+  h2{font-size:20px;letter-spacing:-.01em;margin:0 0 5px;text-wrap:balance}
+  .lede{color:var(--ink-2);margin:0 0 14px;max-width:66ch;font-size:14.5px}
+
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+  @media(max-width:680px){.two{grid-template-columns:1fr}}
+  .mot{background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);padding:16px 18px}
+  .mot .k{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--accent-ink);margin:0 0 5px;display:flex;align-items:center;gap:8px}
+  .mot .k .b{width:20px;height:20px;border-radius:6px;background:var(--accent-soft);color:var(--accent-ink);border:1px solid color-mix(in srgb,var(--accent) 26%,transparent);display:inline-flex;align-items:center;justify-content:center;font-size:11px}
+  .mot h3{margin:0 0 5px;font-size:16px;letter-spacing:-.01em}
+  .mot p{margin:0;font-size:13.5px;color:var(--ink-2)}
+  .mot p b{color:var(--ink)}
+
+  .maps{border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;background:var(--surface)}
+  .maprow{display:grid;grid-template-columns:210px 1fr;gap:14px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border);font-size:13.5px}
+  .maprow:last-child{border-bottom:none}
+  @media(max-width:560px){.maprow{grid-template-columns:1fr;gap:3px}}
+  .maprow .mod{font-weight:650;color:var(--ink)}
+  .maprow .mod small{display:block;font-weight:400;color:var(--ink-3);font-size:11.5px}
+  .maprow .add{color:var(--ink-2)} .maprow .add b{color:var(--accent-ink)}
+
+  .callout{border-left:3px solid var(--good);background:var(--good-soft);border-radius:0 13px 13px 0;padding:15px 18px;margin-top:8px}
+  .callout h3{margin:0 0 5px;font-size:15px;color:var(--good)} .callout p{margin:0;font-size:14px} .callout b{color:var(--ink)}
+  .line{margin-top:22px;background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 26%,transparent);border-radius:14px;padding:17px 20px}
+  .line p{margin:0;font-size:16px;font-weight:600;color:var(--accent-ink);text-wrap:balance;text-align:center}
+
+  footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--border);font-size:12.5px;color:var(--ink-2);display:flex;flex-direction:column;gap:7px}
+  footer .hd{color:var(--ink);font-weight:600}
+  footer code{font-family:var(--mono);font-size:11.5px;background:var(--surface-2);padding:1px 5px;border-radius:4px;border:1px solid var(--border)}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect x="3.2" y="3.2" width="25.6" height="25.6" rx="7" stroke="var(--accent)" stroke-width="1.7"/>
+        <polyline points="7,19 12,19 15,9.5 19,24 22,15 25,15" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="n">CyberResilient <span style="color:var(--ink-3);font-weight:500">×</span> UpliftIQ<small>The objective layer · observed vs self-reported</small></div>
+    </div>
+    <span class="tag">Concept</span>
+    <span class="sp"></span>
+    <button class="tbtn" id="theme" type="button" aria-label="Toggle theme"><span id="ti">◐</span> Theme</button>
+  </header>
+
+  <div class="hero">
+    <h1>Self-reported is only <em>half</em> the picture.</h1>
+    <p>Your maturity assessment asks the customer what they know. But customers grade their own homework — and <b>you can't fix what you don't know</b>. An outside-in, evidence-based score fills the other half: what's <b>observable</b> about them, with no questionnaire. It works two ways at once — a free front door that pulls prospects in, and an evidence layer that strengthens every module inside the platform.</p>
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 1000 320" role="img" aria-label="Two score sources feed the CyberResilient platform: a self-reported maturity assessment (what the customer says) and an observed, passive-OSINT score from UpliftIQ (what is externally true). The gap between them is the value. Both flow into the platform's modules.">
+      <defs>
+        <marker id="a" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="currentColor" fill-opacity=".55"/>
+        </marker>
+        <marker id="aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/>
+        </marker>
+      </defs>
+
+      <!-- two sources -->
+      <rect x="70" y="40" width="360" height="96" rx="13" fill="var(--surface)" stroke="currentColor" stroke-opacity=".45" stroke-width="1.3"/>
+      <rect x="570" y="40" width="360" height="96" rx="13" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.2"/>
+      <g text-anchor="middle">
+        <text x="250" y="72" font-size="13.5" font-weight="700" fill="currentColor">Self-reported</text>
+        <text x="250" y="92" font-size="10.5" fill="currentColor" fill-opacity=".62">your maturity assessment — a questionnaire</text>
+        <text x="250" y="112" font-size="10.5" fill="currentColor" fill-opacity=".62">what the customer <tspan font-style="italic">says</tspan></text>
+        <text x="750" y="72" font-size="13.5" font-weight="700" fill="var(--accent-ink)">Observed</text>
+        <text x="750" y="92" font-size="10.5" fill="var(--accent-ink)" fill-opacity=".85">passive OSINT — UpliftIQ engine, no input needed</text>
+        <text x="750" y="112" font-size="10.5" fill="var(--accent-ink)" fill-opacity=".85">what is externally <tspan font-style="italic">true</tspan></text>
+      </g>
+      <text x="925" y="35" text-anchor="end" font-size="8.5" font-weight="700" letter-spacing=".6" fill="var(--accent-ink)" fill-opacity=".8">THE NEW LAYER</text>
+
+      <!-- the gap -->
+      <text x="500" y="80" text-anchor="middle" font-size="20" font-weight="700" fill="var(--hot)">vs</text>
+      <text x="500" y="99" text-anchor="middle" font-size="10" font-weight="700" fill="var(--hot)">the gap</text>
+      <text x="500" y="112" text-anchor="middle" font-size="10" font-weight="700" fill="var(--hot)">= the value</text>
+
+      <!-- arrows down -->
+      <line x1="250" y1="136" x2="250" y2="206" stroke="currentColor" stroke-opacity=".5" stroke-width="1.7" marker-end="url(#a)"/>
+      <line x1="750" y1="136" x2="750" y2="206" stroke="var(--accent)" stroke-width="2" marker-end="url(#aa)"/>
+      <text x="262" y="176" font-size="9.5" font-style="italic" fill="currentColor" fill-opacity=".7">what they report</text>
+      <text x="762" y="176" font-size="9.5" font-style="italic" fill="var(--accent-ink)">objective evidence</text>
+
+      <!-- platform -->
+      <rect x="70" y="208" width="860" height="86" rx="14" fill="var(--surface)" stroke="currentColor" stroke-opacity=".5" stroke-width="1.6"/>
+      <text x="500" y="234" text-anchor="middle" font-size="13" font-weight="700" fill="currentColor">The CyberResilient platform</text>
+      <g text-anchor="middle" font-size="10.5" fill="currentColor" fill-opacity=".82">
+        <text x="168" y="270">Maturity</text><text x="168" y="283">assessment</text>
+        <text x="318" y="270">Risk</text><text x="318" y="283">register</text>
+        <text x="452" y="270">BCP</text><text x="452" y="283">RTO / RPO</text>
+        <text x="600" y="270">Audit-ready</text><text x="600" y="283">reporting</text>
+        <text x="760" y="270">Trend</text><text x="760" y="283">tracking</text>
+        <text x="870" y="276" fill="var(--accent-ink)" font-weight="700">+ evidence</text>
+      </g>
+    </svg>
+    <figcaption><b>Two sources, one platform.</b> The self-report says what the customer knows; the observed score (UpliftIQ's passive engine) says what's true from the outside. <b>The gap between them is the product</b> — and the observed layer is both the free front door that brings prospects in and the evidence that hardens every module once they're inside.</figcaption>
+  </figure>
+
+  <section>
+    <p class="eyebrow">Both at once</p>
+    <h2>Two motions, one engine</h2>
+    <div class="two">
+      <div class="mot">
+        <p class="k"><span class="b">1</span> Front door · product-led growth</p>
+        <h3>A score before they sign up</h3>
+        <p>Your free NIS2 score needs the prospect to fill in a questionnaire first. The observed score needs <b>nothing</b> — compute it from public signals and lead with it: <b>"here's your external posture — claim your full maturity assessment to go deeper."</b> An uninvited, zero-effort top of funnel that feeds straight into sign-up.</p>
+      </div>
+      <div class="mot">
+        <p class="k"><span class="b">2</span> Evidence layer · in-product</p>
+        <h3>Validate the self-assessment</h3>
+        <p>Inside the platform, put the observed evidence next to the self-report: <b>"you rated email security 'good' — externally your DMARC is <code style="font-family:var(--mono);font-size:11.5px">p=none</code>."</b> It turns a subjective questionnaire into an evidence-checked one — the credibility gap every self-assessment tool has, closed.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">It plugs into what you already have</p>
+    <h2>Observed evidence maps onto every module</h2>
+    <p class="lede">No new product to build — the passive engine feeds the modules you already ship.</p>
+    <div class="maps">
+      <div class="maprow"><span class="mod">Maturity assessment<small>your questionnaire</small></span><span class="add">Pre-fills and <b>evidence-checks</b> answers — observed DMARC, TLS, exposure, suppliers against what was self-reported.</span></div>
+      <div class="maprow"><span class="mod">Risk register<small>register + treatment</small></span><span class="add">Each observed weakness lands as a <b>pre-populated risk entry</b>, mapped to NIS2 / ISO 27001 / NIST CSF 2.0 / CIS with an owner-ready treatment.</span></div>
+      <div class="maprow"><span class="mod">Business continuity<small>RTO / RPO</small></span><span class="add">Externally-visible <b>recovery exposure</b> (exposed services, single points of failure) seeds the continuity scenarios.</span></div>
+      <div class="maprow"><span class="mod">Audit-ready reporting<small>board / regulator</small></span><span class="add">Observed evidence makes the report <b>defensible</b> — "measured, not just self-declared" — exactly what a board or auditor wants.</span></div>
+      <div class="maprow"><span class="mod">Trend tracking<small>over time</small></span><span class="add">Passive re-scoring is <b>continuous and automatic</b> — drift shows up between assessments, not just at the next questionnaire.</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="callout">
+      <h3>Why it fits CyberResilient specifically</h3>
+      <p><b>Data sovereignty, kept.</b> The engine reads only public records — DNS, certificate logs, procurement, the target's own site — and <b>never touches the customer's systems or needs their data</b>. That sits cleanly inside your Sweden-only, GDPR, MSB/NCC-grade story: objective evidence with no new data-handling risk. And it's multi-framework already — NIS2, ISO 27001, CIS map today; NIST CSF 2.0 is a one-file addition to the crosswalk.</p>
+    </div>
+  </section>
+
+  <div class="line">
+    <p>Self-report tells you what they know. Observed evidence tells you what's true. CyberResilient becomes the platform that shows both.</p>
+  </div>
+
+  <footer>
+    <span class="hd">What carries over from the reference build.</span>
+    <span>The passive engine, collectors, the context-map crosswalk (NIS2 / ISO 27001 / CIS), the benchmark scorer, and the data-ethics posture are reused as-is. What's new for CyberResilient is the <b>framing</b> (observed vs self-reported), the <b>integration target</b> (your platform, not a CRM), and a <code>NIST CSF 2.0</code> crosswalk addition. ~80% reused; the positioning is the swap.</span>
+    <span>Concept piece — a companion to the reference package. Figures are illustrative; the scoring method is the same mechanically-computed one.</span>
+  </footer>
+</div>
+
+<script>
+  const root=document.documentElement,tb=document.getElementById("theme"),ti=document.getElementById("ti");
+  let m="system";
+  tb.addEventListener("click",()=>{m=m==="system"?"light":m==="light"?"dark":"system";
+    if(m==="system")root.removeAttribute("data-theme");else root.setAttribute("data-theme",m);
+    ti.textContent=m==="light"?"☀":m==="dark"?"☾":"◐";});
+</script>
