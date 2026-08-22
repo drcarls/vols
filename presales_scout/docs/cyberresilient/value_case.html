@@ -78,6 +78,40 @@
   .vcrow .after .t{font-size:14px;color:var(--ink);font-weight:600}
   .vcrow.new .before{background:transparent} .vcrow.new .before .t{color:var(--ink-3);font-style:italic}
 
+  .after .ex{display:block;font-size:11.5px;color:var(--ink-3);font-weight:400;margin:5px 0 0;font-style:normal}
+  .after .ex b{color:var(--accent-ink)} .after .ex code{font-family:var(--mono);font-size:10.5px;background:var(--surface-2);border:1px solid var(--border);border-radius:3px;padding:0 4px}
+
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin:10px 0 4px}
+  @media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}}
+  .stat{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:12px 14px;box-shadow:var(--shadow)}
+  .stat .k{font-size:23px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.1}
+  .stat .k.hot{color:var(--hot)} .stat .k.ac{color:var(--accent-ink)}
+  .stat .l{font-size:11.5px;color:var(--ink-2);margin:2px 0 0}
+  .vs{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border);border-radius:13px;box-shadow:var(--shadow);overflow:hidden;margin-top:12px}
+  @media(max-width:600px){.vs{grid-template-columns:1fr}}
+  .vs .col{padding:14px 16px} .vs .col.self{background:var(--surface-2);border-right:1px solid var(--border)}
+  @media(max-width:600px){.vs .col.self{border-right:none;border-bottom:1px solid var(--border)}}
+  .vs .h{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin:0 0 8px;display:flex;gap:8px;align-items:center}
+  .vs .self .h{color:var(--ink-3)} .vs .obs .h{color:var(--accent-ink)}
+  .vs .badge{font-size:9px;font-weight:700;padding:1px 6px;border-radius:4px}
+  .vs .self .badge{background:var(--warn-soft);color:var(--warn);border:1px solid color-mix(in srgb,var(--warn) 26%,transparent)}
+  .vs .obs .badge{background:var(--good-soft);color:var(--good);border:1px solid color-mix(in srgb,var(--good) 26%,transparent)}
+  .vs .it{margin:7px 0} .vs .it .l2{font-size:10.5px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.04em}
+  .vs .it .v2{font-weight:650;margin:1px 0 0;font-size:13.5px} .vs .obs .v2.bad{color:var(--hot)}
+  .vs code{font-family:var(--mono);font-size:11.5px;background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:1px 5px}
+  .bench{background:var(--surface);border:1px solid var(--border);border-radius:13px;box-shadow:var(--shadow);padding:14px 16px;margin-top:12px}
+  .brow{display:grid;grid-template-columns:18px 148px 1fr 30px;gap:10px;align-items:center;margin:5px 0;font-size:12.5px}
+  @media(max-width:560px){.brow{grid-template-columns:16px 96px 1fr 26px;gap:7px;font-size:11.5px}}
+  .brow .rk{color:var(--ink-3);font-variant-numeric:tabular-nums;text-align:right}
+  .brow .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .brow .tk{height:14px;background:var(--surface-2);border:1px solid var(--border);border-radius:5px;overflow:hidden}
+  .brow .fl{height:100%;border-radius:4px 0 0 4px}
+  .brow .vv{font-variant-numeric:tabular-nums;font-weight:700;text-align:right}
+  .brow.me{background:var(--hot-soft);border-radius:7px;padding:4px 6px;margin:3px -6px;border:1px solid color-mix(in srgb,var(--hot) 30%,transparent)}
+  .brow.me .nm{font-weight:750;color:var(--hot)} .brow.me .vv{color:var(--hot)}
+  .fg{background:var(--good)} .fm{background:color-mix(in srgb,var(--ink-3) 65%,transparent)} .fh{background:var(--hot)}
+  .foot3{font-size:11px;color:var(--ink-3);margin-top:8px;line-height:1.5}
+
   .sov{margin-top:14px;background:color-mix(in srgb,var(--accent) 7%,transparent);border:1px solid color-mix(in srgb,var(--accent) 26%,transparent);border-radius:13px;padding:16px 18px;display:flex;gap:13px;align-items:flex-start}
   .sov .lk{font-size:20px;flex:none;line-height:1}
   .sov p{margin:0;font-size:14.5px} .sov b{color:var(--accent-ink)}
@@ -164,14 +198,44 @@
     <h2>What you can do that you couldn't</h2>
     <p class="muted">The point isn't a nicer assessment — it's new capability. Before, on the left; now possible, on the right.</p>
     <div class="vc">
-      <div class="vcrow"><div class="before"><p class="cap">Today</p><p class="t">Scoring needs the prospect to fill in a questionnaire first</p></div><div class="arr">→</div><div class="after"><p class="cap">Now</p><p class="t">Score any org <b>before they engage</b> — instant, zero input</p></div></div>
-      <div class="vcrow"><div class="before"><p class="cap">Today</p><p class="t">Inbound only — you wait for them to come</p></div><div class="arr">→</div><div class="after"><p class="cap">Now</p><p class="t"><b>Proactive outbound</b> to the weakest orgs, with their own score as the opener</p></div></div>
-      <div class="vcrow"><div class="before"><p class="cap">Today</p><p class="t">Self-reported — customers grade their own homework</p></div><div class="arr">→</div><div class="after"><p class="cap">Now</p><p class="t"><b>Objective evidence</b> that verifies or challenges the self-report</p></div></div>
-      <div class="vcrow"><div class="before"><p class="cap">Today</p><p class="t">Point-in-time snapshot</p></div><div class="arr">→</div><div class="after"><p class="cap">Now</p><p class="t"><b>Continuous monitoring</b> — drift and new exposure flagged as they happen</p></div></div>
-      <div class="vcrow"><div class="before"><p class="cap">Today</p><p class="t">Benchmark on self-reported data</p></div><div class="arr">→</div><div class="after"><p class="cap">Now</p><p class="t"><b>Benchmark on observed + cross-customer data</b>, clustered — one only you can build</p></div></div>
-      <div class="vcrow new"><div class="before"><p class="cap">Couldn't before</p><p class="t">not possible</p></div><div class="arr">＋</div><div class="after"><p class="cap">New line</p><p class="t"><b>Sector / regulator intelligence</b> — aggregate posture, sold up to MSB / government</p></div></div>
+      <div class="vcrow"><div class="before"><p class="cap">Today</p><p class="t">Scoring needs the prospect to fill in a questionnaire first</p></div><div class="arr">→</div><div class="after"><p class="cap">Now</p><p class="t">Score any org <b>before they engage</b> — instant, zero input</p><p class="ex">e.g. <b>Göteborg Energi</b> — observed 42/100, no input from them</p></div></div>
+      <div class="vcrow"><div class="before"><p class="cap">Today</p><p class="t">Inbound only — you wait for them to come</p></div><div class="arr">→</div><div class="after"><p class="cap">Now</p><p class="t"><b>Proactive outbound</b> to the weakest orgs, with their own score as the opener</p><p class="ex">e.g. the run's bottom three: <b>Skellefteå Kraft 2 · Jämtkraft 24 · Tekniska verken 26</b></p></div></div>
+      <div class="vcrow"><div class="before"><p class="cap">Today</p><p class="t">Self-reported — customers grade their own homework</p></div><div class="arr">→</div><div class="after"><p class="cap">Now</p><p class="t"><b>Objective evidence</b> that verifies or challenges the self-report</p><p class="ex">e.g. <b>Skellefteå Kraft</b> — DMARC <code>p=none</code>, domain spoofable, verified live</p></div></div>
+      <div class="vcrow"><div class="before"><p class="cap">Today</p><p class="t">Point-in-time snapshot</p></div><div class="arr">→</div><div class="after"><p class="cap">Now</p><p class="t"><b>Continuous monitoring</b> — drift and new exposure flagged as they happen</p><p class="ex">e.g. <b>Stena Line &amp; Transdev</b> have no DMARC record — alert the moment it changes</p></div></div>
+      <div class="vcrow"><div class="before"><p class="cap">Today</p><p class="t">Benchmark on self-reported data</p></div><div class="arr">→</div><div class="after"><p class="cap">Now</p><p class="t"><b>Benchmark on observed + cross-customer data</b>, clustered — one only you can build</p><p class="ex">e.g. 10 operators — <b>Green Cargo 78 → Skellefteå Kraft 2</b>, median 39</p></div></div>
+      <div class="vcrow new"><div class="before"><p class="cap">Couldn't before</p><p class="t">not possible</p></div><div class="arr">＋</div><div class="after"><p class="cap">New line</p><p class="t"><b>Sector / regulator intelligence</b> — aggregate posture, sold up to MSB / government</p><p class="ex">e.g. <b>8 of 10</b> Swedish energy/transport operators run unenforced DMARC — a sector finding</p></div></div>
       <div class="vcrow new"><div class="before"><p class="cap">Couldn't before</p><p class="t">not possible</p></div><div class="arr">＋</div><div class="after"><p class="cap">New line</p><p class="t"><b>Evidence-backed attestation</b> — a verifiable "resilience verified" badge, a wedge into cyber-insurance</p></div></div>
     </div>
+  </section>
+
+  <section>
+    <p class="num">06 · Grounded in a real run</p>
+    <h2>Not a mock — 10 real organisations</h2>
+    <p class="muted">Everything above was run for real: 10 Swedish energy &amp; transport operators, scored from public signals alone, Aug 2026. This is the raw material your platform would ingest.</p>
+    <div class="stats">
+      <div class="stat"><div class="k hot">8/10</div><div class="l">weak email security</div></div>
+      <div class="stat"><div class="k hot">8/10</div><div class="l">DMARC not enforced</div></div>
+      <div class="stat"><div class="k">10/10</div><div class="l">no visible CISO</div></div>
+      <div class="stat"><div class="k ac">39</div><div class="l">median observed score</div></div>
+    </div>
+
+    <p class="kicker" style="margin-top:22px">The gap, on one firm</p>
+    <div class="vs">
+      <div class="col self">
+        <p class="h">Self-reported <span class="badge">illustrative</span></p>
+        <div class="it"><div class="l2">Email &amp; anti-spoofing</div><div class="v2">“Adequate” — 3 / 5</div></div>
+        <div class="it"><div class="l2">Overall maturity</div><div class="v2">“On track”</div></div>
+      </div>
+      <div class="col obs">
+        <p class="h">Observed — Skellefteå Kraft <span class="badge">real · verified</span></p>
+        <div class="it"><div class="l2">Email &amp; anti-spoofing</div><div class="v2 bad">Weak — DMARC <code>p=none</code>, spoofable</div></div>
+        <div class="it"><div class="l2">Observed score</div><div class="v2 bad">2 / 100 — bottom of peer group</div></div>
+      </div>
+    </div>
+
+    <p class="kicker" style="margin-top:22px">The observed peer benchmark</p>
+    <div class="bench" id="bench"></div>
+    <p class="foot3">Score = 100 − a severity-weighted penalty per observable weakness, mechanically computed — no tuning knobs. Self-reported figures above are illustrative (they stand in for your platform's real customer data); observed signals and scores are real, and Skellefteå Kraft's <code style="font-family:var(--mono)">p=none</code> was verified live.</p>
   </section>
 
   <div class="sov">
@@ -191,6 +255,14 @@
 </div>
 
 <script>
+  const B=[["Green Cargo AB",78,"fg"],["Mälarenergi AB",58,"fg"],["Stena Line Scandinavia",46,"fg"],
+    ["Göteborg Energi AB",42,"fm"],["Öresundskraft AB",42,"fm"],["Nobina Sverige AB",36,"fm"],
+    ["Transdev Sverige",36,"fm"],["Tekniska verken",26,"fh"],["Jämtkraft AB",24,"fh"],["Skellefteå Kraft AB",2,"fh"]];
+  document.getElementById("bench").innerHTML=B.map((r,i)=>{
+    const me=i===B.length-1;
+    return `<div class="brow${me?" me":""}"><span class="rk">${i+1}</span><span class="nm">${r[0]}${me?" ◄":""}</span><span class="tk"><span class="fl ${r[2]}" style="width:${r[1]}%"></span></span><span class="vv">${r[1]}</span></div>`;
+  }).join("");
+
   const root=document.documentElement,tb=document.getElementById("theme"),ti=document.getElementById("ti");
   let m="system";
   tb.addEventListener("click",()=>{m=m==="system"?"light":m==="light"?"dark":"system";
