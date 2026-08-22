@@ -41,46 +41,41 @@
   .tbtn:hover{color:var(--ink);border-color:var(--accent)} .tbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
   .hero{margin:26px 0 4px}
-  .hero h1{font-size:clamp(25px,4.6vw,36px);line-height:1.1;letter-spacing:-.02em;margin:0 0 14px;text-wrap:balance;max-width:18ch}
+  .hero h1{font-size:clamp(25px,4.6vw,36px);line-height:1.1;letter-spacing:-.02em;margin:0 0 14px;text-wrap:balance;max-width:17ch}
   .hero h1 em{font-style:normal;color:var(--accent-ink)}
   .hero .stand{font-size:17px;color:var(--ink-2);max-width:60ch;margin:0}
 
   section{margin-top:34px}
   .num{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--accent-ink);font-variant-numeric:tabular-nums}
   h2{font-size:22px;letter-spacing:-.02em;margin:3px 0 10px;text-wrap:balance}
-  p{margin:0 0 12px} .muted{color:var(--ink-2)}
-  b{color:var(--ink)}
+  p{margin:0 0 12px} .muted{color:var(--ink-2)} b{color:var(--ink)}
   .lead-in{font-size:16px}
 
   .list{list-style:none;padding:0;margin:8px 0 0;display:flex;flex-direction:column;gap:8px}
   .list li{display:grid;grid-template-columns:22px 1fr;gap:11px;font-size:14.5px;color:var(--ink-2)}
-  .list li b{color:var(--ink)}
-  .list .mk{color:var(--accent-ink);font-weight:700}
-  .list .mk.x{color:var(--hot)}
+  .list li b{color:var(--ink)} .list .mk{color:var(--accent-ink);font-weight:700}
 
-  .aug{border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;background:var(--surface);margin-top:10px}
-  .augrow{display:grid;grid-template-columns:190px 1fr;gap:14px;padding:12px 16px;border-bottom:1px solid var(--border);font-size:14px}
-  .augrow:last-child{border-bottom:none}
-  @media(max-width:560px){.augrow{grid-template-columns:1fr;gap:3px}}
-  .augrow .m{font-weight:650;color:var(--ink)}
-  .augrow .g{color:var(--ink-2)} .augrow .g b{color:var(--accent-ink)}
+  .caps{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px}
+  @media(max-width:560px){.caps{grid-template-columns:1fr}}
+  .capc{background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);padding:13px 15px}
+  .capc.moat{border-color:color-mix(in srgb,var(--accent) 40%,transparent);background:var(--accent-soft)}
+  .capc .ct{font-weight:680;font-size:14px;display:flex;align-items:center;gap:8px}
+  .capc .ct .n2{color:var(--accent-ink);font-variant-numeric:tabular-nums}
+  .capc .mt{font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--accent-ink);background:var(--surface);border:1px solid color-mix(in srgb,var(--accent) 30%,transparent);border-radius:4px;padding:1px 6px;margin-left:auto}
+  .capc .cd{font-size:12.5px;color:var(--ink-2);margin-top:3px}
 
-  .vc{margin-top:12px;display:flex;flex-direction:column;gap:10px}
-  .vcrow{display:grid;grid-template-columns:1fr 26px 1fr;gap:0;align-items:stretch;background:var(--surface);border:1px solid var(--border);border-radius:13px;box-shadow:var(--shadow);overflow:hidden}
-  @media(max-width:600px){.vcrow{grid-template-columns:1fr;gap:0}}
-  .vcrow .before{padding:12px 15px;background:var(--surface-2);border-right:1px solid var(--border)}
-  .vcrow .arr{display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:17px;font-weight:700}
-  @media(max-width:600px){.vcrow .before{border-right:none;border-bottom:1px solid var(--border)}.vcrow .arr{transform:rotate(90deg);padding:2px 0}}
-  .vcrow .after{padding:12px 15px}
-  .vcrow .cap{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin:0 0 4px}
-  .vcrow .before .cap{color:var(--ink-3)} .vcrow .after .cap{color:var(--accent-ink)}
-  .vcrow .before .t{font-size:13.5px;color:var(--ink-2)}
-  .vcrow .after .t{font-size:14px;color:var(--ink);font-weight:600}
-  .vcrow.new .before{background:transparent} .vcrow.new .before .t{color:var(--ink-3);font-style:italic}
+  .cases{display:flex;flex-direction:column;gap:12px;margin-top:12px}
+  .cse{display:grid;grid-template-columns:42px 1fr;gap:15px;background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);padding:16px 18px}
+  .cse.bonus{border-style:dashed}
+  .cse .cn{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;background:var(--accent-soft);color:var(--accent-ink);border:1px solid color-mix(in srgb,var(--accent) 22%,transparent);font-variant-numeric:tabular-nums}
+  .cse h3{margin:0 0 5px;font-size:16.5px;letter-spacing:-.01em;display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+  .cse .drive{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--good);background:var(--good-soft);border:1px solid color-mix(in srgb,var(--good) 26%,transparent);border-radius:5px;padding:1px 7px}
+  .cse .hw{font-size:14px;color:var(--ink-2);margin:0 0 7px} .cse .hw b{color:var(--ink)}
+  .cse .ex2{font-size:12.5px;color:var(--ink-3);border-left:2px solid var(--border-strong);padding-left:11px}
+  .cse .ex2 b{color:var(--accent-ink)} .cse .ex2 code{font-family:var(--mono);font-size:11px;background:var(--surface-2);border:1px solid var(--border);border-radius:3px;padding:0 4px}
+  .cse .bound{font-size:11.5px;color:var(--warn);margin-top:6px} .cse .bound b{color:var(--warn)}
 
-  .after .ex{display:block;font-size:11.5px;color:var(--ink-3);font-weight:400;margin:5px 0 0;font-style:normal}
-  .after .ex b{color:var(--accent-ink)} .after .ex code{font-family:var(--mono);font-size:10.5px;background:var(--surface-2);border:1px solid var(--border);border-radius:3px;padding:0 4px}
-
+  .kicker{font-size:12.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);margin:0 0 6px}
   .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin:10px 0 4px}
   @media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}}
   .stat{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:12px 14px;box-shadow:var(--shadow)}
@@ -113,13 +108,9 @@
   .foot3{font-size:11px;color:var(--ink-3);margin-top:8px;line-height:1.5}
 
   .sov{margin-top:14px;background:color-mix(in srgb,var(--accent) 7%,transparent);border:1px solid color-mix(in srgb,var(--accent) 26%,transparent);border-radius:13px;padding:16px 18px;display:flex;gap:13px;align-items:flex-start}
-  .sov .lk{font-size:20px;flex:none;line-height:1}
-  .sov p{margin:0;font-size:14.5px} .sov b{color:var(--accent-ink)}
-
-  .kicker{font-size:12.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);margin:0 0 6px}
+  .sov .lk{font-size:20px;flex:none;line-height:1} .sov p{margin:0;font-size:14.5px} .sov b{color:var(--accent-ink)}
   .line{margin-top:26px;background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 26%,transparent);border-radius:14px;padding:18px 22px}
   .line p{margin:0;font-size:17px;font-weight:600;color:var(--accent-ink);text-wrap:balance;text-align:center}
-
   footer{margin-top:32px;padding-top:18px;border-top:1px solid var(--border);font-size:12.5px;color:var(--ink-2);display:flex;flex-direction:column;gap:7px}
   footer .hd{color:var(--ink);font-weight:600}
 </style>
@@ -138,87 +129,112 @@
   </header>
 
   <div class="hero">
-    <h1>What CyberResilient could do <em>next</em>.</h1>
-    <p class="stand">CyberResilient already helps organisations see their NIS2 maturity. UpliftIQ adds the half a questionnaire can't reach — an objective, observed view — running inside your own environment. Here's why it fits, what it augments, and what it lets you do that you can't today.</p>
+    <h1>NIS2 monitoring, made <em>objective</em>.</h1>
+    <p class="stand">CyberResilient sells NIS2 monitoring and compliance recommendations. UpliftIQ measures the same organisations from the outside — objectively, and inside your own walls. Here's what each does, then the ways they work together.</p>
   </div>
 
+  <!-- 01 -->
   <section>
-    <p class="num">01 · Why CyberResilient</p>
-    <h2>The augmentation lands on fertile ground</h2>
-    <p class="lead-in">This only works where the product, the market, and the values already line up — and here they do:</p>
+    <p class="num">01 · What CyberResilient does</p>
+    <h2>Sells NIS2 monitoring &amp; compliance recommendations</h2>
+    <p class="lead-in">You help essential and important entities meet the Swedish Cybersecurity Act: monitor their NIS2 posture, surface where they fall short, and recommend what to fix — with reporting a board and a regulator can trust.</p>
     <ul class="list">
-      <li><span class="mk">→</span><span><b>You already sell "know your posture."</b> Your whole promise is "you can't fix what you don't know." An objective evidence layer is the same promise, taken further — not a foreign idea to bolt on.</span></li>
-      <li><span class="mk">→</span><span><b>You already reach NIS2 entities.</b> Energy, transport, healthcare, public sector — the exact orgs an observed engine scores best, and the ones under a live legal deadline.</span></li>
-      <li><span class="mk">→</span><span><b>Sovereignty is in your DNA.</b> Built by former Swedish government CISOs, Sweden-only data, MSB/NCC-grade. That's precisely what makes an <b>in-premise</b> engine viable — and it's a moat competitors can't casually copy.</span></li>
-      <li><span class="mk">→</span><span><b>You're multi-framework already.</b> NIS2, ISO 27001, NIST CSF 2.0, CIS — the observed findings map straight onto the crosswalk you're building.</span></li>
+      <li><span class="mk">•</span><span><b>Maturity monitoring</b> — track NIS2 posture and progress over time.</span></li>
+      <li><span class="mk">•</span><span><b>Compliance recommendations</b> — what to fix, mapped to NIS2 (and ISO 27001 / NIST CSF / CIS).</span></li>
+      <li><span class="mk">•</span><span><b>Risk register, continuity, audit-ready reporting</b> — the workflow around the score.</span></li>
     </ul>
+    <p class="muted" style="margin-top:12px">The strength — and the ceiling — is that it works from <b>what the customer reports</b>. Fast and clean, but self-declared and gated on the customer engaging.</p>
   </section>
 
+  <!-- 02 -->
   <section>
-    <p class="num">02 · What CyberResilient does today</p>
-    <h2>A self-assessment platform, done well</h2>
-    <p class="muted">The product, as it stands — an AI-powered cyber-resilience platform:</p>
-    <ul class="list">
-      <li><span class="mk">•</span><span><b>NIS2 maturity assessment</b> — a questionnaire with instant scoring and recommendations ("your free NIS2 score, 80% faster").</span></li>
-      <li><span class="mk">•</span><span><b>Risk register</b> — structured risks with treatment plans, owners, and status.</span></li>
-      <li><span class="mk">•</span><span><b>Business continuity</b> — critical-process mapping, RTO/RPO, recovery scenarios.</span></li>
-      <li><span class="mk">•</span><span><b>Audit-ready reporting</b> — board- and regulator-ready PDF export.</span></li>
-      <li><span class="mk">•</span><span><b>Trend tracking</b> — multi-assessment comparison over time.</span></li>
-    </ul>
-    <p class="muted" style="margin-top:14px">The through-line: it begins, every time, with <b>what the customer tells you</b> — a self-report. That's the strength (fast, no integration) and the ceiling.</p>
+    <p class="num">02 · What UpliftIQ does</p>
+    <h2>An objective posture engine — passive, and on-premise</h2>
+    <p class="lead-in">UpliftIQ measures an organisation's security posture from <b>public signals only</b> — DNS, mail policy, certificate logs, exposure, procurement. No questionnaire, no access to their systems. It runs as four capabilities, deployed <b>inside your environment</b>:</p>
+    <div class="caps">
+      <div class="capc"><div class="ct"><span class="n2">1</span> Observe</div><div class="cd">Measure any org's external posture — no input needed.</div></div>
+      <div class="capc"><div class="ct"><span class="n2">2</span> Reconcile</div><div class="cd">Compare observed reality to what was self-reported.</div></div>
+      <div class="capc moat"><div class="ct"><span class="n2">3</span> Cluster + Benchmark <span class="mt">moat</span></div><div class="cd">Position an org against anonymized peers.</div></div>
+      <div class="capc moat"><div class="ct"><span class="n2">4</span> Recommend + Optimize <span class="mt">moat</span></div><div class="cd">Prioritize fixes, learning from cross-customer outcomes.</div></div>
+    </div>
+    <p class="muted" style="margin-top:12px">On its own it's a sensor and a scorer. Its value shows up when it feeds <b>your</b> platform and <b>your</b> data.</p>
   </section>
 
+  <!-- 03 -->
   <section>
-    <p class="num">03 · The ceiling</p>
-    <h2>What a self-report alone can't do</h2>
-    <ul class="list">
-      <li><span class="mk x">✕</span><span><b>It's self-graded.</b> Customers rate themselves; you can't verify it. A board and a regulator both discount self-declared maturity.</span></li>
-      <li><span class="mk x">✕</span><span><b>It's gated on engagement.</b> Nothing happens until the prospect sits down and fills in the questionnaire.</span></li>
-      <li><span class="mk x">✕</span><span><b>It's a snapshot.</b> Posture drifts between assessments; the questionnaire only sees the day it's filled in.</span></li>
-      <li><span class="mk x">✕</span><span><b>The benchmark is thin.</b> Comparing self-reports to self-reports compares beliefs, not reality.</span></li>
-    </ul>
-  </section>
+    <p class="num">03 · How they work together</p>
+    <h2>The cases</h2>
+    <div class="cases">
 
-  <section>
-    <p class="num">04 · How UpliftIQ augments it</p>
-    <h2>An observed layer, onto every module you ship</h2>
-    <p class="muted">UpliftIQ measures the same organisations from the outside — passive public signals, no questionnaire, no access to their systems — and four capabilities (Observe, Reconcile, Cluster+Benchmark, Recommend+Optimize) feed straight into what you already have:</p>
-    <div class="aug">
-      <div class="augrow"><span class="m">Maturity assessment</span><span class="g"><b>Pre-filled &amp; fact-checked</b> — observed DMARC, TLS, exposure verify or challenge each self-rating.</span></div>
-      <div class="augrow"><span class="m">Risk register</span><span class="g">Each observed gap arrives as a <b>pre-populated risk entry</b>, mapped to NIS2 / ISO / NIST / CIS with a treatment.</span></div>
-      <div class="augrow"><span class="m">Business continuity</span><span class="g">Externally-visible <b>recovery exposure</b> seeds the RTO/RPO scenarios.</span></div>
-      <div class="augrow"><span class="m">Audit-ready reporting</span><span class="g">Evidence makes it <b>"measured, not self-declared"</b> — what boards and regulators actually want.</span></div>
-      <div class="augrow"><span class="m">Trend tracking</span><span class="g">Passive re-scoring runs <b>continuously</b> — drift is caught between assessments.</span></div>
-      <div class="augrow"><span class="m">Recommendations</span><span class="g">Suggestions <b>learned from cross-customer outcomes</b>, not a static rulebook — sharper with every customer.</span></div>
+      <div class="cse">
+        <span class="cn">1</span>
+        <div>
+          <h3>Outbound outreach <span class="drive">drives customers</span></h3>
+          <p class="hw">UpliftIQ scores NIS2-scope orgs in bulk; the weakest are a <b>prioritized outbound list</b>. You reach out with the org's own observed score as the opener — <b>"your external posture ranks bottom of your peer group, see the full picture free"</b> — feeding sign-ups.</p>
+          <p class="ex2">e.g. the run's bottom three: <b>Skellefteå Kraft 2 · Jämtkraft 24 · Tekniska verken 26</b> — a warm list, ranked worst-first.</p>
+        </div>
+      </div>
+
+      <div class="cse">
+        <span class="cn">2</span>
+        <div>
+          <h3>Enrich &amp; fact-check a customer's data</h3>
+          <p class="hw">For a customer, put observed evidence next to their self-report to <b>verify or challenge it</b> — turning self-declared monitoring into evidence-checked monitoring.</p>
+          <p class="ex2">e.g. self-assessment rates email "adequate"; observed shows <b>Skellefteå Kraft</b> at DMARC <code>p=none</code> — spoofable, verified live.</p>
+          <p class="bound"><b>Within bounds:</b> only a consenting customer's own domains/assets, scoped to what they've authorised — never covertly.</p>
+        </div>
+      </div>
+
+      <div class="cse">
+        <span class="cn">3</span>
+        <div>
+          <h3>Benchmark customers vs. anonymized data <span class="drive">moat</span></h3>
+          <p class="hw">Cluster customers by sector, size, and maturity, and show each where they stand against <b>anonymized peers</b> — a benchmark only you can produce, because it needs your corpus. Sharper with every customer.</p>
+          <p class="ex2">e.g. 10 operators — <b>Green Cargo 78 → Skellefteå Kraft 2</b>, median 39 (observed layer shown; your customer data makes it richer).</p>
+        </div>
+      </div>
+
+      <div class="cse">
+        <span class="cn">4</span>
+        <div>
+          <h3>Prioritize the fix under constraints <span class="drive">moat</span></h3>
+          <p class="hw">Given a customer's budget and staff, recommend the <b>optimal set of actions</b> to close the most NIS2 gaps or raise maturity most — recommendations learned from what actually worked across similar orgs, not a static rulebook.</p>
+          <p class="ex2">e.g. "with 2 FTE-weeks: enforce DMARC → publish MTA-STS → assign a security owner — biggest maturity gain for the effort."</p>
+        </div>
+      </div>
+
+      <div class="cse">
+        <span class="cn">5</span>
+        <div>
+          <h3>Continuous monitoring &amp; drift alerts</h3>
+          <p class="hw">Re-score passively <b>between assessments</b> and alert on regressions — new exposure, a policy that weakened, a new supplier. This is "NIS2 monitoring" made literal and always-on.</p>
+          <p class="ex2">e.g. <b>Stena Line &amp; Transdev</b> have no DMARC record today — flag the moment it changes, either way.</p>
+        </div>
+      </div>
+
+      <div class="cse bonus">
+        <span class="cn">6</span>
+        <div>
+          <h3>Sector / regulator intelligence <span class="drive">new line</span></h3>
+          <p class="hw">Aggregate anonymized posture across a sector into <b>intelligence sold up</b> — to MSB, a regulator, a ministry. Your government roots make you the natural provider.</p>
+          <p class="ex2">e.g. <b>8 of 10</b> Swedish energy/transport operators run unenforced DMARC — a sector-level finding no single assessment reveals.</p>
+        </div>
+      </div>
+
     </div>
   </section>
 
+  <!-- 04 proof -->
   <section>
-    <p class="num">05 · Value creation</p>
-    <h2>What you can do that you couldn't</h2>
-    <p class="muted">The point isn't a nicer assessment — it's new capability. Before, on the left; now possible, on the right.</p>
-    <div class="vc">
-      <div class="vcrow"><div class="before"><p class="cap">Today</p><p class="t">Scoring needs the prospect to fill in a questionnaire first</p></div><div class="arr">→</div><div class="after"><p class="cap">Now</p><p class="t">Score any org <b>before they engage</b> — instant, zero input</p><p class="ex">e.g. <b>Göteborg Energi</b> — observed 42/100, no input from them</p></div></div>
-      <div class="vcrow"><div class="before"><p class="cap">Today</p><p class="t">Inbound only — you wait for them to come</p></div><div class="arr">→</div><div class="after"><p class="cap">Now</p><p class="t"><b>Proactive outbound</b> to the weakest orgs, with their own score as the opener</p><p class="ex">e.g. the run's bottom three: <b>Skellefteå Kraft 2 · Jämtkraft 24 · Tekniska verken 26</b></p></div></div>
-      <div class="vcrow"><div class="before"><p class="cap">Today</p><p class="t">Self-reported — customers grade their own homework</p></div><div class="arr">→</div><div class="after"><p class="cap">Now</p><p class="t"><b>Objective evidence</b> that verifies or challenges the self-report</p><p class="ex">e.g. <b>Skellefteå Kraft</b> — DMARC <code>p=none</code>, domain spoofable, verified live</p></div></div>
-      <div class="vcrow"><div class="before"><p class="cap">Today</p><p class="t">Point-in-time snapshot</p></div><div class="arr">→</div><div class="after"><p class="cap">Now</p><p class="t"><b>Continuous monitoring</b> — drift and new exposure flagged as they happen</p><p class="ex">e.g. <b>Stena Line &amp; Transdev</b> have no DMARC record — alert the moment it changes</p></div></div>
-      <div class="vcrow"><div class="before"><p class="cap">Today</p><p class="t">Benchmark on self-reported data</p></div><div class="arr">→</div><div class="after"><p class="cap">Now</p><p class="t"><b>Benchmark on observed + cross-customer data</b>, clustered — one only you can build</p><p class="ex">e.g. 10 operators — <b>Green Cargo 78 → Skellefteå Kraft 2</b>, median 39</p></div></div>
-      <div class="vcrow new"><div class="before"><p class="cap">Couldn't before</p><p class="t">not possible</p></div><div class="arr">＋</div><div class="after"><p class="cap">New line</p><p class="t"><b>Sector / regulator intelligence</b> — aggregate posture, sold up to MSB / government</p><p class="ex">e.g. <b>8 of 10</b> Swedish energy/transport operators run unenforced DMARC — a sector finding</p></div></div>
-      <div class="vcrow new"><div class="before"><p class="cap">Couldn't before</p><p class="t">not possible</p></div><div class="arr">＋</div><div class="after"><p class="cap">New line</p><p class="t"><b>Evidence-backed attestation</b> — a verifiable "resilience verified" badge, a wedge into cyber-insurance</p></div></div>
-    </div>
-  </section>
-
-  <section>
-    <p class="num">06 · Grounded in a real run</p>
+    <p class="num">04 · Grounded in a real run</p>
     <h2>Not a mock — 10 real organisations</h2>
-    <p class="muted">Everything above was run for real: 10 Swedish energy &amp; transport operators, scored from public signals alone, Aug 2026. This is the raw material your platform would ingest.</p>
+    <p class="muted">The examples above are from a real run: 10 Swedish energy &amp; transport operators, scored from public signals alone, Aug 2026.</p>
     <div class="stats">
       <div class="stat"><div class="k hot">8/10</div><div class="l">weak email security</div></div>
       <div class="stat"><div class="k hot">8/10</div><div class="l">DMARC not enforced</div></div>
       <div class="stat"><div class="k">10/10</div><div class="l">no visible CISO</div></div>
       <div class="stat"><div class="k ac">39</div><div class="l">median observed score</div></div>
     </div>
-
     <p class="kicker" style="margin-top:22px">The gap, on one firm</p>
     <div class="vs">
       <div class="col self">
@@ -232,25 +248,24 @@
         <div class="it"><div class="l2">Observed score</div><div class="v2 bad">2 / 100 — bottom of peer group</div></div>
       </div>
     </div>
-
     <p class="kicker" style="margin-top:22px">The observed peer benchmark</p>
     <div class="bench" id="bench"></div>
-    <p class="foot3">Score = 100 − a severity-weighted penalty per observable weakness, mechanically computed — no tuning knobs. Self-reported figures above are illustrative (they stand in for your platform's real customer data); observed signals and scores are real, and Skellefteå Kraft's <code style="font-family:var(--mono)">p=none</code> was verified live.</p>
+    <p class="foot3">Score = 100 − a severity-weighted penalty per observable weakness, mechanically computed — no tuning knobs. Observed signals and scores are real (Skellefteå Kraft's <code style="font-family:var(--mono)">p=none</code> verified live); the self-reported column and any cross-customer peer figures are illustrative until integrated with your platform data.</p>
   </section>
 
   <div class="sov">
     <span class="lk">🔒</span>
-    <p><b>And none of it costs you sovereignty.</b> UpliftIQ runs <b>inside your environment</b> — it reads only public records, never touches the customer's systems, and <b>raw customer data never leaves the boundary</b>. Public signals in, anonymized results out. The intelligence comes to the data, not the other way around — so the moat plays stay compatible with your Sweden-only, MSB-grade promise.</p>
+    <p><b>All of it, without giving up sovereignty.</b> UpliftIQ runs inside your Sweden-only environment. It reads only public records, never touches a customer's systems, and <b>raw customer data never leaves the boundary</b> — public signals in, anonymized results out. UpliftIQ is the engine embedded in your platform, not a service you ship data to.</p>
   </div>
 
   <div class="line">
-    <p>Today you tell customers what they believe. With this, you tell them what's true — prove it, monitor it, and benchmark it — without a byte leaving your walls.</p>
+    <p>You already tell customers what they believe. Together, you tell them what's true — drive them in, prove it, benchmark it, and monitor it — without a byte leaving your walls.</p>
   </div>
 
   <footer>
     <span class="hd">Grounded, and honestly caveated.</span>
-    <span>CyberResilient's current capabilities are summarised from their public site; some product internals are inferred. The observed engine and its scoring are real and already run end-to-end (see the reference build). Cross-customer figures become real once integrated with your platform data.</span>
-    <span>Passive &amp; public only. Benchmark and sector plays need customer consent plus a minimum cluster size (k-anonymity) so no output re-identifies an organisation.</span>
+    <span>CyberResilient's offering is summarised from public information; some internals are inferred. The observed engine and its scoring are real and already run end-to-end (see the reference build). Cross-customer figures become real once integrated with your platform data.</span>
+    <span>Passive &amp; public only — no scanning, no access to systems, nothing behind a login. Case 2 is bounded to a consenting customer's own assets; the benchmark and sector cases need consent plus a minimum cluster size (k-anonymity) so no output re-identifies an organisation.</span>
   </footer>
 </div>
 
@@ -262,7 +277,6 @@
     const me=i===B.length-1;
     return `<div class="brow${me?" me":""}"><span class="rk">${i+1}</span><span class="nm">${r[0]}${me?" ◄":""}</span><span class="tk"><span class="fl ${r[2]}" style="width:${r[1]}%"></span></span><span class="vv">${r[1]}</span></div>`;
   }).join("");
-
   const root=document.documentElement,tb=document.getElementById("theme"),ti=document.getElementById("ti");
   let m="system";
   tb.addEventListener("click",()=>{m=m==="system"?"light":m==="light"?"dark":"system";
