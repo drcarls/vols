@@ -61,6 +61,8 @@
 
   .two{display:grid;grid-template-columns:1fr 1fr;gap:13px}
   @media(max-width:680px){.two{grid-template-columns:1fr}}
+  .three{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  @media(max-width:760px){.three{grid-template-columns:1fr}}
   .mot{background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);padding:16px 18px}
   .mot .k{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--accent-ink);margin:0 0 5px;display:flex;align-items:center;gap:8px}
   .mot .k .b{width:20px;height:20px;border-radius:6px;background:var(--accent-soft);color:var(--accent-ink);border:1px solid color-mix(in srgb,var(--accent) 26%,transparent);display:inline-flex;align-items:center;justify-content:center;font-size:11px}
@@ -102,7 +104,7 @@
 
   <div class="hero">
     <h1>Self-reported is only <em>half</em> the picture.</h1>
-    <p>Your maturity assessment asks the customer what they know. But customers grade their own homework — and <b>you can't fix what you don't know</b>. An outside-in, evidence-based score fills the other half: what's <b>observable</b> about them, with no questionnaire. It works two ways at once — a free front door that pulls prospects in, and an evidence layer that strengthens every module inside the platform.</p>
+    <p>Your maturity assessment asks the customer what they know. But customers grade their own homework — and <b>you can't fix what you don't know</b>. An outside-in, evidence-based score fills the other half: what's <b>observable</b> about them, with no questionnaire. It works three ways at once — a proactive <b>outbound list</b>, a free <b>front door</b> that pulls prospects in, and an <b>evidence layer</b> that strengthens every module inside the platform.</p>
   </div>
 
   <figure>
@@ -156,18 +158,23 @@
   </figure>
 
   <section>
-    <p class="eyebrow">Both at once</p>
-    <h2>Two motions, one engine</h2>
-    <div class="two">
+    <p class="eyebrow">All at once</p>
+    <h2>Three motions, one engine</h2>
+    <div class="three">
       <div class="mot">
-        <p class="k"><span class="b">1</span> Front door · product-led growth</p>
-        <h3>A score before they sign up</h3>
-        <p>Your free NIS2 score needs the prospect to fill in a questionnaire first. The observed score needs <b>nothing</b> — compute it from public signals and lead with it: <b>"here's your external posture — claim your full maturity assessment to go deeper."</b> An uninvited, zero-effort top of funnel that feeds straight into sign-up.</p>
+        <p class="k"><span class="b">1</span> Outbound · proactive</p>
+        <h3>Reach out to the weakest</h3>
+        <p>Score NIS2-scope orgs in bulk; the bottom-quartile ones are a <b>ready outbound list</b>. Open with their own number: <b>"your external posture ranks bottom of your peer group — see the full picture free."</b> Fills the funnel without waiting.</p>
       </div>
       <div class="mot">
-        <p class="k"><span class="b">2</span> Evidence layer · in-product</p>
+        <p class="k"><span class="b">2</span> Front door · inbound / PLG</p>
+        <h3>A score before they sign up</h3>
+        <p>Your free NIS2 score needs a questionnaire first. The observed score needs <b>nothing</b> — lead with it: <b>"here's your external posture — claim your full assessment to go deeper."</b> A zero-effort top of funnel that feeds sign-up.</p>
+      </div>
+      <div class="mot">
+        <p class="k"><span class="b">3</span> Evidence layer · in-product</p>
         <h3>Validate the self-assessment</h3>
-        <p>Inside the platform, put the observed evidence next to the self-report: <b>"you rated email security 'good' — externally your DMARC is <code style="font-family:var(--mono);font-size:11.5px">p=none</code>."</b> It turns a subjective questionnaire into an evidence-checked one — the credibility gap every self-assessment tool has, closed.</p>
+        <p>Inside the platform, put observed evidence next to the self-report: <b>"you rated email 'good' — externally your DMARC is <code style="font-family:var(--mono);font-size:11.5px">p=none</code>."</b> Turns a subjective questionnaire into an evidence-checked one.</p>
       </div>
     </div>
   </section>
@@ -183,6 +190,25 @@
       <div class="maprow"><span class="mod">Audit-ready reporting<small>board / regulator</small></span><span class="add">Observed evidence makes the report <b>defensible</b> — "measured, not just self-declared" — exactly what a board or auditor wants.</span></div>
       <div class="maprow"><span class="mod">Trend tracking<small>over time</small></span><span class="add">Passive re-scoring is <b>continuous and automatic</b> — drift shows up between assessments, not just at the next questionnaire.</span></div>
     </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">And the part that compounds</p>
+    <h2>Your cross-customer data is the real moat</h2>
+    <p class="lede">The observed engine is the sensor — anyone could build one. What can't be copied is <b>your platform's own data</b>: every customer's self-assessment, risk treatment, and outcome. Feed that back and two things get sharper with every org you onboard:</p>
+    <div class="two">
+      <div class="mot">
+        <p class="k"><span class="b">↗</span> Benchmark</p>
+        <h3>Real peers, not just signals</h3>
+        <p>Rank a customer against the <b>actual maturity of similar orgs on your platform</b> — a percentile only you can compute, because only you hold the corpus. The observed layer adds the objective cross-check.</p>
+      </div>
+      <div class="mot">
+        <p class="k"><span class="b">✦</span> Suggestions</p>
+        <h3>What actually worked</h3>
+        <p>"Orgs like you closed this gap by doing X" — recommendations <b>learned from cross-customer outcomes</b>, not a static rulebook. Powers the "AI recommendations" you already promise, and gets better with scale.</p>
+      </div>
+    </div>
+    <p class="lede" style="margin-top:14px">The observed score says <em>what's wrong</em>; your cross-customer data says <em>what fixes it</em>. The engine is leverage; <b>the data compounding is the defensibility.</b></p>
   </section>
 
   <section>

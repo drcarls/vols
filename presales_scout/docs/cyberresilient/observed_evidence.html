@@ -101,6 +101,15 @@
   .fgd{background:var(--good)} .fmid{background:color-mix(in srgb,var(--ink-3) 70%,transparent)} .fhot{background:var(--hot)}
   .foot2{font-size:11.5px;color:var(--ink-3);margin-top:10px;line-height:1.5}
 
+  .sugg{display:flex;flex-direction:column;gap:9px;margin-top:6px}
+  .srow{display:grid;grid-template-columns:230px 1fr;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);padding:12px 15px}
+  @media(max-width:600px){.srow{grid-template-columns:1fr;gap:4px}}
+  .srow .sact{font-weight:650;font-size:13.5px;color:var(--accent-ink)}
+  .srow .sctx{font-size:13px;color:var(--ink-2)} .srow .sctx b{color:var(--ink)}
+  .ill{font-size:9.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--warn);background:var(--warn-soft);border:1px solid color-mix(in srgb,var(--warn) 26%,transparent);border-radius:4px;padding:1px 6px;white-space:nowrap}
+  .callout{border-left:3px solid var(--accent);background:var(--accent-soft);border-radius:0 13px 13px 0;padding:15px 18px;margin-top:14px}
+  .callout h3{margin:0 0 5px;font-size:15px} .callout p{margin:0;font-size:14px} .callout b{color:var(--ink)}
+
   .maps{border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;background:var(--surface);margin-top:6px}
   .maprow{display:grid;grid-template-columns:200px 1fr;gap:14px;align-items:center;padding:11px 16px;border-bottom:1px solid var(--border);font-size:13.5px}
   .maprow:last-child{border-bottom:none}
@@ -176,6 +185,31 @@
     <h2>Observed peer benchmark</h2>
     <p class="lede">Score = 100 minus a severity-weighted penalty per observable weakness — mechanically computed, no tuning knobs. The percentile view a customer sees for themselves against peers.</p>
     <div class="bench" id="bench"></div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Powered by your cross-customer data · the moat</p>
+    <h2>Suggestions, learned from everyone before them</h2>
+    <p class="lede">The observed score says <em>what's wrong</em>. Your platform's cross-customer data says <em>what fixes it</em> — every assessment, treatment, and outcome across your customers makes the next recommendation sharper. That corpus is yours alone; no engine and no competitor can reproduce it.</p>
+    <div class="sugg">
+      <div class="srow"><div class="sact">Enforce DMARC → p=reject</div><div class="sctx">The top-quartile move. Among platform peers who closed this, observed email score rose a median <b>+18 pts</b> and spoofing exposure went to zero. <span class="ill">peer data · illustrative</span></div></div>
+      <div class="srow"><div class="sact">Name an accountable security lead</div><div class="sctx">Orgs your size that assigned a CISO/owner cleared <b>3× more</b> risk-register items in the following quarter. <span class="ill">peer data · illustrative</span></div></div>
+      <div class="srow"><div class="sact">Publish MTA-STS + TLS-RPT</div><div class="sctx">Low-effort, high-signal for auditors; <b>most peers in your sector</b> already have it, so its absence stands out on a board report. <span class="ill">peer data · illustrative</span></div></div>
+    </div>
+    <div class="callout">
+      <h3 style="color:var(--accent-ink)">More customers → better benchmark, better suggestions</h3>
+      <p>Today the benchmark above is drawn from <b>observed signals</b>. Blend in your customers' real self-assessments and treatment outcomes and it becomes a peer benchmark — and a recommendation engine — <b>no one else can build</b>. It compounds with every org you onboard. That's your moat; the passive engine is just the sensor that feeds it.</p>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">The third motion</p>
+    <h2>These scores are also an outbound list</h2>
+    <p class="lede">The evidence layer and the front door pull prospects <em>in</em>. The same observed scores let you reach <em>out</em> — proactively.</p>
+    <div class="callout" style="border-left-color:var(--hot);background:var(--hot-soft)">
+      <h3 style="color:var(--hot)">Outbound from observed weakness</h3>
+      <p>The bottom-quartile orgs above aren't just a benchmark — they're <b>prospects</b>. Reach out with their own observed score as the opener: <em>"your external posture ranks bottom of your peer group — see the full picture free."</em> Three motions off one engine: <b>outbound</b> (proactive), <b>front door</b> (inbound sign-up), and the <b>in-product evidence layer</b> (retention &amp; depth).</p>
+    </div>
   </section>
 
   <section>
