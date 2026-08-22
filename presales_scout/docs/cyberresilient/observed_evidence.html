@@ -1,0 +1,234 @@
+<title>Observed Evidence</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --bg:#eef0f6; --surface:#fff; --surface-2:#f5f6fc; --border:#dcdcee; --border-strong:#c6c7e0;
+    --ink:#161726; --ink-2:#575a72; --ink-3:#8b8da8;
+    --accent:#4b56b3; --accent-soft:#e7e8f8; --accent-ink:#3a3f96;
+    --hot:#c0490f; --hot-soft:#fbe7dc; --warn:#9a6b12; --warn-soft:#f7ecd4;
+    --good:#12795a; --good-soft:#dcefe7; --crit:#b02a2f; --crit-soft:#f8e0e1;
+    --shadow:0 1px 2px rgba(22,23,38,.06),0 10px 30px rgba(22,23,38,.08);
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --sans:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --bg:#0b0c14; --surface:#15161f; --surface-2:#1c1e2b; --border:#2a2c3e; --border-strong:#3a3d55;
+    --ink:#e9eaf3; --ink-2:#9a9db6; --ink-3:#6a6d86;
+    --accent:#8b93e6; --accent-soft:#20214a; --accent-ink:#bcc1f2;
+    --hot:#f0854a; --hot-soft:#3721152e; --warn:#d6a63e; --warn-soft:#2f26112e;
+    --good:#46c199; --good-soft:#102c232e; --crit:#e57078; --crit-soft:#3316192e;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px rgba(0,0,0,.5);
+  }}
+  :root[data-theme="dark"]{
+    --bg:#0b0c14; --surface:#15161f; --surface-2:#1c1e2b; --border:#2a2c3e; --border-strong:#3a3d55;
+    --ink:#e9eaf3; --ink-2:#9a9db6; --ink-3:#6a6d86;
+    --accent:#8b93e6; --accent-soft:#20214a; --accent-ink:#bcc1f2;
+    --hot:#f0854a; --hot-soft:#3721152e; --warn:#d6a63e; --warn-soft:#2f26112e;
+    --good:#46c199; --good-soft:#102c232e; --crit:#e57078; --crit-soft:#3316192e;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px rgba(0,0,0,.5);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5;font-size:15px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:960px;margin:0 auto;padding:26px clamp(14px,3.5vw,32px) 64px}
+  a{color:var(--accent-ink)}
+
+  header{display:flex;align-items:center;gap:13px;padding-bottom:16px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand svg{width:30px;height:30px;display:block}
+  .brand .n{font-weight:700;font-size:16px;letter-spacing:-.01em}
+  .brand .n small{display:block;font-weight:500;font-size:12.5px;color:var(--ink-2)}
+  .tag{font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--good);background:var(--good-soft);padding:3px 8px;border-radius:5px;border:1px solid color-mix(in srgb,var(--good) 30%,transparent)}
+  .sp{flex:1}
+  .tbtn{font:inherit;font-size:13px;color:var(--ink-2);background:var(--surface);border:1px solid var(--border-strong);border-radius:8px;padding:6px 11px;cursor:pointer}
+  .tbtn:hover{color:var(--ink);border-color:var(--accent)} .tbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  .hero{margin:26px 0 18px}
+  .hero h1{font-size:clamp(24px,4.4vw,33px);line-height:1.12;letter-spacing:-.02em;margin:0 0 12px;text-wrap:balance;max-width:20ch}
+  .hero h1 em{font-style:normal;color:var(--accent-ink)}
+  .hero p{font-size:16px;color:var(--ink-2);max-width:64ch;margin:0}
+  .hero p b{color:var(--ink)}
+
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0 6px}
+  @media(max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}}
+  .stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px 15px;box-shadow:var(--shadow)}
+  .stat .k{font-size:25px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+  .stat .k.hot{color:var(--hot)} .stat .k.ac{color:var(--accent-ink)}
+  .stat .l{font-size:12px;color:var(--ink-2);margin-top:2px}
+
+  section{margin-top:32px}
+  .eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--accent-ink);margin:0 0 4px}
+  h2{font-size:20px;letter-spacing:-.01em;margin:0 0 5px;text-wrap:balance}
+  .lede{color:var(--ink-2);margin:0 0 14px;max-width:66ch;font-size:14.5px}
+
+  .tbl{width:100%;overflow-x:auto;border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow)}
+  table{border-collapse:collapse;width:100%;font-size:13px}
+  th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--border);white-space:nowrap}
+  thead th{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);font-weight:700;background:var(--surface-2)}
+  tbody tr:last-child td{border-bottom:none}
+  td.n{font-weight:600;white-space:normal}
+  .num{font-variant-numeric:tabular-nums;text-align:right;font-weight:700}
+  .chip{font-size:11px;font-weight:600;padding:2px 8px;border-radius:6px;white-space:nowrap;border:1px solid transparent}
+  .chip.op{color:var(--hot);background:var(--hot-soft);border-color:color-mix(in srgb,var(--hot) 26%,transparent)}
+  .chip.gd{color:var(--good);background:var(--good-soft);border-color:color-mix(in srgb,var(--good) 26%,transparent)}
+  .chip.wn{color:var(--warn);background:var(--warn-soft);border-color:color-mix(in srgb,var(--warn) 26%,transparent)}
+
+  .vs{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;margin-top:6px}
+  @media(max-width:600px){.vs{grid-template-columns:1fr}}
+  .vs .col{padding:16px 18px}
+  .vs .col.self{background:var(--surface-2);border-right:1px solid var(--border)}
+  @media(max-width:600px){.vs .col.self{border-right:none;border-bottom:1px solid var(--border)}}
+  .vs .h{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin:0 0 10px;display:flex;align-items:center;gap:8px}
+  .vs .self .h{color:var(--ink-3)} .vs .obs .h{color:var(--accent-ink)}
+  .vs .badge{font-size:9.5px;font-weight:700;padding:1px 6px;border-radius:4px;letter-spacing:.03em}
+  .vs .self .badge{background:var(--warn-soft);color:var(--warn);border:1px solid color-mix(in srgb,var(--warn) 26%,transparent)}
+  .vs .obs .badge{background:var(--good-soft);color:var(--good);border:1px solid color-mix(in srgb,var(--good) 26%,transparent)}
+  .vs .item{margin:9px 0;font-size:13.5px}
+  .vs .item .lbl{font-size:11px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.04em}
+  .vs .item .val{font-weight:650;margin-top:1px}
+  .vs .obs .val.bad{color:var(--hot)}
+  .vs code{font-family:var(--mono);font-size:12px;background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:1px 5px}
+
+  .bench{background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);padding:16px 18px}
+  .brow{display:grid;grid-template-columns:20px 150px 1fr 34px;gap:11px;align-items:center;margin:6px 0;font-size:12.5px}
+  @media(max-width:560px){.brow{grid-template-columns:18px 104px 1fr 30px;gap:8px;font-size:11.5px}}
+  .brow .rk{color:var(--ink-3);font-variant-numeric:tabular-nums;text-align:right}
+  .brow .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .brow .track{height:15px;background:var(--surface-2);border:1px solid var(--border);border-radius:5px;overflow:hidden}
+  .brow .fill{height:100%;border-radius:4px 0 0 4px}
+  .brow .val{font-variant-numeric:tabular-nums;font-weight:700;text-align:right}
+  .brow.me{background:var(--hot-soft);border-radius:8px;padding:5px 7px;margin:4px -7px;border:1px solid color-mix(in srgb,var(--hot) 30%,transparent)}
+  .brow.me .nm{font-weight:750;color:var(--hot)} .brow.me .val{color:var(--hot)}
+  .fgd{background:var(--good)} .fmid{background:color-mix(in srgb,var(--ink-3) 70%,transparent)} .fhot{background:var(--hot)}
+  .foot2{font-size:11.5px;color:var(--ink-3);margin-top:10px;line-height:1.5}
+
+  .maps{border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;background:var(--surface);margin-top:6px}
+  .maprow{display:grid;grid-template-columns:200px 1fr;gap:14px;align-items:center;padding:11px 16px;border-bottom:1px solid var(--border);font-size:13.5px}
+  .maprow:last-child{border-bottom:none}
+  @media(max-width:560px){.maprow{grid-template-columns:1fr;gap:2px}}
+  .maprow .mod{font-weight:650;color:var(--ink)}
+  .maprow .add{color:var(--ink-2)} .maprow .add b{color:var(--accent-ink)} .maprow .add code{font-family:var(--mono);font-size:12px;background:var(--surface-2);border:1px solid var(--border);border-radius:4px;padding:1px 5px}
+
+  footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--border);font-size:12.5px;color:var(--ink-2);display:flex;flex-direction:column;gap:7px}
+  footer .hd{color:var(--ink);font-weight:600}
+  footer code{font-family:var(--mono);font-size:11.5px;background:var(--surface-2);padding:1px 5px;border-radius:4px;border:1px solid var(--border)}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect x="3.2" y="3.2" width="25.6" height="25.6" rx="7" stroke="var(--accent)" stroke-width="1.7"/>
+        <polyline points="7,19 12,19 15,9.5 19,24 22,15 25,15" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="n">CyberResilient <span style="color:var(--ink-3);font-weight:500">×</span> UpliftIQ<small>Observed evidence · a worked example on real data</small></div>
+    </div>
+    <span class="tag">Real run · Aug 2026</span>
+    <span class="sp"></span>
+    <button class="tbtn" id="theme" type="button" aria-label="Toggle theme"><span id="ti">◐</span> Theme</button>
+  </header>
+
+  <div class="hero">
+    <h1>Ten real organisations. What a questionnaire never sees.</h1>
+    <p>This is the observed layer running on live data — 10 Swedish energy &amp; transport operators, scored from public signals alone, no input from them. It's the same evidence that would <b>pre-fill and fact-check</b> a self-assessment inside your platform.</p>
+    <div class="stats">
+      <div class="stat"><div class="k hot">8/10</div><div class="l">weak email security</div></div>
+      <div class="stat"><div class="k hot">8/10</div><div class="l">DMARC not enforced</div></div>
+      <div class="stat"><div class="k">10/10</div><div class="l">no clearly-visible CISO</div></div>
+      <div class="stat"><div class="k ac">39</div><div class="l">median observed score</div></div>
+    </div>
+  </div>
+
+  <section>
+    <p class="eyebrow">The observed signals · real</p>
+    <h2>What the passive engine measured</h2>
+    <p class="lede">Every value below is observed from public records — DNS, mail policy, web, certificate logs. No questionnaire, no access to their systems.</p>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Organisation</th><th>Sector</th><th>Email</th><th>DMARC</th><th>Security leader</th><th class="num">Observed</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">The gap = the value</p>
+    <h2>Self-reported vs. observed</h2>
+    <p class="lede">A self-assessment records what an organisation believes. Here that belief sits next to what's externally verifiable — for the firm that scored lowest.</p>
+    <div class="vs">
+      <div class="col self">
+        <p class="h">Self-reported <span class="badge">illustrative</span></p>
+        <div class="item"><div class="lbl">Email &amp; anti-spoofing</div><div class="val">“Adequate” — 3 / 5</div></div>
+        <div class="item"><div class="lbl">Security leadership</div><div class="val">“Covered”</div></div>
+        <div class="item"><div class="lbl">Overall maturity</div><div class="val">“On track”</div></div>
+      </div>
+      <div class="col obs">
+        <p class="h">Observed — Skellefteå Kraft AB <span class="badge">real · verified</span></p>
+        <div class="item"><div class="lbl">Email &amp; anti-spoofing</div><div class="val bad">Weak — DMARC <code>p=none</code>, domain spoofable</div></div>
+        <div class="item"><div class="lbl">Security leadership</div><div class="val bad">No security leader visible externally</div></div>
+        <div class="item"><div class="lbl">Observed score</div><div class="val bad">2 / 100 — bottom of peer group</div></div>
+      </div>
+    </div>
+    <p class="foot2" style="font-size:11.5px;color:var(--ink-3);margin-top:8px">Self-reported figures are illustrative — they stand in for a typical questionnaire answer to show the mechanism. The observed column is real, from the Aug 2026 passive run; Skellefteå Kraft’s DMARC <code style="font-family:var(--mono)">p=none</code> was verified live. An evidence-checked assessment flags this contradiction automatically.</p>
+  </section>
+
+  <section>
+    <p class="eyebrow">Trend &amp; benchmarking module · real scores</p>
+    <h2>Observed peer benchmark</h2>
+    <p class="lede">Score = 100 minus a severity-weighted penalty per observable weakness — mechanically computed, no tuning knobs. The percentile view a customer sees for themselves against peers.</p>
+    <div class="bench" id="bench"></div>
+  </section>
+
+  <section>
+    <p class="eyebrow">It flows into the modules you ship</p>
+    <h2>From observed signal to platform record</h2>
+    <div class="maps">
+      <div class="maprow"><span class="mod">Maturity assessment</span><span class="add">The <code>p=none</code> finding <b>fact-checks</b> the "email security" self-rating for 8 of these 10.</span></div>
+      <div class="maprow"><span class="mod">Risk register</span><span class="add">Each observed gap becomes a <b>pre-filled risk entry</b> — e.g. "Spoofable domain (DMARC p=none)" → NIS2 21(2)(g) / ISO A.5.14 / NIST PR.DS, treatment "enforce p=reject".</span></div>
+      <div class="maprow"><span class="mod">Business continuity</span><span class="add">Observed exposure feeds the <b>recovery scenarios</b> — what's reachable from outside informs RTO/RPO planning.</span></div>
+      <div class="maprow"><span class="mod">Audit-ready reporting</span><span class="add">The report carries <b>"measured, not self-declared"</b> evidence — what a board and the regulator actually want.</span></div>
+      <div class="maprow"><span class="mod">Trend tracking</span><span class="add">Passive re-scoring runs <b>continuously</b> — the benchmark above updates between assessments, catching drift automatically.</span></div>
+    </div>
+  </section>
+
+  <footer>
+    <span class="hd">Real data, honestly labelled.</span>
+    <span>Observed signals and scores are from a real 12 Aug 2026 passive run over 10 named Swedish operators — public DNS, mail policy, web headers, certificate logs, procurement. No scanning, no access to their systems, nothing behind a login. Skellefteå Kraft’s <code>p=none</code> was re-verified live.</span>
+    <span>The one illustrative element is the self-reported column, which stands in for a questionnaire answer to show the gap; it is not a real assessment by that organisation. Companion to <b>The Objective Layer</b>.</span>
+  </footer>
+</div>
+
+<script>
+  const DMARC={none:['none (p=none)','op'],missing:['missing','op'],quarantine:['quarantine','gd']};
+  const CISO={none_found:['none visible','op'],uncertain:['unclear','wn']};
+  const ROWS=[
+    ["Skellefteå Kraft AB","Energy","weak","none","none_found",2,true],
+    ["Green Cargo AB","Transport","strong","quarantine","none_found",78,false],
+    ["Mälarenergi AB","Energy","weak","none","none_found",58,false],
+    ["Stena Line Scandinavia AB","Transport","weak","missing","none_found",46,false],
+    ["Göteborg Energi AB","Energy","weak","none","none_found",42,false],
+    ["Öresundskraft AB","Energy","weak","none","none_found",42,false],
+    ["Nobina Sverige AB","Transport","strong","quarantine","uncertain",36,false],
+    ["Transdev Sverige AB","Transport","weak","missing","uncertain",36,false],
+    ["Tekniska verken i Linköping AB","Energy","weak","none","uncertain",26,false],
+    ["Jämtkraft AB","Energy","weak","none","uncertain",24,false],
+  ];
+  document.getElementById("rows").innerHTML=ROWS.map(r=>{
+    const em=r[2]==="weak"?'<span class="chip op">weak</span>':'<span class="chip gd">strong</span>';
+    const [dt,dc]=DMARC[r[3]]; const [ct,cc]=CISO[r[4]];
+    return `<tr><td class="n">${r[0]}</td><td>${r[1]}</td><td>${em}</td><td><span class="chip ${dc}">${dt}</span></td><td><span class="chip ${cc}">${ct}</span></td><td class="num">${r[5]}</td></tr>`;
+  }).join("");
+
+  const BENCH=[["Green Cargo AB",78,"fgd"],["Mälarenergi AB",58,"fgd"],["Stena Line Scandinavia",46,"fgd"],
+    ["Göteborg Energi AB",42,"fmid"],["Öresundskraft AB",42,"fmid"],["Nobina Sverige AB",36,"fmid"],
+    ["Transdev Sverige",36,"fmid"],["Tekniska verken",26,"fhot"],["Jämtkraft AB",24,"fhot"],["Skellefteå Kraft AB",2,"fhot"]];
+  document.getElementById("bench").innerHTML=BENCH.map((r,i)=>{
+    const me=i===BENCH.length-1;
+    return `<div class="brow${me?" me":""}"><span class="rk">${i+1}</span><span class="nm">${r[0]}${me?" ◄":""}</span><span class="track"><span class="fill ${r[2]}" style="width:${r[1]}%"></span></span><span class="val">${r[1]}</span></div>`;
+  }).join("")+`<p class="foot2">10 Swedish energy &amp; transport operators · median 39 · Skellefteå Kraft 2/100, bottom of group (DMARC p=none, verified live). Computed by the same passive scorer used across the reference build.</p>`;
+
+  const root=document.documentElement,tb=document.getElementById("theme"),ti=document.getElementById("ti");
+  let m="system";
+  tb.addEventListener("click",()=>{m=m==="system"?"light":m==="light"?"dark":"system";
+    if(m==="system")root.removeAttribute("data-theme");else root.setAttribute("data-theme",m);
+    ti.textContent=m==="light"?"☀":m==="dark"?"☾":"◐";});
+</script>
