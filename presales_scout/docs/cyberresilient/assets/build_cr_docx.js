@@ -83,6 +83,12 @@ const cases = [
   ['7 · Sector / regulator intelligence (new line)',
    'Aggregate anonymized posture across a sector into intelligence sold up — to MSB, a regulator, a ministry. Your government roots make you the natural provider.',
    'e.g. 8 of 10 Swedish energy/transport operators run unenforced DMARC — a sector-level finding.'],
+  ['8 · Assurance / attestation (new line · output of Case 2)',
+   'A customer at a maturity level whose observed posture checks out earns a verifiable “resilience verified” attestation — evidence-backed, not self-declared. Same observed-vs-self-report check as Case 2, packaged as a badge they show third parties: partners, insurers, procurement.',
+   'A monetizable output and a wedge into cyber-insurance underwriting — insurers want exactly this objective signal.'],
+  ['9 · Internal GTM intelligence (different bucket · internal)',
+   'Not a customer feature — point the same engine at your own funnel. UpliftIQ scores which trials convert, which customers are expansion-ready, which are churn risks: decision optimization applied to your business.',
+   'Cases 1–8 are what you sell; this is how you run. Same engine, pointed inward.'],
 ];
 for (const [t, hw, ex] of cases) {
   k.push(H2(t));
