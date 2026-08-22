@@ -42,6 +42,38 @@ def controls(W):
     return [np.array([s["inc"] for s in W]) / 1000, np.log(np.array([s["pop"] for s in W]))]
 
 
+def section_not_a_zone_map(S):
+    """Backs report section 1: the structure cannot be a contiguous zone map."""
+    print("=== Is this a contiguous zone map? (no testimony required) ===")
+    byc = defaultdict(list)
+    for s in S:
+        byc[(s["st"], s["cty"])].append(s["p"])
+    multi = {k: v for k, v in byc.items() if len(v) > 1}
+    print(f"  multi-store counties: {len(multi)}")
+    for thr in (0.25, 0.50, 1.00):
+        n = sum(1 for v in multi.values() if max(v) - min(v) > thr)
+        print(f"    internal spread > ${thr:.2f}: {n:>3} ({100 * n / len(multi):.0f}%)")
+    worst = sorted(multi.items(), key=lambda kv: -(max(kv[1]) - min(kv[1])))[:5]
+    for (st, c), v in worst:
+        print(f"    {st} {c:<16} n={len(v):>2}  ${min(v):.2f}..${max(v):.2f}  spread ${max(v) - min(v):.2f}")
+    by4 = defaultdict(list)
+    for s in S:
+        by4[(s["st"], s["zip"][:4])].append(s["p"])
+    m4 = [v for v in by4.values() if len(v) > 1]
+    d = [max(v) - min(v) for v in m4]
+    print(f"  ZIP4-adjacent groups: {len(m4)}  identical {100 * np.mean([x < 0.005 for x in d]):.0f}%"
+          f"  spread > $0.50 {100 * np.mean([x > 0.5 for x in d]):.0f}%  max ${max(d):.2f}")
+    print("\n  do the common price points recur across non-adjacent states?")
+    byp = defaultdict(set)
+    for s in S:
+        byp[s["p"]].add(s["st"])
+    for p_, n in Counter(s["p"] for s in S).most_common(6):
+        sts = sorted(byp[p_])
+        print(f"    ${p_:.2f}: {n:>3} stores across {len(sts):>2} states  {','.join(sts)}")
+    print("  -> a national ladder of price points assigned per store, not a contiguous zone map.")
+    print("     ($3.64 across FL/TN/VA is the exception: Virginia's regulated price.)")
+
+
 def section_split(S):
     print("=== Zone (central) vs override (local discretion) ===")
     for zone, lbl in ((lambda s: s["st"], "state"), (lambda s: s["z2"], "ZIP2")):
@@ -155,6 +187,7 @@ def section_louisiana(S):
 if __name__ == "__main__":
     S = load()
     print(f"usable stores: {len(S)}\n")
+    section_not_a_zone_map(S)
     section_split(S)
     section_regions(S)
     section_by_state(S)

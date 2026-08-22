@@ -1,7 +1,13 @@
 # Why South Carolina still has large within-state price variation
 
 **Date:** 2026-08-22 · Branch `claude/walmart-milk-pricing-sc-m7zc99`
-**Question:** if ~57 national zones plus overrides is the architecture, why is SC's override sd $0.539 when Louisiana's is $0.195?
+**Question:** why is SC's within-state price sd $0.539 when Louisiana's is $0.195?
+
+> **Sourcing note.** This started from the client's recollection of a ~57-zone architecture with
+> store-level overrides. They have since qualified that as 12-year-old memory that does not cover
+> private-brand pricing or current practice — and every price here is a private-label gallon in
+> 2026. Nothing below rests on it: the finding is that SC's spread is a metro discount, which is
+> measured directly. Where a mechanism is hypothesised it is labelled as such.
 
 **Bottom line:** SC's spread is a **metro discount**. Urban SC stores average $2.82, rural
 $3.27 — a **−$0.445** gap that accounts for essentially the whole range. It is not a data
@@ -47,7 +53,7 @@ not what is moving retail.
 
 ## 3. It is not a zone boundary
 
-If SC straddled two of the ~57 zones, the low band would be geographically clean. It is not —
+If SC straddled two coarse pricing zones, the low band would be geographically clean. It is not —
 only 2 of SC's 10 ZIP3 regions sit entirely on one side of $3.00:
 
 | ZIP3 | Region | Stores below $3.00 |
@@ -63,8 +69,10 @@ only 2 of SC's 10 ZIP3 regions sit entirely on one side of $3.00:
 | 295 | Florence | 8 / 15 |
 | 297 | Spartanburg | 2 / 9 |
 
-Mixed inside almost every region. That is the signature of the **store-level override layer**,
-not of a zone map. SC is not unusual in this: NC has 37% of its multi-store ZIP3 regions on one
+Mixed inside almost every region. That is the signature of **store-level price assignment**, not
+of a zone map — consistent with the national evidence in `zone_vs_override.md` §1 that 9% of
+multi-store counties carry an internal spread over $1.00 and that the common price points recur
+across non-adjacent states. SC is not unusual in this: NC has 37% of its multi-store ZIP3 regions on one
 side of the line, OH 50%, IL 44% (TX and AZ are more clustered at 73%).
 
 ## 4. It is the metro discount
@@ -113,9 +121,9 @@ Louisiana and California **do not discount their metros** — the gap is flat or
 positive — and they are the two tightest states in the set. SC, TN, NC, AL, GA and TX all run a
 $0.39–$0.79 metro discount and all have dispersion to match.
 
-**The likely mechanism is competitive adjustment, but this data does not establish it.** The
-discretionary competitor adjustments the client describes would produce exactly this pattern —
-metros have hard discounters, rural areas do not. Across the 12 states with usable Aldi
+**The likely mechanism is competitive price-matching, but this data does not establish it** —
+and note it does not tell us whether any such matching is a local decision or a central rule.
+Either would produce this pattern, since metros have hard discounters and rural areas do not. Across the 12 states with usable Aldi
 coverage, price sd correlates +0.58 with Aldi coverage and the urban–rural gap correlates
 −0.54. But n=12, and California breaks it badly (63% Aldi coverage, sd $0.088). My Aldi measure
 is Instacart delivery coverage, which reflects a delivery radius rather than store proximity,
@@ -142,7 +150,7 @@ therefore disproportionately excluded from the metro discount.**
 
 That is worth thinking about carefully rather than discarding, because it points somewhere the
 memo has not gone. The memo restricts to rural ZIPs — which conditions away the single largest
-source of racial price disparity in the state. A theory that Walmart's discretionary
+source of racial price disparity in the state. A theory that Walmart's
 competitive discounting systematically bypasses Black communities because of *where* those
 communities are is a real disparate-impact structure, it is a $0.28–$0.45 effect rather than
 the $0.03 the rural-only design recovers, and it is measured on the layer we now know exists.

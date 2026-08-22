@@ -2,29 +2,59 @@
 
 **Date:** 2026-08-22 · Branch `claude/walmart-milk-pricing-sc-m7zc99`
 
-**Source for the architecture:** the client, who designed Walmart's pricing zones. As of
-**2014**: roughly **57 zones nationally**, with **store-level overrides** and **discretionary
-competitor adjustments** on top. Treated here as a design fact to test against, not as a
-citable assertion — see §7.
+> **Sourcing note, added after the client qualified their recollection.** The prompt for this
+> analysis was the client's memory of designing Walmart's price zones — roughly 57 zones
+> nationally, with store-level overrides and discretionary competitor adjustments. They have
+> since said this is **12-year-old recollection (they left in 2014), does not cover how
+> Walmart prices its private brand, and does not cover how Walmart prices today.** Since every
+> price analysed here is a private-label gallon and the data is 2026, that recollection is
+> **outside its own stated scope for this product and this period.** It is treated below as a
+> hypothesis that motivated the tests, not as evidence. Every number in §2–§6 is computed from
+> the price file alone; §7 marks which *interpretations* still depend on the hypothesis and
+> which do not.
 
-**Bottom line:** The architecture splits Walmart's shelf price into a centrally-set component
-and a locally-discretionary one, roughly 59/41. The **central component shows no racial
-gradient anywhere** (t −0.75). The **local component is significantly negative nationally**
-(t −7.02) — discretion lowers prices in Blacker areas on average. Finding B lives entirely in
-the local component, which is the half that a Rule 23 commonality analysis treats least
-favourably. **Louisiana is the one real survivor**, and reframed correctly it is a
+**Bottom line:** The price splits into a coarse geographic component and a fine store-level
+one, roughly 59/41. The **coarse component shows no racial gradient anywhere** (t −0.75). The
+**fine component is significantly negative nationally** (t −7.02) — store-level price
+assignment runs *lower* in Blacker areas on average. Finding B lives entirely in the fine
+component. **Louisiana is the one real survivor**, and reframed correctly it is a
 *block-assignment* finding, which is the stronger theory anyway.
+
+**What the data cannot tell us**, and what the retracted recollection would have: whether the
+fine component is *local human discretion* or a *centrally-run algorithm assigning each store a
+price point*. Those two have opposite consequences for class treatment (§5). Nothing in this
+file distinguishes them.
 
 ---
 
-## 1. Why 57 zones is the number that matters
+## 1. Whatever the price is, it is not a contiguous zone map
 
-4,149 stores over ~57 zones is ~73 stores per zone. That is far coarser than anything visible
-in the price file, which shows 184 distinct national prices and 52 distinct prices in Texas
-alone. The reconciliation is the architecture: **observed price = zone base + store override +
-competitor adjustment.** The fine price grid documented in
-`walmart_pricing_geography.md` is not a zone map. It is a zone map plus two layers of local
-discretion.
+This much is established from the file alone, with no reliance on anyone's recollection.
+
+**Counties are cut apart.** Of 762 multi-store counties, **30% have an internal price spread
+over $0.25, 21% over $0.50, and 9% over $1.00.** Maricopa County AZ runs 51 stores from $2.26
+to $4.16. Craighead County AR: $3.06 to $5.24. Shelby County TN: $3.02 to $4.78. Stores sharing
+the same **ZIP4** — effectively neighbours — differ by more than $0.50 in **17%** of cases, with
+a maximum of $1.90. No contiguous zone map produces that.
+
+**The price points are national, not regional.** The most common values recur across states
+that share no border:
+
+| Price | Stores | States |
+|---|---|---|
+| $3.12 | 196 | 17 (AL, AZ, FL, IA, MD, MI, NY, OH, TX, WV, …) |
+| $3.82 | 190 | 17 (CA, CO, KS, MN, NH, NV, SC, VT, WA, …) |
+| $3.26 | 102 | 14 (FL, IA, IN, MD, MN, NC, NE, RI, SC, …) |
+| $3.32 | 83 | 18 (CT, DE, MN, NC, OR, SC, TN, TX, …) |
+| **$3.64** | **124** | **3 (FL, TN, VA)** — Virginia's regulated price, the exception |
+
+So the operative structure looks like a **national ladder of ~180 price points, with each store
+assigned a rung.** Geography predicts the rung strongly but not deterministically. The regulated
+states (VA, PA, ME, ND, MT, NV) are the ones that behave like true contiguous zones.
+
+That is a different and better-supported model than "zone base plus override," and it does not
+require the 57-zone recollection to hold. What follows uses "coarse" and "fine" rather than
+"zone" and "override" for exactly that reason.
 
 Every prior analysis in this engagement — the memo's matched-pair design, my ZIP3-region
 re-test, the county fixed effects — was implicitly testing a single blended number without
@@ -47,7 +77,7 @@ and both proxies give the same answer.
 | ZIP2 | 98 | 61.2% | 38.8% | $0.413 |
 
 So roughly **three-fifths of the variation in what a Walmart shopper pays for a gallon of milk
-is centrally set, and two-fifths is local discretion.** Mean absolute override: **$0.32**.
+is explained by coarse geography, and two-fifths is store-level.** Mean absolute store-level deviation: **$0.32**.
 That is a large number — bigger than any racial gap claimed anywhere in this engagement.
 
 ## 3. The centrally-set component has no racial gradient
@@ -62,7 +92,7 @@ Regressing the **zone's** mean price on the **zone's** mean %Black:
 Null, and pointed the wrong way. **The half of the price Walmart sets centrally does not track
 race.**
 
-## 4. The discretionary component is nationally *negative*
+## 4. The store-level component is nationally *negative*
 
 Store-level deviation from the zone base, on store %Black, controlling income and log(pop):
 
@@ -71,9 +101,9 @@ Store-level deviation from the zone base, on store %Black, controlling income an
 | State FE | **−0.00352 (t −7.02)** |
 | ZIP2 FE | −0.00349 (t −6.72) |
 
-Nationally, **local discretion pushes prices *down* in Blacker areas** — consistent with
-competitor adjustments being used where hard discounters are present. That is the opposite of
-the memo's theory, at t = −7.
+Nationally, **store-level price assignment runs *lower* in Blacker areas** — consistent with
+price-matching where hard discounters are present, though this data cannot confirm the
+mechanism. That is the opposite of the memo's theory, at t = −7.
 
 Regionally it splits:
 
@@ -91,18 +121,32 @@ what it is.
 
 ## 5. The problem this creates for Finding B
 
-Finding B is a within-state comparison of rural ZIPs. With ~57 national zones, most states are
-one zone or a small number. **A within-state test is therefore a test of the override layer,
-almost by construction.** Finding B is not a claim about Walmart's pricing policy. It is a
-claim about **local discretionary departures from that policy**.
+Finding B is a within-state comparison of rural ZIPs, and the coarse component is roughly
+state-sized. **A within-state test is therefore a test of the fine, store-level component,
+almost by construction.** Finding B is not a claim about Walmart's coarse geographic pricing.
+It is a claim about **store-by-store price assignment**.
 
-That distinction is the whole ballgame for class treatment, and counsel should look at it
-early: in *Wal-Mart Stores, Inc. v. Dukes*, 564 U.S. 338 (2011), the Court held that a policy
-of **allowing discretion** to local supervisors is "just the opposite of a uniform employment
-practice" and cannot by itself supply Rule 23(a)(2) commonality. Dukes is a Title VII case and
-a retail-pricing theory would run under different substantive law, but the commonality
-reasoning is not limited to employment, and it is Walmart's own precedent. **A pricing theory
-built on the override layer walks into it; a theory built on the zone layer does not.**
+Whether that helps or hurts depends entirely on a fact we do not have:
+
+- **If store-level assignment is local human discretion** — a manager or market director
+  choosing to match a competitor — then counsel should look hard at *Wal-Mart Stores, Inc. v.
+  Dukes*, 564 U.S. 338 (2011), where the Court held that a policy of **allowing discretion** to
+  local supervisors is "just the opposite of a uniform employment practice" and cannot by itself
+  supply Rule 23(a)(2) commonality. Dukes is a Title VII case and a retail-pricing claim runs
+  under different substantive law, but the commonality reasoning is not employment-specific,
+  and it is Walmart's own precedent.
+- **If store-level assignment is a centralised algorithm** choosing each store's rung from the
+  national ladder — which is what modern retail price optimisation looks like, and what the
+  national recurrence of price points in §1 is consistent with — then there is **no Dukes
+  problem at all.** A single model applied uniformly to every store is close to an ideal
+  common question: one practice, one set of inputs, one output rule.
+
+**This data cannot distinguish the two**, and the client's recollection, now qualified as
+predating the relevant period and not covering private brand, cannot either. Establishing
+which one governs Great Value milk today is therefore the **single highest-value item in
+discovery** — it determines whether the retail theory is certifiable, not merely whether it is
+true. An earlier draft of this report asserted the discretion reading; that was resting on the
+recollection and is withdrawn.
 
 Effect sizes make the same point from the other direction. Against a national override sd of
 $0.425:
@@ -166,21 +210,35 @@ statistical artifact.
 
 ## 7. What to do
 
-1. **Re-plead the retail theory on zone/block assignment.** Not "Walmart charges more in Black
-   areas" (an override claim, nationally false, and squarely in Dukes territory) but "Walmart's
-   centrally-administered price-zone assignment places Black communities in higher-price blocks"
-   — a single, uniform, centrally-made decision. Louisiana is the exhibit.
-2. **Discovery is now precise.** The zone assignment table for every store; zone boundary
-   definitions and revision history; the criteria and any model used to assign stores; and
-   separately, the **store-override and competitor-adjustment logs**, which are what will show
-   whether the Deep South's missing discount is a pattern or an accident.
-3. **Do not put the client's own design knowledge into the memo.** It is the reason we know
-   where to look, and it should stay that. Everything in this report is derived from the public
-   price file and stands on its own; the architecture only told us how to cut it. The
-   confidentiality and side-switching questions flagged earlier apply and should go to counsel
-   before any of this is characterised as inside knowledge.
-4. **Finding A is untouched** and is now clearly the stronger of the two theories: a published
-   federal schedule, centrally set, with no discretionary layer to argue about.
+**Holds regardless of the recollection** (computed from the price file):
+
+1. **The 59/41 coarse-vs-fine split**, the null on the coarse component (t −0.75), and the
+   nationally *negative* fine component (t −7.02).
+2. **"Walmart charges more in Black areas" is false nationally** and should not be pleaded.
+3. **Louisiana**, and its restatement as block assignment: the two-block structure, the $0.398
+   gap, the +14.9pp assignment effect, and every stress test.
+4. **The price structure is not a contiguous zone map** (§1).
+5. **Finding A is untouched** and is now clearly the stronger of the two theories: a published
+   federal schedule with no store-level layer to argue about.
+
+**Depends on facts we do not have:**
+
+6. **Whether the fine component is discretion or an algorithm** (§5) — and therefore whether
+   the retail theory is certifiable. Get this first.
+7. **Re-plead the retail theory on price-point assignment**, not on "Walmart charges Black
+   shoppers more." Louisiana is the exhibit either way; the *characterisation* of the practice
+   (a centrally-administered assignment rule vs. delegated local discretion) waits on item 6.
+8. **Discovery, in priority order:** how the shelf price for Great Value milk is determined
+   today, and by whom or what; the price-point assignment for every store with its inputs; any
+   pricing model or optimisation system and its feature set; the price-change and
+   competitor-match logs; and the history of all of it back through the class period.
+
+**On the client's own knowledge.** It prompted these tests and should stay in that role. The
+qualification helps here rather than hurting: 12-year-old general knowledge that does not cover
+the product at issue or the current period sits much closer to the "general skill and knowledge"
+side of the expert side-switching line than to specific confidential information. That is
+counsel's call, but the concern is smaller than it looked. Nothing in this report cites it, and
+nothing in it depends on it.
 
 ## Reproduction
 
