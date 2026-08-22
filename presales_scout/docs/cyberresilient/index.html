@@ -1,0 +1,172 @@
+<title>The CyberResilient Set</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --bg:#eef0f6; --surface:#fff; --surface-2:#f5f6fc; --border:#dcdcee; --border-strong:#c6c7e0;
+    --ink:#161726; --ink-2:#575a72; --ink-3:#8b8da8;
+    --accent:#4b56b3; --accent-soft:#e7e8f8; --accent-ink:#3a3f96;
+    --hot:#c0490f; --hot-soft:#fbe7dc; --warn:#9a6b12; --warn-soft:#f7ecd4;
+    --good:#12795a; --good-soft:#dcefe7; --crit:#b02a2f; --crit-soft:#f8e0e1;
+    --shadow:0 1px 2px rgba(22,23,38,.06),0 10px 30px rgba(22,23,38,.08);
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --sans:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --bg:#0b0c14; --surface:#15161f; --surface-2:#1c1e2b; --border:#2a2c3e; --border-strong:#3a3d55;
+    --ink:#e9eaf3; --ink-2:#9a9db6; --ink-3:#6a6d86;
+    --accent:#8b93e6; --accent-soft:#20214a; --accent-ink:#bcc1f2;
+    --hot:#f0854a; --hot-soft:#3721152e; --warn:#d6a63e; --warn-soft:#2f26112e;
+    --good:#46c199; --good-soft:#102c232e; --crit:#e57078; --crit-soft:#3316192e;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px rgba(0,0,0,.5);
+  }}
+  :root[data-theme="dark"]{
+    --bg:#0b0c14; --surface:#15161f; --surface-2:#1c1e2b; --border:#2a2c3e; --border-strong:#3a3d55;
+    --ink:#e9eaf3; --ink-2:#9a9db6; --ink-3:#6a6d86;
+    --accent:#8b93e6; --accent-soft:#20214a; --accent-ink:#bcc1f2;
+    --hot:#f0854a; --hot-soft:#3721152e; --warn:#d6a63e; --warn-soft:#2f26112e;
+    --good:#46c199; --good-soft:#102c232e; --crit:#e57078; --crit-soft:#3316192e;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 34px rgba(0,0,0,.5);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5;font-size:15px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:900px;margin:0 auto;padding:26px clamp(14px,3.5vw,32px) 64px}
+  a{color:inherit;text-decoration:none}
+  header{display:flex;align-items:center;gap:13px;padding-bottom:16px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand svg{width:30px;height:30px;display:block}
+  .brand .n{font-weight:700;font-size:16px;letter-spacing:-.01em}
+  .brand .n small{display:block;font-weight:500;font-size:12.5px;color:var(--ink-2)}
+  .sp{flex:1}
+  .tbtn{font:inherit;font-size:13px;color:var(--ink-2);background:var(--surface);border:1px solid var(--border-strong);border-radius:8px;padding:6px 11px;cursor:pointer}
+  .tbtn:hover{color:var(--ink);border-color:var(--accent)} .tbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  .hero{margin:24px 0 6px}
+  .hero h1{font-size:clamp(24px,4.4vw,33px);line-height:1.12;letter-spacing:-.02em;margin:0 0 10px;text-wrap:balance;max-width:21ch}
+  .hero h1 em{font-style:normal;color:var(--accent-ink)}
+  .hero p{font-size:16px;color:var(--ink-2);max-width:64ch;margin:0}
+  .hero p b{color:var(--ink)}
+
+  .spine{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+  .cap{font-size:12px;background:var(--surface);border:1px solid var(--border-strong);border-radius:20px;padding:5px 12px;display:inline-flex;gap:7px;align-items:center}
+  .cap.moat{border-color:color-mix(in srgb,var(--accent) 45%,transparent);color:var(--accent-ink);background:var(--accent-soft)}
+  .cap b{font-weight:700}
+
+  section{margin-top:28px}
+  .eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--accent-ink);margin:0 0 3px}
+  h2{font-size:19px;letter-spacing:-.01em;margin:0 0 3px}
+  .lede{color:var(--ink-2);margin:0 0 14px;font-size:14px;max-width:60ch}
+
+  .cards{display:flex;flex-direction:column;gap:11px}
+  .card{display:grid;grid-template-columns:40px 1fr auto;gap:15px;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);padding:15px 17px;transition:border-color .12s,transform .12s}
+  .card:hover{border-color:var(--accent);transform:translateY(-1px)}
+  .card:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .ic{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px;background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 22%,transparent)}
+  .ic.g{background:var(--surface-2);border-color:var(--border-strong)}
+  .body .t{font-weight:680;font-size:15.5px;letter-spacing:-.01em;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .role{font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 7px;border-radius:5px;border:1px solid transparent;color:var(--accent-ink);background:var(--accent-soft);border-color:color-mix(in srgb,var(--accent) 26%,transparent)}
+  .body .d{font-size:13px;color:var(--ink-2);margin-top:3px}
+  .body .kind{font-size:11.5px;color:var(--ink-3);margin-top:4px;font-family:var(--mono)}
+  .open{font-size:13px;color:var(--accent-ink);font-weight:600;white-space:nowrap;display:flex;align-items:center;gap:4px}
+  .open .ar{font-size:15px}
+  @media(max-width:560px){.card{grid-template-columns:34px 1fr}.open{grid-column:2;justify-self:start;margin-top:2px}.ic{width:34px;height:34px}}
+
+  .sov{margin-top:20px;background:color-mix(in srgb,var(--accent) 7%,transparent);border:1px solid color-mix(in srgb,var(--accent) 26%,transparent);border-radius:13px;padding:15px 18px;display:flex;gap:13px;align-items:flex-start}
+  .sov .lk{font-size:20px;line-height:1;flex:none}
+  .sov p{margin:0;font-size:14px} .sov b{color:var(--accent-ink)}
+
+  .flow{margin-top:18px;background:var(--surface);border:1px solid var(--border);border-radius:13px;box-shadow:var(--shadow);padding:14px 17px}
+  .flow p{margin:5px 0;font-size:13.5px;color:var(--ink)}
+  .flow .lbl{font-weight:700;color:var(--accent-ink);font-size:11px;text-transform:uppercase;letter-spacing:.05em}
+  .flow .seq{font-family:var(--mono);font-size:12.5px;color:var(--ink-2)}
+
+  footer{margin-top:30px;padding-top:18px;border-top:1px solid var(--border);font-size:12.5px;color:var(--ink-2);display:flex;flex-direction:column;gap:7px}
+  footer .hd{color:var(--ink);font-weight:600}
+  footer code{font-family:var(--mono);font-size:11.5px;background:var(--surface-2);padding:1px 5px;border-radius:4px;border:1px solid var(--border)}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect x="3.2" y="3.2" width="25.6" height="25.6" rx="7" stroke="var(--accent)" stroke-width="1.7"/>
+        <polyline points="7,19 12,19 15,9.5 19,24 22,15 25,15" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="n">CyberResilient <span style="color:var(--ink-3);font-weight:500">×</span> UpliftIQ<small>The set · three pieces, one place</small></div>
+    </div>
+    <span class="sp"></span>
+    <button class="tbtn" id="theme" type="button" aria-label="Toggle theme"><span id="ti">◐</span> Theme</button>
+  </header>
+
+  <div class="hero">
+    <h1>Self-reported, made <em>objective</em>. Run on your side.</h1>
+    <p>Your platform tells customers what they <b>believe</b> about their NIS2 maturity. This adds what's <b>observable</b> — an evidence layer that fills the other half of the picture, feeds three go-to-market motions, and compounds into a benchmark only you can build. Three pieces below; click any to open.</p>
+    <div class="spine">
+      <span class="cap"><b>1</b> Observe</span>
+      <span class="cap"><b>2</b> Reconcile</span>
+      <span class="cap moat"><b>3</b> Cluster + Benchmark · moat</span>
+      <span class="cap moat"><b>4</b> Recommend + Optimize · moat</span>
+    </div>
+  </div>
+
+  <section>
+    <p class="eyebrow">The three pieces · idea → proof → build</p>
+    <h2>Open in order, or jump to what you need</h2>
+    <p class="lede">Written for both sides of the table — the thesis and the moat for the commercial call, the real data and the architecture for the product &amp; engineering review.</p>
+    <div class="cards">
+      <a class="card" href="https://claude.ai/code/artifact/5f900cdf-2907-4f4f-81ca-73b9466a817e" target="_blank" rel="noopener">
+        <span class="ic">🫀</span>
+        <span class="body">
+          <span class="t">The Objective Layer <span class="role">The thesis</span></span>
+          <span class="d">Observed vs self-reported. Three motions — outbound, front door, in-product evidence — and why your cross-customer data is the real moat.</span>
+          <span class="kind">concept · diagram</span>
+        </span>
+        <span class="open">Open <span class="ar">↗</span></span>
+      </a>
+      <a class="card" href="https://claude.ai/code/artifact/20857d16-3693-4e93-9019-5e9b2282adc2" target="_blank" rel="noopener">
+        <span class="ic">🔎</span>
+        <span class="body">
+          <span class="t">Observed Evidence <span class="role">The proof</span></span>
+          <span class="d">10 real Swedish orgs: the observed signals, the self-reported-vs-observed gap, the real peer benchmark, peer-learned suggestions, and the outbound list.</span>
+          <span class="kind">worked example · real data</span>
+        </span>
+        <span class="open">Open <span class="ar">↗</span></span>
+      </a>
+      <a class="card" href="https://claude.ai/code/artifact/dae8f483-0341-4195-8ade-e89f0738eed6" target="_blank" rel="noopener">
+        <span class="ic">🧩</span>
+        <span class="body">
+          <span class="t">The Blueprint <span class="role">The build</span></span>
+          <span class="d">Four capabilities → nine use cases, and the in-premise architecture: UpliftIQ runs inside your tenant, customer data never leaves.</span>
+          <span class="kind">architecture · 2 diagrams</span>
+        </span>
+        <span class="open">Open <span class="ar">↗</span></span>
+      </a>
+    </div>
+  </section>
+
+  <div class="sov">
+    <span class="lk">🔒</span>
+    <p><b>Sovereignty kept, by design.</b> Everything runs inside your Sweden-only environment. The engine reads only public records and <b>never touches the customer's systems</b>; public signals flow in, derived and anonymized results flow out, and <b>raw customer data never leaves the boundary</b>. UpliftIQ is the brain embedded in your platform — not a service you ship data to.</p>
+  </div>
+
+  <div class="flow">
+    <p><span class="lbl">For the commercial / exec call</span></p>
+    <p class="seq">🫀 Objective Layer  →  🔎 Observed Evidence  →  🧩 Blueprint</p>
+    <p><span class="lbl">For the product / engineering review</span></p>
+    <p class="seq">🧩 Blueprint  →  🔎 Observed Evidence  →  🫀 Objective Layer</p>
+  </div>
+
+  <footer>
+    <span class="hd">Proof it's real, and one honest note.</span>
+    <span>The same engine already ran end-to-end on a live Swedish energy &amp; transport dataset — see the <a href="https://claude.ai/code/artifact/3b1ee053-05ce-475f-bf47-2321bd10a71c" target="_blank" rel="noopener">reference build</a> (a consultancy instance) for the running proof.</span>
+    <span>In the CyberResilient pieces the observed signals and scores are real (Aug 2026 passive run, verified live); the self-reported column and peer-outcome stats are marked <b>illustrative</b> — they stand in for your platform's real cross-customer data, which replaces them once we're integrated.</span>
+    <span>Passive &amp; public only — no scanning, no probing, nothing behind a login. Benchmark/sector plays need consent + a minimum cluster size (k-anonymity) so no output re-identifies a customer.</span>
+  </footer>
+</div>
+
+<script>
+  const root=document.documentElement,tb=document.getElementById("theme"),ti=document.getElementById("ti");
+  let m="system";
+  tb.addEventListener("click",()=>{m=m==="system"?"light":m==="light"?"dark":"system";
+    if(m==="system")root.removeAttribute("data-theme");else root.setAttribute("data-theme",m);
+    ti.textContent=m==="light"?"☀":m==="dark"?"☾":"◐";});
+</script>
