@@ -17,6 +17,7 @@ The `data/` directory is gitignored — regenerate it with the collectors in
 | `txca_memo.py` | `reports/tx_ca_metros.md` §3 — the memo's matched-pair design on TX/CA race and ethnicity tails |
 | `hisp_fe.py` | `reports/tx_ca_metros.md` §3 — within/between-county decomposition of the Hispanic gap |
 | `fb_within.py` | `reports/tx_ca_metros.md` §4 — same decomposition applied to the Finding B states |
+| `basket_test.py` | `docs/basket_spec.md` — comparison-basket test: is milk uniquely variable among Great Value items, and the within-store placebo. Run `--selftest` to verify the code path. |
 | `within_metro.py` | `reports/within_metro_test.md` — compares high- and low-Black stores sharing a metro (Atlanta and 8 others), the design with no between-region confound |
 | `sc_variation.py` | `reports/why_sc_varies.md` — why SC has large within-state variation: rules out artifact, Class I, and zone boundary; identifies the metro discount |
 | `zone_override.py` | `reports/zone_vs_override.md` — splits price into the centrally-set zone component and the local override component, tests each for a racial gradient, and restates Louisiana as block assignment |
