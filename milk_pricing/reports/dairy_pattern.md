@@ -120,3 +120,81 @@ the shape of thing worth looking for at scale.
 
 `analysis/dairy_pattern.py`. Input: `data/aldi_sc_observations.json`,
 `data/sc_walmart_official.csv`, `data/national_walmart_official.csv` (gitignored).
+
+---
+
+## 6. Addendum: the Walmart version cannot be run, and why the Aldi structure is sharper than "milk is a KVI"
+
+**The direct question — do Walmart's *other* dairy products vary by store across the same
+stores — cannot be answered from anything on hand.** Every Walmart pull is one of three shapes,
+and none is a cross-store cross-product panel:
+
+| File | Shape |
+|---|---|
+| `national_walmart_official.csv` | 4,149 stores × **4 SKUs, all fluid milk** |
+| `national_store_prices.json` | 150 stores × **1 SKU** (GV whole gallon, 10450114) |
+| `walmart_milk_raw.json` | **295 SKUs × 1 store** — store 3081, Sacramento |
+| `walmart_observations.json` | 166 products × **1 ZIP** (29201, Columbia SC) |
+
+That Sacramento store is the proxy exit location, i.e. the store-pinning defect found earlier
+in this project. And the discovery was a *milk keyword search*, so the 295 SKUs are 235 fluid
+milk, 25 flavored milk and 16 creamer — no cottage cheese, yogurt, butter or cheese. There is
+nothing to analyse.
+
+### What the Aldi panel says instead, and it is more specific
+
+Three tests, all within the refrigerated fluid-milk case:
+
+**Half gallons vary as much as gallons.** CV 14.0% vs 13.6% for whole milk; 13.8% vs 13.9% for
+2%. So the carve-out is not "the gallon is the traffic driver" — **that hypothesis is refuted.**
+
+**The half-gallon price is a fixed function of the gallon price.** Across all 19 stores holding
+both, the ratio sits between **0.59 and 0.63** — never outside it, while the gallon itself moves
+from $2.39 to $4.05.
+
+**Chocolate milk is derived too.** Correlation with white milk across stores **r = +0.906**, gap
+$0.90 ± $0.21.
+
+Put together: **each store makes one fluid-milk price decision, and every SKU in the case —
+sizes, fat levels, flavours — is derived from it by a fixed rule. Everything outside the case
+gets a single statewide price.** That is a sharper claim than "milk is a KVI." It says there is
+a *store-level fluid-milk index*, one number per store, and it is the only grocery number in
+this data that is set locally.
+
+### This corrects the basket advice in `why_sc_varies.md` §7
+
+I suggested pulling additional milk SKUs — organic, lactose-free, half gallons — as a tight
+placebo on the theory that only the commodity gallon is price-shopped. **The Aldi data says
+that would be wasted**: those SKUs would track the same index and add no independent
+information. The informative comparison must come from **outside** the fluid case. Revised
+priority for the Walmart basket:
+
+1. **Outside the case, same aisle** — GV cottage cheese, Greek yogurt, shredded mozzarella,
+   sour cream. At Aldi these are the zero-variance items, so any racial gradient on milk at a
+   store where these are flat cannot be a store-level confound.
+2. **The middle tier** — GV butter and large eggs. At Aldi these move, but across only two price
+   points. Whether Walmart's butter moves tells you if the carve-out is narrow (milk alone) or
+   broad ("traffic drivers"), which is the difference between a specific practice and ordinary
+   competitive response.
+3. **Non-dairy pantry** — flour, canned beans, oil. Confirms the zero-variance baseline is not
+   a dairy-supply-chain artifact.
+4. **One extra milk SKU at most**, purely to confirm Walmart derives sizes the way Aldi does.
+
+### Walmart SKUs recovered from the Sacramento catalog
+
+Real item IDs, usable directly in a store-pinned pull:
+
+| SKU | Product |
+|---|---|
+| 10450114 | GV Whole Vitamin D Milk, **Gallon** (already collected) |
+| 10450116 | GV 1% Low-Fat Milk, Gallon |
+| 10450117 | GV Fat-Free Milk, Gallon |
+| 17248403 | GV 1% Low-fat **Chocolate** Milk, Gallon |
+| 10804537 | GV 1% Low-fat Milk, **Half Gallon** |
+| 10450120 | GV Fat Free Milk, Half Gallon |
+| 11979180 / 11979181 / 11979182 | GV **Lactose Free** Whole / 2% / Skim, Half Gallon |
+| 10315798 / 10315797 | GV **Organic** Whole / 2% Reduced Fat, Half Gallon |
+
+Per the revision above, one of these is worth pulling as a check, not all nine. The SKUs for the
+non-milk items still need resolving — that requires a search against Walmart, which this
+environment cannot reach.

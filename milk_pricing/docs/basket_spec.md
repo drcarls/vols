@@ -18,9 +18,20 @@ subsetting, the two highest-value cuts are:
 
 ## Items
 
+> **Revised after the Aldi panel** (`reports/dairy_pattern.md` §6): additional *milk* SKUs are
+> not worth pulling. Every fluid-milk SKU at a store is derived from one price decision — half
+> gallons sit at a locked 0.59–0.63 ratio to the gallon, chocolate correlates r = +0.91 — so
+> they carry no independent information. The value is entirely in items **outside** the
+> refrigerated fluid-milk case. Priority order: zero-variance dairy (cottage cheese, yogurt,
+> mozzarella, sour cream) > butter and eggs > non-dairy pantry > at most one extra milk SKU.
+
 | Column name | Item | Why |
 |---|---|---|
 | `whole_milk` | GV Whole Vitamin D Milk, gallon (SKU 10450114) | re-pull alongside, so both series share an instrument |
+| `cottage_cheese` | GV Small Curd Cottage Cheese, 24 oz | zero-variance at Aldi — the ideal placebo |
+| `greek_yogurt` | GV Nonfat Plain Greek Yogurt, 32 oz | zero-variance at Aldi |
+| `mozzarella` | GV Shredded Mozzarella, 16 oz | zero-variance at Aldi |
+| `butter_sticks` | GV Salted Butter Sticks, 16 oz | middle tier at Aldi — 2 price points |
 | `eggs_12ct` | GV Large White Eggs, 12 ct | traffic driver |
 | `white_bread` | GV White Sandwich Bread, 20 oz | traffic driver |
 | `bananas` | Bananas, per lb | classic traffic driver, not GV |
