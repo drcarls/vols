@@ -166,3 +166,69 @@ should be costed out before the rural-only design is finalised.
 
 `analysis/sc_variation.py`. Input: `data/national_walmart_official.csv`,
 `data/sc_walmart_official.csv`, `data/aldi_pooled.json`, `data/aldi_sc_sweep.json` (gitignored).
+
+---
+
+## 7. Addendum: the variation is category-wide, and the decisive test is a comparison basket
+
+The client notes that Walmart's **other private-brand items were not priced like milk — milk
+was the only one with this kind of variation.** That cannot be tested from data on hand (every
+Walmart price we hold is fluid milk), but two things follow immediately.
+
+**First, whatever regime milk is on covers the entire fluid-milk category, not just whole
+milk.** All four fat levels show near-identical dispersion in every state:
+
+| State | whole | 2% | 1% | fat free |
+|---|---|---|---|---|
+| SC | $0.539 | $0.540 | $0.542 | $0.529 |
+| NC | $0.591 | $0.591 | $0.592 | $0.588 |
+| TX | $0.538 | $0.529 | $0.527 | $0.525 |
+| LA | $0.195 | $0.195 | $0.185 | $0.186 |
+| CA | $0.088 | $0.087 | $0.091 | $0.112 |
+| VA | $0.028 | **$0.000** | **$0.000** | **$0.000** |
+
+Within-store correlations across fat levels run 0.968–0.996, and **73% of stores price all four
+identically.** So the store is assigned a milk price, not four independent prices. This is
+consistent with a category-level rule.
+
+**Second, if milk really is the exception among private-brand items, that is better for the
+case, not worse.** It converts the challenged practice from "Walmart's pricing system" — diffuse,
+hard to plead, hard to certify — into a **discrete, deliberate carve-out**: a decision to manage
+fluid milk under a different pricing rule from the rest of the private-brand assortment. In
+retail that carve-out has a standard name (known-value-item or traffic-driver pricing) and it is
+typically a documented, centrally-made category decision. That is exactly the kind of single,
+uniform policy that supports commonality — and it would resolve the discretion-vs-algorithm
+question in §5 of `zone_vs_override.md` in the plaintiff's favour, since a category carve-out is
+a central decision by definition even if its execution is store-by-store.
+
+### The test, and why it is the strongest design available
+
+Pull 6–8 additional Great Value items across **the same store list** used for the milk file:
+
+| Expect variable, if KVI theory is right | Expect near-uniform |
+|---|---|
+| GV Large White Eggs, 12 ct | GV All-Purpose Flour, 5 lb |
+| GV White Sandwich Bread, 20 oz | GV Cut Green Beans, canned |
+| Bananas (not GV, the classic traffic driver) | GV Vegetable Oil, 48 oz |
+| | GV Tomato Ketchup, 20 oz |
+| | GV Paper Towels |
+
+Two possible results, both useful:
+
+- **Milk + eggs + bread vary, pantry items do not** → a KVI carve-out. The practice is
+  "competitive store-level management of traffic drivers."
+- **Only milk varies** → milk is uniquely managed even among traffic drivers, which is a far
+  more specific and more striking allegation.
+
+**The reason this matters more than any further slicing of the milk data: it is a within-store
+placebo.** Every analysis so far compares store A to store B and must defend against the charge
+that A and B differ in cost, competition, format or freight. A comparison basket holds the store
+fixed. If GV flour shows no racial gradient across the same 4,149 stores and GV milk does, then
+every store-level confound is differenced out — same store, same shoppers, same geography,
+same private-label supply chain, different product. Nothing else available comes close to that
+identification.
+
+**Collection note:** this should be pulled by the same method and at the same time as the milk
+file. A dispersion comparison is only valid if both series come from the same instrument; a
+basket collected a different way would confound the very thing being measured. No Bright Data
+credential is present in the current environment, so this analysis cannot originate the pull.
