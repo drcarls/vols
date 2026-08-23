@@ -35,8 +35,21 @@ works; a minimum useful pull is `whole_milk` plus **two** pantry items.
 
 ## Format
 
+**Column names do not need to match.** Run `--describe` first and the script reports every item
+column with its coverage, mean, sd and CV, plus a suggested KVI/pantry classification; anything
+it cannot place is flagged UNCLASSIFIED. Then classify explicitly:
+
+```
+python3 analysis/basket_test.py data/walmart_basket.csv --describe
+python3 analysis/basket_test.py data/walmart_basket.csv \
+    --milk gv_milk_gal --kvi gv_eggs_dz,gv_bread --pantry gv_flour5,gv_beans,gv_oil
+```
+
 Either layout. Only `zip` and the prices are required — state, county, geo and demographics are
-joined from the milk file.
+joined from the milk file. Demographic and ID columns from the existing milk file
+(`pct_black`, `median_income`, `store_address`, …) are ignored automatically if present, so an
+extended version of `national_walmart_milk_by_store_zip.csv` with extra product columns works
+as-is.
 
 **Long** (one row per store × item):
 ```
@@ -80,6 +93,21 @@ python3 analysis/basket_test.py data/walmart_basket.csv
 
 The pipeline is tested end to end against a synthetic fixture with a known answer:
 `python3 analysis/basket_test.py --selftest`.
+
+## If the pull already exists
+
+A basket pulled earlier will work without re-collection, as long as it carries a ZIP (or a
+store_id that maps to one) and per-item prices. Two caveats worth checking before trusting the
+comparison:
+
+- **Was it pulled in the same window as the milk file?** If the basket is materially older,
+  the dispersion comparison is still valid (each item's cross-sectional spread is measured
+  within its own pull), but the *within-store placebo* in §5 assumes milk and pantry prices
+  come from the same store visit. If they do not, re-pull milk alongside — that is why
+  `whole_milk` is on the item list.
+- **More stores than the milk file is fine.** The join is by ZIP and drops non-matches; extra
+  stores simply widen the per-item dispersion tables without affecting the demographics-linked
+  tests.
 
 ## Note on this environment
 

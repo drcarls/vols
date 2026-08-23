@@ -17,9 +17,15 @@ collected by the SAME method. Either shape works:
 Demographics, county, geo and state are joined from the national milk file by ZIP,
 so the basket file needs only store_id/zip, the item, and the price.
 
+Column names need not match the defaults below. Run --describe first to see what the
+file contains, then classify with --kvi/--pantry if the names differ.
+
 Usage:
-    python3 analysis/basket_test.py data/walmart_basket.csv
-    python3 analysis/basket_test.py --selftest      # synthetic data, verifies the code path
+    python3 analysis/basket_test.py FILE --describe        # what is in it, and coverage
+    python3 analysis/basket_test.py FILE
+    python3 analysis/basket_test.py FILE --milk gv_milk_gal \
+        --kvi eggs_dozen,bread --pantry flour,beans,oil
+    python3 analysis/basket_test.py --selftest             # synthetic fixture, known answer
 """
 import csv
 import math
@@ -30,9 +36,18 @@ from collections import defaultdict
 import numpy as np
 
 # Items expected to behave like traffic drivers (KVI) vs pantry staples.
-KVI = {"whole_milk", "milk_2pct", "eggs_12ct", "white_bread", "bananas"}
+KVI = {"whole_milk", "milk_2pct", "milk_1pct", "milk_fatfree",
+       "eggs_12ct", "white_bread", "bananas"}
 PANTRY = {"flour_5lb", "green_beans_can", "veg_oil_48oz", "ketchup_20oz", "paper_towels"}
-ID_COLS = {"store_id", "zip", "state", "county", "geo", "item", "price", "size_text"}
+MILK_COL = "whole_milk"
+ID_COLS = {"store_id", "zip", "state", "county", "geo", "item", "price", "size_text",
+           "store_address", "pct_black", "pct_white", "pct_hisp", "median_income",
+           "population", "class_i_diff_cwt", "class_I_diff_cwt"}
+
+# Substring hints used only by --describe, to suggest a classification.
+_KVI_HINT = ("milk", "egg", "bread", "banana", "butter", "soda", "cola", "chicken")
+_PANTRY_HINT = ("flour", "bean", "oil", "ketchup", "towel", "sugar", "rice", "pasta",
+                "soup", "tissue", "detergent", "cereal")
 
 
 def load_meta():
@@ -78,6 +93,30 @@ def ols(cols, y):
     k = np.linalg.matrix_rank(X)
     se = np.sqrt(np.diag(np.linalg.pinv(X.T @ X)) * (res @ res / max(len(y) - k, 1)))
     return b, b / se
+
+
+def describe(basket, meta):
+    """Show what the file contains so its columns can be classified."""
+    items = sorted({i for v in basket.values() for i in v})
+    joined = {z: v for z, v in basket.items() if z in meta}
+    print(f"rows keyed by ZIP: {len(basket)}   joined to the milk file: {len(joined)}")
+    if len(joined) < len(basket):
+        miss = [z for z in basket if z not in meta][:5]
+        print(f"  unmatched ZIP examples: {miss}")
+    print(f"\n{len(items)} item column(s):\n")
+    print(f"  {'column':<24}{'n':>6}{'mean $':>10}{'sd $':>9}{'CV':>8}   suggested")
+    for it in items:
+        v = [d[it] for d in joined.values() if it in d]
+        if not v:
+            continue
+        low = it.lower()
+        sug = ("KVI" if (it in KVI or any(h in low for h in _KVI_HINT))
+               else "pantry" if (it in PANTRY or any(h in low for h in _PANTRY_HINT))
+               else "UNCLASSIFIED")
+        cvv = 100 * np.std(v) / np.mean(v) if np.mean(v) else 0
+        print(f"  {it:<24}{len(v):>6}{np.mean(v):>10.2f}{np.std(v):>9.3f}{cvv:>7.1f}%   {sug}")
+    print("\nIf any column reads UNCLASSIFIED, pass --kvi / --pantry to place it,")
+    print("and --milk to name the column holding the gallon-of-milk price.")
 
 
 def report(basket, meta):
@@ -147,15 +186,17 @@ def report(basket, meta):
     print("  Coefficients are in LOG points per percentage point of %Black;")
     print("  the $ column converts at the sample mean milk price.")
     pan = [i for i in items if i in PANTRY]
-    if not pan or "whole_milk" not in items:
-        print("  -- needs whole_milk plus at least one pantry item; not available")
+    if not pan or MILK_COL not in items:
+        print(f"  -- needs '{MILK_COL}' plus >=1 pantry item; have milk="
+              f"{MILK_COL in items}, pantry={pan}")
+        print("     use --milk / --pantry to point at the right columns")
         return
     Z, y = [], []
     for z, d in joined.items():
         have = [i for i in pan if i in d and d[i] > 0]
-        if "whole_milk" in d and d["whole_milk"] > 0 and len(have) >= 2:
+        if MILK_COL in d and d[MILK_COL] > 0 and len(have) >= 2:
             Z.append(z)
-            y.append(math.log(d["whole_milk"]) - np.mean([math.log(d[i]) for i in have]))
+            y.append(math.log(d[MILK_COL]) - np.mean([math.log(d[i]) for i in have]))
     y = np.array(y)
     print(f"  stores with milk and >=2 pantry items: {len(Z)}")
     if len(Z) < 30:
@@ -170,7 +211,7 @@ def report(basket, meta):
         b, t = ols([np.array([meta[z]["blk"] for z in sub]),
                     np.array([meta[z]["inc"] for z in sub]) / 1000,
                     np.log(np.array([meta[z]["pop"] for z in sub]))], y[idx])
-        mm = np.mean([joined[z]["whole_milk"] for z in sub])
+        mm = np.mean([joined[z][MILK_COL] for z in sub])
         print(f"    {lab:<12} n={len(sub):>4}  {b[1]:+.5f} log-pts (t {t[1]:+.2f})"
               f"   = ${b[1] * mm:+.4f}/gal per pt, ${b[1] * mm * 20:+.3f} over a 20-pt gap")
     sts = sorted({meta[z]["st"] for z in Z})
@@ -179,7 +220,7 @@ def report(basket, meta):
         b, t = ols([np.array([meta[z]["blk"] for z in Z]),
                     np.array([meta[z]["inc"] for z in Z]) / 1000,
                     np.log(np.array([meta[z]["pop"] for z in Z]))] + D, y)
-        mm = np.mean([joined[z]["whole_milk"] for z in Z])
+        mm = np.mean([joined[z][MILK_COL] for z in Z])
         print(f"    {'+ state FE':<12} n={len(Z):>4}  {b[1]:+.5f} log-pts (t {t[1]:+.2f})"
               f"   = ${b[1] * mm:+.4f}/gal per pt, ${b[1] * mm * 20:+.3f} over a 20-pt gap")
 
@@ -215,10 +256,34 @@ def selftest():
     report(load_basket(path), meta)
 
 
-if __name__ == "__main__":
-    if len(sys.argv) > 1 and sys.argv[1] == "--selftest":
-        selftest()
-    elif len(sys.argv) > 1:
-        report(load_basket(sys.argv[1]), load_meta())
-    else:
+def main(argv):
+    global KVI, PANTRY, MILK_COL
+    if not argv:
         sys.exit(__doc__)
+    if argv[0] == "--selftest":
+        return selftest()
+    path, flags = argv[0], argv[1:]
+    opt = {}
+    i = 0
+    while i < len(flags):
+        if flags[i] in ("--kvi", "--pantry", "--milk") and i + 1 < len(flags):
+            opt[flags[i][2:]] = flags[i + 1]
+            i += 2
+        elif flags[i] == "--describe":
+            opt["describe"] = True
+            i += 1
+        else:
+            sys.exit(f"unknown argument: {flags[i]}\n{__doc__}")
+    if "milk" in opt:
+        MILK_COL = opt["milk"]
+        KVI = KVI | {MILK_COL}
+    if "kvi" in opt:
+        KVI = KVI | {c.strip() for c in opt["kvi"].split(",") if c.strip()}
+    if "pantry" in opt:
+        PANTRY = PANTRY | {c.strip() for c in opt["pantry"].split(",") if c.strip()}
+    basket, meta = load_basket(path), load_meta()
+    (describe if opt.get("describe") else report)(basket, meta)
+
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
