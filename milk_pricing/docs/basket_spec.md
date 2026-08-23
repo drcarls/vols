@@ -109,6 +109,11 @@ comparison:
   stores simply widen the per-item dispersion tables without affecting the demographics-linked
   tests.
 
+## Running it without uploading
+
+See `docs/run_locally.md` — clone the branch, `pip install numpy`, point `--meta` at the milk
+file you already have, and the basket never leaves your machine.
+
 ## Note on this environment
 
 The collection cannot originate here: `walmart.com` returns `HTTP 307 blocked` through the

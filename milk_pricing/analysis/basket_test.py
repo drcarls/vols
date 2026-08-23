@@ -22,6 +22,7 @@ file contains, then classify with --kvi/--pantry if the names differ.
 
 Usage:
     python3 analysis/basket_test.py FILE --describe        # what is in it, and coverage
+    python3 analysis/basket_test.py FILE --meta ~/national_walmart_milk_by_store_zip.csv
     python3 analysis/basket_test.py FILE
     python3 analysis/basket_test.py FILE --milk gv_milk_gal \
         --kvi eggs_dozen,bread --pantry flour,beans,oil
@@ -50,18 +51,34 @@ _PANTRY_HINT = ("flour", "bean", "oil", "ketchup", "towel", "sugar", "rice", "pa
                 "soup", "tissue", "detergent", "cereal")
 
 
+META_PATH = "data/national_walmart_official.csv"
+
+
 def load_meta():
+    """Join table: ZIP -> state/county/geo/demographics, from the milk file.
+
+    Column names are matched case-insensitively and tolerate the header used by
+    the original export (national_walmart_milk_by_store_zip.csv).
+    """
+    try:
+        fh = open(META_PATH)
+    except FileNotFoundError:
+        sys.exit(f"cannot find the milk file at {META_PATH}\n"
+                 f"pass --meta /path/to/national_walmart_milk_by_store_zip.csv")
     meta = {}
-    for r in csv.DictReader(open("data/national_walmart_official.csv")):
-        if not (r["zip"] and r["state"] and r["county"] and r["pct_black"]
-                and r["median_income"] and r["population"]):
+    for r in csv.DictReader(fh):
+        r = {(k or "").strip().lower(): v for k, v in r.items()}
+        if not (r.get("zip") and r.get("state") and r.get("county") and r.get("pct_black")
+                and r.get("median_income") and r.get("population")):
             continue
         meta[r["zip"].zfill(5)] = {
-            "st": r["state"], "cty": r["county"], "geo": r["geo"],
+            "st": r["state"], "cty": r["county"], "geo": r.get("geo", ""),
             "blk": float(r["pct_black"]), "inc": float(r["median_income"]),
             "pop": float(r["population"]),
-            "milk": float(r["whole_milk"]) if r["whole_milk"] else None,
+            "milk": float(r["whole_milk"]) if r.get("whole_milk") else None,
         }
+    if not meta:
+        sys.exit(f"{META_PATH} parsed to zero usable rows - check its header")
     return meta
 
 
@@ -257,7 +274,7 @@ def selftest():
 
 
 def main(argv):
-    global KVI, PANTRY, MILK_COL
+    global KVI, PANTRY, MILK_COL, META_PATH
     if not argv:
         sys.exit(__doc__)
     if argv[0] == "--selftest":
@@ -266,7 +283,7 @@ def main(argv):
     opt = {}
     i = 0
     while i < len(flags):
-        if flags[i] in ("--kvi", "--pantry", "--milk") and i + 1 < len(flags):
+        if flags[i] in ("--kvi", "--pantry", "--milk", "--meta") and i + 1 < len(flags):
             opt[flags[i][2:]] = flags[i + 1]
             i += 2
         elif flags[i] == "--describe":
@@ -274,6 +291,8 @@ def main(argv):
             i += 1
         else:
             sys.exit(f"unknown argument: {flags[i]}\n{__doc__}")
+    if "meta" in opt:
+        META_PATH = opt["meta"]
     if "milk" in opt:
         MILK_COL = opt["milk"]
         KVI = KVI | {MILK_COL}
