@@ -19,6 +19,7 @@ The `data/` directory is gitignored — regenerate it with the collectors in
 | `fb_within.py` | `reports/tx_ca_metros.md` §4 — same decomposition applied to the Finding B states |
 | `sc_basket.py` | `reports/brightdata_zipcode_trap.md` §7 — the 13-item Great Value basket across all 92 SC stores; `--build` converts the raw snapshot |
 | `bd_zipcode_probe.py` | `reports/brightdata_zipcode_trap.md` — why Bright Data's Walmart zipcodes template pins the store but returns a national online price; §7 has the full 92-store SC pull |
+| `state_pricing_laws.py` | `reports/state_pricing_laws.md` — three regimes of state pricing law, which compress prices and which do not, and which comparator states are contaminated |
 | `pa_minimum_pricing.py` | `reports/pa_minimum_pricing.md` — whether PA's minimum retail milk price is racially disparate, and the national burden-vs-price decomposition |
 | `walmart_basket_national.py` | `reports/walmart_basket_national.md` — Walmart cross-store dispersion by product: fluid milk takes 17-19 prices, everything else 1-2 |
 | `dairy_pattern.py` | `reports/dairy_pattern.md` — the three-tier dairy pattern in the existing Aldi SC panel: fluid milk store-managed, other dairy one statewide price |
