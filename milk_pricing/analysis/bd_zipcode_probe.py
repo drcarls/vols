@@ -6,6 +6,7 @@ environment (env var only — never a flag or a file).
     python3 analysis/bd_zipcode_probe.py --list       # Walmart scrapers on the account
     python3 analysis/bd_zipcode_probe.py --schema     # discover input fields via validation errors
     python3 analysis/bd_zipcode_probe.py --validate   # the decisive test (costs a live pull)
+    python3 analysis/bd_zipcode_probe.py --matrix     # which scraper honours which field
 
 Finding: `Walmart - products zipcodes` (gd_m693oc1r1gebnayxq) takes a `zip_code`
 field and resolves a real local store, but returns Walmart's NATIONAL ONLINE
@@ -97,6 +98,22 @@ def run(ds, payload, poll=15, tries=32):
     sys.exit("snapshot never built")
 
 
+def matrix():
+    """Which scraper accepts and which HONOURS zip_code / store_id."""
+    u = f"https://www.walmart.com/ip/{WHOLE_MILK}"
+    print("Walmart - products (real prices) — does it take geography?")
+    for probe in ({"url": u, "zip_code": "29607"}, {"url": u, "store_id": "640"}):
+        b = call(f"{API}/datasets/v3/trigger?dataset_id={PRODUCTS_DS}&include_errors=true", [probe])
+        verdict = "ACCEPTED" if "snapshot_id" in b else "rejected"
+        print(f"  {json.dumps(probe)[:58]:<60} {verdict}")
+    print("  NOTE: store_id is accepted by validation but IGNORED at run time —")
+    print("  requesting store_id 640 (Greenville SC) returned store 3081, Sacramento.")
+    print("\nWalmart products search — takes url only:")
+    b = call(f"{API}/datasets/v3/trigger?dataset_id=gd_m7khey0wb7wviejgj&include_errors=true",
+             [{"url": u, "zip_code": "29607"}])
+    print(f"  {b[:170]}")
+
+
 def validate():
     print("Does the zipcodes scraper return SHELF prices? Compare to known values.")
     d = run(ZIPCODES_DS, [{"url": f"https://www.walmart.com/ip/{WHOLE_MILK}", "zip_code": z}
@@ -127,5 +144,7 @@ if __name__ == "__main__":
         schema()
     elif "--validate" in a:
         validate()
+    elif "--matrix" in a:
+        matrix()
     else:
         sys.exit(__doc__)

@@ -94,8 +94,39 @@ Every price field was checked. `final_price` 3.52, `price_range` null, `shipping
 `unit_price` 0.028/fl oz (= $3.58/gal, internally consistent with the online price). There is no
 hidden local price in the record.
 
+Adding **`store_id`** alongside `zip_code` changes nothing. Tested through the synchronous
+`/datasets/v3/scrape` endpoint with `{"input":[{url, zip_code, store_id}], "limit_per_input":null}`
+— the exact documented call shape — against four stores with known shelf prices:
+
+| ZIP | store_id sent | Store resolved | Template price | Known shelf |
+|---|---|---|---|---|
+| 29607 | 640 | Greenville Woodruff Rd Supercenter | $3.52 | $2.50 |
+| 29926 | 728 | Hilton Head Island Supercenter | $3.52 | $3.86 |
+| 15005 | 4643 | Baden Supercenter (PA) | $3.52 | — |
+| 15010 | — | Beaver Falls Supercenter (PA) | $3.52 | — |
+
+0 of 4, every one tagged `"Price when purchased online"`.
+
 The `Walmart products search` scraper does not accept `zip_code` at all — its schema takes `url`
 only.
+
+### And the reverse: `store_id` on the scraper that *does* return real prices
+
+`Walmart - products` (`gd_l95fol7l1ru6rlo116`) **accepts** a `store_id` field — it passes
+validation — but **ignores it**. Requesting `store_id: "640"` (Greenville Woodruff Rd, SC)
+returned `store_id: 3081`, `store_name: "Sacramento Supercenter"`, at $3.52. The proxy exit wins.
+It rejects `zip_code` outright.
+
+That closes the matrix:
+
+| Scraper | `zip_code` | `store_id` | Store control | Price |
+|---|---|---|---|---|
+| `Walmart - products` | rejected | accepted, **ignored** | none | **real shelf price** |
+| `Walmart - products zipcodes` | **required, honoured** | accepted | **yes** | national online only |
+| `Walmart products search` | rejected | — | none | — |
+
+The one that honours geography returns the wrong number; the one that returns the right number
+ignores geography.
 
 ## 4. The trade-off, stated plainly
 
