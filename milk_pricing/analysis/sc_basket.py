@@ -104,13 +104,26 @@ def main():
                   f"median distinct {np.median([s[3] for s in g]):.0f}")
 
     print("\n=== %Black gradient per item (income controlled) — the actual question ===")
+    print("  An item with ONE price across all 92 stores has no variance to explain: its")
+    print("  regression is degenerate and its t-statistic is floating-point noise, not a")
+    print("  finding. Those rows are marked DEGENERATE and must not be read as results.")
     for it, v in sorted(byitem.items()):
         if len(v) < 30:
             continue
-        b, t = ols([np.array([x["blk"] for x in v]), np.array([x["inc"] for x in v]) / 1000],
-                   np.array([x["price"] for x in v]))
-        flag = "  <-- p<.05" if abs(t[1]) > 1.98 else ""
-        print(f"  {it:<17}{tier[it]:<15} n={len(v):>3}  {b[1]:+.5f} (t {t[1]:+.2f}){flag}")
+        y = np.array([x["price"] for x in v])
+        ndist = len(set(y.tolist()))
+        b, t = ols([np.array([x["blk"] for x in v]), np.array([x["inc"] for x in v]) / 1000], y)
+        if ndist == 1 or np.std(y) < 1e-9:
+            flag = "   DEGENERATE (1 price statewide — ignore)"
+        elif abs(t[1]) > 1.98:
+            flag = "   <-- p<.05"
+        else:
+            flag = ""
+        print(f"  {it:<17}{tier[it]:<15} n={len(v):>3}  {ndist:>2} prices  "
+              f"{b[1]:+.5f} (t {t[1]:+.2f}){flag}")
+    real = [it for it, v in byitem.items()
+            if len(set(x["price"] for x in v)) > 3 and len(v) >= 30]
+    print(f"\n  items with enough price variation to test at all: {sorted(real)}")
 
     milk = [r for r in rows if r["item"] == "whole_milk"]
     if milk:
