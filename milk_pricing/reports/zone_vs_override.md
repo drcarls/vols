@@ -76,8 +76,15 @@ and both proxies give the same answer.
 | State | 51 | **58.9%** | **41.1%** | $0.425 |
 | ZIP2 | 98 | 61.2% | 38.8% | $0.413 |
 
-So roughly **three-fifths of the variation in what a Walmart shopper pays for a gallon of milk
-is explained by coarse geography, and two-fifths is store-level.** Mean absolute store-level deviation: **$0.32**.
+> **Corrected on the cleaned panel.** Those figures include eight states whose milk price is set
+> by statute or dominated by freight (PA, NJ, ME, ND, VA, MT, AK, HI), several with a single
+> price statewide, which inflates the between-state share. Excluding them the split is
+> **43.7% coarse-geographic / 56.3% store-level** — the store-level layer is the *majority*, not
+> the minority. That strengthens §5 below rather than weakening it: Finding B tests the
+> store-level layer, and that layer is larger than stated here. See `reports/clean_panel.md`.
+
+So on the cleaned panel **the majority of variation in what a Walmart shopper pays for a gallon
+of milk is store-level, and a minority is explained by coarse geography.** Mean absolute store-level deviation: **$0.32**.
 That is a large number — bigger than any racial gap claimed anywhere in this engagement.
 
 ## 3. The centrally-set component has no racial gradient

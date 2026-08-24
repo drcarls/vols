@@ -85,8 +85,14 @@ Nationally, across 4,145 stores:
 | Outcome | on %Black, raw | + state FE |
 |---|---|---|
 | **Milk burden** (annual cost ÷ median income) | **+0.00355 pp per point (t +16.15)** | **+0.00286 (t +12.25)** |
-| **Milk price** | **−0.00258 (t −3.89)** | **−0.00323 (t −6.20)** |
+| **Milk price** | **−0.00258 (t −3.89)** ⚠ | **−0.00323 (t −6.20)** |
 | **Median income** | — | **−$366 per point (t −13.44)** |
+
+> ⚠ **The raw price column does not survive the cleaned panel.** Excluding the eight
+> statutorily-regulated and non-contiguous states, the unconditional price-on-%Black coefficient
+> falls to −0.00098 (t −1.62) — null. Virginia was the driver: 117 stores at 18.8% mean %Black
+> on a statutorily compressed $3.64. The **state-FE** column is unaffected (−0.00374, t −7.09)
+> and is the one that matters. See `reports/clean_panel.md` §2.
 
 Read those together. **The milk-affordability disparity by race is enormous and highly
 significant — and it is entirely the income denominator.** Blacker communities pay *slightly
