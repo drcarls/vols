@@ -17,6 +17,7 @@ The `data/` directory is gitignored — regenerate it with the collectors in
 | `txca_memo.py` | `reports/tx_ca_metros.md` §3 — the memo's matched-pair design on TX/CA race and ethnicity tails |
 | `hisp_fe.py` | `reports/tx_ca_metros.md` §3 — within/between-county decomposition of the Hispanic gap |
 | `fb_within.py` | `reports/tx_ca_metros.md` §4 — same decomposition applied to the Finding B states |
+| `pa_minimum_pricing.py` | `reports/pa_minimum_pricing.md` — whether PA's minimum retail milk price is racially disparate, and the national burden-vs-price decomposition |
 | `walmart_basket_national.py` | `reports/walmart_basket_national.md` — Walmart cross-store dispersion by product: fluid milk takes 17-19 prices, everything else 1-2 |
 | `dairy_pattern.py` | `reports/dairy_pattern.md` — the three-tier dairy pattern in the existing Aldi SC panel: fluid milk store-managed, other dairy one statewide price |
 | `basket_test.py` | `docs/basket_spec.md` — comparison-basket test: is milk uniquely variable among Great Value items, and the within-store placebo. Run `--selftest` to verify the code path. |
