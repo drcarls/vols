@@ -24,7 +24,14 @@ work on this Bright Data account. Three mechanisms were tested and all three fai
 | Web Unlocker `/request` with `zip` (and `state`) | empty response — not a valid field for this zone |
 | URL params `?storeId=`, `?athstid=`, `?location=` | ignored; successive requests resolved to Sacramento, Nashville, Ashburn |
 | Store cookies `locGuestData`, `ASSORTMENT_STORE_ID` | ignored; still Sacramento |
-| Dataset API with a `zipcode` input field | silently dropped, not echoed back; identical inputs gave Sacramento twice and Saginaw once |
+| Dataset API with a `zipcode` input field | silently dropped by the **`Walmart - products`** scraper; identical inputs gave Sacramento twice and Saginaw once |
+
+> **Correction (same day).** That last row reflects the wrong scraper. The account also holds
+> **`Walmart - products zipcodes`** (`gd_m693oc1r1gebnayxq`), which takes a **`zip_code`** field and
+> *does* resolve a real local store. It still cannot be used here: the price it returns is
+> Walmart's national online price, flat across the country and below Pennsylvania's legal minimum.
+> See `reports/brightdata_zipcode_trap.md`. The collection below is unaffected — its prices are
+> the realistic ones.
 
 The account holds one zone (`unblocker`, no geo targeting), so the serving store is set by the
 scraper's exit IP. **This is the same defect that produced the bad sample earlier in this
