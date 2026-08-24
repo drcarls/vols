@@ -170,3 +170,53 @@ store-level prices for a basket, the options are:
 
 `analysis/bd_zipcode_probe.py` (requires `BRIGHTDATA_API_TOKEN`). Snapshots from this
 investigation: `sd_mt70j5xw2j429iv2l6`, `sd_mt70pogcccpw4kitc`, `sd_mt70wzbp1sbnhn24dv`.
+
+---
+
+## 7. Addendum: the full South Carolina pull, run anyway
+
+Run at the client's direction across **all 92 SC Walmart stores** (`zip_code` + `store_id`, GV
+whole milk gallon, via `/datasets/v3/scrape`). Data: `data/sc_bd_zipcode_milk.csv`.
+
+**74 of 92 returned a price**; 18 failed with `store_id <id> not available for zip <zip>` — the
+store IDs in `sc_walmart_official.csv` do not always match the IDs Bright Data resolves for that
+ZIP (its error helpfully names the ones it *does* have, e.g. `store_id 6174|628 not available for
+zip 29485`). Dropping `store_id` and letting the ZIP resolve alone would recover those 18.
+
+At full scale the picture is more nuanced than the 5-ZIP probe suggested — but not more usable:
+
+| | |
+|---|---|
+| Distinct prices returned | **16**, $2.72–$4.23 |
+| Records at the $3.52 national default | **56 of 74 (76%)** |
+| Correlation with the known SC shelf price | **r = +0.178** |
+| …among only the 18 deviating records | r = +0.342 |
+| Records matching the known shelf price | **0 of 74** |
+
+So it is not purely a constant — about a quarter of stores return something else — but the
+deviations do not track reality. Individual errors are large and two-signed: Taylors **+$1.58**,
+Aiken **+$0.86**, Columbia Forest Drive **+$0.86**, against Cheraw **−$0.75** and Laurens
+**−$0.70**. Every priced record still carries `"Price when purchased online"`.
+
+**For comparison, the same 92 stores in the reference file span $2.32–$4.00 across 21 distinct
+prices.** The two measurements share almost no information.
+
+### The one genuinely useful result
+
+Both datasets were regressed on ZIP racial composition over the **same 74 SC stores**, income
+controlled:
+
+| Price measure | %Black coefficient |
+|---|---|
+| Bright Data zipcode template | +0.00184 (t **+0.89**) |
+| Known SC shelf price | −0.00046 (t **−0.09**) |
+
+**Two independent measurements of SC Walmart milk, one of them badly contaminated, and both
+return null on race.** That is a weak form of robustness — a contaminated instrument agreeing
+with a clean one is not strong evidence — but it points the same way as everything else in this
+project: `why_sc_varies.md` (SC's spread is a metro discount, %Black t = −0.13),
+`within_metro_test.md` (Atlanta null, permutation p = 0.65), and `zone_vs_override.md` (SC rural
+t = +0.33).
+
+**Conclusion for the SC question: the scrape is done, the price field cannot support the
+analysis, and the analysis it cannot support was already null on the clean data.**
