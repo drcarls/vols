@@ -1,4 +1,4 @@
-.PHONY: help install demo test serve load-test clean reset
+.PHONY: help install demo test serve load-test sensitivity clean reset
 
 VENV ?= .venv
 PY   := $(VENV)/bin/python
@@ -10,6 +10,7 @@ help:
 	@echo "test       run the test suite"
 	@echo "serve      start the API and dashboard on :8000"
 	@echo "load-test  generate 10,000 synthetic domains and time a full run"
+	@echo "sensitivity  sweep the priors and ablate the ranking components"
 	@echo "reset      drop and recreate the database (destructive)"
 	@echo "clean      remove caches and the generated database"
 
@@ -30,6 +31,9 @@ serve:
 load-test:
 	$(PY) scripts/generate_test_csv.py 10000 data/load_test_SYNTHETIC.csv
 	$(PY) scripts/load_test.py
+
+sensitivity:
+	$(PY) scripts/sensitivity.py
 
 reset:
 	$(PY) -c "import sys; sys.path.insert(0,'.'); from app.db.init_db import reset_db; reset_db(); print('database reset')"

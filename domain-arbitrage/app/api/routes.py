@@ -22,6 +22,7 @@ from fastapi.responses import PlainTextResponse
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
+from app.analysis import sensitivity as sensitivity_mod
 from app.analysis.signal_power import analyse as analyse_signals
 from app.config import get_settings
 from app.db.base import get_db
@@ -477,6 +478,32 @@ def paper_performance(db: Session = Depends(get_db)) -> dict[str, Any]:
 def signal_power(db: Session = Depends(get_db)) -> dict[str, Any]:
     """Which signals actually predict resale? Including 'we don't know yet'."""
     return analyse_signals(db).to_dict()
+
+
+@router.get("/analysis/sensitivity")
+def sensitivity(run_id: int | None = None,
+                include_ablations: bool = True,
+                db: Session = Depends(get_db)) -> dict[str, Any]:
+    """Which conclusions survive being wrong about the priors?
+
+    Sweeps each prior across a grid and ablates each ranking component, then
+    reports rank stability and level movement SEPARATELY. A stable ranking can
+    be acted on before calibration even though every dollar figure is a guess;
+    an unstable one cannot.
+
+    Expensive on a large corpus - it re-scores the cohort once per grid point.
+    """
+    return sensitivity_mod.analyse(
+        db, run_id=run_id, include_ablations=include_ablations).to_dict()
+
+
+@router.get("/analysis/sensitivity/text", response_class=PlainTextResponse)
+def sensitivity_text(run_id: int | None = None,
+                     include_ablations: bool = True,
+                     db: Session = Depends(get_db)) -> str:
+    report = sensitivity_mod.analyse(db, run_id=run_id,
+                                     include_ablations=include_ablations)
+    return sensitivity_mod.render_text(report)
 
 
 @router.get("/analysis/coverage")

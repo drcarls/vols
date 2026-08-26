@@ -131,3 +131,65 @@ def get_scoring_config(path: str | None = None) -> ScoringConfig:
 
     resolved = Path(path) if path else get_settings().scoring_config_path
     return load_scoring_config(resolved)
+
+
+def with_overrides(cfg: ScoringConfig, overrides: dict[str, Any],
+                   *, label: str | None = None) -> ScoringConfig:
+    """Return a copy of ``cfg`` with dotted-path values replaced.
+
+    Used by the sensitivity harness to build config variants without touching
+    the YAML on disk. The copy is deep, so a variant can never leak back into
+    the shared configuration.
+
+    ``label`` is recorded under ``meta.variant_label`` so a variant's identity
+    travels with it, and the content digest changes with every override - two
+    variants can never be confused for one another.
+    """
+    import copy
+
+    raw = copy.deepcopy(cfg.raw)
+    for path, value in overrides.items():
+        parts = path.split(".")
+        node = raw
+        for part in parts[:-1]:
+            if part not in node or not isinstance(node[part], dict):
+                raise KeyError(f"no such config section: {path!r}")
+            node = node[part]
+        if parts[-1] not in node:
+            raise KeyError(f"no such config key: {path!r}")
+        node[parts[-1]] = value
+    if label:
+        raw.setdefault("meta", {})["variant_label"] = label
+    return ScoringConfig(raw, cfg.path)
+
+
+def renormalised_weights(cfg: ScoringConfig, component: str,
+                         weight: float) -> dict[str, float]:
+    """Set one opportunity weight and rescale the rest to keep the sum at 1.0.
+
+    Rescaling proportionally rather than uniformly means the *relative* standing
+    of the untouched components is preserved, so a sweep over one weight
+    measures that weight's effect and nothing else.
+    """
+    weights = dict(cfg.get("opportunity.weights"))
+    if component not in weights:
+        raise KeyError(f"unknown opportunity component: {component!r}")
+    if not 0.0 <= weight <= 1.0:
+        raise ValueError("weight must be in [0, 1]")
+
+    others = {k: v for k, v in weights.items() if k != component}
+    others_total = sum(others.values())
+    if others_total <= 0:
+        raise ValueError("cannot rescale: all other weights are zero")
+
+    scale = (1.0 - weight) / others_total
+    out = {k: round(v * scale, 6) for k, v in others.items()}
+    out[component] = round(weight, 6)
+
+    # Absorb float drift into the largest untouched component so the sum is
+    # exactly 1.0 and ScoringConfig.validate() passes.
+    drift = 1.0 - sum(out.values())
+    if abs(drift) > 1e-12 and others:
+        largest = max(others, key=lambda k: out[k])
+        out[largest] = round(out[largest] + drift, 12)
+    return out

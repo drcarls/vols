@@ -52,8 +52,9 @@ is the correct answer, not a bug.
 ```bash
 make install      # python3.12 venv + dependencies
 make demo         # full pipeline on the bundled example data
-make test         # 129 tests
+make test         # 158 tests
 make serve        # dashboard + API on http://localhost:8000
+make sensitivity  # which conclusions survive being wrong about the priors?
 ```
 
 `make demo` runs with `ALLOW_FIXTURE_DATA=true` and synthetic example companies,
@@ -111,7 +112,10 @@ domain-arbitrage/
 │   │   ├── paper_portfolio.py     frozen predictions, observed outcomes
 │   │   ├── portfolio.py           budget allocation
 │   │   └── report.py              daily opportunity report
-│   ├── analysis/signal_power.py   does buyer depth actually predict?
+│   ├── analysis/
+│   │   ├── signal_power.py    does buyer depth actually predict?
+│   │   ├── rescore.py         replay the config-dependent stages in memory
+│   │   └── sensitivity.py     which conclusions survive being wrong?
 │   └── templates/dashboard.html
 ├── config/scoring_v0.yaml         EVERY weight, with rationales
 ├── data/
@@ -388,7 +392,10 @@ Verified end to end:
   resolved outcomes.
 - **Signal-power analysis** — Spearman correlation and AUC per signal against
   observed outcomes, with a plain-language verdict on the buyer-depth hypothesis.
-- **API + dashboard** — 19 endpoints, `/docs`, and a single-page dashboard whose
+- **Sensitivity and ablation analysis** — sweeps every prior across a grid and
+  ablates each ranking component, reporting rank stability and level movement
+  separately. See §9.
+- **API + dashboard** — 21 endpoints, `/docs`, and a single-page dashboard whose
   every row links into the audit trail.
 
 ### Performance
@@ -433,7 +440,7 @@ source. It is that no coefficient has been checked against reality.
 
 ## 6. Tests
 
-129 tests, ~11 seconds.
+158 tests, ~18 seconds.
 
 ```bash
 make test
@@ -450,6 +457,7 @@ make test
 | `test_pipeline.py` | ingest, stage separation, ranking, determinism |
 | `test_paper_portfolio.py` | frozen predictions, outcomes, withheld statistics, portfolio caps |
 | `test_api.py` | every endpoint, audit-trail completeness, dashboard |
+| `test_sensitivity.py` | re-score fidelity, rank statistics, sweep and ablation harness |
 
 The tests that matter most are in `test_integrity.py` and assert things a
 reviewer would otherwise have to police by hand:
@@ -527,6 +535,102 @@ where most listings are overpriced, or evidence that the base rate is too
 pessimistic. **Which one it is cannot be settled from inside the model** — only
 by recording outcomes. It is the first thing calibration should resolve.
 
+The sensitivity analysis in §9 sharpens this: the *levels* move with the base
+rate (the median recommended bid swings 1.6× across a 12× change in the prior)
+but the *ranking* largely does not. So the AVOID-heavy verdict is a statement
+about the levels, which are unverified — while the ordering underneath it is
+comparatively stable and can be acted on now.
+
+---
+
+## 9. Sensitivity: which conclusions survive being wrong?
+
+Every weight here is a hand-set prior, so the useful question is not whether the
+model is right — it plainly is not yet — but which of its conclusions hold up if
+the priors are wrong.
+
+```bash
+make sensitivity                        # or: python scripts/sensitivity.py
+curl localhost:8000/api/analysis/sensitivity/text
+```
+
+The harness re-scores the whole cohort once per grid point. It does **not**
+re-run the pipeline: features, classification, buyer matching and comparable
+search do not depend on the scoring config, so `app/analysis/rescore.py`
+reloads the stored stage inputs and replays only valuation → probability →
+decision. A test asserts that a baseline re-score reproduces every stored score
+exactly — without that, every sweep number would be reconstruction noise rather
+than config sensitivity.
+
+Rank stability and level movement are reported **separately** and never blended
+into one reassuring number.
+
+### Findings on the 10,000-domain corpus
+
+**The ranking is robust to the base sell-through rate.** Across a 12× swing
+(0.5% → 6%), the baseline top 50 keeps at least 80% of its membership and
+Kendall tau stays at 0.73 or above. Over the same grid the median recommended
+maximum bid moves 1.6×.
+
+That is the answer to the question the harness was built for: **the relative
+ordering carries information that the dollar figures do not.** It is reasonable
+to paper-buy off the ranking now, treating every currency amount as unverified.
+
+**But the buyer-depth weight matters more than the base rate does.** Sweeping it
+from 0.0 to 0.35 changes up to 30% of the top 50 — more than a 12× swing in the
+sell-through prior. Which names surface depends more on one hand-set judgement
+about the hypothesis than on the most consequential probability in the model.
+
+**Component ablation — zero each weight, rescale the rest:**
+
+| Component | Configured | Effective | Gap | Coverage | Diagnosis |
+|---|---|---|---|---|---|
+| buyer_depth | 15% | 35% | +20% | 100% | load-bearing |
+| capital_efficiency | 15% | 18% | +2% | 100% | load-bearing |
+| liquidity | 5% | 18% | +12% | 100% | load-bearing |
+| sale_probability | 15% | 15% | +0% | 100% | load-bearing |
+| brandability | 7% | 10% | +3% | 100% | minor contributor |
+| valuation_gap | 20% | 2% | −18% | 100% | **redundant** |
+| buyer_quality | 8% | 2% | −6% | 100% | **redundant** |
+| commercial_intent | 8% | 0% | −8% | **0%** | **no data** |
+| comparable_confidence | 7% | 0% | −7% | **0%** | **no data** |
+
+"Effective" is the component's share of total measured influence; "coverage" is
+the fraction of domains where it had data at all.
+
+Three things fall out of that table, and the distinction between them matters:
+
+1. **`valuation_gap` carries the largest configured weight (20%) and produces 2%
+   of the discrimination.** It is not starved of data — it varies by 39 points
+   across the corpus. It is *redundant*: `capital_efficiency` already encodes
+   price-versus-value, so removing either leaves the other doing the same job.
+   The config is describing a model that is not the model being run.
+
+2. **`commercial_intent` and `comparable_confidence` show zero influence because
+   they are MISSING for every domain**, not because they are worthless. 15% of
+   the configured weight is sitting on components that are constant, and
+   therefore discriminate nothing. That is a missing data source, and the fix is
+   a provider, not a weight change. The harness reports these two cases
+   differently on purpose — collapsing them would quietly argue for deleting
+   exactly the signals not yet sourced.
+
+3. **`liquidity` gets 5% of the weight and 18% of the influence.**
+
+### What has deliberately *not* been done about this
+
+The weights have not been changed. Re-tuning them to match measured influence
+would be fitting the config to one corpus of *synthetic* load-test names with no
+outcome data behind it — the precise failure mode this design exists to avoid.
+The redundancy is now documented; whether to merge `valuation_gap` into
+`capital_efficiency` is a modelling decision to make deliberately, ideally after
+running the harness against real inventory.
+
+**Influence is a property of the corpus, not of the model.** A corpus of
+near-identical names makes almost everything look redundant. The figures above
+come from combinatorially generated test domains; run the harness against the
+inventory you actually screen before acting on any of them. The report emits
+this warning on every run.
+
 ---
 
 ## 8. Recommended Phase 2
@@ -560,17 +664,20 @@ form for interpretability; keep the walk.
 positions, replacing the `coefficients` block in the YAML. Report a calibration
 curve, not just an AUC. Set `meta.calibrated: true` only when this is done.
 
-**6. Sensitivity and ablation tooling.** A script that re-scores the corpus
-across a grid of base sell-through rates and weight vectors, and reports how
-much the *ranking* moves. If the top 50 is stable across a 3× swing in the base
-rate, the ranking is more robust than the levels — worth knowing before trusting
-either.
+**6. Resolve the `valuation_gap` / `capital_efficiency` redundancy.** §9 shows
+the largest configured weight producing almost none of the discrimination.
+Decide whether they are one component or two, on the inventory you actually
+screen rather than on the synthetic load-test corpus. Cheap, and it makes the
+config an honest description of the running model.
 
 **7. Live listing feeds.** Poll registrar auction APIs into `listings` on a
 schedule, so prices and auction end times stop going stale between imports.
 
 **8. Operational hardening.** Alembic migrations, PostgreSQL, background jobs
 for the pipeline, and authentication before this is exposed beyond localhost.
+
+*(Sensitivity and ablation tooling was Phase 2 item 6 in the original plan and
+is now built — see §9. Its findings are what reordered the list above.)*
 
 ### Deliberately *not* in Phase 2
 
