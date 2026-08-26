@@ -1,0 +1,26 @@
+# Domain Arbitrage Intelligence Engine - runtime dependencies
+# Pinned to the versions this was built and tested against.
+
+fastapi==0.141.1
+uvicorn[standard]==0.52.4
+python-multipart==0.0.32      # multipart CSV upload
+jinja2==3.1.6                 # dashboard template
+
+sqlalchemy==2.0.52            # ORM; PostgreSQL-ready, SQLite by default
+pydantic==2.13.4
+pydantic-settings==2.15.0
+python-dotenv==1.2.3
+
+pandas==3.0.5                 # CSV ingestion and feature processing
+pyyaml==6.0.3                 # scoring configuration
+
+# Corpus word frequencies. Provides the dictionary, the word-segmentation
+# language model and the familiarity signal. Not optional: the deterministic
+# feature layer depends on it.
+wordfreq==3.1.1
+
+# --- optional, activate a provider ---
+# anthropic>=0.40             # LLM_PROVIDER=anthropic (semantic classification)
+# psycopg[binary]>=3.2        # DATABASE_URL=postgresql+psycopg://...
+# alembic>=1.13               # migrations, once SQLite is replaced
+# publicsuffix2>=2.2          # full Public Suffix List (see app/services/normalize.py)

@@ -1,0 +1,287 @@
+# =============================================================================
+# SCORING CONFIGURATION - VERSION V0
+# =============================================================================
+#
+# READ THIS BEFORE TRUSTING ANY NUMBER THIS FILE PRODUCES.
+#
+# Every constant below is a HAND-SET PRIOR. None of them has been fitted to
+# observed domain sale outcomes, because this repository ships with no outcome
+# data. They are deliberately few, deliberately round, and deliberately crude.
+#
+# The purpose of V0 is NOT to value domains accurately. It is to:
+#   1. make the plumbing work end to end,
+#   2. force every intermediate quantity to be stored and auditable,
+#   3. give the paper portfolio something to record predictions against,
+#      so that V1 can be *fitted* rather than *asserted*.
+#
+# Rules for editing this file:
+#   - Prefer round numbers. A weight of 0.25 is honest about being a guess;
+#     a weight of 0.2734 pretends to a precision nobody has.
+#   - Every constant needs a `rationale` explaining where it came from.
+#   - Bump `meta.version` on any change. The version is stamped onto every
+#     score row so old predictions stay reproducible.
+#
+# The central empirical question this configuration is built to test:
+#   Does buyer depth (count of credible end buyers x their economic value)
+#   predict resale better than traditional metrics (search volume, CPC)?
+# See `signal_experiment` at the bottom.
+# =============================================================================
+
+meta:
+  version: "v0.1.0"
+  calibrated: false
+  calibration_note: >-
+    UNCALIBRATED. No coefficient here was fitted to observed sales. Treat all
+    valuations as order-of-magnitude priors, not estimates.
+
+# -----------------------------------------------------------------------------
+# VALUATION
+# -----------------------------------------------------------------------------
+# Structure:  retail_mid = base(tld) * PRODUCT(multipliers), then optionally
+# blended with comparable-sale evidence in log space.
+# Multiplicative form is used so each factor's contribution is separable and
+# can be logged individually for the explanation layer.
+valuation:
+  # Anchor: crude prior for the retail value of a *median, unremarkable*
+  # two-word registrable name on each TLD, before any adjustment.
+  # rationale: order-of-magnitude figures from public wholesale/retail price
+  # ranges. Replace with fitted medians once comparable sales are loaded.
+  retail_base_usd_by_tld:
+    com: 2500
+    io: 1200
+    ai: 1500
+    co: 800
+    net: 600
+    org: 600
+    _default: 300
+
+  # Each multiplier is clipped to [min, max] so no single factor can dominate.
+  multipliers:
+    length:
+      # rationale: shorter names are worth more, but the effect is smooth and
+      # bounded. Uses second-level-domain character count.
+      by_length: {3: 6.0, 4: 3.0, 6: 1.8, 8: 1.3, 10: 1.1, 14: 1.0, 18: 0.7, 25: 0.4}
+      min: 0.3
+      max: 6.0
+    word_count:
+      # rationale: one- and two-word names sell; three-plus are a much harder sell.
+      by_count: {1: 2.5, 2: 1.0, 3: 0.5, 4: 0.25}
+      default: 0.15
+      min: 0.15
+      max: 2.5
+    dictionary:
+      # rationale: names built from real dictionary words are easier to price,
+      # spell and remember than invented strings.
+      all_words_dictionary: 1.3
+      some_words_dictionary: 1.0
+      no_words_dictionary: 0.6
+    defects:
+      # rationale: hyphens and digits are well-known, large retail discounts.
+      hyphen: 0.35
+      digit: 0.45
+    brandability:
+      # Scales linearly between the two endpoints on brandability score 0..100.
+      at_score_0: 0.5
+      at_score_100: 1.8
+    commercial_intent:
+      # Driven by CPC / advertiser competition when available.
+      # NOTE: when keyword data is MISSING this multiplier is forced to 1.0 and
+      # a confidence penalty is applied instead of guessing a value.
+      at_score_0: 0.6
+      at_score_100: 2.5
+      missing_data_multiplier: 1.0
+      missing_data_confidence_penalty: 0.25
+    buyer_depth:
+      # *** THE HYPOTHESIS UNDER TEST ***
+      # rationale: a name is only worth end-user money if identifiable end users
+      # exist. V0 gives buyer depth a deliberately MODERATE weight so that the
+      # signal-power analysis can measure its predictive value without the
+      # ranking already being circularly dominated by it.
+      at_depth_0: 0.5
+      at_depth_1: 0.9
+      at_depth_5: 1.3
+      at_depth_20: 1.8
+      at_depth_50: 2.2
+      max: 2.5
+      missing_data_multiplier: 1.0
+      missing_data_confidence_penalty: 0.30
+
+  # Range width around the midpoint. Wider when confidence is low. These are
+  # ratios applied to retail_mid.
+  ranges:
+    low_ratio_at_high_confidence: 0.65
+    high_ratio_at_high_confidence: 1.7
+    low_ratio_at_low_confidence: 0.30
+    high_ratio_at_low_confidence: 3.2
+
+  # rationale: investor-to-investor (wholesale) clearing prices are a well-known
+  # fraction of end-user retail. 0.15 is a conservative round figure.
+  wholesale_ratio_of_retail: 0.15
+  wholesale_range_spread: 0.5
+
+  # Strategic value is only computed when at least one buyer clears
+  # `min_buyer_value_score`; otherwise it is reported MISSING, not zero.
+  strategic:
+    multiple_of_retail_high: 2.5
+    min_buyer_value_score: 70
+
+  # Blending with comparable sales, in log space, weighted by comp confidence.
+  comparables:
+    max_blend_weight: 0.6
+    rationale: >-
+      Comparable sales, when we have them, are the only OBSERVED price evidence
+      in the system, so they get up to 60% of the weight. They never get 100%
+      because comp sets are small and survivorship-biased.
+
+# -----------------------------------------------------------------------------
+# PROBABILITY OF SALE
+# -----------------------------------------------------------------------------
+# Transparent log-odds model:
+#     logit(p_annual) = logit(base_rate) + SUM(coefficient_i * z_i)
+# where each z_i is a bounded, centred driver in roughly [-1, +1].
+# Every term is stored individually so a probability can be taken apart.
+probability:
+  # rationale: commonly cited annual sell-through for retail-priced domain
+  # portfolios is ~1-2%. 0.015 is the round middle of that. This is the single
+  # most consequential number in the model - it sets the scale of every
+  # expected value. It is a prior, not a measurement.
+  base_annual_sell_through: 0.015
+
+  # Coefficients are in log-odds. +0.8 is roughly "doubles the odds".
+  # All are hand-set. Sign is asserted from domain-industry reasoning; magnitude
+  # is a guess with a deliberate bias toward small.
+  coefficients:
+    buyer_depth: 1.20          # *** hypothesis under test: given the largest coefficient
+    buyer_quality: 0.60
+    commercial_intent: 0.40
+    brandability: 0.35
+    tld_liquidity: 0.50
+    length_penalty: 0.35       # applied to a centred "shortness" driver
+    word_count_penalty: 0.30
+    price_vs_retail: 0.45      # cheap relative to retail -> easier to move
+    comparable_frequency: 0.30
+    category_liquidity: 0.25
+
+  # Multi-year rollup. Independent-hazard assumption with a decay: a name that
+  # has not sold in year 1 is slightly less likely to sell in year 2.
+  # rationale: the best names sell first; the residual pool is worse.
+  hazard_decay_per_year: 0.85
+
+  # Hard clamps so no domain is ever reported as a near-certainty.
+  min_annual_probability: 0.001
+  max_annual_probability: 0.25
+
+  tld_liquidity:
+    # rationale: relative ease of resale by extension. Ordinal, not measured.
+    com: 1.0
+    io: 0.55
+    ai: 0.55
+    co: 0.4
+    net: 0.35
+    org: 0.3
+    _default: 0.1
+
+# -----------------------------------------------------------------------------
+# ECONOMICS
+# -----------------------------------------------------------------------------
+economics:
+  annual_renewal_cost_usd: 11.0
+  transaction_cost_rate: 0.15     # marketplace/broker commission at sale
+  transfer_cost_usd: 0.0
+  # Discount applied to expected sale value when setting a maximum bid.
+  # rationale: the model is uncalibrated; a large margin of safety is the only
+  # defence against that. 0.5 means "bid at most half of modelled EV".
+  margin_of_safety: 0.5
+  # Used for the annualised opportunity score.
+  cost_of_capital_annual: 0.10
+  # Value recovered from a domain that does NOT sell at retail within the
+  # horizon, as a fraction of modelled wholesale value. Valuing the unsold
+  # branch at zero would be plainly wrong - an unsold name can be liquidated
+  # into the investor market - but recovery is slow and lossy, so this is well
+  # below 1.0. Set to 0.0 to model a pure write-off.
+  # rationale: round guess at forced-liquidation recovery. UNMEASURED.
+  unsold_residual_ratio_of_wholesale: 0.5
+
+# -----------------------------------------------------------------------------
+# OPPORTUNITY RANKING
+# -----------------------------------------------------------------------------
+# The final rank is a weighted sum of nine normalised (0..100) components.
+# Weights sum to 1.0. Each component is stored separately so that "why did A
+# beat B" is answerable by subtracting component vectors.
+opportunity:
+  weights:
+    valuation_gap: 0.20
+    capital_efficiency: 0.15
+    sale_probability: 0.15
+    buyer_depth: 0.15          # *** hypothesis under test
+    buyer_quality: 0.08
+    commercial_intent: 0.08
+    comparable_confidence: 0.07
+    brandability: 0.07
+    liquidity: 0.05
+
+  # Confidence multiplier: a high score built on missing data is discounted.
+  # final = raw_score * (confidence_floor + (1-confidence_floor)*confidence)
+  confidence_floor: 0.55
+
+  # Expected-ROI scale used to normalise capital efficiency to 0..100.
+  # rationale: a 2.0x expected return over the horizon maps to 100.
+  roi_scale_for_full_marks: 2.0
+  valuation_gap_multiple_for_full_marks: 10.0
+
+recommendation:
+  # Thresholds on the final opportunity score plus hard gates.
+  strong_buy_min_score: 80
+  buy_min_score: 65
+  watch_min_score: 45
+  # Hard gates - failing any of these caps the recommendation at WATCH or below,
+  # regardless of score.
+  min_expected_roi_for_buy: 0.25
+  min_buyers_for_buy: 1
+  avoid_if_expected_profit_below: 0.0
+
+# -----------------------------------------------------------------------------
+# PORTFOLIO SCENARIOS
+# -----------------------------------------------------------------------------
+portfolio:
+  scenarios:
+    conservative:
+      max_fraction_per_domain: 0.10
+      max_fraction_per_category: 0.30
+      min_opportunity_score: 70
+      min_buyer_count: 3
+      min_confidence: 0.5
+    balanced:
+      max_fraction_per_domain: 0.20
+      max_fraction_per_category: 0.45
+      min_opportunity_score: 55
+      min_buyer_count: 1
+      min_confidence: 0.3
+    aggressive:
+      max_fraction_per_domain: 0.35
+      max_fraction_per_category: 0.70
+      min_opportunity_score: 40
+      min_buyer_count: 0
+      min_confidence: 0.0
+
+# -----------------------------------------------------------------------------
+# SIGNAL EXPERIMENT
+# -----------------------------------------------------------------------------
+# Declares the signals whose predictive power the analysis module measures
+# against paper-portfolio outcomes. Registering a signal here does not affect
+# ranking; it only tells `app/analysis/signal_power.py` what to score.
+signal_experiment:
+  primary_hypothesis: >-
+    buyer_depth_value (count of credible end buyers weighted by their economic
+    value) predicts resale outcomes better than search_volume or CPC.
+  signals:
+    - buyer_depth_count
+    - buyer_depth_value
+    - buyer_quality_max
+    - search_volume
+    - cpc
+    - brandability
+    - length
+    - word_count
+    - asking_price
+    - retail_value_mid

@@ -1,0 +1,42 @@
+company_name,company_domain,industry,keywords,employee_count,revenue_usd,funding_usd,funding_currency,last_funding_date,evidence_url,country
+[EXAMPLE-SYNTHETIC] Northwind Fleet Analytics,fleetanalytics.io,logistics,fleet;analytics;telematics,140,22000000,18000000,USD,2025-11-04,,US
+[EXAMPLE-SYNTHETIC] Getfleetanalytics Ltd,getfleetanalytics.com,logistics,fleet;analytics;dispatch,45,6000000,,,,,UK
+[EXAMPLE-SYNTHETIC] Cobalt Telematics,cobalt-telematics.co,logistics,telematics;fleet;trucking,310,54000000,,,,,US
+[EXAMPLE-SYNTHETIC] Ridgeline Freight Systems,ridgelinefreightsystems.net,logistics,freight;trucking;dispatch,880,190000000,,,,,US
+[EXAMPLE-SYNTHETIC] Fleet Analytics Group,myfleetanalyticshq.com,logistics,fleet;analytics,22,2400000,,,,,CA
+[EXAMPLE-SYNTHETIC] Meridian Data Center Cooling,datacentercooling.io,manufacturing,cooling;datacenter;hvac;chiller,260,71000000,,,,,US
+[EXAMPLE-SYNTHETIC] Glacier Thermal Systems,glacier-thermal-systems.net,manufacturing,cooling;chiller;hvac;industrial,410,120000000,,,,,US
+[EXAMPLE-SYNTHETIC] CoolStack Industrial,getcoolstack.com,manufacturing,cooling;datacenter;compressor,75,14000000,9000000,USD,2026-02-18,,DE
+[EXAMPLE-SYNTHETIC] Berlin Roofing GmbH,berlinroofing.de,construction,roofing;construction;contractor,60,9000000,,,,,DE
+[EXAMPLE-SYNTHETIC] Berlin Dach und Roofing,berlin-roofing.com,construction,roofing;contractor,35,4100000,,,,,DE
+[EXAMPLE-SYNTHETIC] Hauptstadt Roofing Contractors,hauptstadtroofingcontractors.de,construction,roofing;contractor;construction,90,12000000,,,,,DE
+[EXAMPLE-SYNTHETIC] Apex Roofing Co,apexroofing.net,construction,roofing;contractor,120,18000000,,,,,US
+[EXAMPLE-SYNTHETIC] Apex Roofing Solutions,getapexroofing.com,construction,roofing;siding,48,7200000,,,,,US
+[EXAMPLE-SYNTHETIC] Summit Roofing Partners,summitroofingpartners.com,construction,roofing;construction,210,31000000,,,,,US
+[EXAMPLE-SYNTHETIC] Zen Payroll Services,zenpayroll.co,hr,payroll;hr;benefits,190,40000000,25000000,USD,2025-08-12,,US
+[EXAMPLE-SYNTHETIC] Quantum Payroll Inc,quantum-payroll.com,hr,payroll;workforce;hr,65,11000000,,,,,US
+[EXAMPLE-SYNTHETIC] Brightline Workforce,brightlineworkforce.io,hr,payroll;staffing;hiring,150,28000000,12000000,USD,2026-01-22,,US
+[EXAMPLE-SYNTHETIC] Peak Cybersecurity Labs,peakcybersecurity.io,cybersecurity,security;threat;soc,88,17000000,14000000,USD,2026-03-30,,IL
+[EXAMPLE-SYNTHETIC] Cloud Security Works,cloudsecurity.co,cybersecurity,security;cloud;encryption,240,62000000,,,,,US
+[EXAMPLE-SYNTHETIC] Sentinel Threat Systems,sentinelthreatsystems.net,cybersecurity,security;threat;malware,520,140000000,,,,,US
+[EXAMPLE-SYNTHETIC] Harbor Logistics Partners,harborlogistics.net,logistics,logistics;freight;warehouse,430,98000000,,,,,US
+[EXAMPLE-SYNTHETIC] Coldchain Logistics Group,coldchainlogistics.co,logistics,coldchain;logistics;freight;warehouse,275,66000000,,,,,NL
+[EXAMPLE-SYNTHETIC] Freight Audit Solutions,freight-audit.com,logistics,freight;audit;logistics,110,21000000,,,,,US
+[EXAMPLE-SYNTHETIC] Warehouse Robotics Systems,warehouserobotics.io,ai,robotics;warehouse;automation,180,35000000,60000000,USD,2026-04-15,,US
+[EXAMPLE-SYNTHETIC] Solar Panel Finance Co,solarpanelfinance.net,finance,solar;finance;lending,55,9500000,,,,,US
+[EXAMPLE-SYNTHETIC] Helio Capital Partners,heliocapitalpartners.com,finance,solar;energy;investment,95,24000000,,,,,ES
+[EXAMPLE-SYNTHETIC] London Wealth Advisors,londonwealth.co.uk,finance,wealth;investment;advisory,140,44000000,,,,,UK
+[EXAMPLE-SYNTHETIC] CFO Advisory Group,cfoadvisory.io,finance,accounting;advisory;cfo,70,13000000,,,,,US
+[EXAMPLE-SYNTHETIC] Turbine Services International,turbineservices.net,energy,turbine;energy;maintenance,650,175000000,,,,,UK
+[EXAMPLE-SYNTHETIC] Nordic Seafood Trading,nordicseafood.no,food,seafood;food;wholesale,320,88000000,,,,,NO
+[EXAMPLE-SYNTHETIC] Austin Plumbers LLC,austinplumbers.net,construction,plumbing;contractor,28,3300000,,,,,US
+[EXAMPLE-SYNTHETIC] Vet Clinic Software Inc,vetclinicsoftware.io,software,veterinary;software;clinic,42,6800000,5000000,USD,2025-12-09,,US
+[EXAMPLE-SYNTHETIC] EdTech Platform Group,edtechplatform.co,education,edtech;learning;platform,130,26000000,20000000,USD,2026-05-20,,US
+[EXAMPLE-SYNTHETIC] Brightpath AI Systems,brightpath.io,ai,ai;automation;agents,58,9200000,31000000,USD,2026-06-11,,US
+[EXAMPLE-SYNTHETIC] Senior Care Placement Network,seniorcareplacement.net,health,care;senior;placement,85,15000000,,,,,US
+[EXAMPLE-SYNTHETIC] Dental Implants Dallas,dentalimplantsdallas.net,health,dental;implants;clinic,18,2600000,,,,,US
+[EXAMPLE-SYNTHETIC] HVAC Lead Gen Co,hvac-leadgen.com,marketing,hvac;leads;marketing,25,3100000,,,,,US
+[EXAMPLE-SYNTHETIC] Truck Insurance Quotes Group,truckinsurancequotes.net,insurance,truck;insurance;quotes,64,12000000,,,,,US
+[EXAMPLE-SYNTHETIC] My Truck Parts Direct,mytruckparts.net,automotive,truck;parts;automotive,40,7400000,,,,,US
+[EXAMPLE-SYNTHETIC] Pet Grooming Supply Co,petgroomingsupply.net,pets,pet;grooming;supply,15,1900000,,,,,US
+[EXAMPLE-SYNTHETIC] Data Warehouse Consulting Partners,datawarehouseconsulting.net,data,data;warehouse;analytics,52,10500000,,,,,US

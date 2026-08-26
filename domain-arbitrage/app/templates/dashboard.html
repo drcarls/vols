@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Domain Arbitrage Engine</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+         margin: 0; padding: 1.5rem; line-height: 1.45; }
+  h1 { font-size: 1.35rem; margin: 0 0 .2rem; }
+  h2 { font-size: 1rem; margin: 1.6rem 0 .5rem; text-transform: uppercase;
+       letter-spacing: .06em; opacity: .75; }
+  .sub { opacity: .65; font-size: .8rem; margin-bottom: 1rem; }
+  .banner { border: 2px solid #b45309; background: #fef3c7; color: #7c2d12;
+            padding: .7rem .9rem; margin: 1rem 0; font-size: .82rem; }
+  .banner strong { display: block; margin-bottom: .3rem; }
+  .banner ul { margin: .3rem 0 0; padding-left: 1.1rem; }
+  table { border-collapse: collapse; width: 100%; font-size: .78rem; }
+  th, td { padding: .3rem .5rem; text-align: right; border-bottom: 1px solid #8883; }
+  th { text-align: right; font-weight: 600; opacity: .7; white-space: nowrap; }
+  th:nth-child(2), td:nth-child(2) { text-align: left; }
+  td.rec { text-align: center; font-weight: 700; }
+  .STRONG_BUY { color: #047857; } .BUY { color: #059669; }
+  .WATCH { color: #b45309; } .PASS { color: #6b7280; } .AVOID { color: #b91c1c; }
+  .gap { color: #b91c1c; font-size: .68rem; }
+  .cards { display: flex; flex-wrap: wrap; gap: .8rem; margin: .6rem 0 0; }
+  .card { border: 1px solid #8884; padding: .5rem .8rem; min-width: 8rem; }
+  .card .n { font-size: 1.3rem; font-weight: 700; }
+  .card .l { font-size: .7rem; opacity: .65; text-transform: uppercase; }
+  a { color: inherit; }
+  details { margin: .4rem 0; font-size: .78rem; }
+  summary { cursor: pointer; opacity: .8; }
+  code { background: #8881; padding: .05rem .25rem; }
+</style>
+</head>
+<body>
+
+<h1>Domain Arbitrage Intelligence Engine</h1>
+<div class="sub">
+  scoring config <code>{{ cfg.stamp }}</code> &middot;
+  run {{ report.run_id }} &middot; generated {{ report.generated_at[:19] }}
+</div>
+
+<div class="banner">
+  <strong>&#9888; This model is UNCALIBRATED</strong>
+  {{ cfg.calibration_note }}
+  {% if report.warnings %}
+  <ul>
+    {% for w in report.warnings %}<li>{{ w }}</li>{% endfor %}
+  </ul>
+  {% endif %}
+</div>
+
+<div class="cards">
+  <div class="card"><div class="n">{{ report.summary.get('domains_scored', 0) }}</div>
+    <div class="l">scored</div></div>
+  <div class="card"><div class="n">{{ report.summary.get('with_buyers', 0) }}</div>
+    <div class="l">with buyers</div></div>
+  <div class="card"><div class="n">{{ report.summary.get('positive_expected_profit', 0) }}</div>
+    <div class="l">positive EV</div></div>
+  <div class="card"><div class="n">{{ performance.paper_bought }}</div>
+    <div class="l">paper buys</div></div>
+  <div class="card"><div class="n">{{ performance.resolved }}</div>
+    <div class="l">outcomes known</div></div>
+</div>
+
+<h2>Top opportunities</h2>
+{% if not report.entries %}
+<p>No scored domains. Import a CSV via <code>POST /api/import</code> then run
+   <code>POST /api/pipeline/run</code>.</p>
+{% else %}
+<table>
+<thead><tr>
+  <th>#</th><th>Domain</th><th>Price</th><th>Retail (low&ndash;high)</th>
+  <th>P(24m)</th><th>Buyers</th><th>Max bid</th><th>Exp. profit</th>
+  <th>ROI</th><th>Score</th><th>Conf</th><th>Rec</th>
+</tr></thead>
+<tbody>
+{% for e in report.entries %}
+<tr>
+  <td>{{ e.rank }}</td>
+  <td><a href="/api/domains/{{ e.domain }}/explain">{{ e.domain }}</a>
+      {% if e.data_gaps %}<div class="gap">missing: {{ e.data_gaps|join(', ') }}</div>{% endif %}</td>
+  <td>{% if e.asking_price is not none %}${{ '{:,.0f}'.format(e.asking_price) }}{% else %}<span class="gap">MISSING</span>{% endif %}</td>
+  <td>${{ '{:,.0f}'.format(e.retail_low) }}&ndash;${{ '{:,.0f}'.format(e.retail_high) }}</td>
+  <td>{{ '{:.1%}'.format(e.prob_sale_24m) }}</td>
+  <td>{{ e.buyer_count }}</td>
+  <td>{% if e.recommended_max_bid is not none %}${{ '{:,.0f}'.format(e.recommended_max_bid) }}{% else %}&ndash;{% endif %}</td>
+  <td>{% if e.expected_profit_24m is not none %}${{ '{:,.0f}'.format(e.expected_profit_24m) }}{% else %}&ndash;{% endif %}</td>
+  <td>{% if e.expected_roi_24m is not none %}{{ '{:.0%}'.format(e.expected_roi_24m) }}{% else %}&ndash;{% endif %}</td>
+  <td>{{ '{:.0f}'.format(e.opportunity_score) }}</td>
+  <td>{{ '{:.0%}'.format(e.confidence) }}</td>
+  <td class="rec {{ e.recommendation }}">{{ e.recommendation.replace('_', ' ') }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+<h2>Why the top name ranks where it does</h2>
+{% set top = report.entries[0] %}
+<details open>
+  <summary><strong>{{ top.domain }}</strong> &mdash; score
+    {{ '{:.0f}'.format(top.opportunity_score) }}/100</summary>
+  <ul>{% for r in top.top_reasons %}<li>{{ r }}</li>{% endfor %}</ul>
+  <p><strong>Risks</strong></p>
+  <ul>{% for r in top.risks %}<li>{{ r }}</li>{% endfor %}</ul>
+  <p><strong>Buyers</strong></p>
+  <ul>{% for b in top.top_buyers %}
+    <li>{{ b.company_name }} ({{ b.company_domain or 'no domain' }}) &mdash;
+        fit {{ '{:.0f}'.format(b.match_score) }}/100, {{ b.match_type }}
+        [{{ b.provenance }}]</li>
+  {% endfor %}</ul>
+</details>
+{% endif %}
+
+<h2>Model performance</h2>
+{% if performance.sufficient_data %}
+<div class="cards">
+  <div class="card"><div class="n">{{ '{:.1%}'.format(performance.observed_sale_rate) }}</div><div class="l">observed sale rate</div></div>
+  <div class="card"><div class="n">{{ '{:.1%}'.format(performance.mean_predicted_prob_24m) }}</div><div class="l">predicted</div></div>
+  <div class="card"><div class="n">{{ performance.false_positives }}</div><div class="l">false positives</div></div>
+  <div class="card"><div class="n">{{ performance.false_negatives }}</div><div class="l">false negatives</div></div>
+</div>
+{% else %}
+<p style="font-size:.8rem">
+  {% for n in performance.notes %}{{ n }}<br>{% endfor %}
+</p>
+{% endif %}
+
+<h2>Recent runs</h2>
+<table>
+<thead><tr><th>Run</th><th>Started</th><th>Scored</th><th>Config</th><th>Status</th></tr></thead>
+<tbody>
+{% for r in runs %}
+<tr><td>{{ r.id }}</td><td>{{ r.started_at.isoformat()[:19] }}</td>
+    <td>{{ r.domains_scored }}</td><td>{{ r.scoring_config_stamp }}</td>
+    <td>{{ r.status }}</td></tr>
+{% endfor %}
+</tbody>
+</table>
+
+<h2>Endpoints</h2>
+<p style="font-size:.78rem">
+  <a href="/docs">/docs</a> &middot;
+  <a href="/api/report/text">/api/report/text</a> &middot;
+  <a href="/api/domains">/api/domains</a> &middot;
+  <a href="/api/analysis/signal-power">/api/analysis/signal-power</a> &middot;
+  <a href="/api/analysis/coverage">/api/analysis/coverage</a> &middot;
+  <a href="/api/paper/performance">/api/paper/performance</a> &middot;
+  <a href="/api/config">/api/config</a>
+</p>
+
+</body>
+</html>

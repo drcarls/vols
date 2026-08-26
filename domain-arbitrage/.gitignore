@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.env
+data/*.db
+data/*.db-wal
+data/*.db-shm
+data/load_test_SYNTHETIC.csv
