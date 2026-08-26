@@ -24,7 +24,7 @@ from sqlalchemy.orm import Session
 from app.api.routes import router
 from app.config import REPO_ROOT
 from app.db.base import get_db
-from app.db.init_db import init_db
+from app.db.init_db import SchemaDriftError, init_db
 from app.models.analysis import PipelineRun
 from app.scoring.config import get_scoring_config
 from app.services.paper_portfolio import performance
@@ -35,7 +35,11 @@ logging.basicConfig(level=logging.INFO,
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
-    init_db()
+    try:
+        init_db()
+    except SchemaDriftError as exc:
+        logging.getLogger(__name__).error("%s", exc)
+        raise
     cfg = get_scoring_config()
     logging.getLogger(__name__).info(
         "scoring config %s (calibrated=%s)", cfg.stamp, cfg.calibrated)

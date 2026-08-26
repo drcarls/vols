@@ -31,6 +31,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.models.paper import PaperPosition
+from app.services.paper_portfolio import TESTABLE_OUTCOMES
 from app.scoring.config import ScoringConfig, get_scoring_config
 
 # Below this many resolved outcomes, no correlation is reported at all. Chosen
@@ -126,8 +127,7 @@ def analyse(session: Session, cfg: ScoringConfig | None = None) -> SignalPowerRe
     signals: list[str] = list(experiment.get("signals", []))
 
     positions = session.execute(select(PaperPosition)).scalars().all()
-    resolved = [p for p in positions
-                if p.outcome in {"SOLD", "UNSOLD", "EXPIRED_UNSOLD"}]
+    resolved = [p for p in positions if p.outcome in TESTABLE_OUTCOMES]
 
     report = SignalPowerReport(
         hypothesis=str(experiment.get("primary_hypothesis", "")).strip(),

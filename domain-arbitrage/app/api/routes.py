@@ -31,11 +31,14 @@ from app.models.analysis import (BuyerCandidate, ComparableMatch,
                                  SaleProbability, Valuation)
 from app.models.core import Domain, DomainFeatures, Enrichment, ImportBatch, Listing
 from app.models.paper import PaperPosition
-from app.schemas.api import (IngestResponse, ObservationRequest,
-                             PaperPositionRequest, PortfolioRequest,
-                             RankedResponse, RankedRow, RunRequest, RunResponse)
+from app.schemas.api import (CloseWindowRequest, IngestResponse,
+                             ObservationRequest, PaperPositionRequest,
+                             PortfolioRequest, RankedResponse, RankedRow,
+                             RunRequest, RunResponse, SampleRequest)
 from app.scoring.config import get_scoring_config
 from app.services import paper_portfolio as paper_svc
+from app.services import paper_sampler as sampler
+from app.services import reconcile as reconcile_svc
 from app.services import portfolio as portfolio_svc
 from app.services import report as report_svc
 from app.services.ingest import ingest_csv
@@ -463,6 +466,87 @@ def add_observation(request: ObservationRequest,
             "warning": (None if request.evidence_url else
                         "No evidence_url supplied. This outcome cannot be "
                         "independently verified later.")}
+
+
+@router.post("/paper/sample")
+def sample_positions(request: SampleRequest,
+                     db: Session = Depends(get_db)) -> dict[str, Any]:
+    """Open a stratified cohort of paper positions.
+
+    Samples across score bands AND buyer-depth bands so the cohort can measure
+    recall as well as precision, and can tell buyer depth apart from the score
+    it contributes to. Defaults to a dry run - read the plan's warnings before
+    committing, because a confounded cohort never becomes informative.
+    """
+    try:
+        result = sampler.draw_sample(
+            db, size=request.size, cohort=request.cohort, run_id=request.run_id,
+            seed=request.seed, max_price=request.max_price,
+            dry_run=request.dry_run)
+    except paper_svc.PaperPortfolioError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    if request.dry_run:
+        db.rollback()
+    else:
+        db.commit()
+    payload = result.to_dict()
+    if not request.dry_run:
+        payload["health"] = sampler.cohort_health(db, request.cohort).to_dict()
+    return payload
+
+
+@router.get("/paper/cohorts/{cohort}/health")
+def cohort_health(cohort: str, db: Session = Depends(get_db)) -> dict[str, Any]:
+    """Can this cohort answer the question it was drawn for?
+
+    Structural check, independent of outcomes. Worth running the day a cohort
+    is drawn rather than eighteen months later.
+    """
+    return sampler.cohort_health(db, None if cohort == "all" else cohort).to_dict()
+
+
+@router.post("/paper/reconcile")
+async def reconcile_outcomes(file: UploadFile = File(...),
+                             source: str = Query(default="sales_export"),
+                             dry_run: bool = Query(default=True),
+                             db: Session = Depends(get_db)) -> dict[str, Any]:
+    """Record SOLD for open positions appearing in a sales export.
+
+    Positive evidence only. Positions absent from the file are left open: a
+    public feed covers part of the market, so absence is not evidence of a
+    failure to sell.
+    """
+    payload = await file.read()
+    sales, problems = reconcile_svc.read_sales(payload)
+    report = reconcile_svc.reconcile(db, sales, source=source, dry_run=dry_run)
+    report.sales_unparseable = len(problems)
+    report.problems = problems[:50]
+    if dry_run:
+        db.rollback()
+    else:
+        db.commit()
+    return report.to_dict()
+
+
+@router.post("/paper/close-window")
+def close_window(request: CloseWindowRequest,
+                 db: Session = Depends(get_db)) -> dict[str, Any]:
+    """Resolve positions whose modelled horizon has elapsed.
+
+    Marks them CENSORED unless ``observation_was_complete`` asserts that a sale
+    would have reached you. Censored positions are excluded from every
+    statistic, which loses power - the correct trade against counting invisible
+    sales as failures.
+    """
+    report = reconcile_svc.close_observation_window(
+        db, horizon_months=request.horizon_months,
+        observation_was_complete=request.observation_was_complete,
+        source=request.source, dry_run=request.dry_run)
+    if request.dry_run:
+        db.rollback()
+    else:
+        db.commit()
+    return report.to_dict()
 
 
 @router.get("/paper/performance")

@@ -54,12 +54,26 @@ class PaperPosition(Base):
 
     # Signal snapshot: exactly the values the signal-power analysis will test.
     signal_snapshot: Mapped[dict] = mapped_column(JSON, default=dict)
+
+    # Which sampling batch and stratum this position came from. Recorded so the
+    # analysis can check whether the cohort actually spans the score and
+    # buyer-depth ranges - a sample drawn only from the model's own top picks
+    # can measure precision but never recall, and cannot falsify anything.
+    sample_cohort: Mapped[str | None] = mapped_column(String(64), default=None,
+                                                      index=True)
+    sample_stratum: Mapped[str | None] = mapped_column(String(64), default=None,
+                                                       index=True)
     config_stamp: Mapped[str] = mapped_column(String(64), default="")
     notes: Mapped[str | None] = mapped_column(Text, default=None)
 
     # --- resolved outcome (filled in later, from observations) ---
     outcome: Mapped[str | None] = mapped_column(String(32), default=None, index=True)
-    # SOLD | UNSOLD | LOST_AUCTION | EXPIRED_UNSOLD | UNKNOWN
+    # SOLD | UNSOLD | LOST_AUCTION | EXPIRED_UNSOLD | CENSORED | UNKNOWN
+    #
+    # CENSORED means the observation window closed while the domain was still
+    # unsold and still inside its modelled horizon. That is NOT the same as
+    # UNSOLD, and treating it as such would bias the measured sale rate
+    # downward. Censored positions are excluded from the testable set.
     outcome_price: Mapped[float | None] = mapped_column(Float, default=None)
     outcome_date: Mapped[_dt.datetime | None] = mapped_column(UtcDateTime, default=None)
     outcome_resolved_at: Mapped[_dt.datetime | None] = mapped_column(UtcDateTime, default=None)

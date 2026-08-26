@@ -52,9 +52,10 @@ is the correct answer, not a bug.
 ```bash
 make install      # python3.12 venv + dependencies
 make demo         # full pipeline on the bundled example data
-make test         # 158 tests
+make test         # 207 tests
 make serve        # dashboard + API on http://localhost:8000
 make sensitivity  # which conclusions survive being wrong about the priors?
+make paper-buy    # draw a stratified paper cohort (dry run first)
 ```
 
 `make demo` runs with `ALLOW_FIXTURE_DATA=true` and synthetic example companies,
@@ -110,6 +111,8 @@ domain-arbitrage/
 │   │   ├── pipeline.py            stage orchestration
 │   │   ├── providers_registry.py  which sources are live for a run
 │   │   ├── paper_portfolio.py     frozen predictions, observed outcomes
+│   │   ├── paper_sampler.py       stratified cohort sampling
+│   │   ├── reconcile.py           resolve positions against observed sales
 │   │   ├── portfolio.py           budget allocation
 │   │   └── report.py              daily opportunity report
 │   ├── analysis/
@@ -390,12 +393,15 @@ Verified end to end:
 - **Paper portfolio** — frozen predictions with a signal snapshot, observation
   recording, and a performance report that *withholds statistics* below ten
   resolved outcomes.
+- **Stratified sampling and reconciliation** — draw a falsifiable cohort across
+  score and buyer-depth bands, resolve it against a sales export, and check
+  whether the cohort can answer the question it was drawn for. See §10.
 - **Signal-power analysis** — Spearman correlation and AUC per signal against
   observed outcomes, with a plain-language verdict on the buyer-depth hypothesis.
 - **Sensitivity and ablation analysis** — sweeps every prior across a grid and
   ablates each ranking component, reporting rank stability and level movement
   separately. See §9.
-- **API + dashboard** — 21 endpoints, `/docs`, and a single-page dashboard whose
+- **API + dashboard** — 25 endpoints, `/docs`, and a single-page dashboard whose
   every row links into the audit trail.
 
 ### Performance
@@ -440,7 +446,7 @@ source. It is that no coefficient has been checked against reality.
 
 ## 6. Tests
 
-158 tests, ~18 seconds.
+207 tests, ~25 seconds.
 
 ```bash
 make test
@@ -458,6 +464,7 @@ make test
 | `test_paper_portfolio.py` | frozen predictions, outcomes, withheld statistics, portfolio caps |
 | `test_api.py` | every endpoint, audit-trail completeness, dashboard |
 | `test_sensitivity.py` | re-score fidelity, rank statistics, sweep and ablation harness |
+| `test_paper_sampler.py` | stratification, cohort health, reconciliation, censoring |
 
 The tests that matter most are in `test_integrity.py` and assert things a
 reviewer would otherwise have to police by hand:
@@ -633,16 +640,150 @@ this warning on every run.
 
 ---
 
+## 10. Collecting outcome data
+
+Everything above is uncalibrated. This is the machinery for changing that.
+
+```bash
+python scripts/paper_buy.py --size 200 --cohort 2026Q3 --dry-run   # read the warnings
+python scripts/paper_buy.py --size 200 --cohort 2026Q3             # commit the cohort
+python scripts/reconcile_outcomes.py sales_export.csv --source namebio
+python scripts/paper_buy.py --health --cohort 2026Q3
+```
+
+### Why the cohort is stratified, and not just the top N
+
+**Paper-buying the model's own top picks measures precision but never recall.**
+It answers "of the names we liked, how many sold?" but not "did the names we
+passed on sell just as often?" — and the second question is the one that decides
+whether the score means anything. A model tested only on its own selections
+cannot be falsified. So the sampler deliberately draws PASS and AVOID names as a
+control group, and records what the model *would* have done rather than only
+what we would have bought.
+
+**Stratifying on score alone would confound buyer depth with score.** Buyer depth
+contributes 15% of the opportunity score, so a score-ranked sample
+over-represents high-depth names at the top. Any measured association between
+depth and resale could equally be an association between *score* and resale. To
+tell them apart the cohort needs high-depth/low-score and low-depth/high-score
+names in it on purpose.
+
+So sampling runs over a two-dimensional grid — score band × buyer-depth band —
+allocating as evenly as supply allows and reporting exactly which cells it could
+not fill. On the 10,000-domain corpus:
+
+```
+stratum                             avail  want   got
+  score_00_30|buyers_0               3321    25    25
+  score_00_30|buyers_1_2             2811    25    25
+  score_00_30|buyers_3_9             1331    25    25
+  score_30_45|buyers_0                122    25    25
+  score_30_45|buyers_1_2             1142    25    25
+  score_30_45|buyers_3_9              831    25    25
+  score_45_55|buyers_1_2              116    25    25
+  score_45_55|buyers_3_9              326    25    25
+
+200 position(s)   by recommendation: {'AVOID': 89, 'PASS': 61, 'WATCH': 50}
+
+  ! No positions in score band(s): score_55_65, score_65_plus.
+  ! No positions in buyer-depth band(s): buyers_10_plus.
+```
+
+`--health` runs the structural check, independent of any outcomes. Worth running
+the day a cohort is drawn: a confounded or one-sided sample will not become
+informative by waiting, and finding out immediately is far cheaper than finding
+out in eighteen months. It reports whether buyer depth varies *within* score
+bands (if it never does, the two are collinear and no volume of outcomes will
+separate them) and whether a control group exists at all.
+
+Sampling is deterministic given `--seed`, so a cohort is reproducible.
+
+### Absence from a sales feed is not evidence of no sale
+
+This is the integrity hazard of the whole exercise. Public sale feeds cover a
+fraction of the market — private deals, brokered transfers, and marketplaces that
+publish nothing are all invisible. Marking a position UNSOLD because it did not
+appear in one export biases the measured sale rate **downward**, in precisely the
+direction that would make an over-pessimistic base rate look correct.
+
+So the two operations are separate and behave differently:
+
+| Operation | Does | Never does |
+|---|---|---|
+| `reconcile` | records SOLD for positions that appear in the export | resolves anything as unsold |
+| `close_observation_window` | resolves positions past their horizon | marks UNSOLD unless you assert the window was complete |
+
+`close_observation_window` marks positions **CENSORED** by default — the
+observation stopped, which is a fact about us, not about the domain. Censored
+positions are excluded from every statistic. That loses statistical power, and
+losing power is the right trade against silently counting invisible sales as
+failures. Passing `--observation-complete` is you asserting that a sale of any of
+these domains *would* have reached you; only then are they marked UNSOLD, and the
+report says so loudly.
+
+### End-to-end mechanism check
+
+The loop was verified by generating a synthetic sales file in which buyer depth
+genuinely drives the sale probability, then running sample → reconcile → analyse:
+
+```
+sampled 200 across 8 strata
+matched 49 sales; 151 marked unsold
+observed rate 0.245  |  mean predicted p24 0.043  |  calibration gap +0.202
+
+signal                  n  cover     AUC     rho    lift
+buyer_depth_count     200   100%   0.641   0.223    1.63
+buyer_depth_value     200   100%   0.631   0.204    1.60
+buyer_quality_max     200   100%   0.581   0.126    1.24
+search_volume           0     0%       -       -       -
+cpc                     0     0%       -       -       -
+
+VERDICT: Strongest signal: buyer_depth_count (AUC 0.641, n=200). No keyword
+signals had coverage, so buyer depth cannot yet be compared against the
+traditional metrics.
+```
+
+**Those numbers are not evidence about domains.** The sales file was fabricated
+with a buyer-depth-dependent probability, so recovering that effect only shows
+the machinery detects an effect that is there. What it does confirm: the analysis
+correctly declined to declare the hypothesis supported, because the metrics it
+would need to compare against had zero coverage.
+
+### Schema changes
+
+Adding the sampling columns broke every database created before them —
+`create_all` makes missing tables but never alters existing ones. `init_db` now
+detects that and says so in one sentence instead of failing with a driver error
+far from the cause:
+
+```
+This database was created by an older version of the models and is missing
+columns that the code now selects:
+  paper_positions: missing column(s) sample_cohort, sample_stratum
+Recreate the database with `make reset` (destructive), or add the columns by
+hand if it holds paper positions you need to keep.
+```
+
+This is where Alembic starts earning its place. Until then the honest answer to
+a schema change is "recreate the database".
+
+---
+
 ## 8. Recommended Phase 2
 
 In priority order. The first item is worth more than the rest combined.
 
-**1. Get outcome data — nothing else matters until this exists.**
-Paper-buy 200–400 domains across the whole score range, including names the
-model rates PASS and AVOID (a model only tested on its own picks cannot be
-falsified). Reconcile monthly against a sales feed. Around 100 resolved outcomes,
+**1. Get outcome data — nothing else matters until this exists.** The machinery
+is now built (§10); what remains is running it against real inventory. Draw
+200–400 positions with `scripts/paper_buy.py`, check `--health` the same day,
+and reconcile monthly against a sales feed. Around 100 resolved outcomes,
 `/api/analysis/signal-power` starts producing a real verdict on the buyer-depth
 hypothesis; around 300, the probability coefficients can be fitted.
+
+Note what the sampler found on the load-test corpus: nothing scored above 55, so
+two score bands were unfillable, and the fixture company file is too small to
+produce any domain with 10+ buyers. Both are inventory problems that would make
+a real cohort weaker than it looks. Check them before drawing.
 
 **2. Load real comparable sales.** The largest single lift available to
 valuation accuracy, and the loader already exists. It converts the only

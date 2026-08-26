@@ -90,3 +90,31 @@ class ObservationRequest(BaseModel):
         description="Where this was observed. Strongly recommended: an outcome "
                     "without a source cannot be audited later.")
     note: str | None = None
+
+
+class SampleRequest(BaseModel):
+    size: int = Field(gt=0, le=5000, description="How many positions to open.")
+    cohort: str = Field(min_length=1, max_length=64,
+                        description="Label for this sampling batch.")
+    run_id: int | None = None
+    seed: int = Field(default=0, description="Sampling is deterministic given this seed.")
+    max_price: float | None = Field(default=None, gt=0)
+    dry_run: bool = Field(default=True,
+                          description="Defaults to true: read the warnings before "
+                                      "committing a cohort.")
+
+
+class ReconcileRequest(BaseModel):
+    source: str = "sales_export"
+    dry_run: bool = True
+
+
+class CloseWindowRequest(BaseModel):
+    horizon_months: int = Field(default=24, ge=1, le=120)
+    observation_was_complete: bool = Field(
+        default=False,
+        description="Assert that a sale of any open position WOULD have reached "
+                    "you over this period. Without it, positions are marked "
+                    "CENSORED rather than UNSOLD, and excluded from statistics.")
+    source: str = "manual"
+    dry_run: bool = True

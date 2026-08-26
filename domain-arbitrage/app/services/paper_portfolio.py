@@ -26,7 +26,13 @@ from app.models.paper import PaperObservation, PaperPosition
 from app.provenance import utcnow
 
 VALID_STATUSES = {"PAPER_BUY", "PAPER_WATCH", "PAPER_PASS", "CLOSED"}
-VALID_OUTCOMES = {"SOLD", "UNSOLD", "LOST_AUCTION", "EXPIRED_UNSOLD", "UNKNOWN"}
+VALID_OUTCOMES = {"SOLD", "UNSOLD", "LOST_AUCTION", "EXPIRED_UNSOLD",
+                  "CENSORED", "UNKNOWN"}
+
+# Outcomes that can be used to test a sale/no-sale prediction. LOST_AUCTION is
+# excluded because we never held the asset; CENSORED because the observation
+# simply stopped, which is not evidence the domain failed to sell.
+TESTABLE_OUTCOMES = {"SOLD", "UNSOLD", "EXPIRED_UNSOLD"}
 
 
 class PaperPortfolioError(ValueError):
@@ -86,7 +92,8 @@ def _signal_snapshot(session: Session, domain: Domain, score: OpportunityScore,
 
 def open_position(session: Session, domain_name: str, *,
                   status: str = "PAPER_BUY", run_id: int | None = None,
-                  notes: str | None = None) -> PaperPosition:
+                  notes: str | None = None, sample_cohort: str | None = None,
+                  sample_stratum: str | None = None) -> PaperPosition:
     """Freeze the current prediction for a domain as a paper position."""
     if status not in VALID_STATUSES:
         raise PaperPortfolioError(
@@ -137,7 +144,8 @@ def open_position(session: Session, domain_name: str, *,
         expected_roi_24m=score.expected_roi_24m,
         recommendation=score.recommendation,
         signal_snapshot=_signal_snapshot(session, domain, score, valuation, probability),
-        config_stamp=score.config_stamp, notes=notes)
+        config_stamp=score.config_stamp, notes=notes,
+        sample_cohort=sample_cohort, sample_stratum=sample_stratum)
     session.add(position)
     session.flush()
     return position
@@ -247,8 +255,7 @@ def performance(session: Session) -> PerformanceReport:
     # Positions where the outcome is decided by whether the domain sold. Lost
     # auctions are excluded: we never held the asset, so its sale says nothing
     # about our prediction.
-    testable = [p for p in resolved if p.outcome in {"SOLD", "UNSOLD",
-                                                     "EXPIRED_UNSOLD"}]
+    testable = [p for p in resolved if p.outcome in TESTABLE_OUTCOMES]
     if len(testable) < MIN_RESOLVED_FOR_STATS:
         report.notes.append(
             f"Only {len(testable)} resolved position(s) with a sale/no-sale "
