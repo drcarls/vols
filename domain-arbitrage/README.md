@@ -52,7 +52,7 @@ is the correct answer, not a bug.
 ```bash
 make install      # python3.12 venv + dependencies
 make demo         # full pipeline on the bundled example data
-make test         # 207 tests
+make test         # 244 tests
 make serve        # dashboard + API on http://localhost:8000
 make sensitivity  # which conclusions survive being wrong about the priors?
 make paper-buy    # draw a stratified paper cohort (dry run first)
@@ -108,6 +108,7 @@ domain-arbitrage/
 │   ├── services/
 │   │   ├── normalize.py           domain normalisation and dedupe
 │   │   ├── ingest.py              CSV import
+│   │   ├── feed_mapping.py        third-party export column mapping
 │   │   ├── pipeline.py            stage orchestration
 │   │   ├── providers_registry.py  which sources are live for a run
 │   │   ├── paper_portfolio.py     frozen predictions, observed outcomes
@@ -410,14 +411,16 @@ Measured with `make load-test` on 10,000 synthetic domains:
 
 | Stage | Time |
 |---|---|
-| ingest | 12.6 s |
-| pipeline (score all stages) | 23.4 s |
-| report (top 50) | 0.2 s |
-| portfolio allocation | 2.6 s |
-| peak memory | 542 MB |
+| ingest | 9.0 s |
+| pipeline (score all stages) | 12.0 s |
+| report (top 50) | 0.1 s |
+| portfolio allocation | 3.0 s |
+| peak memory | 533 MB |
 
 The success criterion — 10,000 domains in, ranked table with a defensible
-explanation for every number out — is met in about 40 seconds.
+explanation for every number out — is met in about 25 seconds. Timings vary by
+a factor of two with machine load; re-measure with `make load-test` rather than
+trusting this table.
 
 ---
 
@@ -446,7 +449,7 @@ source. It is that no coefficient has been checked against reality.
 
 ## 6. Tests
 
-207 tests, ~25 seconds.
+244 tests, ~14 seconds.
 
 ```bash
 make test
@@ -465,6 +468,7 @@ make test
 | `test_api.py` | every endpoint, audit-trail completeness, dashboard |
 | `test_sensitivity.py` | re-score fidelity, rank statistics, sweep and ablation harness |
 | `test_paper_sampler.py` | stratification, cohort health, reconciliation, censoring |
+| `test_feed_mapping.py` | column aliasing, refused lookalikes, ambiguity, sales-export detection |
 
 The tests that matter most are in `test_integrity.py` and assert things a
 reviewer would otherwise have to police by hand:
@@ -669,25 +673,51 @@ tell them apart the cohort needs high-depth/low-score and low-depth/high-score
 names in it on purpose.
 
 So sampling runs over a two-dimensional grid — score band × buyer-depth band —
-allocating as evenly as supply allows and reporting exactly which cells it could
-not fill. On the 10,000-domain corpus:
+allocating as evenly as supply allows.
+
+**Bands are quantiles of the corpus, not fixed thresholds.** The first version
+used absolute bands (0–30, 30–45, …, 65+) and two of them were unfillable. That
+looked like an inventory shortage and was not: with `commercial_intent` and
+`comparable_confidence` MISSING for every domain, 15 of the 100 raw score points
+are unreachable, and the confidence adjustment scales what remains — so the real
+ceiling on that corpus is about 48, not 100. **No inventory would ever have
+filled a band defined at 65+.**
+
+Absolute bands are a trap wherever data coverage is incomplete, which is
+always. Quantile bands are defined by the corpus's own distribution, so every
+band is populated by construction and means "the top fifth of what is actually
+available". The band edges are carried in the stratum label itself
+(`score_q5_ge32.85`) so two cohorts drawn from different corpora can never share
+a label while meaning different things. `--banding absolute` remains available
+for fixed-scale comparisons, with the caveat above.
+
+On the 10,000-domain corpus:
 
 ```
+banding: quantile  score edges [11.8, 17.6, 24.2, 32.9]  depth edges [1, 3]
+score ceiling: 48/100 (15 raw points unreachable: commercial_intent,
+                       comparable_confidence)
+
 stratum                             avail  want   got
-  score_00_30|buyers_0               3321    25    25
-  score_00_30|buyers_1_2             2811    25    25
-  score_00_30|buyers_3_9             1331    25    25
-  score_30_45|buyers_0                122    25    25
-  score_30_45|buyers_1_2             1142    25    25
-  score_30_45|buyers_3_9              831    25    25
-  score_45_55|buyers_1_2              116    25    25
-  score_45_55|buyers_3_9              326    25    25
+  score_q1_lt11.85|buyers_0          1625    11    11
+  score_q1_lt11.85|buyers_le1         352    10    10
+  score_q1_lt11.85|buyers_le3          22    10    10
+  score_q2_lt17.57|buyers_0           725    11    11
+  score_q2_lt17.57|buyers_le1         607    11    11
+  score_q2_lt17.57|buyers_le3         538    11    11
+  score_q2_lt17.57|buyers_gt3         130    10    10
+  ... 19 cells, all populated ...
+  score_q5_ge32.85|buyers_0            74    11    11
+  score_q5_ge32.85|buyers_le1         610    11    11
+  score_q5_ge32.85|buyers_le3         950    11    11
+  score_q5_ge32.85|buyers_gt3         367    10    10
 
-200 position(s)   by recommendation: {'AVOID': 89, 'PASS': 61, 'WATCH': 50}
-
-  ! No positions in score band(s): score_55_65, score_65_plus.
-  ! No positions in buyer-depth band(s): buyers_10_plus.
+200 position(s)   by recommendation: {'AVOID': 149, 'PASS': 38, 'WATCH': 13}
 ```
+
+Nineteen cells, every one populated, buyer depth varying within every score
+band. The only warning left is the honest one: the score ceiling is 48 because
+two data sources are unconfigured.
 
 `--health` runs the structural check, independent of any outcomes. Worth running
 the day a cohort is drawn: a confounded or one-sided sample will not become
@@ -769,6 +799,121 @@ a schema change is "recreate the database".
 
 ---
 
+## 11. Where to get real data
+
+Sourced August 2026. **Verify before committing money** — terms, pricing and API
+availability in this market change without notice, and several of these are
+explicitly licensed for particular uses.
+
+### Live inventory (domains currently for sale)
+
+| Source | What it gives | Access |
+|---|---|---|
+| **GoDaddy Auctions inventory files** | Every live expiry listing — closeouts, expiry auctions and other listing types — as downloadable files intended for import into databases and scripts | `inventory.auctions.godaddy.com`; GoDaddy also has Expiry APIs supporting bulk exact-match search, closeout instant purchase and bulk bidding |
+| **Dynadot API** | `get_open_auctions`, `get_auction_details`, `get_auction_bids`, `get_closed_auctions`, `get_expired_closeout_domains` | Documented API commands; account required |
+| **ExpiredDomains.net** | Daily lists across 676 TLDs, aggregating many registrars | Web UI and manual CSV export only — **no API**, public or paid. Budget for manual exports or a scraping layer |
+| **Karma.Domains** | Aggregates GoDaddy, NameJet, DropCatch, Dynadot and Namecheap hourly, with history and link checks | Third-party aggregator; saves running five integrations |
+| **Namecheap / NameSilo / Sav / Sedo / Park.io** | Each auctions its own expiring inventory; Park.io specialises in ccTLDs | Per-platform APIs and exports |
+
+Start with **one** source. The importer handles vendor column layouts (§ below),
+so adding a second is cheap once the first is working end to end.
+
+### Comparable sales (the empty table in §5)
+
+| Source | What it gives | Access |
+|---|---|---|
+| **NameBio** | 7M+ transactions, $3B+ in recorded sales; ~939 sales added on a single day in Aug 2026 | Free to search as a guest. Exports, sub-$100 sales history and **API access require paid Business membership**. API: `Comps` (25 credits, up to 25 comps for a domain), `CheckDomain`, `DailySales`, `TopSales`, `KeywordStats`. Free unauthenticated endpoints exist for `RetailStats`, `TLDStats` and Verisign drop order. Max 30 req/min, no multithreading, and **written permission is required to use API data in a commercial product** |
+| **DNJournal** | Weekly reported sales | Free, partial coverage |
+| **Sedo / Afternic / GoDaddy published sale lists** | Venue-specific reported sales | Free, partial |
+
+NameBio's `Comps` endpoint is close to a drop-in for this system's comparable
+module — it returns the same shape `scripts/load_comparables.py` expects.
+
+### Zone files (free, and the basis for your own drop detection)
+
+**ICANN CZDS** (`czds.icann.org`) gives approved users bulk DNS zone files across
+participating gTLDs — around 1,151 zones, roughly 1,079 approved at time of
+writing. Access is free for legitimate research, brand protection or market
+analysis; you apply per zone, approval lasts at least three months, and you may
+download each zone once per 24 hours.
+
+Day-over-day zone diffs give you registrations and drops without paying anyone.
+That is the cheapest route to a proprietary inventory signal — but read the CZDS
+terms: the access policy constrains use, and bulk registrant contact is
+explicitly out of scope.
+
+### Company data (the buyer-depth signal)
+
+The buyer provider needs a company file with domains and, ideally, economics.
+Options, roughly by cost:
+
+- **Free**: SEC EDGAR (US public companies), Companies House (UK), OpenCorporates
+  (registry data, API), Common Crawl host lists joined to an industry
+  classifier, Tranco / Majestic Million top-site lists.
+- **Paid**: Crunchbase (funding, the `funding_usd` and `last_funding_date`
+  fields), People Data Labs, Clearbit, BuiltWith.
+
+Coverage matters more than depth here. The sampler showed buyer depth is the most
+load-bearing component in the ranking (§9), so a company file covering more of
+the market is worth more than richer fields on a smaller one.
+
+### Keyword data
+
+Google Ads Keyword Planner (free with an active Ads account, coarse volume
+buckets), or Semrush / Ahrefs / DataForSEO exports. Any of them closes the
+`commercial_intent` gap that costs 8 of the 100 score points today.
+
+### Importing a vendor export
+
+Every marketplace uses different headers, so the importer maps them onto the
+canonical schema by matching alias sets — and **shows you the mapping before
+importing**:
+
+```bash
+python scripts/import_feed.py auctions.csv --source-label godaddy        # dry run
+python scripts/import_feed.py auctions.csv --source-label godaddy --yes  # commit
+```
+
+```
+proposed column mapping:
+  Auction End Time             -> auction_end_date
+  Bids                         -> bid_count
+  Current Bid                  -> current_bid
+  Domain                       -> domain
+  Traffic                      -> traffic
+  Estimated Value              -> REFUSED (an appraisal, not a price anyone is asking)
+  Renewal Price                -> REFUSED (the cost to renew, not to acquire)
+```
+
+Three refusals are deliberate, because each would corrupt every downstream number
+while looking entirely plausible:
+
+1. **Appraisal columns** (`Estimated Value`, `GoDaddy Value`, `appraisal`) are
+   never mapped to a price. They are someone else's model output. Feeding one in
+   as `asking_price` would make the system compare its valuation against another
+   valuation and call the agreement a finding.
+2. **Renewal, transfer, restore and reserve prices** are never mapped to
+   `asking_price` or `current_bid`. They are real prices for a different thing.
+3. **Completed-sales exports are refused entirely.** A NameBio-style file has
+   `sale_price` and `sale_date`; imported as listings, historical clearing prices
+   would read as today's asking prices, every domain would look fairly priced,
+   and the ranking would become noise. The importer detects the shape and points
+   you at `scripts/load_comparables.py` instead.
+
+Ambiguity also blocks an automatic import rather than warning: if two columns
+could both be the asking price, neither is mapped and the import stops, because
+silently proceeding without a price produces listings that look imported but can
+never yield an ROI, a maximum bid or a paper position. Resolve it explicitly:
+
+```bash
+python scripts/import_feed.py feed.csv --map "Buy It Now=asking_price" --yes
+```
+
+Unmapped columns are never discarded — they are retained on the listing's
+`raw_row`, so nothing from the source file is lost.
+
+---
+
 ## 8. Recommended Phase 2
 
 In priority order. The first item is worth more than the rest combined.
@@ -780,14 +925,18 @@ and reconcile monthly against a sales feed. Around 100 resolved outcomes,
 `/api/analysis/signal-power` starts producing a real verdict on the buyer-depth
 hypothesis; around 300, the probability coefficients can be fitted.
 
-Note what the sampler found on the load-test corpus: nothing scored above 55, so
-two score bands were unfillable, and the fixture company file is too small to
-produce any domain with 10+ buyers. Both are inventory problems that would make
-a real cohort weaker than it looks. Check them before drawing.
+Note what diagnosing the sampler's empty bands turned up: they were not an
+inventory shortage at all. With two providers unconfigured, 15 of 100 score
+points are unreachable and the effective ceiling is ~48, so absolute bands above
+that could never fill. Banding is now quantile-based and every band populates
+(§10) — but the ceiling is real, and closing it means configuring the keyword and
+comparable-sales providers (§11).
 
 **2. Load real comparable sales.** The largest single lift available to
 valuation accuracy, and the loader already exists. It converts the only
-OBSERVED price evidence in the system from absent to present.
+OBSERVED price evidence in the system from absent to present, and closes 7 of
+the 15 score points currently unreachable. NameBio's paid API is the obvious
+route (§11).
 
 **3. Build the real buyer provider.** The company file is the primary signal's
 bottleneck. A SERP-backed provider that finds companies you have never heard of

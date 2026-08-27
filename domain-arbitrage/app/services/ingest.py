@@ -22,6 +22,7 @@ from sqlalchemy.orm import Session
 
 from app.models.core import Domain, ImportBatch, Listing
 from app.provenance import utcnow
+from app.services.feed_mapping import apply_mapping, propose_mapping
 from app.services.normalize import NormalizationError, normalize_domain
 
 REQUIRED_COLUMNS = {"domain"}
@@ -43,6 +44,7 @@ class IngestReport:
     warnings: list[str] = field(default_factory=list)
     unknown_columns: list[str] = field(default_factory=list)
     missing_optional_columns: list[str] = field(default_factory=list)
+    column_mapping: dict[str, str] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         return dict(self.__dict__)
@@ -96,9 +98,30 @@ def read_csv(source: str | Path | bytes | io.IOBase) -> pd.DataFrame:
 
 
 def ingest_dataframe(session: Session, df: pd.DataFrame, *, filename: str,
-                     source_label: str | None = None) -> IngestReport:
-    """Normalise, deduplicate and persist a batch of listings."""
+                     source_label: str | None = None,
+                     column_mapping: dict[str, str] | None = None,
+                     auto_map: bool = False) -> IngestReport:
+    """Normalise, deduplicate and persist a batch of listings.
+
+    ``column_mapping`` renames third-party headers onto the canonical schema.
+    ``auto_map`` derives one with ``feed_mapping.propose_mapping`` - convenient,
+    but it will refuse a file whose columns are ambiguous rather than guess,
+    because a wrong price column corrupts every downstream number invisibly.
+    """
     report = IngestReport(rows_received=len(df))
+
+    if auto_map or column_mapping:
+        proposal = propose_mapping(list(df.columns))
+        mapping = dict(proposal.mapping)
+        mapping.update(column_mapping or {})     # explicit overrides win
+        if auto_map and not proposal.usable and not column_mapping:
+            raise ValueError(
+                "cannot import this file automatically:\n"
+                + proposal.describe()
+                + "\n\nResolve the ambiguity with an explicit column mapping.")
+        df = apply_mapping(df, mapping)
+        report.column_mapping = mapping
+        report.warnings.extend(proposal.warnings)
 
     missing_required = REQUIRED_COLUMNS - set(df.columns)
     if missing_required:
@@ -201,7 +224,10 @@ def ingest_dataframe(session: Session, df: pd.DataFrame, *, filename: str,
 
 def ingest_csv(session: Session, source: str | Path | bytes, *,
                filename: str | None = None,
-               source_label: str | None = None) -> IngestReport:
+               source_label: str | None = None,
+               column_mapping: dict[str, str] | None = None,
+               auto_map: bool = False) -> IngestReport:
     df = read_csv(source)
     name = filename or (str(source) if isinstance(source, (str, Path)) else "upload.csv")
-    return ingest_dataframe(session, df, filename=name, source_label=source_label)
+    return ingest_dataframe(session, df, filename=name, source_label=source_label,
+                            column_mapping=column_mapping, auto_map=auto_map)

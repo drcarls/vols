@@ -99,6 +99,12 @@ class SampleRequest(BaseModel):
     run_id: int | None = None
     seed: int = Field(default=0, description="Sampling is deterministic given this seed.")
     max_price: float | None = Field(default=None, gt=0)
+    banding: Literal["quantile", "absolute"] = Field(
+        default="quantile",
+        description="quantile bands are defined by the corpus's own score "
+                    "distribution and are always fillable; absolute bands use a "
+                    "fixed 0-100 scale whose top may be unreachable when data "
+                    "sources are missing.")
     dry_run: bool = Field(default=True,
                           description="Defaults to true: read the warnings before "
                                       "committing a cohort.")

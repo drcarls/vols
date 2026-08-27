@@ -482,7 +482,7 @@ def sample_positions(request: SampleRequest,
         result = sampler.draw_sample(
             db, size=request.size, cohort=request.cohort, run_id=request.run_id,
             seed=request.seed, max_price=request.max_price,
-            dry_run=request.dry_run)
+            banding=request.banding, dry_run=request.dry_run)
     except paper_svc.PaperPortfolioError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     if request.dry_run:

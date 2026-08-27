@@ -33,6 +33,15 @@ def _print_plan(result) -> None:
     plan = result.plan
     print(f"cohort {plan.cohort!r}  |  run {plan.run_id}  |  "
           f"{plan.eligible} eligible domain(s)")
+    if plan.banding:
+        print(f"banding: {plan.banding.kind}  score edges "
+              f"{[round(e, 1) for e in plan.banding.score_edges] or 'n/a'}  "
+              f"depth edges {plan.banding.depth_edges or 'n/a'}")
+    if plan.reachability.get("missing_components"):
+        print(f"score ceiling: {plan.reachability['final_score_ceiling']:.0f}/100 "
+              f"({plan.reachability['raw_points_unavailable']:.0f} raw points "
+              f"unreachable: "
+              f"{', '.join(plan.reachability['missing_components'])})")
     print(f"{'stratum':<34s} {'avail':>6s} {'want':>5s} {'got':>5s}")
     for cell in sorted(plan.cells, key=lambda c: c.stratum):
         if cell.available == 0 and cell.requested == 0:
@@ -78,6 +87,12 @@ def main() -> int:
     parser.add_argument("--seed", type=int, default=0,
                         help="sampling is deterministic given this seed")
     parser.add_argument("--max-price", type=float, default=None)
+    parser.add_argument("--banding", choices=("quantile", "absolute"),
+                        default="quantile",
+                        help="quantile bands come from the corpus's own score "
+                             "distribution and are always fillable; absolute "
+                             "bands use a fixed 0-100 scale whose top may be "
+                             "unreachable when data sources are missing")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--health", action="store_true",
                         help="report on an existing cohort instead of sampling")
@@ -94,7 +109,8 @@ def main() -> int:
         try:
             result = draw_sample(session, size=args.size, cohort=args.cohort,
                                  run_id=args.run_id, seed=args.seed,
-                                 max_price=args.max_price, dry_run=args.dry_run)
+                                 max_price=args.max_price,
+                                 banding=args.banding, dry_run=args.dry_run)
         except PaperPortfolioError as exc:
             print(f"error: {exc}", file=sys.stderr)
             return 1

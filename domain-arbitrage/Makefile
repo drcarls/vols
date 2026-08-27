@@ -1,4 +1,4 @@
-.PHONY: help install demo test serve load-test sensitivity paper-buy clean reset
+.PHONY: help install demo test serve load-test sensitivity paper-buy import-feed clean reset
 
 VENV ?= .venv
 PY   := $(VENV)/bin/python
@@ -12,6 +12,7 @@ help:
 	@echo "load-test  generate 10,000 synthetic domains and time a full run"
 	@echo "sensitivity  sweep the priors and ablate the ranking components"
 	@echo "paper-buy  draw a stratified paper cohort (dry run)"
+	@echo "import-feed FILE=x.csv  import a vendor export (shows the column mapping)"
 	@echo "reset      drop and recreate the database (destructive)"
 	@echo "clean      remove caches and the generated database"
 
@@ -38,6 +39,9 @@ sensitivity:
 
 paper-buy:
 	$(PY) scripts/paper_buy.py --size 200 --cohort default --dry-run
+
+import-feed:
+	$(PY) scripts/import_feed.py $(FILE) --source-label $(or $(LABEL),unknown)
 
 reset:
 	$(PY) -c "import sys; sys.path.insert(0,'.'); from app.db.init_db import reset_db; reset_db(); print('database reset')"

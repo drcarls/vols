@@ -23,25 +23,113 @@ from app.services.paper_portfolio import (TESTABLE_OUTCOMES, PaperPortfolioError
 # banding
 # --------------------------------------------------------------------------
 
+ABSOLUTE = sampler.Banding(kind="absolute")
+
+
 @pytest.mark.parametrize("score,expected", [
     (0.0, "score_00_30"), (29.9, "score_00_30"), (30.0, "score_30_45"),
     (54.9, "score_45_55"), (55.0, "score_55_65"), (99.0, "score_65_plus"),
 ])
-def test_score_banding(score, expected):
-    assert sampler.score_band(score) == expected
+def test_absolute_score_banding(score, expected):
+    assert ABSOLUTE.score_band(score) == expected
 
 
 @pytest.mark.parametrize("count,expected", [
     (0, "buyers_0"), (1, "buyers_1_2"), (2, "buyers_1_2"),
     (3, "buyers_3_9"), (9, "buyers_3_9"), (10, "buyers_10_plus"), (900, "buyers_10_plus"),
 ])
-def test_depth_banding(count, expected):
-    assert sampler.depth_band(count) == expected
+def test_absolute_depth_banding(count, expected):
+    assert ABSOLUTE.depth_band(count) == expected
 
 
-def test_zero_buyers_is_its_own_band():
+def test_zero_buyers_is_its_own_band_in_both_modes():
     """'No identifiable buyer' is a different state, not just a low count."""
-    assert sampler.depth_band(0) != sampler.depth_band(1)
+    assert ABSOLUTE.depth_band(0) != ABSOLUTE.depth_band(1)
+    quantile = sampler.build_banding([1.0, 2.0, 3.0, 4.0], [0, 1, 4, 9])
+    assert quantile.depth_band(0) == "buyers_0"
+    assert quantile.depth_band(1) != "buyers_0"
+
+
+# --------------------------------------------------------------------------
+# quantile banding - the fix for unreachable absolute bands
+# --------------------------------------------------------------------------
+
+def test_quantile_bands_are_all_populated_by_construction():
+    """The failure absolute banding has: a band nothing can ever fall into."""
+    scores = [float(i) for i in range(100)]        # nothing above 99
+    depths = [i % 7 for i in range(100)]
+    banding = sampler.build_banding(scores, depths, score_bins=5)
+    occupied = {banding.score_band(s) for s in scores}
+    assert len(occupied) == 5, "every quantile band must contain something"
+
+
+def test_quantile_bands_adapt_to_a_compressed_score_range():
+    """With missing data sources the top of the 0-100 scale is unreachable."""
+    compressed = [float(i) / 10 for i in range(200, 540)]   # 20.0 .. 53.9
+    banding = sampler.build_banding(compressed, [1] * len(compressed))
+    occupied = {banding.score_band(s) for s in compressed}
+    assert len(occupied) == 5
+    # The same corpus under absolute banding leaves two bands empty.
+    absolute_occupied = {ABSOLUTE.score_band(s) for s in compressed}
+    assert "score_65_plus" not in absolute_occupied
+    assert "score_55_65" not in absolute_occupied
+
+
+def test_quantile_band_labels_carry_their_edges():
+    """Two cohorts from different corpora must not share an ambiguous label."""
+    a = sampler.build_banding([float(i) for i in range(100)], [1] * 100)
+    b = sampler.build_banding([float(i) for i in range(1000)], [1] * 1000)
+    assert a.score_band(50.0) != b.score_band(50.0) or a.score_edges == b.score_edges
+    assert any(char.isdigit() for char in a.score_band(50.0))
+
+
+def test_lumpy_distributions_collapse_bands_rather_than_emptying_them():
+    banding = sampler.build_banding([5.0] * 50 + [9.0] * 50, [1] * 100,
+                                    score_bins=5)
+    occupied = {banding.score_band(s) for s in [5.0] * 50 + [9.0] * 50}
+    assert 1 <= len(occupied) <= 2, "ties must collapse, not produce empty bands"
+
+
+def test_absolute_banding_is_still_available():
+    banding = sampler.build_banding([10.0, 50.0, 90.0], [0, 5, 20],
+                                    kind="absolute")
+    assert banding.kind == "absolute"
+    assert banding.score_band(90.0) == "score_65_plus"
+
+
+# --------------------------------------------------------------------------
+# score reachability
+# --------------------------------------------------------------------------
+
+def test_reachability_deducts_missing_component_weights():
+    components = {
+        "a": {"weight": 0.20, "status": "MISSING"},
+        "b": {"weight": 0.30, "status": "OK"},
+        "c": {"weight": 0.50, "status": "OK"},
+    }
+    ceiling = sampler.reachable_score_ceiling(components, confidence=0.8)
+    assert ceiling["missing_components"] == ["a"]
+    assert ceiling["raw_points_unavailable"] == pytest.approx(20.0)
+    assert ceiling["raw_score_ceiling"] == pytest.approx(80.0)
+    assert ceiling["final_score_ceiling"] == pytest.approx(64.0)
+
+
+def test_reachability_is_full_when_nothing_is_missing():
+    components = {"a": {"weight": 1.0, "status": "OK"}}
+    ceiling = sampler.reachable_score_ceiling(components, confidence=1.0)
+    assert ceiling["raw_score_ceiling"] == pytest.approx(100.0)
+    assert ceiling["missing_components"] == []
+
+
+def test_plan_explains_an_unreachable_ceiling(scored_db):
+    """The example corpus has no comparable sales, so points are unreachable."""
+    result = sampler.draw_sample(scored_db, size=10, cohort="t1", dry_run=True)
+    reach = result.plan.reachability
+    assert "comparable_confidence" in reach["missing_components"]
+    assert reach["raw_score_ceiling"] < 100
+    assert any("unreachable because" in w for w in result.plan.warnings)
+    assert any("missing data source, not a shortage" in w
+               for w in result.plan.warnings)
 
 
 # --------------------------------------------------------------------------
@@ -162,10 +250,26 @@ def test_sampling_without_a_run_is_rejected(db):
         sampler.draw_sample(db, size=5, cohort="t1")
 
 
-def test_missing_bands_are_warned(scored_db):
-    result = sampler.draw_sample(scored_db, size=12, cohort="t1", dry_run=True)
-    # The example corpus has no domain scoring above 65, so that band is empty.
-    assert any("score band" in w for w in result.plan.warnings)
+def test_quantile_sampling_leaves_no_empty_score_band(scored_db):
+    """Under absolute banding this corpus left two bands unfillable."""
+    result = sampler.draw_sample(scored_db, size=20, cohort="t1", dry_run=True)
+    filled = [c for c in result.plan.cells if c.requested > 0]
+    assert filled
+    assert not any("does not span the score range" in w
+                   for w in result.plan.warnings)
+    assert result.plan.banding.kind == "quantile"
+
+
+def test_banding_choice_is_recorded_on_the_plan(scored_db):
+    result = sampler.draw_sample(scored_db, size=10, cohort="t1",
+                                 banding="absolute", dry_run=True)
+    assert result.plan.banding.kind == "absolute"
+    assert all(c.score_band.startswith("score_") for c in result.plan.cells)
+
+
+def test_invalid_banding_is_rejected(scored_db):
+    with pytest.raises(PaperPortfolioError, match="banding"):
+        sampler.draw_sample(scored_db, size=5, cohort="t1", banding="nonsense")
 
 
 # --------------------------------------------------------------------------
@@ -198,8 +302,8 @@ def test_cohort_health_flags_a_confounded_hand_picked_cohort(scored_db):
         .order_by(OpportunityScore.score.desc()).limit(3)).all()
     for score, domain in top:
         open_position(scored_db, domain.name, sample_cohort="handpicked",
-                      sample_stratum=sampler.stratum_key(score.score,
-                                                         score.buyer_count))
+                      sample_stratum=sampler.Banding(kind="absolute").stratum(
+                          score.score, score.buyer_count))
     health = sampler.cohort_health(scored_db, "handpicked")
     assert health.can_measure_recall is False
     assert any("cannot falsify" in w for w in health.warnings)
