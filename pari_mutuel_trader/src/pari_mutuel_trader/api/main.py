@@ -41,3 +41,13 @@ def agent_weights():
 @app.get("/attribution")
 def attribution():
     return {"attribution": load_state(STATE_PATH).get("attribution", {})}
+
+
+@app.get("/position_review")
+def position_review():
+    return load_state(STATE_PATH).get("position_review", {})
+
+
+@app.get("/redeploy_plan")
+def redeploy_plan():
+    return load_state(STATE_PATH).get("position_review", {}).get("redeploy_plan", {})

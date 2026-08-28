@@ -5,6 +5,7 @@ from .trend_quality import TrendQualityAgent
 from .news_intensity import NewsIntensityAgent
 from .macro_regime import MacroRegimeAgent
 from .house import HouseAgent
+from .valuation import ValuationAgent
 
 
 def build_v1_agents():
@@ -14,5 +15,6 @@ def build_v1_agents():
         TrendQualityAgent(),
         NewsIntensityAgent(),
         MacroRegimeAgent(),
+        ValuationAgent(),
         HouseAgent(),
     ]

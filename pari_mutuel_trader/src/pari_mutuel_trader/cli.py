@@ -72,6 +72,57 @@ def cmd_paper(args):
     print({"saved": cfg["data"]["state_path"], "metrics": payload["metrics"]})
 
 
+def cmd_review_positions(args):
+    import json
+    from datetime import datetime
+
+    from pari_mutuel_trader.valuation.book import run_review
+
+    print_python_banner()
+    as_of = datetime.strptime(args.as_of, "%Y-%m-%d").date() if args.as_of else None
+    payload = run_review(args.positions, as_of=as_of)
+
+    if args.json:
+        print(json.dumps(payload, indent=2))
+        return
+
+    summary = payload["summary"]
+    print(f"\nBook review as of {summary['as_of']}")
+    print(f"  market value          {summary['book_market_value']:,.0f}")
+    print(f"  weighted implied ret  {summary['weighted_implied_return']:.1%}")
+    print(f"  actions               {summary['actions']}")
+
+    header = "{:<8}{:<22}{:<15}{:>10}{:>10}{:>9}{:>9}{:>9}{:>11}"
+    row = "{:<8}{:<22}{:<15}{:>10.2f}{:>10.2f}{:>9.1%}{:>9.1%}{:>9.1%}{:>11.2f}"
+    print()
+    print(header.format("symbol", "action", "zone", "IV15", "IV8", "implied", "weight", "target", "after-tax"))
+    for d in payload["decisions"]:
+        print(row.format(
+            d["symbol"], d["action"], d["zone"], d["iv15"], d["iv8"], d["implied_return"],
+            d["current_weight"], d["target_weight"], d["after_tax_price"]))
+
+    print("\nDetail")
+    for d in payload["decisions"]:
+        if d["shares_to_sell"]:
+            print(f"  {d['symbol']}: sell {d['shares_to_sell']:,.0f} sh -> "
+                  f"{d['gross_proceeds']:,.0f} gross, {d['tax']:,.0f} tax, "
+                  f"{d['after_tax_proceeds']:,.0f} net "
+                  f"(replacement must earn {d['required_replacement_return']:.1%})")
+        else:
+            print(f"  {d['symbol']}: no trade; add level {d['add_level']:.2f}, trim level {d['trim_level']:.2f}")
+        for note in d["notes"]:
+            print(f"      - {note}")
+
+    plan = payload["redeploy_plan"]
+    print(f"\nRedeploy plan: {plan['harvested_after_tax']:,.0f} harvested after "
+          f"{plan['tax_paid']:,.0f} of tax")
+    for alloc in plan["allocations"]:
+        print(f"  {alloc['symbol']}: {alloc['amount']:,.0f} ({alloc['weight']:.1%}) "
+              f"priced for {alloc['implied_return']:.1%}")
+    if plan["undeployed"] > 0:
+        print(f"  unallocated: {plan['undeployed']:,.0f} - nothing else clears the hurdle")
+
+
 def cmd_doctor(_args):
     print_python_banner()
     print(f"Python version: {platform.python_version()}")
@@ -81,7 +132,8 @@ def cmd_doctor(_args):
         except Exception:
             print(f"{pkg}: not installed")
 
-    for path in ["configs/default.yaml", "configs/wfo.yaml", "data/raw", "data/processed", "data/state"]:
+    for path in ["configs/default.yaml", "configs/wfo.yaml", "configs/positions.example.yaml",
+                 "data/raw", "data/processed", "data/state"]:
         print(f"exists {path}: {Path(path).exists()}")
 
     print(f"TIINGO_API_KEY present: {bool(os.getenv('TIINGO_API_KEY'))}")
@@ -110,6 +162,12 @@ def main():
     pr = sp.add_parser("paper-run")
     pr.add_argument("--config", default="configs/default.yaml")
     pr.set_defaults(fn=cmd_paper)
+
+    rv = sp.add_parser("review-positions")
+    rv.add_argument("--positions", default="configs/positions.example.yaml")
+    rv.add_argument("--as-of", dest="as_of", default=None, help="YYYY-MM-DD; defaults to today")
+    rv.add_argument("--json", action="store_true")
+    rv.set_defaults(fn=cmd_review_positions)
 
     d = sp.add_parser("doctor")
     d.set_defaults(fn=cmd_doctor)

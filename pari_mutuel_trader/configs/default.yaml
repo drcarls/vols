@@ -1,6 +1,7 @@
 data:
   features_path: data/processed/features.parquet
   state_path: data/state/dashboard_state.json
+  positions_path: configs/positions.example.yaml
 portfolio:
   top_k: 25
   min_holdings: 20
@@ -8,6 +9,24 @@ portfolio:
   turnover_cap: 0.40
   rebalance_threshold: 0.01
   weighting: equal_weight
+valuation:
+  enabled: true
+  required_return: 0.15      # IV15 - the price that buys a 15% return
+  hold_return: 0.08          # IV8 - past this the business stops earning its keep
+  add_margin: 0.02           # extra return demanded before adding back
+  rich_band: 0.15            # tolerance past IV8 before a name is called expensive
+  conviction_weight: 0.08    # ceiling for spring-loaded names
+  core_weight: 0.06          # ceiling for names between IV15 and IV8
+  house_money_weight: 0.03   # stake kept in a rich but durable franchise
+  exit_durability: 0.45      # below this, a rich name is sold outright
+  redeploy_horizon_years: 5.0
+  switch_hurdle: 0.02        # margin an alternative must clear after tax
+  long_term_wait_days: 45
+tax:
+  federal_long_term: 0.20
+  federal_short_term: 0.37
+  state: 0.0
+  niit: 0.038
 learning:
   temperature: 1.0
   hedge_eta: 0.03

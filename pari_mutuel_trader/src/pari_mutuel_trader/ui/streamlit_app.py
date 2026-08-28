@@ -46,6 +46,34 @@ def main():
     st.subheader("Recent Rebalance Trades")
     st.dataframe(pd.DataFrame(state.get("rebalance_trades", [])))
 
+    review = state.get("position_review", {})
+    if review:
+        st.header("Position Review (IV15 / IV8, after tax)")
+        st.json(review.get("summary", {}))
+
+        decisions = pd.DataFrame(review.get("decisions", []))
+        if not decisions.empty:
+            decisions["notes"] = decisions["notes"].apply(lambda n: " | ".join(n))
+            display = decisions[[
+                "symbol", "action", "zone", "price", "iv15", "iv8", "implied_return",
+                "current_weight", "target_weight", "shares_to_sell", "after_tax_price",
+                "required_replacement_return", "add_level", "house_money", "notes",
+            ]]
+            st.dataframe(display, use_container_width=True)
+
+            st.subheader("Prospective Return vs Hurdle")
+            chart = decisions.set_index("symbol")[["implied_return", "required_replacement_return"]]
+            st.bar_chart(chart)
+
+        plan = review.get("redeploy_plan", {})
+        if plan:
+            st.subheader("Redeploy Plan")
+            c3, c4, c5 = st.columns(3)
+            c3.metric("Harvested after tax", f"{plan.get('harvested_after_tax', 0):,.0f}")
+            c4.metric("Tax paid", f"{plan.get('tax_paid', 0):,.0f}")
+            c5.metric("Unallocated", f"{plan.get('undeployed', 0):,.0f}")
+            st.dataframe(pd.DataFrame(plan.get("allocations", [])))
+
     st.subheader("Config Used")
     st.json(state.get("config", {}))
 

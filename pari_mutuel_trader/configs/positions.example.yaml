@@ -1,0 +1,101 @@
+# Example equity book for `cli review-positions`.
+#
+# Every number below is an assumption, and the review is only as good as they are.
+# owner_earnings_ps is per-share owner earnings (cash the business could pay out
+# without shrinking), growth is the near-term rate that fades over the competitive
+# advantage period, and moat / roic / roic_stability describe how long the business
+# can hold its returns above the cost of capital.
+
+book:
+  as_of: 2026-08-28
+  cash: 600000
+
+tax:
+  federal_long_term: 0.20
+  federal_short_term: 0.37
+  state: 0.05
+  niit: 0.038
+
+policy:
+  required_return: 0.15
+  hold_return: 0.08
+  house_money_weight: 0.03
+  core_weight: 0.06
+  conviction_weight: 0.08
+
+positions:
+  # Near-doubled over a few months. Still below IV8, so not expensive on its own
+  # terms - what trims it is the after-tax comparison against better opportunities.
+  - symbol: VEEV
+    shares: 900
+    cost_basis: 152.00
+    acquired: 2024-11-12
+    price: 285.00
+    owner_earnings_ps: 9.20
+    growth: 0.17
+    roic: 0.30
+    roic_stability: 0.85
+    moat: 0.88
+    thesis_intact: true
+
+  # A deal fell apart and the stock gave back most of the move. Held at a
+  # house-money stake; adds resume at the add level, not at IV15.
+  - symbol: PYPL
+    shares: 4200
+    cost_basis: 61.00
+    acquired: 2025-02-20
+    price: 53.00
+    owner_earnings_ps: 7.40
+    growth: 0.07
+    roic: 0.19
+    roic_stability: 0.60
+    moat: 0.55
+    thesis_intact: true
+
+  # Past IV8 by more than the rich band with a thin moat: sold outright rather
+  # than kept as a stub.
+  - symbol: FROG
+    shares: 3000
+    cost_basis: 31.00
+    acquired: 2025-09-30
+    price: 58.00
+    owner_earnings_ps: 1.60
+    growth: 0.18
+    roic: 0.13
+    roic_stability: 0.35
+    moat: 0.35
+    thesis_intact: true
+
+  # Just past IV8 but a durable franchise: trimmed toward the core weight rather
+  # than cut to a stub.
+  - symbol: CDNS
+    shares: 500
+    cost_basis: 214.00
+    acquired: 2024-06-03
+    price: 300.00
+    owner_earnings_ps: 11.00
+    growth: 0.14
+    roic: 0.26
+    roic_stability: 0.80
+    moat: 0.85
+    thesis_intact: true
+
+# Where harvested capital would go. The prices here are the levels being waited
+# for, not today's quotes - at a 15% hurdle very little clears at the market price,
+# which is exactly why a watchlist is a list of prices rather than a list of names.
+watchlist:
+  - symbol: SNPS
+    price: 130.00
+    owner_earnings_ps: 17.50
+    growth: 0.15
+    roic: 0.24
+    roic_stability: 0.80
+    moat: 0.85
+
+  - symbol: IOT
+    price: 8.50
+    owner_earnings_ps: 1.35
+    growth: 0.22
+    roic: 0.20
+    roic_stability: 0.55
+    moat: 0.60

@@ -35,7 +35,9 @@ def summarize(equity: pd.Series, turnover_avg: float, rebalances: int, avg_holdi
         "Sortino": sortino(returns),
         "MaxDrawdown": mdd,
         "Calmar": calmar,
-        "monthly_returns": monthly.to_dict(),
+        # Keyed by month string so the metrics block stays JSON-serializable for
+        # the paper state, the API and the dashboard.
+        "monthly_returns": {str(k.date()): float(v) for k, v in monthly.items()},
         "worst_month": float(monthly.min()) if not monthly.empty else 0.0,
         "turnover": float(turnover_avg),
         "rebalance_count": int(rebalances),

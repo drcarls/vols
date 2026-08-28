@@ -8,7 +8,7 @@ UVICORN := $(VENV)/bin/uvicorn
 
 .DEFAULT_GOAL := help
 
-.PHONY: help setup install doctor build-features backtest wfo paper ui api test open-dashboard build-macos-app install-macos-app clean
+.PHONY: help setup install doctor build-features backtest wfo paper review ui api test open-dashboard build-macos-app install-macos-app clean
 
 help:
 	@echo "pari_mutuel_trader shortcuts"
@@ -18,6 +18,7 @@ help:
 	@echo "  make backtest       # run backtest with default config"
 	@echo "  make wfo            # run walk-forward optimization"
 	@echo "  make paper          # run paper state update"
+	@echo "  make review         # review positions against IV15/IV8 after tax"
 	@echo "  make ui             # launch Streamlit dashboard"
 	@echo "  make api            # launch FastAPI server"
 	@echo "  make test           # run pytest"
@@ -47,6 +48,9 @@ wfo:
 
 paper:
 	$(PY) -m pari_mutuel_trader.cli paper-run --config configs/default.yaml
+
+review:
+	$(PY) -m pari_mutuel_trader.cli review-positions --positions configs/positions.example.yaml
 
 ui:
 	$(STREAMLIT) run src/pari_mutuel_trader/ui/streamlit_app.py

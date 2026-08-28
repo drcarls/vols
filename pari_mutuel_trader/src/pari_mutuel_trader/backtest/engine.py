@@ -9,6 +9,8 @@ from pari_mutuel_trader.learning.hedge import hedge_update
 from pari_mutuel_trader.portfolio.construction import build_weights, select_universe
 from pari_mutuel_trader.portfolio.constraints import apply_liquidity_filter, should_rebalance, turnover
 from pari_mutuel_trader.backtest.metrics import summarize
+from pari_mutuel_trader.valuation.overlay import apply_valuation_caps, zone_caps
+from pari_mutuel_trader.valuation.sell_rules import SellPolicy
 
 
 @dataclass
@@ -30,6 +32,9 @@ def run_backtest(features: pd.DataFrame, config: dict) -> BacktestResult:
     port_cfg = config["portfolio"]
     learn_cfg = config["learning"]
     risk_cfg = config["risk"]
+    val_cfg = config.get("valuation", {}) or {}
+    val_policy = SellPolicy.from_config(val_cfg)
+    valuation_on = bool(val_cfg.get("enabled", False))
     min_rebalances = int(config["backtest"].get("min_rebalances", 3))
 
     current = pd.Series(0.0, index=all_symbols)
@@ -55,6 +60,8 @@ def run_backtest(features: pd.DataFrame, config: dict) -> BacktestResult:
             pooled = pari_mutuel_aggregate(probs, weights)
             selected = select_universe(pooled, port_cfg["top_k"], port_cfg["min_holdings"])
             target = build_weights(selected, port_cfg.get("weighting", "equal_weight"), liquid.get("vol_20d"), port_cfg["max_stock_weight"])
+            if valuation_on:
+                target = apply_valuation_caps(target, zone_caps(liquid, val_policy), port_cfg["max_stock_weight"])
 
             if should_rebalance(current[current > 0], target, port_cfg["rebalance_threshold"]):
                 t = turnover(current[current > 0], target)
