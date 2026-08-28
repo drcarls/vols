@@ -43,6 +43,18 @@ class SellPolicy:
     redeploy_horizon_years: float = 5.0
     switch_hurdle: float = 0.02
     long_term_wait_days: int = 45
+    # "absolute" reads the weights above as portfolio percentages, which suits a
+    # concentrated book. "relative" reads the multiples below against the sleeve's
+    # natural position size, so the ceilings bind at any breadth.
+    sizing: str = "absolute"
+    zone_multiples: dict = field(
+        default_factory=lambda: {
+            SPRING_LOADED: 1.6,
+            FAIR: 1.15,
+            RICH: 0.8,
+            EXPENSIVE: 0.5,
+        }
+    )
 
     @classmethod
     def from_config(cls, cfg: dict | None) -> "SellPolicy":

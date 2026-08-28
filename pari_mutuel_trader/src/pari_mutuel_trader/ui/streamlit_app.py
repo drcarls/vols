@@ -15,11 +15,21 @@ def main():
     st.subheader("Summary Metrics")
     st.json(state.get("metrics", {}))
 
-    st.subheader("Equity Curve")
+    st.subheader("Equity Curve, Before and After Tax")
     eq = pd.Series(state.get("equity_curve", {}), dtype=float)
+    at = pd.Series(state.get("after_tax_curve", {}), dtype=float)
     if not eq.empty:
-        eq.index = pd.to_datetime(eq.index)
-        st.line_chart(eq)
+        curves = pd.DataFrame({"pre-tax": eq})
+        if not at.empty:
+            curves["after tax"] = at
+        curves.index = pd.to_datetime(curves.index)
+        st.line_chart(curves)
+        metrics = state.get("metrics", {})
+        c_a, c_b, c_c = st.columns(3)
+        c_a.metric("CAGR", f"{metrics.get('CAGR', 0):.2%}")
+        c_b.metric("CAGR after tax", f"{metrics.get('CAGR_after_tax', 0):.2%}",
+                   f"{-metrics.get('tax_drag_annual', 0):.2%}")
+        c_c.metric("Short-term share of tax", f"{metrics.get('short_term_share_of_tax', 0):.0%}")
 
     st.subheader("Drawdown")
     dd = pd.Series(state.get("drawdown_curve", {}), dtype=float)

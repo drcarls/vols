@@ -23,16 +23,34 @@ def zones_from_frame(frame: pd.DataFrame, rich_band: float = 0.15) -> pd.Series:
     return zone
 
 
-def zone_caps(frame: pd.DataFrame, policy: SellPolicy) -> pd.Series | None:
-    """Per-symbol weight ceiling implied by where the price sits against IV15/IV8."""
-    if not has_valuation(frame):
-        return None
-    ceilings = {
+def zone_ceilings(policy: SellPolicy, natural_weight: float | None = None) -> dict[str, float]:
+    """Weight ceiling per zone.
+
+    Absolute ceilings are portfolio percentages and suit a concentrated book. In a
+    diversified sleeve they are the wrong units: at 25 equal-weighted names the
+    natural position is 4%, so every ceiling above that is inert and the overlay
+    only ever shaves the expensive bucket. Relative sizing scales the ceilings off
+    the natural position instead, so they bind at any breadth.
+    """
+    if policy.sizing == "relative":
+        if not natural_weight:
+            raise ValueError("relative sizing needs the sleeve's natural weight")
+        return {zone: natural_weight * mult for zone, mult in policy.zone_multiples.items()}
+    return {
         SPRING_LOADED: policy.conviction_weight,
         FAIR: policy.core_weight,
         RICH: 0.5 * (policy.core_weight + policy.house_money_weight),
         EXPENSIVE: policy.house_money_weight,
     }
+
+
+def zone_caps(
+    frame: pd.DataFrame, policy: SellPolicy, natural_weight: float | None = None
+) -> pd.Series | None:
+    """Per-symbol weight ceiling implied by where the price sits against IV15/IV8."""
+    if not has_valuation(frame):
+        return None
+    ceilings = zone_ceilings(policy, natural_weight)
     return zones_from_frame(frame, policy.rich_band).map(ceilings).astype(float)
 
 

@@ -19,7 +19,11 @@ def dashboard():
 
 @app.get("/equity_curve")
 def equity_curve():
-    return {"equity_curve": load_state(STATE_PATH).get("equity_curve", {})}
+    st = load_state(STATE_PATH)
+    return {
+        "equity_curve": st.get("equity_curve", {}),
+        "after_tax_curve": st.get("after_tax_curve", {}),
+    }
 
 
 @app.get("/holdings")

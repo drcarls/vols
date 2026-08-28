@@ -144,11 +144,60 @@ Positions, tax rates and policy live in one YAML file - see
 `configs/positions.example.yaml` for the schema and for what each assumption
 means. `--as-of` overrides the date used for the holding-period test.
 
-The same zones feed the picker as a `ValuationAgent` and as a weight overlay in
-the backtest, both of which degrade to neutral when a feature frame carries no
-`discount_to_iv15` / `premium_to_iv8` columns. `make paper` writes the review into
-the dashboard state, where it surfaces in the Streamlit app and at
-`/position_review` and `/redeploy_plan`.
+`make paper` writes the review into the dashboard state, where it surfaces in the
+Streamlit app and at `/position_review` and `/redeploy_plan`.
+
+## The same discipline inside a strategy sleeve
+
+A concentrated book and a 25-name weekly sleeve need the same discipline in
+different units. Three things change on the way across.
+
+### Ceilings are relative, not absolute
+
+Absolute ceilings are portfolio percentages, which is the right unit for a book
+where a single name runs to 18%. In a sleeve the natural position is `1 / top_k` -
+4% at 25 names - so every absolute ceiling above that is inert and the overlay can
+only ever shave the expensive bucket. Setting `valuation.sizing: relative` scales
+the ceilings off the natural position instead:
+
+| zone | multiple | at 25 names | at 50 names |
+| --- | --- | --- | --- |
+| `spring_loaded` | 1.6x | 6.4% | 3.2% |
+| `fair` | 1.15x | 4.6% | 2.3% |
+| `rich` | 0.8x | 3.2% | 1.6% |
+| `expensive` | 0.5x | 2.0% | 1.0% |
+
+All four bind at any breadth. Keep `absolute` for the concentrated book - which is
+what `configs/positions.example.yaml` does.
+
+### The agent abstains rather than voting flat
+
+`ValuationAgent` returns no vote when a feature frame carries no intrinsic value
+data, and abstaining agents are dropped from the pool. A flat vote is not neutral:
+it dilutes the agents that do have a view. With abstention a sleeve without
+fundamentals scores exactly as it did before the agent existed.
+
+### Tax is charged where the sleeve actually pays it
+
+A weekly sleeve realizes essentially everything short-term, and the pre-tax equity
+curve says nothing about that. The backtest now keeps a lot ledger - entry price,
+entry date, relieved highest-cost-first - and reports an after-tax curve beside the
+pre-tax one, with `CAGR_after_tax`, `tax_drag_annual` and
+`short_term_share_of_tax`.
+
+Two corrections matter more than the headline:
+
+- **Wash sales.** A rotating sleeve sells losers constantly and buys some back
+  within weeks. Booking those losses as credits reports a tax benefit the holder
+  never receives. A repurchase inside 30 days disallows the loss and rolls it into
+  the replacement lot's basis.
+- **Seasoning.** A sale is deferred when the position is within `wait_days` of
+  long-term treatment, sits on a gain, and is still inside `keep_multiple x top_k`
+  by score. Once conviction goes the clock stops being a reason to stay. Note that
+  this rule is close to inert at weekly cadence - nothing is held long enough to
+  approach the one-year mark - and only starts to matter at quarterly or slower.
+
+Both are configured under `tax_aware` and can be switched off individually.
 
 ## UI + API
 

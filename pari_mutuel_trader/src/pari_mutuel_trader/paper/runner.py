@@ -18,6 +18,7 @@ def run_paper(features, config: dict, state_path: str) -> dict:
         "metrics": result.metrics,
         "equity_curve": {str(k.date()): float(v) for k, v in result.equity_curve.items()},
         "drawdown_curve": {str(k.date()): float(v) for k, v in result.drawdown_curve.items()},
+        "after_tax_curve": {str(k.date()): float(v) for k, v in result.after_tax_curve.items()},
         "holdings_history": result.holdings_history,
         "agent_weights_history": result.agent_weights_history,
         "attribution": result.attribution,

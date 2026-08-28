@@ -22,6 +22,24 @@ valuation:
   redeploy_horizon_years: 5.0
   switch_hurdle: 0.02        # margin an alternative must clear after tax
   long_term_wait_days: 45
+  # "absolute" reads the weights above as portfolio percentages, for a concentrated
+  # book. "relative" scales the multiples below off the sleeve's natural position
+  # size (1 / holdings), so the ceilings bind at any breadth.
+  sizing: relative
+  zone_multiples:
+    spring_loaded: 1.6
+    fair: 1.15
+    rich: 0.8
+    expensive: 0.5
+# Applied to gains the sleeve realizes when it rebalances, and to the position
+# review. A weekly sleeve realizes almost everything short-term, which is what the
+# after-tax equity curve is there to make visible.
+tax_aware:
+  enabled: true
+  wait_days: 45          # defer a sale this close to long-term treatment...
+  keep_multiple: 2.0     # ...but only while the name is still inside 2x top_k
+  lot_method: hifo       # relieve highest-cost lots first
+  wash_sales: true       # a repurchase within 30 days disallows the loss
 tax:
   federal_long_term: 0.20
   federal_short_term: 0.37
