@@ -1,0 +1,61 @@
+# Multi-sleeve account.
+#
+# The three pieces of the valuation and tax layer sit at different levels, and the
+# level is what decides where each one is configured:
+#
+#   - The IV15/IV8 model is an ENHANCER. It attaches to any sleeve that has
+#     fundamentals behind its names, and is configured per sleeve because a
+#     concentrated book and a diversified sleeve want different units.
+#   - The conviction book is a SLEEVE in its own right, a peer of the systematic
+#     one, with its own allocation.
+#   - The tax discipline is NEITHER. Tax follows the taxpayer, so lot relief, wash
+#     sales and loss offsets are account-level and are configured once, here.
+
+account:
+  as_of: 2026-08-28
+  look_through_ceiling: 0.10   # cap on any one name across all sleeves at once
+
+  # Assessed on the account: a loss in one sleeve offsets a gain in another.
+  tax:
+    federal_long_term: 0.20
+    federal_short_term: 0.37
+    state: 0.05
+    niit: 0.038
+  lot_method: hifo
+  wash_sales: true             # enforced across sleeves, not within one
+
+  # Defaults every sleeve inherits unless it overrides them.
+  policy:
+    required_return: 0.15
+    hold_return: 0.08
+
+  sleeves:
+    # Diversified, weekly, no fundamentals per name. Valuation ceilings are
+    # expressed relative to the natural position, since 1/top_k is the unit here.
+    - name: quant_sw50
+      kind: systematic
+      allocation: 0.50
+      state: data/state/dashboard_state.json
+      policy:
+        sizing: relative
+
+    # Concentrated, valuation-driven. Weights are portfolio percentages, so the
+    # ceilings are absolute.
+    - name: conviction_book
+      kind: discretionary
+      allocation: 0.35
+      positions: configs/positions.example.yaml
+      policy:
+        sizing: absolute
+        conviction_weight: 0.08
+        core_weight: 0.06
+        house_money_weight: 0.03
+
+    # Overlaps the book on purpose, so the example shows what the account level
+    # catches and neither sleeve can: shared exposure, and a cross-sleeve wash sale.
+    - name: satellite_book
+      kind: discretionary
+      allocation: 0.15
+      positions: configs/positions.satellite.example.yaml
+      policy:
+        sizing: absolute

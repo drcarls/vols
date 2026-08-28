@@ -147,9 +147,14 @@ def load_book(path: str) -> Book:
     return book
 
 
-def opportunity_set(book: Book) -> list[Candidate]:
-    """Spring-loaded names — held or watched — that capital could move into."""
-    out = list(book.watchlist)
+def opportunity_set(book: Book, extra: list[Candidate] | None = None) -> list[Candidate]:
+    """Spring-loaded names - held, watched, or offered by another sleeve.
+
+    `extra` is how the rest of the portfolio gets a say: a trim is only honest if
+    the alternative it is measured against is the best one the account can reach,
+    not merely the best one this book happens to track.
+    """
+    out = list(book.watchlist) + list(extra or [])
     for p in book.positions:
         report = valuation_report(
             p.price,
@@ -171,10 +176,12 @@ def opportunity_set(book: Book) -> list[Candidate]:
     return [c for c in out if c.zone == SPRING_LOADED]
 
 
-def review_book(book: Book, as_of: date | None = None) -> list[SellDecision]:
+def review_book(
+    book: Book, as_of: date | None = None, extra_candidates: list[Candidate] | None = None
+) -> list[SellDecision]:
     """Review every position against IV15/IV8, tax, and the best available alternative."""
     as_of = as_of or book.as_of or date.today()
-    candidates = opportunity_set(book)
+    candidates = opportunity_set(book, extra_candidates)
     decisions = []
     for position in book.positions:
         rivals = [c.implied_return for c in candidates if c.symbol != position.symbol]
@@ -260,10 +267,12 @@ def summarize_review(book: Book, decisions: list[SellDecision]) -> dict:
     }
 
 
-def run_review(path: str, as_of: date | None = None) -> dict:
+def run_review(
+    path: str, as_of: date | None = None, extra_candidates: list[Candidate] | None = None
+) -> dict:
     """Load a book, review it, and return a JSON-serializable payload."""
     book = load_book(path)
-    decisions = review_book(book, as_of=as_of)
+    decisions = review_book(book, as_of=as_of, extra_candidates=extra_candidates)
     return {
         "summary": summarize_review(book, decisions),
         "decisions": [d.to_dict() for d in decisions],

@@ -2,3 +2,4 @@ __pycache__/
 *.pyc
 .venv/
 pari_mutuel_trader/data/
+pari_mutuel_trader/src/*.egg-info/

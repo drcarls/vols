@@ -1,0 +1,33 @@
+# A second valuation-driven sleeve, deliberately overlapping the conviction book.
+# Its job in the example is to show what only the account level can see: shared
+# names that breach a limit once added together, and a loss one sleeve realizes
+# while another sleeve is holding the same ticker.
+
+book:
+  as_of: 2026-08-28
+  cash: 20000
+
+positions:
+  # Bought higher than the conviction book did, so this sleeve sells it at a loss
+  # while the other sleeve is still holding it - a wash sale across sleeves.
+  - symbol: FROG
+    shares: 800
+    cost_basis: 75.00
+    acquired: 2025-11-14
+    price: 58.00
+    owner_earnings_ps: 1.60
+    growth: 0.18
+    roic: 0.13
+    roic_stability: 0.35
+    moat: 0.35
+
+  - symbol: PYPL
+    shares: 1500
+    cost_basis: 58.00
+    acquired: 2025-06-10
+    price: 53.00
+    owner_earnings_ps: 7.40
+    growth: 0.07
+    roic: 0.19
+    roic_stability: 0.60
+    moat: 0.55

@@ -199,6 +199,43 @@ Two corrections matter more than the headline:
 
 Both are configured under `tax_aware` and can be switched off individually.
 
+## Where each piece belongs in a multi-sleeve account
+
+The three parts of this layer sit at three different levels, and the level decides
+where each is configured.
+
+**The IV15/IV8 model is an enhancer.** It attaches to any sleeve whose names have
+fundamentals behind them, and it is configured *per sleeve*, because a
+concentrated book and a diversified sleeve want different units - `absolute` for
+one, `relative` for the other. A systematic sleeve with no fundamentals simply
+gets no valuation opinion: the agent abstains and the overlay does not bind.
+
+**The conviction book is a sleeve.** It is not an overlay on anything; it is a peer
+of the systematic sleeve with its own allocation, holdings and policy.
+
+**The tax discipline is neither.** Tax follows the taxpayer, not the strategy, so
+lot relief, wash sales and loss offsets belong to the account and are configured
+once. Modelling them per sleeve gets three things wrong, which is exactly what the
+account level checks:
+
+| check | what a sleeve sees | what the account sees |
+| --- | --- | --- |
+| look-through exposure | its own 6% position | 13.7% of the same name across two sleeves that each sized it correctly |
+| wash sales | it never repurchased | a *different* sleeve bought the ticker inside 30 days, disallowing the loss |
+| opportunity set | its own watchlist | every spring-loaded name the account can reach |
+
+That last one matters for the switch test. A trim is only honest if the
+alternative it is measured against is the best the account can reach, not merely
+the best the book happens to track.
+
+```bash
+python -m pari_mutuel_trader.cli review-account --account configs/account.example.yaml
+```
+
+See `configs/account.example.yaml` for the schema. The example deliberately
+overlaps two books so the cross-sleeve checks have something to find; the
+single-strategy path is untouched, and a sleeve list is optional.
+
 ## UI + API
 
 ```bash

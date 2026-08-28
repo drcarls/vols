@@ -123,6 +123,56 @@ def cmd_review_positions(args):
         print(f"  unallocated: {plan['undeployed']:,.0f} - nothing else clears the hurdle")
 
 
+def cmd_review_account(args):
+    import json
+    from datetime import datetime
+
+    from pari_mutuel_trader.account import run_account_review
+
+    print_python_banner()
+    as_of = datetime.strptime(args.as_of, "%Y-%m-%d").date() if args.as_of else None
+    payload = run_account_review(args.account, as_of=as_of)
+
+    if args.json:
+        print(json.dumps(payload, indent=2))
+        return
+
+    print(f"\nAccount review as of {payload['as_of']}")
+    total = payload["allocation_total"]
+    print(f"  allocation total {total:.0%}" + ("" if abs(total - 1.0) < 1e-9 else "  <- does not sum to 100%"))
+
+    print("\nSleeves")
+    for sleeve in payload["sleeves"]:
+        print(f"  {sleeve['name']:<20}{sleeve['kind']:<16}{sleeve['allocation']:>6.0%}  "
+              f"{sleeve['holdings']:>3d} holdings")
+        for d in sleeve.get("decisions", []):
+            if d["action"] != "hold":
+                print(f"      {d['symbol']:<8}{d['action']:<22}{d['zone']:<15}"
+                      f"{d['current_weight']:>7.1%} -> {d['target_weight']:.1%}")
+        if sleeve.get("note"):
+            print(f"      ({sleeve['note']})")
+
+    print("\nBest opportunities across the account")
+    for c in payload["opportunity_set"]:
+        print(f"  {c['symbol']:<8}priced for {c['implied_return']:.1%}")
+
+    breaches = payload["look_through_breaches"]
+    print(f"\nLook-through breaches ({len(breaches)})")
+    for b in breaches:
+        contributors = ", ".join(f"{k} {v:.1%}" for k, v in sorted(b["sleeves"].items()))
+        print(f"  {b['symbol']:<8}{b['account_weight']:>7.2%} against a {b['limit']:.2%} ceiling "
+              f"(+{b['excess']:.2%})  [{contributors}]")
+
+    conflicts = payload["wash_sale_conflicts"]
+    print(f"\nCross-sleeve wash sales ({len(conflicts)})")
+    for c in conflicts:
+        print(f"  {c['symbol']:<8}sold at a loss by {', '.join(c['sold_at_loss_by'])}; "
+              f"held or bought by {', '.join(c['held_or_bought_by'])} "
+              f"- loss disallowed within {c['window_days']} days")
+    if not breaches and not conflicts:
+        print("  nothing flagged")
+
+
 def cmd_doctor(_args):
     print_python_banner()
     print(f"Python version: {platform.python_version()}")
@@ -133,7 +183,7 @@ def cmd_doctor(_args):
             print(f"{pkg}: not installed")
 
     for path in ["configs/default.yaml", "configs/wfo.yaml", "configs/positions.example.yaml",
-                 "data/raw", "data/processed", "data/state"]:
+                 "configs/account.example.yaml", "data/raw", "data/processed", "data/state"]:
         print(f"exists {path}: {Path(path).exists()}")
 
     print(f"TIINGO_API_KEY present: {bool(os.getenv('TIINGO_API_KEY'))}")
@@ -168,6 +218,12 @@ def main():
     rv.add_argument("--as-of", dest="as_of", default=None, help="YYYY-MM-DD; defaults to today")
     rv.add_argument("--json", action="store_true")
     rv.set_defaults(fn=cmd_review_positions)
+
+    ra = sp.add_parser("review-account")
+    ra.add_argument("--account", default="configs/account.example.yaml")
+    ra.add_argument("--as-of", dest="as_of", default=None, help="YYYY-MM-DD; defaults to the account file")
+    ra.add_argument("--json", action="store_true")
+    ra.set_defaults(fn=cmd_review_account)
 
     d = sp.add_parser("doctor")
     d.set_defaults(fn=cmd_doctor)
