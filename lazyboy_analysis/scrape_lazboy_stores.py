@@ -85,9 +85,14 @@ if __name__ == "__main__":
         w = csv.DictWriter(fh, fieldnames=fields)
         if not exists:
             w.writeheader()
+        # Products outer, stores inner. The site throttles hard enough that the
+        # full basket across every store runs for hours, and this ordering means
+        # an interrupted run still has complete store coverage for the products
+        # it reached -- which is what identifies the zones. Store-major ordering
+        # would leave every product partially covered and yield no zone map.
         n = 0
-        for sid in ids:
-            for name, cat, url, cover in BASKET:
+        for name, cat, url, cover in BASKET:
+            for sid in ids:
                 n += 1
                 if (sid, name) in done:
                     continue
@@ -108,6 +113,7 @@ if __name__ == "__main__":
                             "was_price": was, "on_promo": promo})
                 fh.flush()
                 time.sleep(a.delay)
-            if n % 80 == 0:
-                print(f"   {n}/{len(ids)*len(BASKET)}", flush=True)
+                if n % 40 == 0:
+                    print(f"   {n}/{len(ids)*len(BASKET)}  ({name})", flush=True)
+            print(f"-- {name}: complete across {len(ids)} stores --", flush=True)
     print(f"\ndone -> {out}")
