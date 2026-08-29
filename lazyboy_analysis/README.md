@@ -293,6 +293,30 @@ were observed on one recliner -- and the was price moves with it. Visiting a
 store page does not change it; the cookie must be set directly. Stores appear
 to share zone prices rather than each having its own.
 
+## What the retailers' "discounts" actually are
+
+Neither retailer's markdown is a promotion, and the word should not be used for
+either. At Slumberland 95% of the entire store carries a compare-at price above
+its selling price -- 100% of La-Z-Boy, 100% of Franklin, 99% of Ashley -- at
+median markdowns of 41-50%. At Steinhafels 81% of the store is marked down, and
+almost every brand sits at exactly 10%. These are two permanent pricing
+conventions, not two promotional calendars, so a figure like "Slumberland runs
+42% off against Steinhafels' 10%" describes house convention rather than
+promotional intensity.
+
+What survives is that the two stores start from near-identical list prices
+(La-Z-Boy recliners: $1,499 and $1,444) and end at very different selling
+prices ($900 and $1,300). Slumberland genuinely transacts lower. Comparisons of
+markdown depth *between brands within one store* also stand, since they share
+that store's convention.
+
+The one genuine promotional signal in the feed is coupon eligibility, which is
+selective: 98% of La-Z-Boy products at Slumberland carry
+`eligible-for-coupons`, against 1% of Ashley's and 2% of Tempur-Pedic's. A
+store coupon stacks on La-Z-Boy and not on Ashley, so the effective gap between
+them is wider than the shelf prices show. The three excluded La-Z-Boy items are
+all multi-piece packages.
+
 ## Caveats
 
 - **Not carried, so not covered:** Palliser and Stressless appear at neither
