@@ -53,7 +53,7 @@ const doc=new Document({
 new Paragraph({spacing:{after:60},children:[new TextRun({text:"UpliftIQ  ·  competitive pricing note",
   size:17,color:MUTED,font:"Calibri",allCaps:true})]}),
 new Paragraph({spacing:{after:80},children:[new TextRun({
-  text:"Two things visible from outside La-Z-Boy",size:34,bold:true,color:INK,font:"Calibri"})]}),
+  text:"Four things visible from outside La-Z-Boy",size:34,bold:true,color:INK,font:"Calibri"})]}),
 p("Prepared for TJ Linz  ·  29 August 2026",{color:MUTED,size:19,after:80,rule:true}),
 
 p("Everything below comes from public web data collected this week — La-Z-Boy's own store pages and Slumberland's catalogue. No La-Z-Boy data was used, which is the point: both findings are checkable against your internal numbers in an afternoon, and if they hold they are visible to your competitors too.",
@@ -94,7 +94,61 @@ p("A store's position is stable across products. Across the same 332 stores, 26 
 
 new Paragraph({pageBreakBefore:true,children:[]}),
 
-h1("2.  Slumberland beats your own Minneapolis stores where the margin is"),
+h1("2.  Slumberland's recliner wall, by model"),
+
+p("Counted by model rather than by SKU — a SKU count rewards a brand for stocking more fabrics of the same chair, a model count reflects range. “Entry” is the cheapest way a shopper can buy that model.",{after:140}),
+
+T(["Recliners — 150 models","Models","Wall","List","Entry","Disc"],[
+  ["*La-Z-Boy","*48","*32%","*$1,539","*$1,000","*41%"],
+  ["*Franklin","*36","*24%","*$1,500","*$800","*47%"],
+  ["Ashley","24","16%","$805","$520","36%"],
+  ["Southern Motion","14","9%","$2,475","$1,550","33%"],
+  ["Flexsteel","11","7%","$2,550","$1,900","26%"],
+  ["Man-Wah Cheers","5","3%","$1,500","$1,000","33%"],
+],{widths:[2900,1100,900,1500,1500,1460]}),
+
+p("",{after:140}),
+
+T(["Motion sofas — 148 models","Models","Wall","List","Entry","Disc"],[
+  ["*La-Z-Boy","*56","*38%","*$3,925","*$2,290","*42%"],
+  ["Ashley","31","21%","$1,600","$1,200","33%"],
+  ["Southern Motion","28","19%","$3,250","$2,040","34%"],
+  ["Flexsteel","10","7%","$5,400","$3,600","33%"],
+  ["Man-Wah Cheers","9","6%","$2,700","$1,800","33%"],
+  ["Franklin","6","4%","$2,100","$1,400","33%"],
+],{widths:[2900,1100,900,1500,1500,1460]}),
+
+p("",{after:120}),
+rich([{t:"You are the largest brand on both walls. The second-largest recliner brand is Franklin, at 24% — and Franklin is a recliner specialist, holding only 4% of the motion sofa wall. "},
+      {t:"Whatever Franklin is doing, it is aimed at one category.",b:true}],{after:120}),
+
+new Paragraph({pageBreakBefore:true,children:[]}),
+
+h1("3.  Franklin has built a shadow of your recliner line"),
+
+rich([{t:"All 36 of Franklin's recliner models sit within 10% of one of your 48. ",b:true},
+      {t:"Not most of them — all of them. And Franklin reaches those prices from above: through every volume band it lists higher than you and marks down harder, so the two brands arrive at the same shelf price from opposite directions."}],{after:150}),
+
+T(["Selling-price band","Your list","Your disc","Franklin list","Franklin disc"],[
+  ["$0 – 600","$1,164","53%","$1,000","43%"],
+  ["$600 – 800","$1,200","44%","$1,350","50%"],
+  ["*$800 – 1,000","*$1,399","*37%","*$1,775","*47%"],
+  ["$1,000 – 1,300","$1,889","36%","$2,250","49%"],
+  ["$1,300 – 1,700","$2,500","40%","$2,550","40%"],
+],{widths:[2360,1700,1700,1800,1800]}),
+
+p("",{after:120}),
+p("In the $800–1,000 band Franklin lists a chair at $1,775 against your $1,399, then takes 47% off against your 37%. The shopper sees a more expensive chair with a bigger discount, landing beside yours. That is a deliberate position, not a price point.",{after:140}),
+
+rich([{t:"Where you are not exposed: "},
+      {t:"Franklin has nothing above $1,600, where you have eight models",b:true},
+      {t:" — including Clayton Gold Lux-Lift at $2,200 and Greyson Leather Tri-Power at $2,000. You also out-discount them below $600 (53% against 43%) and carry swivel on 83% of models against their 53%. Franklin counters with more power (31% against 27%), more lift (14% against 6%) and more leather (37% against 25%)."}],{after:120}),
+
+p("Franklin was not on the competitor list we discussed in July. It surfaced from the data rather than from anyone's list, which is the part I would want to know.",{after:120}),
+
+new Paragraph({pageBreakBefore:true,children:[]}),
+
+h1("4.  Slumberland beats your own Minneapolis stores where the margin is"),
 
 p("Slumberland is Minnesota-based, so the fair comparison is your four Minnesota stores — Edina, Maple Grove, St. Cloud and Woodbury, which price identically and sit in the zone shared by 204 of 332 US stores. We compared the 35 models both carry, at the cheapest way a shopper can buy each one.",{after:140}),
 
@@ -135,7 +189,7 @@ h1("Method and limits"),
 
 p("Collected 29 August 2026 from public pages. Store prices were read by setting La-Z-Boy.com's own store preference; Slumberland's from its public catalogue feed. Prices are what a shopper is quoted, so both sides include whatever promotion was running.",{after:120}),
 
-p("Model matching is on model name, form and drive type, comparing the cheapest available cover against the cheapest stocked SKU — how a shopper would actually buy each model, not an identical-cover match. 36 Canadian stores are excluded: the pages state no currency, and pooling them would confuse an exchange rate with a pricing decision.",{after:120}),
+p("Brand comparisons are counted by model, taking each model’s cheapest configuration. Cross-channel matching is on model name, form and drive type, comparing the cheapest available cover against the cheapest stocked SKU — how a shopper would actually buy each model, not an identical-cover match. 36 Canadian stores are excluded: the pages state no currency, and pooling them would confuse an exchange rate with a pricing decision.",{after:120}),
 
 p("This is one week and one snapshot. A weekly collection is now running, which will show whether the Minneapolis entry-price promotion is structural or a single event — the answer changes what the second finding means.",{after:120}),
 
