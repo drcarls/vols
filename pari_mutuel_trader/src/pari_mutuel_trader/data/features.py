@@ -19,13 +19,16 @@ def build_features(raw: pd.DataFrame) -> pd.DataFrame:
         out["news_intensity"] = 0.0
     if "macro_regime" not in out:
         out["macro_regime"] = 0.0
-    for col in ("discount_to_iv15", "premium_to_iv8", "durability", "dislocation", "iv15", "iv8"):
+    from pari_mutuel_trader.valuation.features import VALUATION_COLUMNS
+
+    for col in VALUATION_COLUMNS:
         if col not in out:
-            out[col] = 0.0
+            out[col] = 0.0 if col != "iv_agreement" else "neutral"
     cols = [
         "ret_1d", "ret_20d", "ret_60d", "vol_20d", "drawdown_60d", "breakout_20d",
         "trend_persistence", "news_intensity", "macro_regime",
-        "discount_to_iv15", "premium_to_iv8", "durability", "dislocation", "iv15", "iv8",
-        "adv_usd", "close"
-    ]
-    return out[cols].fillna(0.0)
+        "adv_usd", "close",
+    ] + list(VALUATION_COLUMNS)
+    numeric = [c for c in cols if c != "iv_agreement"]
+    out[numeric] = out[numeric].fillna(0.0)
+    return out[cols]

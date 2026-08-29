@@ -7,6 +7,7 @@ from .macro_regime import MacroRegimeAgent
 from .house import HouseAgent
 from .valuation import ValuationAgent
 from .dislocated_quality import DislocatedQualityAgent
+from .quality import QualityAgent
 
 
 AGENTS = {
@@ -17,6 +18,7 @@ AGENTS = {
     "macro_regime": MacroRegimeAgent,
     "valuation": ValuationAgent,
     "dislocated_quality": DislocatedQualityAgent,
+    "quality": QualityAgent,
     "house": HouseAgent,
 }
 

@@ -199,6 +199,73 @@ Two corrections matter more than the headline:
 
 Both are configured under `tax_aware` and can be switched off individually.
 
+## Does IV improve momentum or quality? (`cli iv-study`)
+
+The question is whether IV6 and IV8 add information to sleeves that already exist,
+not whether valuation is a strategy on its own. Three things about this repository
+shape the answer before any number is computed.
+
+**There is one IV model, not several.** `intrinsic_value(inputs, required_return)`
+is a discounted owner-earnings model with a fade to terminal, where growth is
+funded at `g / ROIC` and the fade length and terminal ROIC come from moat and ROIC
+stability. IV6, IV8 and IV15 are that one model read at 6%, 8% and 15%. So:
+
+| | |
+| --- | --- |
+| IV6 > IV8 > IV15 | always, for every name |
+| Spearman corr(discount to IV6, discount to IV8) | 0.99 |
+| Names landing in the same quintile | 82% |
+| Names at opposite extremes | 0 of 400 |
+
+They cannot disagree about whether a stock is cheap. `iv_dispersion` is computed
+and reported, but it measures **duration** - how much of the value sits in distant
+cash flows - not two models converging. Treat any result from "IV6 and IV8 agree"
+as a restatement of "IV8 says cheap".
+
+**A quality sleeve built on durability is not independent of IV.** Durability sets
+the competitive advantage period and terminal ROIC inside the valuation, so
+conditioning IV on a durability-selected set is partly circular. `configs/quality.yaml`
+uses it because that is what a quality sleeve means, and flags it; swap the agent
+to `trend_quality` for a price-based control that shares nothing with IV.
+
+**The sleeves are stand-ins.** No momentum or quality sleeve config existed here,
+so `configs/momentum.yaml` and `configs/quality.yaml` define them from the agents
+already in the repo. Point them at your own definitions before reading anything
+into the output.
+
+### What it runs
+
+```bash
+python -m pari_mutuel_trader.cli iv-study --config configs/momentum.yaml
+python -m pari_mutuel_trader.cli iv-study --config configs/quality.yaml --csv quality.csv
+```
+
+1. The baseline sleeve, untouched, on the full metric set.
+2. Forward 20/60/120-day returns by IV bucket **within the names the sleeve already
+   holds**, bucketed inside each date, with a monotonicity score. This is the gate:
+   if the staircase is not there, nothing downstream matters.
+3. IV as a ranking modifier at 10/25/50% weight, blended on percentile ranks.
+4. IV as a veto - drop the richest 10% or 20%, or only where both readings agree.
+5. IV as a sizing multiplier, renormalized so exposure is comparable.
+6. Momentum against the direction of intrinsic value, as a 2x2.
+7. Every variant against its paired baseline, with year-by-year excess and a
+   bootstrap interval over realized years.
+
+Eligibility is never widened: rank and size reorder or resize what the sleeve
+already wanted, and veto only removes.
+
+### Lookahead
+
+`tests/test_lookahead.py` asserts a revision is invisible before its own date, that
+`publication_lag_days` delays when a figure becomes usable, that truncating the
+sample leaves earlier IV values and earlier holdings bit-identical, that IV change
+columns are trailing, that forward returns run out at the tail rather than being
+invented, and that fundamentals for absent symbols never widen the universe.
+
+**Set `publication_lag_days` when you load real fundamentals.** Figures stamped to
+a period end but applied from that date are the commonest leak in a valuation
+backtest.
+
 ## The dislocated quality sleeve
 
 Durable franchises whose price has fallen further than their value. This is the

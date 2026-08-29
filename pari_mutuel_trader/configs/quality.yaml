@@ -1,0 +1,46 @@
+# Baseline quality sleeve - the control portfolio for the IV conditioning study.
+# Franchise durability (moat + enduring ROIC).
+#
+# CAUTION: durability is an INPUT to the IV model - it sets the competitive
+# advantage period and the terminal ROIC - so conditioning IV on a
+# durability-selected set is partly circular. Swap agents to [trend_quality]
+# for a price-based quality control that shares nothing with IV.
+#
+# No IV anywhere: no valuation agent, no overlay, no quality gate. Variants in the
+# study are built by layering IV on top of exactly this.
+
+data:
+  features_path: data/processed/features_study.parquet
+  fundamentals_path: configs/fundamentals.example.yaml
+  state_path: data/state/quality_state.json
+
+portfolio:
+  top_k: 25
+  min_holdings: 20
+  max_stock_weight: 0.08
+  min_durability: 0.0
+  cost_bps: 10.0
+  turnover_cap: 1.0
+  rebalance_threshold: 0.01
+  weighting: equal_weight
+
+learning:
+  agents: [quality]
+  temperature: 1.0
+  hedge_eta: 0.03
+  min_agent_weight: 0.05
+  max_agent_weight: 0.50
+
+valuation:
+  enabled: false
+
+tax:
+  status: tax_deferred
+
+backtest:
+  frequency: monthly
+  rebalance_days: 21
+  min_rebalances: 3
+
+risk:
+  max_drawdown_limit: -0.40

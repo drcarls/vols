@@ -43,9 +43,12 @@ def _payout(growth: float, roic: float) -> float:
 def intrinsic_value(inputs: ValuationInputs, required_return: float) -> float:
     """Per-share value at which the investment is priced to return `required_return`.
 
-    IV15 (required_return=0.15) is the valuation guide for putting capital to work;
-    IV8 is the point beyond which the business is no longer earning its keep for a
-    holder. Both are the same model read at two hurdle rates.
+    There is one model here, read at different hurdle rates. IV6, IV8 and IV15 are
+    the same projected owner earnings discounted at 6%, 8% and 15%, so they are
+    strictly ordered (IV6 > IV8 > IV15) and are NOT independent opinions about a
+    business. Two of them cannot disagree about whether a stock is cheap; they can
+    only disagree about how much a distant cash flow is worth, which is a statement
+    about duration rather than about value.
     """
     q = inputs.quality
     n = max(inputs.years(), 1)
@@ -69,6 +72,10 @@ def intrinsic_value(inputs: ValuationInputs, required_return: float) -> float:
     terminal_value = terminal_earnings * _payout(g_term, roic_term) / (required_return - g_term)
     pv += terminal_value / (1.0 + required_return) ** n
     return float(pv)
+
+
+def iv6(inputs: ValuationInputs) -> float:
+    return intrinsic_value(inputs, 0.06)
 
 
 def iv15(inputs: ValuationInputs) -> float:

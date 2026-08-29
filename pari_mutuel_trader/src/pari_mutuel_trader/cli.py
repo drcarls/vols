@@ -239,6 +239,96 @@ def cmd_evaluate(args):
         print(f"\nper-seed results: {args.csv}")
 
 
+def _load_study_features(cfg, days, symbols, reversion, seed):
+    from pari_mutuel_trader.data.features import build_features
+    from pari_mutuel_trader.data.loaders import generate_valuation_universe, load_features
+    from pari_mutuel_trader.valuation.features import attach_valuation, load_fundamentals
+    from pari_mutuel_trader.valuation.sell_rules import SellPolicy
+
+    path = cfg["data"]["features_path"]
+    fundamentals_path = cfg["data"].get("fundamentals_path")
+    policy = SellPolicy.from_config(cfg.get("valuation"))
+
+    if Path(path).exists() and fundamentals_path and Path(fundamentals_path).exists():
+        features = load_features(path)
+        fundamentals = load_fundamentals(fundamentals_path)
+        covered = set(features.index.get_level_values("symbol")) & set(fundamentals)
+        if covered:
+            return attach_valuation(build_features(features), fundamentals, policy), "historical"
+
+    raw, fundamentals = generate_valuation_universe(
+        days=days, n_symbols=symbols, seed=seed, reversion=reversion)
+    return attach_valuation(build_features(raw), fundamentals, policy), "synthetic"
+
+
+def cmd_iv_study(args):
+    import pandas as pd
+
+    from pari_mutuel_trader.study import run_sleeve_study
+
+    print_python_banner()
+    pd.set_option("display.width", 200)
+    cfg = load_yaml(args.config)
+    features, source = _load_study_features(cfg, args.days, args.symbols, args.reversion, args.seed)
+
+    print(f"\nSleeve: {args.config}   data: {source}")
+    if source == "synthetic":
+        print("  !! SYNTHETIC DATA. This run only proves the plumbing works. It cannot")
+        print("     answer whether IV6 or IV8 improves anything. Point")
+        print("     data.features_path and data.fundamentals_path at real history first.")
+
+    study = run_sleeve_study(features, cfg, buckets=args.buckets)
+
+    print(f"\n--- 1. Baseline ({study['rebalances']} rebalances) ---")
+    base = study["baseline_metrics"]
+    for metric in ("CAGR", "Volatility", "Sharpe", "Sortino", "MaxDrawdown", "Calmar",
+                   "turnover", "HitRate", "average_holdings"):
+        print(f"  {metric:<18}{base.get(metric, float('nan')):>10.4f}")
+
+    print("\n--- 2. Forward returns by IV bucket, within the names the sleeve already holds ---")
+    print("     (bucket 1 = most expensive, highest = cheapest)")
+    for signal, result in study["conditional"].items():
+        print(f"\n  {signal}  (n={result['observations']})")
+        if result["table"].empty:
+            print("    not enough names per date to bucket")
+            continue
+        print(result["table"].to_string(float_format=lambda v: f"{v:+.4f}"))
+        mono = {h: m["spearman"] for h, m in result["monotonicity"].items()}
+        spread = {h: m["spread"] for h, m in result["monotonicity"].items()}
+        print("    monotonicity (rank corr bucket vs return): "
+              + "  ".join(f"{h}={v:+.2f}" for h, v in mono.items()))
+        print("    cheapest minus dearest:                    "
+              + "  ".join(f"{h}={v:+.4f}" for h, v in spread.items()))
+
+    print("\n--- 7. Momentum x direction of intrinsic value ---")
+    grid = study["momentum_iv_grid"]
+    print(grid.to_string(float_format=lambda v: f"{v:+.4f}") if not grid.empty else "  insufficient data")
+
+    print("\n--- 3/4/5 + 8. Variants against the paired baseline ---")
+    print(study["table"].to_string(float_format=lambda v: f"{v:+.4f}"))
+
+    print("\n--- 8. Year-by-year excess return vs baseline ---")
+    yearly = study["yearly_excess"]
+    if yearly.empty:
+        print("  too few complete years")
+    else:
+        summary = pd.DataFrame({
+            "mean": yearly.mean(), "worst": yearly.min(),
+            "years_ahead": (yearly > 0).sum(), "years": yearly.notna().sum(),
+        })
+        print(summary.to_string(float_format=lambda v: f"{v:+.4f}"))
+
+    print("\n--- 8. Bootstrap CI on mean annual excess (resamples realized years) ---")
+    for name, ci in study["bootstrap"].items():
+        flag = "" if ci["lo"] < 0 < ci["hi"] else "   <- excludes zero"
+        print(f"  {name:<26}{ci['mean']:+.4f}  [{ci['lo']:+.4f}, {ci['hi']:+.4f}]  "
+              f"n={ci['periods']}{flag}")
+
+    if args.csv:
+        study["table"].to_csv(args.csv)
+        print(f"\nvariant table: {args.csv}")
+
+
 def cmd_doctor(_args):
     print_python_banner()
     print(f"Python version: {platform.python_version()}")
@@ -302,6 +392,17 @@ def main():
     ev.add_argument("--metric", default="CAGR")
     ev.add_argument("--csv", default=None)
     ev.set_defaults(fn=cmd_evaluate)
+
+    ivs = sp.add_parser("iv-study")
+    ivs.add_argument("--config", default="configs/momentum.yaml")
+    ivs.add_argument("--buckets", type=int, default=5)
+    ivs.add_argument("--days", type=int, default=1500)
+    ivs.add_argument("--symbols", type=int, default=80)
+    ivs.add_argument("--reversion", type=float, default=0.0,
+                     help="synthetic fallback only; 0 means no value effect exists")
+    ivs.add_argument("--seed", type=int, default=0)
+    ivs.add_argument("--csv", default=None)
+    ivs.set_defaults(fn=cmd_iv_study)
 
     d = sp.add_parser("doctor")
     d.set_defaults(fn=cmd_doctor)

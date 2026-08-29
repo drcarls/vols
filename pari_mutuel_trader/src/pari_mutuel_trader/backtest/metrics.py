@@ -31,6 +31,8 @@ def summarize(equity: pd.Series, turnover_avg: float, rebalances: int, avg_holdi
     calmar = float(cagr / abs(mdd)) if mdd != 0 else 0.0
     return {
         "CAGR": cagr,
+        "Volatility": float(returns.std(ddof=0) * np.sqrt(252)),
+        "HitRate": float((returns > 0).mean()) if len(returns) else 0.0,
         "Sharpe": sharpe(returns),
         "Sortino": sortino(returns),
         "MaxDrawdown": mdd,

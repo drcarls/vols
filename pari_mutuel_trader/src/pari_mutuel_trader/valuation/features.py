@@ -10,7 +10,20 @@ from pari_mutuel_trader.valuation.intrinsic import ValuationInputs, intrinsic_va
 from pari_mutuel_trader.valuation.quality import QualityProfile
 from pari_mutuel_trader.valuation.sell_rules import SellPolicy
 
-VALUATION_COLUMNS = ("iv15", "iv8", "discount_to_iv15", "premium_to_iv8", "durability", "dislocation")
+# One model, read at several hurdle rates. These are not independent opinions:
+# IV6 > IV8 > IV15 always, and their cross-sectional ranks correlate ~0.99.
+HURDLES = {"iv6": 0.06, "iv8": 0.08, "iv15": 0.15}
+IV_CHANGE_WINDOWS = {"1m": 21, "3m": 63, "6m": 126}
+
+VALUATION_COLUMNS = (
+    "iv6", "iv8", "iv15",
+    "discount_to_iv6", "discount_to_iv8", "discount_to_iv15",
+    "premium_to_iv8",
+    "iv_consensus", "iv_dispersion", "iv_agreement",
+    "iv6_chg_1m", "iv6_chg_3m", "iv6_chg_6m",
+    "iv8_chg_1m", "iv8_chg_3m", "iv8_chg_6m",
+    "durability", "dislocation",
+)
 
 
 @dataclass
@@ -68,16 +81,22 @@ def load_fundamentals(path: str) -> dict[str, list[Revision]]:
     return out
 
 
-def _revision_frame(revisions: list[Revision], policy: SellPolicy) -> pd.DataFrame:
-    """IV15/IV8/durability per revision, indexed by the date it took effect."""
+def _revision_frame(revisions: list[Revision], publication_lag_days: int = 0) -> pd.DataFrame:
+    """IV per hurdle rate and durability, indexed by the date the figures were usable.
+
+    `publication_lag_days` pushes each revision forward from the period it describes
+    to the date it could actually have been read. Fundamentals dated to a period end
+    but applied from that date are the commonest lookahead in a valuation backtest.
+    """
     rows = []
     for rev in revisions:
-        rows.append({
-            "as_of": pd.Timestamp(rev.as_of) if rev.as_of else pd.Timestamp.min,
-            "iv15": intrinsic_value(rev.inputs, policy.required_return),
-            "iv8": intrinsic_value(rev.inputs, policy.hold_return),
-            "durability": rev.inputs.quality.durability(),
-        })
+        stamp = pd.Timestamp(rev.as_of) if rev.as_of else pd.Timestamp.min
+        if rev.as_of and publication_lag_days:
+            stamp = stamp + pd.Timedelta(days=publication_lag_days)
+        row = {"as_of": stamp, "durability": rev.inputs.quality.durability()}
+        for name, hurdle in HURDLES.items():
+            row[name] = intrinsic_value(rev.inputs, hurdle)
+        rows.append(row)
     return pd.DataFrame(rows).set_index("as_of").sort_index()
 
 
@@ -86,12 +105,13 @@ def valuation_columns(
     fundamentals: dict[str, list[Revision]],
     policy: SellPolicy | None = None,
     dislocation_window: int = 60,
+    publication_lag_days: int = 0,
 ) -> pd.DataFrame:
     """IV columns aligned to a (date, symbol) feature frame.
 
-    `dislocation` is the price fall in excess of the fall in value over the window.
-    A price that dropped alongside its own intrinsic value is not dislocated - the
-    business got worse - and scores zero.
+    Everything here is backward-looking by construction: a revision applies only
+    from its own date (plus any publication lag) onward, and every change column is
+    a trailing difference. Nothing reads a price or a fundamental from the future.
     """
     policy = policy or SellPolicy()
     dates = features.index.get_level_values("date")
@@ -101,7 +121,7 @@ def valuation_columns(
     for symbol in sorted(set(symbols) & set(fundamentals)):
         mask = symbols == symbol
         symbol_dates = pd.DatetimeIndex(dates[mask]).sort_values().unique()
-        revisions = _revision_frame(fundamentals[symbol], policy)
+        revisions = _revision_frame(fundamentals[symbol], publication_lag_days)
         aligned = revisions.reindex(revisions.index.union(symbol_dates)).ffill().reindex(symbol_dates)
         aligned.index.name = "date"
         aligned["symbol"] = symbol
@@ -112,15 +132,52 @@ def valuation_columns(
 
     valued = pd.concat(pieces).reindex(features.index)
     price = features["close"]
-    valued["discount_to_iv15"] = valued["iv15"] / price - 1.0
+
+    for name in HURDLES:
+        valued[f"discount_to_{name}"] = valued[name] / price - 1.0
     valued["premium_to_iv8"] = price / valued["iv8"] - 1.0
 
+    # IV6 and IV8 are the same model at two hurdle rates, so "agreement" between
+    # them is not two opinions converging. The spread between them is a duration
+    # measure: it widens when more of the value sits in distant cash flows.
+    valued["iv_consensus"] = 0.5 * (valued["discount_to_iv6"] + valued["discount_to_iv8"])
+    valued["iv_dispersion"] = (valued["iv6"] - valued["iv8"]).abs() / price
+
     grouped = valued.groupby(level="symbol")
+    for name in ("iv6", "iv8"):
+        for label, window in IV_CHANGE_WINDOWS.items():
+            valued[f"{name}_chg_{label}"] = grouped[name].pct_change(window)
+
     value_change = grouped["iv15"].pct_change(dislocation_window)
     price_change = price.groupby(level="symbol").pct_change(dislocation_window)
     valued["dislocation"] = (value_change - price_change).clip(lower=0.0)
 
+    valued["iv_agreement"] = _agreement(valued)
     return valued[list(VALUATION_COLUMNS)].fillna(0.0)
+
+
+def _agreement(valued: pd.DataFrame) -> pd.Series:
+    """Whether the 6% and 8% readings put a name in the same third of the universe.
+
+    Kept because it was asked for, but expect it to be almost always "agree": the
+    two readings are monotone transforms of one another.
+    """
+    def label(frame: pd.DataFrame) -> pd.Series:
+        out = pd.Series("neutral", index=frame.index, dtype=object)
+        for name in ("discount_to_iv6", "discount_to_iv8"):
+            ranked = frame[name].rank(pct=True)
+            frame = frame.assign(**{f"_{name}": pd.cut(ranked, [0, 1 / 3, 2 / 3, 1.0],
+                                                       labels=["expensive", "neutral", "cheap"],
+                                                       include_lowest=True)})
+        same = frame["_discount_to_iv6"].astype(str) == frame["_discount_to_iv8"].astype(str)
+        out[same] = frame.loc[same, "_discount_to_iv6"].astype(str)
+        out[~same] = "disagree"
+        return out
+
+    pieces = [label(group) for _, group in valued.groupby(level="date")]
+    if not pieces:
+        return pd.Series("neutral", index=valued.index, dtype=object)
+    return pd.concat(pieces).reindex(valued.index)
 
 
 def attach_valuation(
@@ -128,9 +185,10 @@ def attach_valuation(
     fundamentals: dict[str, list[Revision]],
     policy: SellPolicy | None = None,
     dislocation_window: int = 60,
+    publication_lag_days: int = 0,
 ) -> pd.DataFrame:
     """Return the feature frame with the valuation columns filled in."""
-    columns = valuation_columns(features, fundamentals, policy, dislocation_window)
+    columns = valuation_columns(features, fundamentals, policy, dislocation_window, publication_lag_days)
     out = features.copy()
     for name in VALUATION_COLUMNS:
         out[name] = columns[name]

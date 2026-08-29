@@ -16,6 +16,7 @@ from pari_mutuel_trader.portfolio.constraints import (
 from pari_mutuel_trader.portfolio.lots import LotLedger
 from pari_mutuel_trader.portfolio.tax_aware import SeasoningPolicy, apply_holds, seasoning_holds
 from pari_mutuel_trader.backtest.metrics import summarize
+from pari_mutuel_trader.valuation import conditioning
 from pari_mutuel_trader.valuation.overlay import apply_valuation_caps, zone_caps
 from pari_mutuel_trader.valuation.sell_rules import SellPolicy
 from pari_mutuel_trader.valuation.tax import build_tax_profile
@@ -45,6 +46,7 @@ def run_backtest(features: pd.DataFrame, config: dict) -> BacktestResult:
     val_cfg = config.get("valuation", {}) or {}
     val_policy = SellPolicy.from_config(val_cfg)
     valuation_on = bool(val_cfg.get("enabled", False))
+    iv_overlay = conditioning.from_config(config.get("iv_overlay"))
     tax_cfg = config.get("tax", {}) or {}
     tax_profile = build_tax_profile(tax_cfg)
     seasoning = SeasoningPolicy.from_config(config.get("tax_aware"))
@@ -96,9 +98,24 @@ def run_backtest(features: pd.DataFrame, config: dict) -> BacktestResult:
             active = [a for a in agents if not a.abstains(liquid)] or agents
             probs = {a.name: softmax(a.compute_signal(liquid), learn_cfg["temperature"]) for a in active}
             pooled = pari_mutuel_aggregate(probs, {a.name: weights[a.name] for a in active})
+
+            if iv_overlay and iv_overlay["mode"] == conditioning.VETO:
+                # Eligibility is unchanged; the veto only removes the richest tail.
+                kept = conditioning.veto_mask(liquid, iv_overlay["signal"],
+                                              iv_overlay["exclude_pct"], iv_overlay["require_both"])
+                if len(kept) >= port_cfg["min_holdings"]:
+                    pooled = pooled.reindex(kept).dropna()
+            elif iv_overlay and iv_overlay["mode"] == conditioning.RANK:
+                pooled = conditioning.blend_rank(pooled, liquid, iv_overlay["signal"],
+                                                 iv_overlay["iv_weight"])
+
             selected = select_universe(pooled, port_cfg["top_k"], port_cfg["min_holdings"])
             target = build_weights(selected, port_cfg.get("weighting", "equal_weight"), liquid.get("vol_20d"), port_cfg["max_stock_weight"])
 
+            if iv_overlay and iv_overlay["mode"] == conditioning.SIZE:
+                target = conditioning.apply_size(
+                    target, conditioning.size_multipliers(liquid, iv_overlay["signal"],
+                                                          iv_overlay["multipliers"]))
             if valuation_on:
                 natural = 1.0 / len(target) if len(target) else None
                 target = apply_valuation_caps(target, zone_caps(liquid, val_policy, natural), port_cfg["max_stock_weight"])

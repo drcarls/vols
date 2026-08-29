@@ -5,7 +5,7 @@ from datetime import date
 import pytest
 import yaml
 
-from pari_mutuel_trader.account import Account, Sleeve, load_account, review_account, wash_sale_conflicts
+from pari_mutuel_trader.account import Account, Sleeve, load_account, review_account
 from pari_mutuel_trader.account.model import DISCRETIONARY, SYSTEMATIC
 from pari_mutuel_trader.backtest.engine import run_backtest
 from pari_mutuel_trader.data.features import build_features
