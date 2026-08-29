@@ -317,6 +317,25 @@ store coupon stacks on La-Z-Boy and not on Ashley, so the effective gap between
 them is wider than the shelf prices show. The three excluded La-Z-Boy items are
 all multi-piece packages.
 
+## Slumberland against La-Z-Boy's own Minneapolis stores
+
+Slumberland is Minnesota-based, so its nearest company-store comparison is the
+four La-Z-Boy stores in the state -- Edina, Maple Grove, St. Cloud and Woodbury,
+which all price identically and sit in the network's modal zone.
+
+On the 35 models both carry, Slumberland is a median 7% cheaper, but that
+single figure hides an inversion: it is 15% cheaper on recliners and at parity
+on motion sofas, while La-Z-Boy's own stores undercut it sharply at the entry
+point. Liam, Norton and Collage rocking recliners all anchor at $799 in
+Minneapolis and sell at $299-$399, against $400-$630 at Slumberland.
+
+Two things to hold on to. The comparison is cheapest-cover against
+cheapest-stocked-SKU -- the way a shopper would actually buy each model, not an
+identical-cover match. And `lazboy_covers.csv` was collected against the
+container's geo-assigned default store, whose prices match none of the 376 real
+stores, so store-level work uses `lzb_minneapolis_prices.csv` rather than that
+file.
+
 ## Caveats
 
 - **Not carried, so not covered:** Palliser and Stressless appear at neither
