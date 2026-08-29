@@ -270,6 +270,29 @@ listing claims rather than a teardown, so it rewards brands that describe their
 products fully -- Barcalounger's $5,368 per feature is terse copy, not a bare
 chair.
 
+## Was/now prices, and what `data-cover-price` actually is
+
+`scrape_lazboy_wasnow.py` recovers the original price alongside the selling
+price for every La-Z-Boy.com recliner cover.
+
+This corrects a misreading. The catalogue scrape captures `data-cover-price`,
+which is the **selling** price, not the base price -- on a promoted model it is
+the promotional figure. The original appears only in the price block for the
+cover currently selected ("Sale price 599.0. Original price $1,109"), so
+recovering it costs one request per cover rather than per model.
+
+Anything comparing La-Z-Boy.com against dealer prices inherits this. Dealer
+street prices are promotional; La-Z-Boy.com's are promotional on some models
+and base on others, so a straight comparison mixes the two. It holds as a
+statement about what a shopper pays; it does not isolate base-price
+positioning.
+
+Prices also vary by store. Setting the `preferredStoreSet` cookie to different
+store ids returns different figures for the same cover -- $599, $909 and $979
+were observed on one recliner -- and the was price moves with it. Visiting a
+store page does not change it; the cookie must be set directly. Stores appear
+to share zone prices rather than each having its own.
+
 ## Caveats
 
 - **Not carried, so not covered:** Palliser and Stressless appear at neither
