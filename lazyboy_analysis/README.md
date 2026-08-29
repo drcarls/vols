@@ -254,8 +254,15 @@ so a brand can be placed where it positions itself and where it actually
 transacts. The gap between those two is the finding.
 
 It reports discount depth and dispersion separately, because they say different
-things: Franklin discounts deeper than La-Z-Boy on recliners, 48% against 40%,
-but within an 11-point band against La-Z-Boy's 42. Depth alone would call
+things: at Slumberland, Franklin discounts deeper than La-Z-Boy, 48% against
+42%, but within an 11-point band against La-Z-Boy's 24.
+
+Dispersion must be read one retailer at a time. Pooling both produces a
+42-point spread for La-Z-Boy that belongs to neither store: Slumberland runs
+its line at 42% off and Steinhafels at 10%, so most of that "spread" is the gap
+between two promotional calendars, not inconsistency inside either. Franklin is
+carried only at Slumberland, so comparing its single-store spread against a
+pooled figure overstated the gap. Depth alone would call
 Franklin the least disciplined brand on the floor; it is the most.
 
 The value pass divides street price by advertised features. It measures what a
