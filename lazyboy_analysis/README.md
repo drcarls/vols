@@ -336,6 +336,30 @@ container's geo-assigned default store, whose prices match none of the 376 real
 stores, so store-level work uses `lzb_minneapolis_prices.csv` rather than that
 file.
 
+## Steinhafels against La-Z-Boy's Wisconsin stores
+
+Wisconsin holds two of the network's 30 pricing zones. Five stores -- Appleton,
+Green Bay, Greenfield, Kenosha, Wauwatosa -- sit in the modal zone shared by 201
+stores nationally. Madison sits alone in a much higher one: across the eleven
+matched models it runs a median 56% above Milwaukee for the identical product
+and cover.
+
+The dealer comparison needed narrowing before it meant anything. Steinhafels
+names its La-Z-Boy items by the configuration it stocks -- "Leather", "Fully
+Loaded", "With Wireless Remote" -- while La-Z-Boy.com's cheapest cover is a base
+frame in plain fabric. Matched loosely, Steinhafels looks 65% more expensive
+than Milwaukee, and every one of the large gaps turns out to be a leather or
+up-spec item priced against a base one. On the four plain-fabric standard models
+that compare like for like, Steinhafels is level with Milwaukee (-3%) and 35%
+below Madison.
+
+Steinhafels trades in both markets, so its position against La-Z-Boy's own
+stores inverts across the state without either party changing a price.
+
+Matching here is collection-level rather than the model-plus-form-plus-drive key
+used for Slumberland, because Steinhafels' longer titles defeat the tighter key.
+Four models is a thin base and is reported as such.
+
 ## Caveats
 
 - **Not carried, so not covered:** Palliser and Stressless appear at neither
