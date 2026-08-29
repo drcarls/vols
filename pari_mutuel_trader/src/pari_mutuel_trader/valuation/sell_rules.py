@@ -260,7 +260,12 @@ def review_position(
 
     action = _action_for(current, target, policy)
 
-    if action in (TRIM, TRIM_TO_HOUSE_MONEY, EXIT) and not long_term:
+    if tax_profile.exempt and action in (ADD, TRIM, TRIM_TO_HOUSE_MONEY, EXIT):
+        notes.append(
+            f"{tax_profile.status} wrapper: the trade realizes nothing, so the switch hurdle "
+            f"is just the {report['implied_return']:.1%} on offer here"
+        )
+    elif action in (TRIM, TRIM_TO_HOUSE_MONEY, EXIT) and not long_term:
         if zone == EXPENSIVE or not position.thesis_intact:
             notes.append(
                 f"short-term gain accepted: {to_long_term} days to long-term treatment is not a "

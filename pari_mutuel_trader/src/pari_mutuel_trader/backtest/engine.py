@@ -18,7 +18,7 @@ from pari_mutuel_trader.portfolio.tax_aware import SeasoningPolicy, apply_holds,
 from pari_mutuel_trader.backtest.metrics import summarize
 from pari_mutuel_trader.valuation.overlay import apply_valuation_caps, zone_caps
 from pari_mutuel_trader.valuation.sell_rules import SellPolicy
-from pari_mutuel_trader.valuation.tax import TaxProfile
+from pari_mutuel_trader.valuation.tax import build_tax_profile
 
 
 @dataclass
@@ -46,8 +46,13 @@ def run_backtest(features: pd.DataFrame, config: dict) -> BacktestResult:
     val_policy = SellPolicy.from_config(val_cfg)
     valuation_on = bool(val_cfg.get("enabled", False))
     tax_cfg = config.get("tax", {}) or {}
-    tax_profile = TaxProfile(**{k: float(v) for k, v in tax_cfg.items() if k in TaxProfile.__dataclass_fields__})
+    tax_profile = build_tax_profile(tax_cfg)
     seasoning = SeasoningPolicy.from_config(config.get("tax_aware"))
+    if tax_profile.exempt:
+        # Nothing inside the wrapper is a taxable event, so there is no loss to
+        # disallow and no holding-period clock to run down.
+        seasoning.enabled = False
+        seasoning.wash_sales = False
     min_rebalances = int(config["backtest"].get("min_rebalances", 3))
     # Cadence in trading sessions: 5 is weekly, 63 roughly quarterly. A sleeve that
     # buys dislocations wants the slower clock - and only then does the
@@ -59,8 +64,14 @@ def run_backtest(features: pd.DataFrame, config: dict) -> BacktestResult:
     weights = {a.name: 1.0 / len(agents) for a in agents}
     equity = [1.0]
     eq_dates = [pd.Timestamp(dates[0])]
-    after_tax = [1.0]
+    cost_track, tax_track = [1.0], [1.0]
+    cost_multiplier = 1.0
     tax_multiplier = 1.0
+    # Round-trip trading cost in basis points of notional traded. With tax removed
+    # this is the only friction left, so a sleeve in a retirement wrapper must not
+    # be tuned against a frictionless world.
+    cost_bps = float(port_cfg.get("cost_bps", 0.0))
+    total_cost = 0.0
     turns = []
     rebalance_count = 0
     holdings_history, weight_history = {}, {}
@@ -119,6 +130,11 @@ def run_backtest(features: pd.DataFrame, config: dict) -> BacktestResult:
                         elif delta > 1e-12:
                             tax_fraction += ledger.buy(symbol, delta, price, as_of)
                     tax_multiplier *= 1.0 - tax_fraction
+                    traded = float(sum(abs(updated.get(sym, 0.0) - current.get(sym, 0.0))
+                                       for sym in set(previous.index).union(target.index)))
+                    cost = traded * cost_bps / 1e4
+                    cost_multiplier *= 1.0 - cost
+                    total_cost += cost
 
                     current = updated
                     if not initial_build:
@@ -133,12 +149,14 @@ def run_backtest(features: pd.DataFrame, config: dict) -> BacktestResult:
                         "removed": list(set(previous.index) - set(target.index)),
                         "deferred_for_seasoning": sorted(holds),
                         "tax_drag": float(tax_fraction),
+                        "trading_cost": float(cost),
                     })
 
         ret = frame1["ret_1d"].reindex(current.index).fillna(0.0)
         port_ret = float((current * ret).sum())
         equity.append(equity[-1] * (1 + port_ret))
-        after_tax.append(equity[-1] * tax_multiplier)
+        cost_track.append(cost_multiplier)
+        tax_track.append(tax_multiplier)
         eq_dates.append(pd.Timestamp(d1))
 
         perf = {}
@@ -150,8 +168,12 @@ def run_backtest(features: pd.DataFrame, config: dict) -> BacktestResult:
             attribution[a.name] += perf[a.name]
         weights = hedge_update(weights, perf, eta=learn_cfg["hedge_eta"], min_w=learn_cfg["min_agent_weight"], max_w=learn_cfg["max_agent_weight"])
 
-    equity_curve = pd.Series(equity, index=eq_dates, name="equity")
-    after_tax_curve = pd.Series(after_tax, index=eq_dates, name="after_tax_equity")
+    gross = pd.Series(equity, index=eq_dates, dtype=float)
+    costs = pd.Series(cost_track, index=eq_dates, dtype=float)
+    taxes = pd.Series(tax_track, index=eq_dates, dtype=float)
+    # The headline curve is net of trading costs; tax is layered on top of that.
+    equity_curve = (gross * costs).rename("equity")
+    after_tax_curve = (gross * costs * taxes).rename("after_tax_equity")
     dd_curve = equity_curve / equity_curve.cummax() - 1.0
     avg_holdings = float(sum(len(x) for x in holdings_history.values()) / len(holdings_history)) if holdings_history else 0.0
     turnover_avg = float(sum(turns) / len(turns)) if turns else 0.0
@@ -160,6 +182,12 @@ def run_backtest(features: pd.DataFrame, config: dict) -> BacktestResult:
     after_tax_metrics = summarize(after_tax_curve, turnover_avg=turnover_avg, rebalances=rebalance_count, avg_holdings=avg_holdings)
     realized_tax = float(sum(s.tax for s in realized_sales))
     short_term_tax = float(sum(s.tax for s in realized_sales if not s.long_term))
+    metrics["tax_status"] = tax_profile.status
+    metrics["cost_bps"] = cost_bps
+    metrics["trading_cost_total"] = float(total_cost)
+    gross_metrics = summarize(gross, turnover_avg=turnover_avg, rebalances=rebalance_count, avg_holdings=avg_holdings)
+    metrics["CAGR_gross"] = gross_metrics["CAGR"]
+    metrics["cost_drag_annual"] = float(gross_metrics["CAGR"] - metrics["CAGR"])
     metrics["CAGR_after_tax"] = after_tax_metrics["CAGR"]
     metrics["tax_drag_annual"] = float(metrics["CAGR"] - after_tax_metrics["CAGR"])
     metrics["realized_tax"] = realized_tax

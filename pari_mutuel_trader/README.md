@@ -224,21 +224,26 @@ revisions per symbol and `attach_valuation` forward-fills them onto the price
 frame. Without revisions the discount is just a restatement of past price.
 
 **A slower clock.** `backtest.rebalance_days` sets the cadence in sessions - 5 is
-weekly, 63 roughly quarterly. Positions bought on weakness need time, and the tax
-arithmetic points the same way. Sweeping cadence on the sample universe:
+weekly, 63 roughly quarterly. Positions bought on weakness need time to work.
 
-| cadence | tax drag | short-term share | seasoning defers |
+This sleeve ships as a 401(k) sleeve (`tax.status: tax_deferred`), which removes
+the other half of that argument. In a taxable account the cadence pays for itself
+on tax alone - slowing the clock converts short-term gains into long-term ones,
+taking the drag from 4.32% weekly with 80% of tax short-term to 1.01% annual with
+36%, and only past a quarterly cadence does anything survive long enough for the
+holding-period rule to fire. Inside the wrapper that column is zero at every
+cadence, and the only friction left is trading cost:
+
+| cadence | cost drag at 10bp | tax drag (401k) | tax drag (taxable) |
 | --- | --- | --- | --- |
-| weekly | 4.32% | 80% | 0 |
-| monthly | 4.43% | 81% | 0 |
-| quarterly | 2.79% | 61% | 0 |
-| semiannual | 2.25% | 63% | 2 |
-| annual | 1.01% | 36% | 3 |
+| weekly | 0.46% | 0.00% | 4.32% |
+| monthly | 0.29% | 0.00% | 4.43% |
+| quarterly | 0.13% | 0.00% | 2.79% |
+| annual | 0.06% | 0.00% | 1.01% |
 
-The drag is structural rather than a property of this data: slowing the clock
-converts short-term gains into long-term ones, and only past a quarterly cadence
-does anything survive long enough for the holding-period rule to act on. Returns
-in that sweep are not evidence of anything - the sample universe is a random walk.
+So in a retirement wrapper the cadence is a claim about how fast the signal decays
+and what trading costs, and nothing else. Returns in these sweeps are not evidence
+of anything - the sample universe is a random walk.
 
 The sleeve's roster is set by `learning.agents`, so it runs on
 `dislocated_quality`, `valuation`, `low_vol` and `house` rather than the V1 set.
@@ -273,6 +278,29 @@ account level checks:
 That last one matters for the switch test. A trim is only honest if the
 alternative it is measured against is the best the account can reach, not merely
 the best the book happens to track.
+
+### Wrappers
+
+`tax.status` is `taxable`, `tax_deferred` (401k, traditional IRA) or `tax_free`
+(Roth), set on the account and overridable per sleeve with `tax_status`. Inside a
+retirement wrapper no sale is a taxable event, so every rate is zero and the whole
+after-tax apparatus has nothing to bite on:
+
+- the replacement hurdle collapses to the return on offer, so a switch that tax
+  blocked in a taxable account goes straight through;
+- the holding-period clock stops mattering, and the seasoning rule is disabled;
+- there are no losses to wash, and none to harvest either.
+
+One thing gets *worse* across wrappers rather than better. A loss realized in a
+taxable sleeve and washed by a purchase in a retirement sleeve cannot roll into
+the replacement lot's basis, so the deduction is lost permanently rather than
+deferred (IRS Rev. Rul. 2008-5 - worth confirming with your own advisor). The
+account review reports those conflicts first and labels them `permanent`.
+
+Because tax is usually the dominant friction, removing it leaves a backtest with
+none at all. `portfolio.cost_bps` charges round-trip spread and impact against
+notional traded so a sheltered sleeve is not tuned against a frictionless world;
+metrics report `CAGR_gross`, `CAGR` net of cost, and `CAGR_after_tax`.
 
 ```bash
 python -m pari_mutuel_trader.cli review-account --account configs/account.example.yaml

@@ -7,9 +7,11 @@
 #     in ten years is just a discount;
 #   - dislocation measured as the price fall in EXCESS of the fall in intrinsic
 #     value, so a name whose value fell with it scores nothing;
-#   - a quarterly clock, because positions bought on weakness need time, and
-#     because at weekly cadence nothing is held long enough for the holding-period
-#     rule to have anything to act on.
+#   - a slower clock, because positions bought on weakness need time to work.
+#
+# This sleeve sits in a 401(k), so there is no tax drag and no case for the slow
+# clock on tax grounds - see `tax.status` below. The cadence here is a claim about
+# how fast the signal decays, and nothing else.
 
 data:
   features_path: data/processed/features_dq.parquet
@@ -22,6 +24,7 @@ portfolio:
   min_holdings: 10
   max_stock_weight: 0.12
   min_durability: 0.60       # the gate: no dislocation trade below this
+  cost_bps: 10.0             # round-trip spread + impact, in bp of notional traded
   turnover_cap: 0.35
   rebalance_threshold: 0.01
   weighting: probability_weight
@@ -47,18 +50,25 @@ valuation:
     expensive: 0.5
   long_term_wait_days: 45
 
+# Held in a 401(k). Nothing here is a taxable event, so the rates below are
+# inert: the replacement hurdle collapses to the return on offer, the
+# holding-period clock stops mattering, and there are no losses to wash. Set
+# status: taxable to switch the whole apparatus back on.
+tax:
+  status: tax_deferred
+  federal_long_term: 0.20
+  federal_short_term: 0.37
+  state: 0.0
+  niit: 0.038
+
+# Ignored while the wrapper is tax-deferred; kept so the sleeve still works if it
+# is ever run in a taxable account.
 tax_aware:
   enabled: true
   wait_days: 45
   keep_multiple: 2.0
   lot_method: hifo
   wash_sales: true
-
-tax:
-  federal_long_term: 0.20
-  federal_short_term: 0.37
-  state: 0.0
-  niit: 0.038
 
 backtest:
   frequency: quarterly

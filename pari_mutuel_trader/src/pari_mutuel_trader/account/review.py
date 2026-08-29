@@ -8,6 +8,7 @@ from pari_mutuel_trader.valuation.book import Candidate, build_redeploy_plan, op
 from pari_mutuel_trader.valuation.intrinsic import SPRING_LOADED
 from pari_mutuel_trader.valuation.overlay import zone_ceilings
 from pari_mutuel_trader.valuation.sell_rules import EXIT, TRIM, TRIM_TO_HOUSE_MONEY
+from pari_mutuel_trader.valuation.tax import TAXABLE
 
 
 def account_opportunity_set(account: Account) -> list[Candidate]:
@@ -57,14 +58,25 @@ def look_through_breaches(account: Account, decisions_by_sleeve: dict[str, list]
 
 
 def wash_sale_conflicts(account: Account, decisions_by_sleeve: dict[str, list]) -> list[dict]:
-    """Sales at a loss in one sleeve that another sleeve is holding or buying back.
+    """Losses in one sleeve that another sleeve washes by buying the same ticker.
 
-    The wash-sale rule follows the taxpayer, not the strategy. A sleeve that never
-    repurchases a name can still have its loss disallowed by a different sleeve
-    buying the same ticker inside the window.
+    The rule follows the taxpayer, not the strategy, so a sleeve that never
+    repurchases can still lose its deduction. Two details only the account sees:
+
+    - Only a taxable sleeve can realize a loss at all. A sale inside a retirement
+      wrapper is not a taxable event, so it can never be the seller here.
+    - A loss washed by a purchase inside a retirement wrapper is worse than an
+      ordinary wash sale. The usual remedy - rolling the disallowed loss into the
+      replacement lot's basis - is not available there, so the deduction is gone
+      permanently rather than deferred (IRS Rev. Rul. 2008-5). Worth confirming
+      with your own advisor before relying on it.
     """
+    wrappers = account.wrappers()
+
     selling_at_loss: dict[str, list[str]] = {}
     for sleeve_name, decisions in decisions_by_sleeve.items():
+        if wrappers.get(sleeve_name, TAXABLE) != TAXABLE:
+            continue  # nothing realized inside a retirement wrapper
         for d in decisions:
             realized_loss = d.proceeds is not None and d.proceeds.gain < 0
             if d.action in (TRIM, TRIM_TO_HOUSE_MONEY, EXIT) and d.shares_to_sell > 0 and realized_loss:
@@ -81,14 +93,18 @@ def wash_sale_conflicts(account: Account, decisions_by_sleeve: dict[str, list]) 
     conflicts = []
     for symbol, sellers in selling_at_loss.items():
         elsewhere = sorted(set(holders.get(symbol, [])) - set(sellers))
-        if elsewhere:
-            conflicts.append({
-                "symbol": symbol,
-                "sold_at_loss_by": sorted(sellers),
-                "held_or_bought_by": elsewhere,
-                "window_days": WASH_SALE_DAYS,
-            })
-    return conflicts
+        if not elsewhere:
+            continue
+        in_retirement = [name for name in elsewhere if wrappers.get(name, TAXABLE) != TAXABLE]
+        conflicts.append({
+            "symbol": symbol,
+            "sold_at_loss_by": sorted(sellers),
+            "held_or_bought_by": elsewhere,
+            "window_days": WASH_SALE_DAYS,
+            "severity": "permanent" if in_retirement else "deferred",
+            "retirement_sleeves": in_retirement,
+        })
+    return sorted(conflicts, key=lambda c: c["severity"] != "permanent")
 
 
 def review_account(account: Account, as_of: date | None = None) -> dict:
@@ -106,12 +122,12 @@ def review_account(account: Account, as_of: date | None = None) -> dict:
                 "name": sleeve.name,
                 "kind": sleeve.kind,
                 "allocation": sleeve.allocation,
+                "tax_status": sleeve.tax.status,
                 "holdings": len(sleeve.holdings()),
                 "decisions": [],
                 "note": "systematic sleeve: weights only, no valuation assumptions to review",
             })
             continue
-        book.tax = account.tax
         external = [c for c in shared if c.symbol not in {p.symbol for p in book.positions}]
         decisions = review_book(book, as_of=as_of, extra_candidates=external)
         decisions_by_sleeve[sleeve.name] = decisions
@@ -119,6 +135,7 @@ def review_account(account: Account, as_of: date | None = None) -> dict:
             "name": sleeve.name,
             "kind": sleeve.kind,
             "allocation": sleeve.allocation,
+            "tax_status": sleeve.tax.status,
             "holdings": len(book.positions),
             "decisions": [d.to_dict() for d in decisions],
             "redeploy_plan": build_redeploy_plan(book, decisions),
@@ -137,6 +154,7 @@ def review_account(account: Account, as_of: date | None = None) -> dict:
             symbol: {"account_weight": float(sum(v.values())), "sleeves": {k: float(w) for k, w in v.items()}}
             for symbol, v in sorted(account.look_through().items())
         },
+        "wrappers": account.wrappers(),
         "look_through_breaches": look_through_breaches(account, decisions_by_sleeve),
         "wash_sale_conflicts": wash_sale_conflicts(account, decisions_by_sleeve),
     }

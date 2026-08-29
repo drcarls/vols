@@ -17,6 +17,7 @@ account:
 
   # Assessed on the account: a loss in one sleeve offsets a gain in another.
   tax:
+    status: taxable            # the account default; a sleeve may override it
     federal_long_term: 0.20
     federal_short_term: 0.37
     state: 0.05
@@ -58,6 +59,7 @@ account:
       kind: systematic
       allocation: 0.15
       state: data/state/dislocated_quality_state.json
+      tax_status: tax_deferred     # 401(k): no drag, and no loss to harvest either
       policy:
         sizing: relative
 

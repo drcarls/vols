@@ -5,19 +5,51 @@ from datetime import date
 
 LONG_TERM_DAYS = 366
 
+TAXABLE = "taxable"
+TAX_DEFERRED = "tax_deferred"   # 401(k), traditional IRA
+TAX_FREE = "tax_free"           # Roth
+WRAPPERS = (TAXABLE, TAX_DEFERRED, TAX_FREE)
+
 
 @dataclass
 class TaxProfile:
-    """Marginal rates applied to a realized gain."""
+    """Marginal rates applied to a realized gain, and the wrapper holding it.
+
+    Tax status is a property of the account the shares sit in, not of the strategy
+    trading them. Inside a retirement wrapper no sale is a taxable event at all, so
+    every rate is zero and the whole after-tax apparatus - the replacement hurdle,
+    the holding-period clock, the wash-sale rule - has nothing to bite on.
+    """
 
     federal_long_term: float = 0.20
     federal_short_term: float = 0.37
     state: float = 0.0
     niit: float = 0.038
+    status: str = TAXABLE
+
+    def __post_init__(self):
+        if self.status not in WRAPPERS:
+            raise ValueError(f"Unknown tax status {self.status!r}; expected one of {WRAPPERS}")
+
+    @property
+    def exempt(self) -> bool:
+        """True when a sale inside this wrapper realizes nothing to be taxed."""
+        return self.status in (TAX_DEFERRED, TAX_FREE)
 
     def rate(self, long_term: bool) -> float:
+        if self.exempt:
+            return 0.0
         federal = self.federal_long_term if long_term else self.federal_short_term
         return float(federal + self.state + self.niit)
+
+
+def build_tax_profile(cfg: dict | None) -> TaxProfile:
+    """Build a profile from config, coercing rates but leaving `status` a string."""
+    cfg = cfg or {}
+    rates = {k: float(v) for k, v in cfg.items() if k in TaxProfile.__dataclass_fields__ and k != "status"}
+    if "status" in cfg:
+        rates["status"] = str(cfg["status"])
+    return TaxProfile(**rates)
 
 
 def is_long_term(acquired: date | None, as_of: date | None = None) -> bool:

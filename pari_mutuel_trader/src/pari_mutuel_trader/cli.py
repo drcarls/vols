@@ -161,8 +161,9 @@ def cmd_review_account(args):
 
     print("\nSleeves")
     for sleeve in payload["sleeves"]:
+        wrapper = "" if sleeve["tax_status"] == "taxable" else f"  [{sleeve['tax_status']}]"
         print(f"  {sleeve['name']:<20}{sleeve['kind']:<16}{sleeve['allocation']:>6.0%}  "
-              f"{sleeve['holdings']:>3d} holdings")
+              f"{sleeve['holdings']:>3d} holdings{wrapper}")
         for d in sleeve.get("decisions", []):
             if d["action"] != "hold":
                 print(f"      {d['symbol']:<8}{d['action']:<22}{d['zone']:<15}"
@@ -184,9 +185,13 @@ def cmd_review_account(args):
     conflicts = payload["wash_sale_conflicts"]
     print(f"\nCross-sleeve wash sales ({len(conflicts)})")
     for c in conflicts:
+        tail = (f"loss permanently lost - washed into {', '.join(c['retirement_sleeves'])}, "
+                "where no basis adjustment is available"
+                if c["severity"] == "permanent"
+                else f"loss deferred into the replacement lot's basis, within {c['window_days']} days")
         print(f"  {c['symbol']:<8}sold at a loss by {', '.join(c['sold_at_loss_by'])}; "
-              f"held or bought by {', '.join(c['held_or_bought_by'])} "
-              f"- loss disallowed within {c['window_days']} days")
+              f"held or bought by {', '.join(c['held_or_bought_by'])}")
+        print(f"          {tail}")
     if not breaches and not conflicts:
         print("  nothing flagged")
 

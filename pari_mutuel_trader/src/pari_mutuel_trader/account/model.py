@@ -8,7 +8,7 @@ from pari_mutuel_trader.paper.state import load_state
 from pari_mutuel_trader.portfolio.lots import HIFO
 from pari_mutuel_trader.valuation.book import Book, load_book
 from pari_mutuel_trader.valuation.sell_rules import SellPolicy
-from pari_mutuel_trader.valuation.tax import TaxProfile
+from pari_mutuel_trader.valuation.tax import TaxProfile, build_tax_profile
 
 SYSTEMATIC = "systematic"
 DISCRETIONARY = "discretionary"
@@ -29,12 +29,18 @@ class Sleeve:
     positions_path: str | None = None
     state_path: str | None = None
     policy: SellPolicy = field(default_factory=SellPolicy)
+    tax: TaxProfile = field(default_factory=TaxProfile)
+
+    @property
+    def exempt(self) -> bool:
+        return self.tax.exempt
 
     def book(self) -> Book | None:
         if self.kind != DISCRETIONARY or not self.positions_path:
             return None
         loaded = load_book(self.positions_path)
         loaded.policy = self.policy
+        loaded.tax = self.tax
         return loaded
 
     def holdings(self) -> dict[str, float]:
@@ -74,6 +80,9 @@ class Account:
     def allocation_total(self) -> float:
         return float(sum(s.allocation for s in self.sleeves))
 
+    def wrappers(self) -> dict[str, str]:
+        return {s.name: s.tax.status for s in self.sleeves}
+
     def look_through(self) -> dict[str, dict[str, float]]:
         """Account-level weight per symbol, and the sleeves contributing it."""
         exposure: dict[str, dict[str, float]] = {}
@@ -99,12 +108,16 @@ def load_account(path: str) -> Account:
     raw = yaml.safe_load(Path(path).read_text(encoding="utf-8")) or {}
     cfg = raw.get("account") or {}
     tax_cfg = cfg.get("tax") or {}
-    tax = TaxProfile(**{k: float(v) for k, v in tax_cfg.items() if k in TaxProfile.__dataclass_fields__})
+    tax = build_tax_profile(tax_cfg)
     default_policy = cfg.get("policy") or {}
 
     sleeves = []
     for entry in cfg.get("sleeves") or []:
         policy_cfg = {**default_policy, **(entry.get("policy") or {})}
+        # A sleeve inherits the account's rates but may sit in its own wrapper.
+        sleeve_tax = build_tax_profile({**tax_cfg, **(entry.get("tax") or {})})
+        if "tax_status" in entry:
+            sleeve_tax = build_tax_profile({**tax_cfg, "status": entry["tax_status"]})
         sleeves.append(
             Sleeve(
                 name=str(entry["name"]),
@@ -113,6 +126,7 @@ def load_account(path: str) -> Account:
                 positions_path=entry.get("positions"),
                 state_path=entry.get("state"),
                 policy=SellPolicy.from_config(policy_cfg),
+                tax=sleeve_tax,
             )
         )
 

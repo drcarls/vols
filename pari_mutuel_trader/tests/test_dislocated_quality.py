@@ -171,12 +171,16 @@ def test_the_sleeve_runs_on_its_own_config():
     m = result.metrics
     assert m["average_holdings"] >= cfg["portfolio"]["min_holdings"]
     assert m["rebalance_count"] >= cfg["backtest"]["min_rebalances"]
-    assert m["CAGR_after_tax"] < m["CAGR"]  # it pays tax, and says so
+    # It ships in a 401(k), so there is nothing to tax - but trading still costs.
+    assert m["tax_status"] == "tax_deferred"
+    assert m["CAGR_after_tax"] == pytest.approx(m["CAGR"])
+    assert m["CAGR"] < m["CAGR_gross"]
 
 
 def test_a_slower_clock_converts_short_term_gains_into_long_term():
-    """The structural argument for the quarterly cadence, independent of returns."""
+    """The structural argument for a slow cadence - and it only holds in a taxable account."""
     cfg = yaml.safe_load(open(CONFIG))
+    cfg["tax"] = {**cfg["tax"], "status": "taxable"}
     feat = sample(days=800, n_symbols=40)
 
     weekly = dict(cfg, backtest={**cfg["backtest"], "rebalance_days": 5})

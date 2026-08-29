@@ -18,7 +18,7 @@ from pari_mutuel_trader.valuation.sell_rules import (
     SellPolicy,
     review_position,
 )
-from pari_mutuel_trader.valuation.tax import TaxProfile
+from pari_mutuel_trader.valuation.tax import TaxProfile, build_tax_profile
 
 
 def _as_date(value) -> date | None:
@@ -132,7 +132,7 @@ def load_book(path: str) -> Book:
 
     policy = SellPolicy.from_config(raw.get("policy"))
     tax_cfg = raw.get("tax") or {}
-    tax = TaxProfile(**{k: float(v) for k, v in tax_cfg.items() if k in TaxProfile.__dataclass_fields__})
+    tax = build_tax_profile(tax_cfg)
     meta = raw.get("book") or {}
 
     book = Book(
