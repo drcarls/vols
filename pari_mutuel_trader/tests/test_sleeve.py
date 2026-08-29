@@ -73,17 +73,13 @@ def test_the_valuation_agent_abstains_without_intrinsic_value_data():
 
 def test_an_abstaining_agent_leaves_the_sleeve_exactly_as_it_was():
     """Sample data carries no IV, so the picker must score identically to before."""
-    feat = build_features(generate_sample_features(days=300, n_symbols=40))
-    cfg = sleeve_config()
-    with_agent = run_backtest(feat, cfg).metrics
+    from pari_mutuel_trader.agents import V1_AGENTS
 
-    import pari_mutuel_trader.backtest.engine as engine
-    original = engine.build_v1_agents
-    engine.build_v1_agents = lambda: [a for a in original() if a.name != "valuation"]
-    try:
-        without_agent = run_backtest(feat, cfg).metrics
-    finally:
-        engine.build_v1_agents = original
+    feat = build_features(generate_sample_features(days=300, n_symbols=40))
+    with_agent = run_backtest(feat, sleeve_config(learning={"agents": V1_AGENTS})).metrics
+    without_agent = run_backtest(
+        feat, sleeve_config(learning={"agents": [a for a in V1_AGENTS if a != "valuation"]})
+    ).metrics
 
     assert with_agent["CAGR"] == pytest.approx(without_agent["CAGR"])
     assert with_agent["current_holdings"] == without_agent["current_holdings"]

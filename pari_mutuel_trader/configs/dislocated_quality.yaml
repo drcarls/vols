@@ -1,0 +1,69 @@
+# Dislocated quality sleeve.
+#
+# Buys durable franchises whose price has fallen further than their value, and
+# sizes them off IV15/IV8. Three things separate it from the momentum sleeve:
+#
+#   - a hard quality gate, because a discount on a business that will not be there
+#     in ten years is just a discount;
+#   - dislocation measured as the price fall in EXCESS of the fall in intrinsic
+#     value, so a name whose value fell with it scores nothing;
+#   - a quarterly clock, because positions bought on weakness need time, and
+#     because at weekly cadence nothing is held long enough for the holding-period
+#     rule to have anything to act on.
+
+data:
+  features_path: data/processed/features_dq.parquet
+  fundamentals_path: configs/fundamentals.example.yaml
+  state_path: data/state/dislocated_quality_state.json
+  positions_path: configs/positions.example.yaml
+
+portfolio:
+  top_k: 15
+  min_holdings: 10
+  max_stock_weight: 0.12
+  min_durability: 0.60       # the gate: no dislocation trade below this
+  turnover_cap: 0.35
+  rebalance_threshold: 0.01
+  weighting: probability_weight
+
+learning:
+  agents: [dislocated_quality, valuation, low_vol, house]
+  temperature: 1.0
+  hedge_eta: 0.03
+  min_agent_weight: 0.05
+  max_agent_weight: 0.50
+
+valuation:
+  enabled: true
+  required_return: 0.15
+  hold_return: 0.08
+  add_margin: 0.02
+  rich_band: 0.15
+  sizing: relative
+  zone_multiples:
+    spring_loaded: 1.6
+    fair: 1.15
+    rich: 0.8
+    expensive: 0.5
+  long_term_wait_days: 45
+
+tax_aware:
+  enabled: true
+  wait_days: 45
+  keep_multiple: 2.0
+  lot_method: hifo
+  wash_sales: true
+
+tax:
+  federal_long_term: 0.20
+  federal_short_term: 0.37
+  state: 0.0
+  niit: 0.038
+
+backtest:
+  frequency: quarterly
+  rebalance_days: 63
+  min_rebalances: 3
+
+risk:
+  max_drawdown_limit: -0.30

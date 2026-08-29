@@ -199,6 +199,52 @@ Two corrections matter more than the headline:
 
 Both are configured under `tax_aware` and can be switched off individually.
 
+## The dislocated quality sleeve
+
+Durable franchises whose price has fallen further than their value. This is the
+sleeve the valuation layer was built for, and it is where the layer stops being an
+overlay and becomes the selection engine.
+
+```bash
+make dq   # build features with valuation attached, then run the sleeve
+```
+
+Three things separate it from the momentum sleeve.
+
+**A hard quality gate.** `portfolio.min_durability` drops names below the
+threshold from the universe before anything is scored. This is a gate, not a tilt:
+buying a fallen price is only a strategy when the business behind it will still be
+there, and below the line a discount is just a discount.
+
+**Dislocation, not weakness.** The signal is the price fall *in excess of* the fall
+in intrinsic value over the window. A name whose value fell as fast as its price
+deteriorated rather than dislocated, and scores zero. That distinction needs value
+to be its own series, so `configs/fundamentals.example.yaml` accepts dated
+revisions per symbol and `attach_valuation` forward-fills them onto the price
+frame. Without revisions the discount is just a restatement of past price.
+
+**A slower clock.** `backtest.rebalance_days` sets the cadence in sessions - 5 is
+weekly, 63 roughly quarterly. Positions bought on weakness need time, and the tax
+arithmetic points the same way. Sweeping cadence on the sample universe:
+
+| cadence | tax drag | short-term share | seasoning defers |
+| --- | --- | --- | --- |
+| weekly | 4.32% | 80% | 0 |
+| monthly | 4.43% | 81% | 0 |
+| quarterly | 2.79% | 61% | 0 |
+| semiannual | 2.25% | 63% | 2 |
+| annual | 1.01% | 36% | 3 |
+
+The drag is structural rather than a property of this data: slowing the clock
+converts short-term gains into long-term ones, and only past a quarterly cadence
+does anything survive long enough for the holding-period rule to act on. Returns
+in that sweep are not evidence of anything - the sample universe is a random walk.
+
+The sleeve's roster is set by `learning.agents`, so it runs on
+`dislocated_quality`, `valuation`, `low_vol` and `house` rather than the V1 set.
+`DislocatedQualityAgent` votes against momentum by construction, which is the
+point of having it in the pool.
+
 ## Where each piece belongs in a multi-sleeve account
 
 The three parts of this layer sit at three different levels, and the level decides

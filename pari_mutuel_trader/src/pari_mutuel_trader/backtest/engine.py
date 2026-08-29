@@ -3,11 +3,16 @@ from __future__ import annotations
 from dataclasses import dataclass
 import pandas as pd
 
-from pari_mutuel_trader.agents import build_v1_agents
+from pari_mutuel_trader.agents import build_agents
 from pari_mutuel_trader.learning.aggregation import softmax, pari_mutuel_aggregate
 from pari_mutuel_trader.learning.hedge import hedge_update
 from pari_mutuel_trader.portfolio.construction import build_weights, select_universe
-from pari_mutuel_trader.portfolio.constraints import apply_liquidity_filter, should_rebalance, turnover
+from pari_mutuel_trader.portfolio.constraints import (
+    apply_liquidity_filter,
+    apply_quality_filter,
+    should_rebalance,
+    turnover,
+)
 from pari_mutuel_trader.portfolio.lots import LotLedger
 from pari_mutuel_trader.portfolio.tax_aware import SeasoningPolicy, apply_holds, seasoning_holds
 from pari_mutuel_trader.backtest.metrics import summarize
@@ -30,7 +35,7 @@ class BacktestResult:
 
 
 def run_backtest(features: pd.DataFrame, config: dict) -> BacktestResult:
-    agents = build_v1_agents()
+    agents = build_agents((config.get("learning", {}) or {}).get("agents"))
     dates = sorted(features.index.get_level_values("date").unique())
     all_symbols = sorted(features.index.get_level_values("symbol").unique())
 
@@ -44,6 +49,10 @@ def run_backtest(features: pd.DataFrame, config: dict) -> BacktestResult:
     tax_profile = TaxProfile(**{k: float(v) for k, v in tax_cfg.items() if k in TaxProfile.__dataclass_fields__})
     seasoning = SeasoningPolicy.from_config(config.get("tax_aware"))
     min_rebalances = int(config["backtest"].get("min_rebalances", 3))
+    # Cadence in trading sessions: 5 is weekly, 63 roughly quarterly. A sleeve that
+    # buys dislocations wants the slower clock - and only then does the
+    # holding-period rule have anything to act on.
+    rebalance_days = max(int(config["backtest"].get("rebalance_days", 5)), 1)
 
     current = pd.Series(0.0, index=all_symbols)
     ledger = LotLedger(method=seasoning.lot_method, wash_sales=seasoning.wash_sales)
@@ -65,9 +74,12 @@ def run_backtest(features: pd.DataFrame, config: dict) -> BacktestResult:
         frame0 = features.xs(d0, level="date")
         frame1 = features.xs(d1, level="date")
 
-        if i % 5 == 0:
+        if i % rebalance_days == 0:
             as_of = pd.Timestamp(d1).date()
             liquid = apply_liquidity_filter(frame0, min_adv=port_cfg.get("min_adv", 0.0))
+            liquid = apply_quality_filter(liquid, port_cfg.get("min_durability", 0.0))
+            if liquid.empty:
+                liquid = frame0
             # An agent with no data to vote on is dropped rather than allowed to cast
             # a flat vote, which would only dilute the agents that do have a view.
             active = [a for a in agents if not a.abstains(liquid)] or agents

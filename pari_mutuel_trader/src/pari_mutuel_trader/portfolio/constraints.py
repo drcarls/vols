@@ -21,3 +21,15 @@ def apply_liquidity_filter(frame: pd.DataFrame, min_adv: float) -> pd.DataFrame:
     if "adv_usd" not in frame.columns:
         return frame
     return frame[frame["adv_usd"] >= min_adv]
+
+
+def apply_quality_filter(frame: pd.DataFrame, min_durability: float) -> pd.DataFrame:
+    """Drop names whose franchise is not durable enough to be worth buying weak.
+
+    This is a gate, not a tilt. Buying a fallen price is only a strategy when the
+    business behind it is going to still be there; below the threshold a discount
+    is just a discount.
+    """
+    if not min_durability or "durability" not in frame.columns:
+        return frame
+    return frame[frame["durability"] >= min_durability]

@@ -34,7 +34,7 @@ account:
     # expressed relative to the natural position, since 1/top_k is the unit here.
     - name: quant_sw50
       kind: systematic
-      allocation: 0.50
+      allocation: 0.35
       state: data/state/dashboard_state.json
       policy:
         sizing: relative
@@ -50,6 +50,16 @@ account:
         conviction_weight: 0.08
         core_weight: 0.06
         house_money_weight: 0.03
+
+    # Systematic, but driven by the valuation layer rather than by price: durable
+    # franchises whose price fell further than their value. Same relative units as
+    # the momentum sleeve, on a quarterly clock.
+    - name: dislocated_quality
+      kind: systematic
+      allocation: 0.15
+      state: data/state/dislocated_quality_state.json
+      policy:
+        sizing: relative
 
     # Overlaps the book on purpose, so the example shows what the account level
     # catches and neither sleeve can: shared exposure, and a cross-sleeve wash sale.

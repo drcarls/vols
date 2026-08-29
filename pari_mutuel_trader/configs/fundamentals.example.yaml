@@ -1,0 +1,58 @@
+# Per-symbol valuation assumptions feeding the IV columns.
+#
+# A symbol maps either to one set of assumptions or to a dated list of revisions.
+# Revisions are what let the sleeve tell a dislocation from a deterioration: if
+# the estimate of value fell as far as the price did, the business changed and the
+# discount is not an opportunity.
+
+fundamentals:
+  VEEV:
+    - as_of: 2025-01-15
+      owner_earnings_ps: 8.40
+      growth: 0.17
+      roic: 0.30
+      roic_stability: 0.85
+      moat: 0.88
+    - as_of: 2026-02-10
+      owner_earnings_ps: 9.20
+      growth: 0.17
+      roic: 0.30
+      roic_stability: 0.85
+      moat: 0.88
+
+  # Value held while the price fell: dislocation, not deterioration.
+  PYPL:
+    - as_of: 2025-01-15
+      owner_earnings_ps: 7.20
+      growth: 0.07
+      roic: 0.19
+      roic_stability: 0.60
+      moat: 0.55
+    - as_of: 2026-02-10
+      owner_earnings_ps: 7.40
+      growth: 0.07
+      roic: 0.19
+      roic_stability: 0.60
+      moat: 0.55
+
+  # Value fell with the price, and the moat is thin: the gate excludes it.
+  FROG:
+    - as_of: 2025-01-15
+      owner_earnings_ps: 2.10
+      growth: 0.20
+      roic: 0.14
+      roic_stability: 0.35
+      moat: 0.35
+    - as_of: 2026-02-10
+      owner_earnings_ps: 1.60
+      growth: 0.18
+      roic: 0.13
+      roic_stability: 0.35
+      moat: 0.35
+
+  CDNS:
+    owner_earnings_ps: 11.00
+    growth: 0.14
+    roic: 0.26
+    roic_stability: 0.80
+    moat: 0.85

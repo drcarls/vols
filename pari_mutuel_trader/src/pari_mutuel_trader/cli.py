@@ -15,14 +15,32 @@ def print_python_banner():
 
 
 def cmd_build_features(args):
-    from pari_mutuel_trader.data.loaders import load_features
+    from pari_mutuel_trader.data.loaders import load_features, generate_sample_fundamentals
     from pari_mutuel_trader.data.features import build_features
+    from pari_mutuel_trader.valuation.features import attach_valuation, load_fundamentals
+    from pari_mutuel_trader.valuation.sell_rules import SellPolicy
 
     print_python_banner()
     cfg = load_yaml(args.config)
     data_cfg = cfg["data"]
     raw = load_features(data_cfg["features_path"])
     feat = build_features(raw)
+
+    fundamentals_path = data_cfg.get("fundamentals_path")
+    policy = SellPolicy.from_config(cfg.get("valuation"))
+    if fundamentals_path and Path(fundamentals_path).exists():
+        fundamentals = load_fundamentals(fundamentals_path)
+        covered = set(feat.index.get_level_values("symbol")) & set(fundamentals)
+        if covered:
+            feat = attach_valuation(feat, fundamentals, policy)
+            print(f"valuation attached for {len(covered)} symbols from {fundamentals_path}")
+        else:
+            feat = attach_valuation(feat, generate_sample_fundamentals(feat), policy)
+            print(f"{fundamentals_path} covers none of this universe; using sample fundamentals")
+    elif fundamentals_path:
+        feat = attach_valuation(feat, generate_sample_fundamentals(feat), policy)
+        print("no fundamentals file; using sample fundamentals")
+
     out = Path(data_cfg["features_path"])
     out.parent.mkdir(parents=True, exist_ok=True)
     feat.to_parquet(out)
@@ -183,7 +201,8 @@ def cmd_doctor(_args):
             print(f"{pkg}: not installed")
 
     for path in ["configs/default.yaml", "configs/wfo.yaml", "configs/positions.example.yaml",
-                 "configs/account.example.yaml", "data/raw", "data/processed", "data/state"]:
+                 "configs/account.example.yaml", "configs/dislocated_quality.yaml",
+                 "configs/fundamentals.example.yaml", "data/raw", "data/processed", "data/state"]:
         print(f"exists {path}: {Path(path).exists()}")
 
     print(f"TIINGO_API_KEY present: {bool(os.getenv('TIINGO_API_KEY'))}")

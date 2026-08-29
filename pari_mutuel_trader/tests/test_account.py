@@ -25,10 +25,11 @@ AS_OF = date(2026, 8, 28)
 def test_account_loads_sleeves_tax_and_per_sleeve_policy():
     acct = load_account(ACCOUNT)
     names = [s.name for s in acct.sleeves]
-    assert names == ["quant_sw50", "conviction_book", "satellite_book"]
+    assert names == ["quant_sw50", "conviction_book", "dislocated_quality", "satellite_book"]
     assert acct.allocation_total() == pytest.approx(1.0)
 
-    quant, book = acct.sleeves[0], acct.sleeves[1]
+    quant = next(s for s in acct.sleeves if s.name == "quant_sw50")
+    book = next(s for s in acct.sleeves if s.name == "conviction_book")
     assert quant.kind == SYSTEMATIC and book.kind == DISCRETIONARY
     # Units differ by sleeve; the hurdle rates are inherited from the account.
     assert quant.policy.sizing == "relative"
@@ -50,7 +51,7 @@ def test_a_systematic_sleeve_contributes_weights_but_no_valuation_review():
 def test_look_through_scales_sleeve_weights_by_allocation():
     acct = load_account(ACCOUNT)
     exposure = acct.look_through()
-    book = acct.sleeves[1]
+    book = next(s for s in acct.sleeves if s.name == "conviction_book")
     veev = next(p for p in book.book().positions if p.symbol == "VEEV")
     assert exposure["VEEV"]["conviction_book"] == pytest.approx(veev.weight * book.allocation)
 
