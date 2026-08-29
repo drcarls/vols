@@ -77,3 +77,81 @@ def generate_sample_fundamentals(features: pd.DataFrame, seed: int = 11) -> dict
             revision(midpoint, float(rng.uniform(0.75, 1.35))),
         ]
     return out
+
+
+def generate_valuation_universe(
+    days: int = 800,
+    n_symbols: int = 80,
+    seed: int = 42,
+    reversion: float = 0.0,
+    dispersion: float = 0.45,
+    drift: float = 0.0002,
+    vol: float = 0.018,
+):
+    """A test world where value exists independently of price.
+
+    Fundamentals are drawn first and prices are anchored to them, which is the only
+    way to ask whether a valuation signal helps: if owner earnings are derived from
+    the price history, "cheap" just means "has fallen" and any edge is circular.
+
+    `reversion` is the daily pull of price toward intrinsic value. At 0 the world is
+    a pure random walk and no valuation signal can help - that is the null the
+    strategy has to fail. Above 0 there is a real effect to find.
+
+    Returns the raw feature frame and the fundamentals that generated it.
+    """
+    from datetime import timedelta
+
+    from pari_mutuel_trader.valuation.features import Revision
+    from pari_mutuel_trader.valuation.intrinsic import ValuationInputs, intrinsic_value
+    from pari_mutuel_trader.valuation.quality import QualityProfile
+
+    rng = np.random.default_rng(seed)
+    dates = pd.bdate_range("2019-01-01", periods=days)
+    syms = [f"STK{i:03d}" for i in range(n_symbols)]
+    midpoint = days // 2
+
+    moat = rng.uniform(0.15, 0.95, n_symbols)
+    roic = 0.08 + moat * rng.uniform(0.10, 0.30, n_symbols)
+    stability = np.clip(moat + rng.normal(0, 0.12, n_symbols), 0.05, 0.95)
+    growth = rng.uniform(0.03, 0.18, n_symbols)
+    earnings = rng.uniform(0.5, 12.0, n_symbols)
+    revision_shock = rng.uniform(0.75, 1.35, n_symbols)
+
+    def inputs_for(i, scale):
+        return ValuationInputs(
+            owner_earnings_ps=float(earnings[i] * scale),
+            growth=float(growth[i]),
+            quality=QualityProfile(float(moat[i]), float(roic[i]), float(stability[i])),
+        )
+
+    fundamentals, iv_early, iv_late = {}, np.empty(n_symbols), np.empty(n_symbols)
+    for i, symbol in enumerate(syms):
+        early, late = inputs_for(i, 1.0), inputs_for(i, revision_shock[i])
+        iv_early[i] = intrinsic_value(early, 0.15)
+        iv_late[i] = intrinsic_value(late, 0.15)
+        fundamentals[symbol] = [
+            Revision(dates[0].date() - timedelta(days=1), early),
+            Revision(dates[midpoint].date(), late),
+        ]
+
+    # Price starts scattered around value, then walks - pulled toward it or not.
+    log_price = np.log(iv_early) + rng.normal(0.0, dispersion, n_symbols)
+    shocks = rng.normal(drift, vol, (days, n_symbols))
+    closes = np.empty((days, n_symbols))
+    for t in range(days):
+        target = np.log(iv_early if t < midpoint else iv_late)
+        log_price = log_price + shocks[t] + reversion * (target - log_price)
+        closes[t] = np.exp(log_price)
+
+    close = pd.DataFrame(closes, index=dates, columns=syms)
+    ret = close.pct_change().fillna(0.0)
+    frame = pd.DataFrame({
+        "ret_1d": ret.stack(),
+        "close": close.stack(),
+    })
+    frame.index.names = ["date", "symbol"]
+    frame = frame.sort_index()
+    frame["volume"] = rng.integers(50_000, 2_000_000, len(frame))
+    frame["adv_usd"] = frame["close"] * frame["volume"]
+    return frame, fundamentals

@@ -196,6 +196,49 @@ def cmd_review_account(args):
         print("  nothing flagged")
 
 
+def cmd_evaluate(args):
+    import copy
+
+    from pari_mutuel_trader.backtest.evaluate import compare, evaluate_variants
+
+    print_python_banner()
+    base = load_yaml(args.config)
+
+    def variant(**sections):
+        c = copy.deepcopy(base)
+        for section, values in sections.items():
+            c[section] = {**c.get(section, {}), **values}
+        return c
+
+    plain = ["momentum", "low_vol", "house"]
+    variants = {
+        "baseline": variant(learning={"agents": plain},
+                            portfolio={"min_durability": 0.0},
+                            valuation={"enabled": False}),
+        "quality gate": variant(learning={"agents": plain}, valuation={"enabled": False}),
+        "valuation agent": variant(learning={"agents": ["valuation", "low_vol", "house"]},
+                                   portfolio={"min_durability": 0.0},
+                                   valuation={"enabled": False}),
+        "dislocation agent": variant(learning={"agents": ["dislocated_quality", "low_vol", "house"]},
+                                     portfolio={"min_durability": 0.0},
+                                     valuation={"enabled": False}),
+        "full sleeve": variant(),
+    }
+
+    seeds = list(range(args.seeds))
+    print(f"\n{len(variants)} variants x {len(seeds)} seeds, reversion={args.reversion}")
+    print("(reversion 0 is a random walk: nothing should help, and a variant that "
+          "does is a bug or an overfit)")
+    frame = evaluate_variants(variants, seeds, reversion=args.reversion,
+                              days=args.days, n_symbols=args.symbols)
+    result = compare(frame, "baseline", args.metric)
+    print()
+    print(result.to_string(float_format=lambda v: f"{v:+.4f}"))
+    if args.csv:
+        frame.to_csv(args.csv, index=False)
+        print(f"\nper-seed results: {args.csv}")
+
+
 def cmd_doctor(_args):
     print_python_banner()
     print(f"Python version: {platform.python_version()}")
@@ -248,6 +291,17 @@ def main():
     ra.add_argument("--as-of", dest="as_of", default=None, help="YYYY-MM-DD; defaults to the account file")
     ra.add_argument("--json", action="store_true")
     ra.set_defaults(fn=cmd_review_account)
+
+    ev = sp.add_parser("evaluate")
+    ev.add_argument("--config", default="configs/dislocated_quality.yaml")
+    ev.add_argument("--seeds", type=int, default=12)
+    ev.add_argument("--reversion", type=float, default=0.0,
+                    help="daily pull of price toward value; 0 is the null world")
+    ev.add_argument("--days", type=int, default=800)
+    ev.add_argument("--symbols", type=int, default=80)
+    ev.add_argument("--metric", default="CAGR")
+    ev.add_argument("--csv", default=None)
+    ev.set_defaults(fn=cmd_evaluate)
 
     d = sp.add_parser("doctor")
     d.set_defaults(fn=cmd_doctor)
