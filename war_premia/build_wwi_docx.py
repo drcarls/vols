@@ -18,7 +18,7 @@ OUT = DOCS / "What-Really-Matters.docx"
 
 MODERN = [
     ("modern_arc_companion.md",               "The Modern Arc — Companion"),
-    ("prototype_munich_1938.md",              "Munich, 1938"),
+    ("munich-1938-essay.md",                  "Munich, 1938"),
     ("modern_wwii_outbreak_1939_1940.md",     "The Outbreak of WWII, 1939–1940"),
     ("modern_pearl_harbor_1941.md",           "Pearl Harbor & the 1941 Freeze"),
     ("modern_berlin_airlift_1948.md",         "The Berlin Airlift, 1948"),
