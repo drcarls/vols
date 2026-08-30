@@ -36,7 +36,7 @@ BOOK_CHAPTERS = [
     "Russia, 1905 — the alliance as an asset",
     "Bosnia, 1908–09 — the empty treasury",
     "Agadir, 1911 — the squeeze",
-    "The Balkans, 1912–13 — where the money actually bit",
+    "The Balkans, 1912–13 — Spent",
     "July 1914 — the question nobody asked",
 ]
 
@@ -70,6 +70,23 @@ def build_agadir_chapter() -> str:
         + essay + "\n\n"
         "*Full money-market workings and reproduce steps: `chapter3_digest_for_handoff.md`, "
         "`chapter3_spot_to_arrive_brief.md`.*\n"
+    )
+
+
+def build_balkans_chapter() -> str:
+    """The real Chapter IV: the full 'Spent' essay (Vienna, winter 1912), whose own closing NOTES
+    carry the tests (the detrended-magnitude honesty, the slow-build caveat, the unestablished cost).
+    Replaces the not_this_year status-stub; only a reproduce pointer is appended."""
+    essay = read("balkans-essay-magazine.md")
+    essay = re.sub(r"(?m)\A#\s+.*\n", "", essay, count=1)        # drop "# SPENT"
+    essay = re.sub(r"(?m)\A\s*###\s+.*\n", "", essay, count=1)   # drop "### Vienna, winter 1912"
+    essay = demote(essay.strip(), 1)
+    return (
+        "## IV. The Balkans, 1912–13 — Spent\n\n"
+        "*The full chapter — Vienna, winter 1912.*\n\n"
+        + essay + "\n\n"
+        "*Full workings and reproduce steps: `crisis_deviation_five_cases.md`, "
+        "`continental_press_warscares.md`, `lansburgh_other_crises_1914.md`.*\n"
     )
 
 
@@ -221,13 +238,15 @@ def main():
     s, e = book.find("## III. Agadir"), book.find("## IV. The Balkans")
     if s != -1 and e != -1:  # replace the Chapter III status-stub with the full chapter
         book = book[:s] + build_agadir_chapter() + "\n\n" + book[e:]
+    s, e = book.find("## IV. The Balkans"), book.find("## V. July 1914")
+    if s != -1 and e != -1:  # replace the Chapter IV status-stub with the full chapter
+        book = book[:s] + build_balkans_chapter() + "\n\n" + book[e:]
 
     # Bring the other chapters up to Chapter III's depth: attach a chapter-specific evidence brief,
     # inserted just before the following chapter heading.
     fin = strip_first_h1(read("finance_diplomacy_1905_1906.md"))
     cd = read("crisis_deviation_five_cases.md")
     lb = read("lansburgh_other_crises_1914.md")
-    cp = read("continental_press_warscares.md")
     jul = strip_first_h1(read("july1914_mechanism_and_archival_test.md"))
 
     brief_I = method_note(
@@ -238,10 +257,6 @@ def main():
         "Chapter II — Sources & method: Lansburgh's near-silence, 1908–09",
         [section(lb, "Bosnian crisis")],
         ["lansburgh_other_crises_1914.md"])
-    brief_IV = method_note(
-        "Chapter IV — Sources & method: Vienna through the Balkan Wars",
-        [section(cp, "Austria — the Vienna market"), section(lb, "Balkan Wars"), section(cd, "Detrended")],
-        ["continental_press_warscares.md", "lansburgh_other_crises_1914.md", "crisis_deviation_five_cases.md"])
     brief_V = method_note(
         "Chapter V — Sources & method: mechanism, not motive, and the archival test",
         [jul],
@@ -251,8 +266,6 @@ def main():
                         brief_I + "## II. Bosnia, 1908–09 — the empty treasury", 1)
     book = book.replace("## III. Agadir, 1911 — The Squeeze",
                         brief_II + "## III. Agadir, 1911 — The Squeeze", 1)
-    book = book.replace("## V. July 1914 — the question nobody asked",
-                        brief_IV + "## V. July 1914 — the question nobody asked", 1)
     book = book.replace("## THE ENGINE", brief_V + "## THE ENGINE", 1)
 
     parts.append(blocks_to_xml(demote(book, 1)))  # book headings nest under the Part
