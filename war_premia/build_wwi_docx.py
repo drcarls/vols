@@ -26,7 +26,7 @@ MODERN = [
     ("modern_suez_1956.md",                   "Suez, 1956"),
     ("modern_nuclear_limits.md",              "Cuba & Berlin — the Nuclear Limits, 1961–62"),
     ("modern_gulf_wars.md",                   "The Gulf Wars, 1991 & 2003"),
-    ("modern_2022_russia_ukraine.md",         "Russia–Ukraine, 2022"),
+    ("ukraine-2022-essay.md",                 "Russia–Ukraine, 2022"),
     ("modern_iran_2026_prediction_markets.md", "Iran, 2025–26 — the Prediction-Market Era"),
     ("modern_contemporaneous_sources.md",     "Note on Contemporaneous Sources"),
     ("synthesis_and_lessons.md",              "Synthesis & Lessons"),
