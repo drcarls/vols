@@ -56,26 +56,48 @@ def read(name: str) -> str:
 
 
 def build_agadir_chapter() -> str:
-    """The real Chapter III: the full 'Squeeze' essay + the Berlin money-market technical brief,
-    replacing the status-stub that stood in not_this_year.md. Written at the book's native heading
-    levels so the single global demote() nests it correctly under Part I."""
+    """The real Chapter III: the full 'Squeeze' essay, whose own closing NOTES already carry the
+    distilled money-market evidence (the spot-to-arrive reversal, the detrended-magnitude honesty, the
+    causation discipline). The essay IS the integrated chapter — the evidence lives in the narrative
+    and the tests in its notes — so no parallel technical brief is appended; only a reproduce pointer."""
     essay = read("agadir-essay-magazine.md")
     essay = re.sub(r"(?m)\A#\s+.*\n", "", essay, count=1)        # drop "# THE SQUEEZE"
     essay = re.sub(r"(?m)\A\s*###\s+.*\n", "", essay, count=1)   # drop "### Berlin, autumn 1911"
     essay = demote(essay.strip(), 1)                             # ## sections -> ###
-    digest = read("chapter3_digest_for_handoff.md")
-    cut = digest.find("\n# rates")                               # drop the raw rates/corpus tail
-    if cut != -1:
-        digest = digest[:cut]
-    digest = re.sub(r"(?m)\A#\s+.*\n", "", digest, count=1)      # drop "# Chapter III ..."
-    digest = demote(digest.strip(), 2)                           # ## Part -> ####
     return (
         "## III. Agadir, 1911 — The Squeeze\n\n"
         "*The full chapter — Berlin, autumn 1911.*\n\n"
         + essay + "\n\n"
-        "### Chapter III — the money-market evidence (technical brief)\n\n"
-        + digest + "\n"
+        "*Full money-market workings and reproduce steps: `chapter3_digest_for_handoff.md`, "
+        "`chapter3_spot_to_arrive_brief.md`.*\n"
     )
+
+
+def strip_sections(md: str, names: list[str]) -> str:
+    """Drop any '## ' section whose heading contains one of names (case-insensitive)."""
+    out, skip = [], False
+    for ln in md.split("\n"):
+        if ln.startswith("## "):
+            skip = any(n.lower() in ln.lower() for n in names)
+        if not skip:
+            out.append(ln)
+    return "\n".join(out)
+
+
+def distill(md: str) -> str:
+    """Reduce a research piece to method prose: drop fenced code and reproduce/sources apparatus."""
+    md = re.sub(r"(?ms)^```.*?^```\s*?$", "", md)      # fenced code blocks
+    md = strip_sections(md, ["reproduce", "sources"])   # command/provenance sections
+    return md.strip()
+
+
+def method_note(title: str, pieces: list[str], source_files: list[str]) -> str:
+    """A distilled 'Sources & method' note: the load-bearing tests, apparatus stripped, with a pointer
+    to the full workings. The narrative (the not_this_year chapter summary) carries the story; this
+    note carries the tests."""
+    body = "\n\n".join(demote(distill(p), 2) for p in pieces if distill(p))
+    ptr = "*Full workings and reproduce steps: " + ", ".join(f"`{s}`" for s in source_files) + ".*"
+    return f"### {title}\n\n{body}\n\n{ptr}\n\n"
 
 
 def section(md: str, needle: str) -> str:
@@ -90,12 +112,6 @@ def section(md: str, needle: str) -> str:
         if grab:
             out.append(ln)
     return "\n".join(out).strip()
-
-
-def brief(title: str, pieces: list[str]) -> str:
-    """A chapter 'evidence (technical brief)' block at book-native levels (nested by global demote)."""
-    body = "\n\n".join(demote(p.strip(), 2) for p in pieces if p.strip())
-    return f"### {title}\n\n{body}\n\n"
 
 
 INTRODUCTION = """Everything a great war needs was in place by 1905 — the alliances signed, the \
@@ -214,13 +230,22 @@ def main():
     cp = read("continental_press_warscares.md")
     jul = strip_first_h1(read("july1914_mechanism_and_archival_test.md"))
 
-    brief_I = brief("Chapter I — the evidence: the Russian loan on the Paris market (Le Temps), and the 1905 bond test",
-                    [fin, section(cd, "1905 was Russian")])
-    brief_II = brief("Chapter II — the evidence: Lansburgh's near-silence in the Bosnian crisis, 1908–09",
-                     [section(lb, "Bosnian crisis")])
-    brief_IV = brief("Chapter IV — the evidence: Vienna through the Balkan Wars (Neue Freie Presse; Lansburgh; the detrended test)",
-                     [section(cp, "Austria — the Vienna market"), section(lb, "Balkan Wars"), section(cd, "Detrended")])
-    brief_V = brief("Chapter V — the evidence: mechanism, not motive, and the one archival test", [jul])
+    brief_I = method_note(
+        "Chapter I — Sources & method: the Russian loan (Le Temps) and the 1905 bond test",
+        [fin, section(cd, "1905 was Russian")],
+        ["finance_diplomacy_1905_1906.md", "crisis_deviation_five_cases.md"])
+    brief_II = method_note(
+        "Chapter II — Sources & method: Lansburgh's near-silence, 1908–09",
+        [section(lb, "Bosnian crisis")],
+        ["lansburgh_other_crises_1914.md"])
+    brief_IV = method_note(
+        "Chapter IV — Sources & method: Vienna through the Balkan Wars",
+        [section(cp, "Austria — the Vienna market"), section(lb, "Balkan Wars"), section(cd, "Detrended")],
+        ["continental_press_warscares.md", "lansburgh_other_crises_1914.md", "crisis_deviation_five_cases.md"])
+    brief_V = method_note(
+        "Chapter V — Sources & method: mechanism, not motive, and the archival test",
+        [jul],
+        ["july1914_mechanism_and_archival_test.md"])
 
     book = book.replace("## II. Bosnia, 1908–09 — the empty treasury",
                         brief_I + "## II. Bosnia, 1908–09 — the empty treasury", 1)
