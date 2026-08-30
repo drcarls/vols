@@ -78,6 +78,26 @@ def build_agadir_chapter() -> str:
     )
 
 
+def section(md: str, needle: str) -> str:
+    """Extract one '## ' section (heading + body) matching needle, up to the next '## ' heading."""
+    out, grab = [], False
+    for ln in md.split("\n"):
+        h2 = ln.startswith("## ")
+        if h2 and needle in ln:
+            grab = True
+        elif h2 and grab:
+            break
+        if grab:
+            out.append(ln)
+    return "\n".join(out).strip()
+
+
+def brief(title: str, pieces: list[str]) -> str:
+    """A chapter 'evidence (technical brief)' block at book-native levels (nested by global demote)."""
+    body = "\n\n".join(demote(p.strip(), 2) for p in pieces if p.strip())
+    return f"### {title}\n\n{body}\n\n"
+
+
 INTRODUCTION = """Everything a great war needs was in place by 1905 — the alliances signed, the \
 conscript armies raised, the naval race running, the mobilisation timetables printed and revised each \
 year — and it sat there, unused, for nine years. Then, in the summer of 1914, it was used. This volume \
@@ -185,6 +205,31 @@ def main():
     s, e = book.find("## III. Agadir"), book.find("## IV. The Balkans")
     if s != -1 and e != -1:  # replace the Chapter III status-stub with the full chapter
         book = book[:s] + build_agadir_chapter() + "\n\n" + book[e:]
+
+    # Bring the other chapters up to Chapter III's depth: attach a chapter-specific evidence brief,
+    # inserted just before the following chapter heading.
+    fin = strip_first_h1(read("finance_diplomacy_1905_1906.md"))
+    cd = read("crisis_deviation_five_cases.md")
+    lb = read("lansburgh_other_crises_1914.md")
+    cp = read("continental_press_warscares.md")
+    jul = strip_first_h1(read("july1914_mechanism_and_archival_test.md"))
+
+    brief_I = brief("Chapter I — the evidence: the Russian loan on the Paris market (Le Temps), and the 1905 bond test",
+                    [fin, section(cd, "1905 was Russian")])
+    brief_II = brief("Chapter II — the evidence: Lansburgh's near-silence in the Bosnian crisis, 1908–09",
+                     [section(lb, "Bosnian crisis")])
+    brief_IV = brief("Chapter IV — the evidence: Vienna through the Balkan Wars (Neue Freie Presse; Lansburgh; the detrended test)",
+                     [section(cp, "Austria — the Vienna market"), section(lb, "Balkan Wars"), section(cd, "Detrended")])
+    brief_V = brief("Chapter V — the evidence: mechanism, not motive, and the one archival test", [jul])
+
+    book = book.replace("## II. Bosnia, 1908–09 — the empty treasury",
+                        brief_I + "## II. Bosnia, 1908–09 — the empty treasury", 1)
+    book = book.replace("## III. Agadir, 1911 — The Squeeze",
+                        brief_II + "## III. Agadir, 1911 — The Squeeze", 1)
+    book = book.replace("## V. July 1914 — the question nobody asked",
+                        brief_IV + "## V. July 1914 — the question nobody asked", 1)
+    book = book.replace("## THE ENGINE", brief_V + "## THE ENGINE", 1)
+
     parts.append(blocks_to_xml(demote(book, 1)))  # book headings nest under the Part
 
     # --- Part II ---
