@@ -121,6 +121,30 @@
                       background:var(--rule-2)}
   ul.clean li b{color:var(--ink)}
 
+  /* ---------- plain-language layer ---------- */
+  .plain{background:var(--panel-2);border-top:1px solid var(--rule);
+         border-bottom:1px solid var(--rule);margin:0 -28px 44px;
+         padding-block:40px 44px;padding-inline:28px}
+  .plain .inner{max-width:1080px;margin:0 auto}
+  .plain .hold{max-width:70ch}
+  .plain h2{font-size:clamp(25px,3.3vw,32px);margin-bottom:8px}
+  .plain .q{font-family:var(--serif);font-size:21px;font-weight:700;line-height:1.3;
+            margin:30px 0 9px;color:var(--ink);text-wrap:balance}
+  .plain p{font-size:17.5px;line-height:1.62;color:var(--ink-2)}
+  .plain p + p{margin-top:13px}
+  .plain strong{color:var(--ink);font-weight:600}
+  .plain .intro{font-family:var(--serif);font-size:19.5px;color:var(--ink-2);max-width:62ch}
+  .caution{background:var(--panel);border:1px solid var(--rule);
+           border-left:3px solid var(--warn);padding:20px 24px 22px;margin:26px 0 0;max-width:70ch}
+  .caution .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.11em;
+                text-transform:uppercase;font-weight:600;color:var(--warn);margin-bottom:14px}
+  .caution ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:14px}
+  .caution li{font-size:16.5px;line-height:1.58;color:var(--ink-2)}
+  .caution li strong{color:var(--ink);font-weight:600}
+  .takeaway{margin-top:30px;padding:22px 26px;background:var(--accent-soft);
+            border-left:3px solid var(--accent);max-width:70ch}
+  .takeaway p{font-family:var(--serif);font-size:19px;line-height:1.5;color:var(--ink)}
+
   .cite{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
   footer{border-top:1px solid var(--rule);padding-top:26px;margin-top:12px;
          font-size:13px;color:var(--muted);max-width:var(--col)}
@@ -152,6 +176,105 @@
     <span><b>Federal rule</b> 3,077 counties, 328.4M people, incl. USDA's cost model</span>
   </div>
 </header>
+
+<div class="plain">
+ <div class="inner">
+  <div class="hold">
+    <div class="kicker">Read this first</div>
+    <h2>The short version, without the statistics</h2>
+    <p class="intro">What the numbers in this review actually mean, and what is worth saying out
+    loud in a first meeting.</p>
+
+    <p class="q">Why would milk cost more in some places at all?</p>
+    <p>Milk is heavy and it spoils. It costs real money to truck it from dairy country in
+    Wisconsin and upstate New York down to Atlanta or Miami. To keep milk moving to the places
+    that don't produce it, USDA sets a minimum price that bottlers must pay, and that minimum is
+    higher the farther you are from the cows. It is written as one dollar figure per county,
+    from $1.70 near Eau Claire, Wisconsin to $7.40 in south Florida.</p>
+    <p>Nothing in that formula is about people. The inputs are roads, truck weight limits, fuel,
+    labor and plant capacity. <strong>The question is whether a rule built only from freight
+    nonetheless lands hardest on Black communities</strong> — and, if it does, whether that is
+    the freight or the government's choices.</p>
+
+    <p class="q">So does the government have an excuse? And is it any good?</p>
+    <p>Yes, and mostly yes. USDA relies on a computer model that works out what milk is worth in
+    every county in the country using nothing but distance and logistics. That model's actual
+    county-by-county numbers were filed at the rulemaking hearing and accepted into evidence, so
+    they can be checked rather than argued about.</p>
+    <p>Checked, they say this: <strong>if you priced milk purely on trucking cost, Black
+    communities would pay about 4.7¢ more per gallon than white ones.</strong> The rule that was
+    actually in force from 2008 to 2025 produced a gap of 3.8¢ — <em>smaller</em> than pure
+    geography would have produced.</p>
+    <p>So the disparity is real. Black Americans really do live disproportionately in the
+    expensive-milk half of the country. But for those seventeen years you cannot pin it on
+    USDA's choices, because USDA was being gentler than the map. <strong>If the claim is that
+    the old schedule discriminated, the government puts this model on the table and the claim
+    loses.</strong></p>
+
+    <p class="q">Then what changed in 2025?</p>
+    <p>USDA rewrote the price map. Two separate things happened, and only one of them matters.</p>
+    <p><strong>It raised the price everywhere.</strong> This is the part the rule was justified
+    by, and it did nothing at all to the racial gap — adding the same amount to everyone's price
+    doesn't make anything more unequal.</p>
+    <p><strong>It also changed which places pay more than which.</strong> This is where the
+    entire increase in the disparity came from. The gap went from 3.8¢ to 5.6¢, and every bit of
+    that came from re-sloping the map rather than from raising it. Measured against USDA's own
+    freight model, somewhere between half and five-sixths of that re-sloping <strong>has no
+    support in the cost figures the government itself relies on.</strong></p>
+    <p>That is the finding: the new map goes past what the trucking costs, and where it goes past
+    it, it falls harder on Black communities than the old map did.</p>
+
+    <div class="caution">
+      <div class="lab">Three things to get ahead of, because the other side will find them</div>
+      <ol>
+        <li><strong>The above-cost piece is not statistically solid.</strong> It points the same
+        direction under every test and it never reverses — but it does not clear the conventional
+        bar. Anything filed describing it as <em>proven</em> will be taken apart by a competent
+        government expert. "Consistent but not conclusive" is the defensible phrasing.</li>
+        <li><strong>The story is not "USDA charged Black neighborhoods more."</strong> Detroit is
+        37% Black and is priced <em>below</em> what the freight model says milk is worth there.
+        So is Chicago. Philadelphia sits within a dime of it. What actually happened is that
+        USDA priced California well below cost and Texas, Florida and New England above it — and
+        California is the least-Black of the big regions, so a racial pattern falls out of a
+        regional decision. Better to say this yourself than to have it said to you.</li>
+        <li><strong>Where it does bite is the rural Black Belt.</strong> The Blackest counties in
+        the country get marked up the most above freight cost, and that pattern is clear and
+        consistent. Those counties simply hold too few people to move the national average,
+        which is exactly why the headline test comes back inconclusive.</li>
+      </ol>
+    </div>
+
+    <p class="q">So what is actually worth bringing?</p>
+    <p>Not the statistics — the paperwork. Every item below is a document, not an estimate:</p>
+    <p><strong>USDA said this rule moves $4 billion a year, then analyzed nobody who pays
+    it.</strong> No breakdown by income, geography or race. None at all.</p>
+    <p><strong>Its civil-rights sign-off is three sentences,</strong> and it discusses only dairy
+    farmers — not the households buying the milk. USDA's own directive says that review is
+    supposed to cover program participants, including WIC and SNAP recipients.</p>
+    <p><strong>A milk processor told them in writing</strong> that this would land on low-income
+    households and food-assistance recipients. The final rule does not answer it.</p>
+    <p><strong>Four different price maps were on the table, and USDA picked the one that falls
+    hardest on Black communities</strong> — with its own freight model not supporting the
+    difference.</p>
+    <p><strong>And the map was not calculated; it was negotiated.</strong> The dairy industry
+    coalition that drafted it describes its own method in a hearing exhibit: pick nineteen anchor
+    cities, have regional subgroups raise or lower the model's numbers using local knowledge,
+    move individual counties between price zones so that named bottling plants don't pay more
+    than the competitors they bid against, then smooth the result until it looked tidy and
+    explainable.</p>
+
+    <div class="takeaway">
+      <p>None of that requires a statistician. It is: <em>you moved four billion dollars a year,
+      you were told in writing who it would hurt, and you answered in three sentences.</em></p>
+    </div>
+
+    <p style="margin-top:30px">One caveat that belongs on all of it. The freight figures used
+    here come from a March 2016 run of the model. The 2025 map was built on 2021 runs — the
+    industry quotes their results but never filed the underlying county table. Obtaining it is
+    the single most valuable step left, and it is a narrow, well-identified request.</p>
+  </div>
+ </div>
+</div>
 
 <div class="verdicts">
   <div class="v ok">
