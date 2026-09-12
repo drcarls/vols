@@ -1,3 +1,10 @@
+> **SUPERSEDED IN PART — read `reports/above_cost_regional.md` alongside this.** The
+> national departure-from-cost regression in §3–4 below pools regions carrying opposite
+> signs (the West is priced far below the cost surface, the South above it), so it
+> understates the effect by construction. The regional decomposition shows USDA marked the
+> South up 3.92¢/gal and the West down 6.58¢/gal against its own freight model, with no
+> racial gradient inside any region. Everything else here stands.
+
 # Is the Class I differential surface the transport-cost surface?
 
 **Exhibit MIG-16A, admitted into the hearing record, makes the agency's central
