@@ -21,7 +21,7 @@ The memo also referenced *"deceptive-discount patterns at several retailers."* T
 part of this analysis. The revision says so and expresses no view, rather than inheriting a
 claim I cannot support.
 
-### 2. §4a, new — the geography defence is largely correct
+### 2. §4a, new — the geography defence is largely correct, and the markup is regional
 
 Exhibit MIG-16A (see `reports/usdss.md`) makes the cost-of-service defence testable. The
 least-cost freight surface carries a **4.68¢** gap against **3.82¢** for the differentials in
@@ -123,3 +123,34 @@ systematically smaller where the Black share was higher (t +12.08). See
 
 **§8, the California WIC analysis.** Not re-audited — it rests on a separate CDPH dataset this
 project never held. The revision says so rather than implying it was checked.
+
+
+---
+
+## Addendum: §4a rewritten around the regional framing
+
+Two problems with the first draft of §4a, both raised by the client and both real.
+
+**It was unreadable.** It used "shadow prices", "state-block permutation", "give-up charge",
+"leave-one-out runs" and bare *t*-statistics without glossing any of them, and it put the
+significance column in the same table as the magnitudes — where the *p*-ordering (4.68¢
+marked "no, p .074" beside 5.59¢ marked "yes, p .041") invites the reader to conclude the
+freight gap is not real. Rewritten: every term defined where it appears, significance moved
+into prose, and the table reduced to what each map is and what gap it carries.
+
+**The national test was the wrong specification.** See `reports/above_cost_regional.md`. §4a
+now leads with the regional decomposition — South +3.92¢/gal and Northeast +2.09¢ above the
+freight model, West −6.58¢ below it, 73.9% of Black Americans in a marked-up region against
+54.1% of white Americans — and states plainly that inside a region the markup does not track
+race, that this is the right shape for a disparate-impact claim rather than a weakness, and
+that a targeting theory is refuted by the same data.
+
+The three limits are now a bulleted list rather than buried prose: the regional pattern's
+racial incidence is still not significant (p .289); the within-region gradient is negative
+and under region controls significantly so (t −2.36), which is the rebuttal to any filing
+asserting otherwise; and above the freight model is not the same as unjustified, given USDA's
+producer-revenue objectives.
+
+Section 5's "establishes" and "does not establish" lists and the corrections table were
+updated to match. The §4a entry in the corrections table no longer reads "adverse" — the
+finding cuts both ways and the table now says so.
