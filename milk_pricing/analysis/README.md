@@ -19,6 +19,7 @@ The `data/` directory is gitignored — regenerate it with the collectors in
 | `fb_within.py` | `reports/tx_ca_metros.md` §4 — same decomposition applied to the Finding B states |
 | `sc_basket.py` | `reports/brightdata_zipcode_trap.md` §7 — the 13-item Great Value basket across all 92 SC stores; `--build` converts the raw snapshot |
 | `bd_zipcode_probe.py` | `reports/brightdata_zipcode_trap.md` — why Bright Data's Walmart zipcodes template pins the store but returns a national online price; §7 has the full 92-store SC pull |
+| `docket_audit.py` | `reports/docket_audit.md` — who commented on AMS-DA-23-0031, whether consumer incidence was raised, and the *Block* obstacle |
 | `cria_audit.py` | `reports/cria_audit.md` — first independent audit of the 2025 FMMO final rule and its Civil Rights Impact Analysis, against the 131-page 1999-2000 comparator |
 | `clean_panel.py` | `reports/clean_panel.md` — every headline number re-run on the panel with statutorily-regulated and non-contiguous states excluded, shown raw vs clean |
 | `state_pricing_laws.py` | `reports/state_pricing_laws.md` — three regimes of state pricing law, which compress prices and which do not, and which comparator states are contaminated |
