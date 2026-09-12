@@ -160,3 +160,115 @@ to handlers, 467 U.S. 340 (1984).
 `analysis/counterfactual.py`. Inputs are public: USDA's county table from the AMS hearing page,
 and ACS B03002 by county via the Census Reporter API (the Census Bureau's own API now requires a
 key; Census Reporter does not).
+
+---
+
+# Addendum: the alternative was on the record, and USDA adopted the most graded of four
+
+**Added 2026-09-12**, after retrieving the two county-level schedules filed at the hearing:
+*Appendix A — National Milk Producers Federation Proposed Class I Differentials* and
+*Appendix B — Milk Innovation Group Proposed Class I Differentials*, both published on the AMS
+national hearing page. Parsed to **2,784 counties matched across all four schedules plus Census
+demographics, covering 304,615,782 people.**
+
+This supersedes §3's constructed counterfactuals with something far better: **alternatives that
+were actually before the agency.**
+
+## A. MIG's proposal is a uniform cut — one number, every county
+
+Across all 2,960 counties in Appendix B, the change from the current base §1000.52 differential
+is **exactly −$1.60**. Not a distribution, a single value. MIG proposed lowering the level and
+**leaving the distributional shape alone** — specifically the pre-2008 base surface, since MIG
+quotes the base differential rather than the effective one (verified: MIG's "current" differs
+from USDA's effective by exactly the FO 5/6/7 adjustment; NMPF's matches USDA's effective in
+2,783 of 2,784 counties).
+
+NMPF's proposal, by contrast, ranges from **+$0.25 to +$2.70** across 47 distinct values.
+
+## B. Racial gap under each schedule that was before the agency
+
+| Schedule | Mean level $/cwt | **Gap ¢/gal** |
+|---|---|---|
+| **MIG proposal** (Appendix B) | $1.0032 | **2.62¢** |
+| Current effective (pre-2025) | $2.7585 | 3.36¢ |
+| **NMPF proposal** (Appendix A) | $4.2604 | **4.60¢** |
+| **USDA adopted** (Final Decision) | $4.0476 | **5.05¢** |
+
+Holding the national mean level identical at USDA's adopted $4.0476 — a uniform shift cannot
+change a difference, so each row is purely that schedule's distributional shape:
+
+| Shape, at a common national level | **Gap ¢/gal** |
+|---|---|
+| MIG shape | **2.62¢** |
+| Current shape | 3.36¢ |
+| NMPF shape | 4.60¢ |
+| **USDA adopted** | **5.05¢** |
+
+**USDA adopted the most racially graded of the four options on the table** — more graded than the
+producer trade association's own proposal, more than the status quo, and **93% more than MIG's.
+At an identical national price level, MIG's schedule would have cut the gap 48%.**
+
+## C. USDA's own departures from NMPF were graded too
+
+USDA did not simply take NMPF's schedule. It went **above** NMPF in 419 counties and **below** in
+2,153, lowering the national mean from $4.2604 to $4.0476. But the cuts were not distributed
+neutrally:
+
+> **USDA's deviation from NMPF's proposal, regressed on county %Black, population-weighted:
+> +0.00477 $/cwt per percentage point (t = +12.08).**
+
+USDA cut less where the Black share was higher. That is why its gap (5.05¢) exceeds NMPF's
+(4.60¢) despite a lower overall level.
+
+## D. Why this is the strongest form of the argument
+
+A less-discriminatory-alternative element normally requires the challenger to construct one and
+defend its feasibility. Here it does not:
+
+1. **The alternative was filed.** MIG's Appendix B is in the record, county by county.
+2. **It is administratively trivial.** A single uniform adjustment — no county-by-county judgment,
+   no model, no interpolation.
+3. **The distributional comparison is clean.** Because MIG's proposal is a constant shift, the
+   level and the distribution separate exactly. USDA can defend its *level* on producer-return
+   grounds under the AMAA. It cannot defend its *distribution* on those grounds, because a
+   different distribution at the same level was available.
+4. **USDA went further than the party that asked.** The agency's own adjustments to NMPF's
+   proposal were themselves racially graded at t = 12.
+
+## E. Limits — and one is important
+
+- **MIG did not propose the rescaled version.** Its actual filing cuts the mean level from $2.76
+  to $1.00, a very large reduction in producer revenue that USDA could reject on statutory
+  grounds and almost certainly would. **The rescaling is my analytical device** for separating
+  level from distribution. It is the right device for a disparate-impact analysis — which
+  concerns distribution — but it is not a schedule anyone submitted.
+- **Coverage.** 2,784 counties here against 3,100 in §1, because ~10% of rows were lost to PDF
+  text extraction. On this subset the adopted-vs-current widening reads **3.36¢ → 5.05¢** against
+  **3.81¢ → 5.59¢** on the fuller set. Same direction, magnitudes ~12% smaller. The fuller
+  figures in §1 are the ones to quote; these are for comparing schedules to each other.
+- **Still not the USDSS comparison.** The model's county values remain unobtained — they are
+  hearing exhibits and are not among the 77 files published on the AMS page. MIG's schedule is a
+  *better* legal instrument than a reconstructed USDSS, but USDSS would answer the "this is
+  geography" defence more directly, since it is USDA's own cost surface.
+
+## F. The chain, restated
+
+1. USDA quantified a **$4.01bn** transfer and declined to model its incidence (`reia_audit.md`).
+2. Four county-level schedules were before it. **It adopted the most racially graded** (§B).
+3. Its own departures from the producer proposal rose with %Black, **t = 12.08** (§C).
+4. The adopted schedule widened the person-weighted gap **47%, 3.81¢ → 5.59¢** (§1) — the second
+   such widening since 2000 (§2).
+5. **A filed alternative would have cut the gap 48% at the same national level** (§B).
+6. A represented party objected that the cost lands on WIC and SNAP participants
+   (`docket_audit.md`).
+7. USDA certified no civil rights impact in three sentences, never using the word "consumer"
+   (`cria_audit.md`).
+
+***Block* still governs the vehicle** — 467 U.S. 340 (1984) confines review of milk marketing
+orders to handlers. Note, though, that **MIG's members are handlers**, they filed the alternative,
+and they objected on consumer-incidence grounds. The party with standing and the party with the
+better schedule are the same party.
+
+## Reproduction
+
+`analysis/counterfactual_schedules.py`.

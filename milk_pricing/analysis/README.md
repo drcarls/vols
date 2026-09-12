@@ -19,6 +19,7 @@ The `data/` directory is gitignored — regenerate it with the collectors in
 | `fb_within.py` | `reports/tx_ca_metros.md` §4 — same decomposition applied to the Finding B states |
 | `sc_basket.py` | `reports/brightdata_zipcode_trap.md` §7 — the 13-item Great Value basket across all 92 SC stores; `--build` converts the raw snapshot |
 | `bd_zipcode_probe.py` | `reports/brightdata_zipcode_trap.md` — why Bright Data's Walmart zipcodes template pins the store but returns a national online price; §7 has the full 92-store SC pull |
+| `counterfactual_schedules.py` | `reports/counterfactual.md` addendum — racial incidence of all four county-level schedules that were before USDA, including MIG's filed alternative |
 | `counterfactual.py` | `reports/counterfactual.md` — verifies the 3.81c-to-5.59c widening on 3,100 counties and quantifies revenue-neutral alternatives |
 | `reia_audit.py` | `reports/reia_audit.md` — USDA's own economic analysis: the \$4.01bn transfer it quantified, why it declined to model impacts, and the absence of any consumer analysis |
 | `docket_audit.py` | `reports/docket_audit.md` — who commented on AMS-DA-23-0031, whether consumer incidence was raised, and the *Block* obstacle |
