@@ -154,3 +154,33 @@ producer-revenue objectives.
 Section 5's "establishes" and "does not establish" lists and the corrections table were
 updated to match. The §4a entry in the corrections table no longer reads "adverse" — the
 finding cuts both ways and the table now says so.
+
+
+## Addendum 2: the docket record added to §6, with the citation
+
+§6 previously compressed the unanswered-comment finding into one bullet. It is now set out in
+full, because it is the strongest procedural fact in the memorandum and it is documentary.
+
+- **128 comments and exceptions** (docket AMS-DA-23-0031, due 13 September 2024), after 49
+  hearing days. 39 from dairy industry organisations; 89 from individuals, individual dairies
+  and CME Group; **0 from consumer, anti-hunger, nutrition, faith, community or civil-rights
+  organisations.**
+- Keyword incidence across all 128: consumer 55, civil rights 16, affordability 10,
+  **WIC 1, SNAP 1** — and both the WIC and SNAP hits are the *same filing*.
+- That filing is cited in the document: **Milk Innovation Group, *Comments, Exceptions, and
+  Objections to USDA's Proposed Rule*, AMS-DA-23-0031-0080, posted 16 September 2024, 55 pages,
+  filed through Davis Wright Tremaine LLP.** Its numbered objections 2, 3 and 4 are quoted
+  verbatim.
+- Against the final rule's **zero** occurrences of "consumer" (`cria_audit.md`), that is a
+  fully formed APA failure-to-respond predicate, and it requires proving no disparity at all.
+- A note flags that MIG is a processor group — a *handler* — so under *Block* the one filer who
+  put consumer incidence on the record is also among the few parties who could litigate it.
+
+One sentence in the earlier draft was garbled — "requires proving no disparity at all" where it
+should read "does not require proving any disparity at all." Fixed.
+
+**Also added to §4a.** The same MIG filing objects that USDA "deviat[ed] from the USDSS model"
+and used "current Class I differentials as a floor," which "artificially enhances fluid milk
+prices." That is a contemporaneous, represented-party allegation of precisely what §4a measures,
+which USDA did not answer — contemporaneous corroboration rather than a retrospective
+reconstruction.
