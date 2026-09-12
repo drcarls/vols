@@ -220,3 +220,73 @@ t = +0.33).
 
 **Conclusion for the SC question: the scrape is done, the price field cannot support the
 analysis, and the analysis it cannot support was already null on the clean data.**
+
+---
+
+## 8. Re-verified 2026-09-12: nothing has changed
+
+Asked whether store-level Walmart milk can still be collected. Re-tested rather than recalled,
+on the same account token. Everything below is today's output, not the August record.
+
+**Account state.** Auth valid (`/status` 200). `GET /zone/get_active_zones` returns exactly
+one zone: `[{"name":"unblocker","type":"unblocker"}]`. No residential or ISP zone, so no
+`country-state-city` targeting. This is the single fact that decides the answer.
+
+**Web Unlocker page path** (real shelf prices, store set by proxy exit). Five requests for the
+same SKU:
+
+| payload | result |
+|---|---|
+| baseline, no geo | 200, 475,866 bytes — store **3081, Sacramento 95829** |
+| `country: "us"` | 200, 475,576 bytes — store **3081, Sacramento 95829** |
+| `country` + `state: "sc"` | 200, **empty body** |
+| `country` + `state` + `city: "columbia"` | 200, **empty body** |
+| `zip: "29201"` | 200, **empty body** |
+
+Note the shape of the failure, because it is easy to misread in both directions. `state`,
+`city` and `zip` **pass request validation** — send `geo` or a nonsense field instead and the
+API returns a 400 naming it as `"not allowed"`, while these return 200. They are real fields;
+this zone simply has no entitlement to serve them, so the response body is empty. `country`
+resolves but only to a country, which does not pin a store. August's note that these were "not
+valid fields for this zone" understated it slightly: they are valid fields, unserviceable on an
+unblocker zone. The operational conclusion is unchanged.
+
+**A transport artifact that nearly produced a false finding.** The first pass of this probe used
+curl's default HTTP/2 and returned `curl: (92) Invalid HTTP header field ... [proxy-connection]`
+for exactly the geo-bearing requests — the agent proxy, not Bright Data. Read at face value it
+looks like the API accepted the geo fields and something downstream broke, i.e. the opposite of
+the truth. `--http1.1` resolves it. Any future probe from this environment must use it.
+
+**Dataset zipcode template** (`gd_m693oc1r1gebnayxq`, real stores, online prices). Re-ran
+`--validate`, snapshot `sd_mtydchx927xrzfd16y`, 8 records, 0 errors:
+
+| zip | template | known shelf | match |
+|---|---|---|---|
+| 15227 Brentwood PA | $3.52 | $5.17 | no |
+| 16335 Meadville PA | $3.52 | $4.94 | no |
+| 17055 Camp Hill PA | $3.52 | $4.63 | no |
+| 29306 Spartanburg SC | $3.52 | $2.32 | no |
+| 29566 N Myrtle Beach SC | $3.52 | $3.97 | no |
+| 29607 Greenville SC | $3.12 | $2.50 | no |
+| 29926 Hilton Head SC | $3.52 | $3.86 | no |
+| 95829 Sacramento CA | $3.52 | $3.52 | **yes** |
+
+**1 of 8**, byte-identical to August. Store resolution is still genuine (correct store names in
+all 8). Pennsylvania still returns $3.52, still below the Milk Marketing Board's legal minimum,
+still labelled `"Price when purchased online"`.
+
+### Answer
+
+**No — and it was never possible on this account.** The two capabilities live in different tools
+and have never co-existed in one: the Dataset template pins the store and returns the national
+online price; the Web Unlocker returns a true shelf price for whichever store the proxy exit
+lands on. The 3,768-store panel underlying Finding B came from the client's own pipeline, which
+this project has never reproduced.
+
+**The unblocking step is provisioning, not code.** A residential or ISP zone with
+`country-state-city` targeting, pointed at the Web Unlocker page path, is the untested
+combination that would work: true shelf prices with the store forced by proxy geography. The
+verification guard in `src/milk_pricing/sources/walmart_basket.py` already reads back the ZIP
+the page resolved to and raises `StoreMismatch` on a mismatch, so a bad pin fails loudly instead
+of filling a file with proxy-exit prices. Creating such a zone is a billable account change and
+was not made here.
