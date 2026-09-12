@@ -293,3 +293,20 @@ narrower and better aimed:
 
 None of that requires the claim that the differential's racial gradient exceeds
 chance — which, tested honestly, it does not.
+
+---
+
+## Published summary
+
+The public NAACP summary (`reports/public_summary.html`, published as a private
+Claude artifact) was updated to version 2 to carry this result, because version 1
+stated in its footer that no audit had been performed of the rulemaking record, the
+Civil Rights Impact Analysis, the 2025 amendment, or any alternative-schedule
+counterfactual — all four of which have since been done — and answered the geography
+rebuttal only with the weak within-region evidence.
+
+Version 2 adds two sections: the cost-surface test (leading with the finding that
+goes against the theory) and the administrative record. Its "next steps" list is
+rewritten around what is actually still open, and the footer now carries the
+vintage, single-month and "above cost is not unlawful" caveats. The document
+contains no client names, credentials, or engagement history.

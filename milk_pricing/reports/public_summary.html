@@ -1,0 +1,720 @@
+<title>Milk Pricing Equity Audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+  :root{
+    --ground:#F5F7F9; --panel:#FFFFFF; --panel-2:#EDF1F5;
+    --ink:#16202B; --ink-2:#334353; --muted:#5A6875; --rule:#DCE3E9; --rule-2:#C6D2DC;
+    --accent:#1B4A6B; --accent-soft:#E4EDF3;
+    --ok:#2F6E4E; --ok-soft:#E3EFE8;
+    --warn:#8A5D10; --warn-soft:#F6EEDD;
+    --no:#A33B2E; --no-soft:#F7E7E4;
+    --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+    --sans:"Public Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --col:68ch;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --ground:#11171C; --panel:#182027; --panel-2:#1E2831;
+      --ink:#E9EEF2; --ink-2:#C2CDD7; --muted:#93A2AE; --rule:#2A3540; --rule-2:#3A4854;
+      --accent:#7FB4D4; --accent-soft:#1B2A36;
+      --ok:#7CC49B; --ok-soft:#17261E;
+      --warn:#D6A94F; --warn-soft:#26200F;
+      --no:#E08C7E; --no-soft:#2A1A17;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#11171C; --panel:#182027; --panel-2:#1E2831;
+    --ink:#E9EEF2; --ink-2:#C2CDD7; --muted:#93A2AE; --rule:#2A3540; --rule-2:#3A4854;
+    --accent:#7FB4D4; --accent-soft:#1B2A36;
+    --ok:#7CC49B; --ok-soft:#17261E;
+    --warn:#D6A94F; --warn-soft:#26200F;
+    --no:#E08C7E; --no-soft:#2A1A17;
+  }
+
+  *{box-sizing:border-box}
+  body{background:var(--ground);color:var(--ink);font-family:var(--sans);
+       font-size:16.5px;line-height:1.62;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px 96px}
+  .col{max-width:var(--col)}
+  h1,h2,h3{font-family:var(--serif);text-wrap:balance;margin:0}
+  p{margin:0}
+  a{color:var(--accent)}
+  strong{font-weight:600}
+
+  /* ---------- masthead ---------- */
+  header{border-bottom:2px solid var(--ink);padding:44px 0 22px;margin-bottom:36px}
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;
+           color:var(--muted);display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+  .eyebrow .dot{width:4px;height:4px;border-radius:50%;background:var(--rule-2)}
+  h1{font-size:clamp(34px,5.4vw,50px);line-height:1.06;font-weight:700;letter-spacing:-.018em;
+     margin:16px 0 12px;max-width:20ch}
+  .standfirst{font-family:var(--serif);font-size:20px;line-height:1.5;color:var(--ink-2);max-width:60ch}
+  .meta{margin-top:22px;display:flex;flex-wrap:wrap;gap:8px 26px;font-size:13px;color:var(--muted)}
+  .meta b{font-weight:500;color:var(--ink-2)}
+
+  /* ---------- verdict strip ---------- */
+  .verdicts{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+            margin:0 0 44px}
+  .v{background:var(--panel);border:1px solid var(--rule);border-left:4px solid var(--c);
+     padding:18px 20px 20px;display:flex;flex-direction:column;gap:9px}
+  .v.ok{--c:var(--ok)} .v.warn{--c:var(--warn)} .v.no{--c:var(--no)}
+  .v .tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;
+          color:var(--c);font-weight:600}
+  .v h3{font-size:18px;font-weight:600;line-height:1.25}
+  .v p{font-size:14px;color:var(--ink-2);line-height:1.55}
+
+  /* ---------- sections ---------- */
+  section{margin:0 0 56px;scroll-margin-top:24px}
+  .kicker{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+          color:var(--accent);font-weight:600;margin-bottom:10px}
+  h2{font-size:clamp(24px,3.2vw,31px);font-weight:600;letter-spacing:-.012em;line-height:1.18;
+     margin-bottom:16px}
+  h3.sub{font-size:19px;font-weight:600;margin:32px 0 10px}
+  .col p + p{margin-top:14px}
+  .lede{font-size:18px;color:var(--ink-2)}
+
+  /* ---------- data ---------- */
+  .panel{background:var(--panel);border:1px solid var(--rule);margin:26px 0;overflow-x:auto}
+  .panel-head{padding:15px 20px 13px;border-bottom:1px solid var(--rule);
+              display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline}
+  .panel-head h4{font-family:var(--sans);font-size:13.5px;font-weight:600;margin:0;letter-spacing:.005em}
+  .panel-head .note{font-size:12.5px;color:var(--muted)}
+  table{border-collapse:collapse;width:100%;font-size:14px}
+  th,td{text-align:left;padding:10px 20px;border-bottom:1px solid var(--rule)}
+  tbody tr:last-child td{border-bottom:none}
+  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
+     color:var(--muted);font-weight:600;padding-top:12px;padding-bottom:9px;white-space:nowrap}
+  td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+  td.spec{color:var(--ink-2)}
+  .sig{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.05em;
+       padding:2px 7px;border-radius:2px;white-space:nowrap}
+  .sig.y{background:var(--ok-soft);color:var(--ok)}
+  .sig.m{background:var(--warn-soft);color:var(--warn)}
+  .sig.n{background:var(--no-soft);color:var(--no)}
+
+  /* |t| bar with 1.96 threshold */
+  .tcell{min-width:190px;width:34%}
+  .bar{position:relative;height:19px;background:var(--panel-2);border-radius:1px}
+  .bar i{position:absolute;left:0;top:0;bottom:0;background:var(--b,var(--accent));border-radius:1px}
+  .bar u{position:absolute;top:-3px;bottom:-3px;width:1.5px;background:var(--rule-2);text-decoration:none}
+  .bar span{position:absolute;right:6px;top:0;line-height:19px;font-family:var(--mono);
+            font-size:11px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+  .barkey{font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-top:4px}
+
+  /* ---------- callouts ---------- */
+  .callout{border:1px solid var(--rule);border-left:3px solid var(--accent);
+           background:var(--accent-soft);padding:18px 22px;margin:26px 0}
+  .callout.no{border-left-color:var(--no);background:var(--no-soft)}
+  .callout.warn{border-left-color:var(--warn);background:var(--warn-soft)}
+  .callout .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;
+                font-weight:600;color:var(--ink-2);margin-bottom:7px}
+  .callout p{font-size:15px;color:var(--ink)}
+  .callout p + p{margin-top:11px}
+
+  ul.clean{list-style:none;padding:0;margin:16px 0;display:flex;flex-direction:column;gap:12px}
+  ul.clean li{padding-left:20px;position:relative;font-size:15.5px;color:var(--ink-2)}
+  ul.clean li::before{content:"";position:absolute;left:2px;top:.62em;width:6px;height:1.5px;
+                      background:var(--rule-2)}
+  ul.clean li b{color:var(--ink)}
+
+  .cite{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+  footer{border-top:1px solid var(--rule);padding-top:26px;margin-top:12px;
+         font-size:13px;color:var(--muted);max-width:var(--col)}
+  footer p + p{margin-top:11px}
+  @media (prefers-reduced-motion:no-preference){
+    .v,.panel{animation:rise .5s ease both}
+    @keyframes rise{from{opacity:.001;transform:translateY(5px)}to{opacity:1;transform:none}}
+  }
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">
+    <span>Independent empirical review</span><span class="dot"></span>
+    <span>Milk pricing &amp; racial disparate impact</span><span class="dot"></span>
+    <span>September 2026</span>
+  </div>
+  <h1>Milk Pricing Equity Audit</h1>
+  <p class="standfirst">An independent test of two claims: that the federal Class&nbsp;I milk
+  differential falls harder on Black communities, and that Walmart charges more for milk in
+  Black neighborhoods. One is substantially supported, though mostly by freight cost rather than
+  by anything USDA chose. One is not supported at all.</p>
+  <div class="meta">
+    <span><b>Sample</b> 3,768 Walmart store-ZIPs, 43 states</span>
+    <span><b>Outcomes</b> Class I differential ($/cwt); shelf price ($/gal)</span>
+    <span><b>Demographics</b> Census ACS B03002, B19013</span>
+    <span><b>Federal rule</b> 3,077 counties, 328.4M people, incl. USDA's cost model</span>
+  </div>
+</header>
+
+<div class="verdicts">
+  <div class="v ok">
+    <span class="tag">Supported — between states</span>
+    <h3>Finding A · Federal Class I differential</h3>
+    <p>Areas with more Black residents sit under systematically higher federal minimum milk
+    prices. A <strong>13.5¢/gallon</strong> gap, robust to income and population controls. The
+    gradient is between states and regions, not within them — and most of it tracks USDA's own
+    least-cost transport model, which is now testable and which the government will rely on.</p>
+  </div>
+  <div class="v no">
+    <span class="tag">Not supported</span>
+    <h3>Finding B · Walmart retail pricing</h3>
+    <p>No racial gradient in Walmart milk prices survives any geographic control. In Atlanta —
+    the best-powered test available — the effect is <strong>−2.9¢</strong>, p&nbsp;=&nbsp;0.65,
+    with power to detect anything the size of the claim.</p>
+  </div>
+  <div class="v warn">
+    <span class="tag">Established, but not a disparity</span>
+    <h3>Collateral · How milk is priced</h3>
+    <p>Fluid milk is priced store-by-store while adjacent dairy is priced nationally — confirmed
+    across three datasets and two retailers. A mechanism capable of producing disparity; not
+    evidence of one.</p>
+  </div>
+</div>
+
+<section>
+  <div class="col">
+    <div class="kicker">Scope</div>
+    <h2>What was tested</h2>
+    <p class="lede">Two independent claims, tested separately against public data. Neither test
+    depends on the other.</p>
+    <p style="margin-top:16px"><strong>Finding A</strong> concerns a federal rule. Under
+    <span class="cite">7 CFR 1000.52</span> USDA sets a location-specific minimum price
+    processors must pay for milk destined for drinking — the Class I differential — as one dollar
+    figure per county, ranging from $1.70/cwt near Eau Claire, Wisconsin to $7.40/cwt in south
+    Florida. Its inputs are entirely supply-side: hauling distance, plant capacity, road weight
+    limits. <strong>No input is demographic.</strong> The question is whether the resulting cost
+    surface nonetheless falls harder on Black communities.</p>
+    <p><strong>Finding B</strong> concerns a company. The claim is that Walmart charges more for
+    milk in Black neighborhoods than in comparable white ones.</p>
+    <p>Prices are quoted per hundredweight ($/cwt) in the federal rule and per gallon at retail;
+    the conversion used throughout is <span class="cite">11.63 gal/cwt</span>.</p>
+  </div>
+
+  <div class="callout">
+    <div class="lab">A note on what this document is</div>
+    <p>This is an independent statistical review, not legal advice and not an expert report. It
+    tests whether the empirical claims hold, using public data and pre-specified designs. Where a
+    result does not survive, that is reported as prominently as where it does.</p>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <div class="kicker">Finding A</div>
+    <h2>The federal differential does fall harder on Black communities</h2>
+    <p class="lede">And it does so at a magnitude that is easy to state: about thirteen and a half
+    cents on every gallon.</p>
+    <p style="margin-top:16px">Comparing ZIP codes at the two ends of the racial distribution,
+    the federal minimum price is <strong>$1.57/cwt higher</strong> where 30% or more of residents
+    are Black than where 10% or fewer are — <strong>13.5¢ per gallon</strong>, or roughly $14 per
+    household per year at typical consumption.</p>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <h4>Class I differential by ZIP racial composition</h4>
+      <span class="note">3,768 store-ZIPs, 43 states</span>
+    </div>
+    <table>
+      <thead><tr><th>ZIP composition</th><th>ZIPs</th><th>Mean differential</th><th>Per gallon</th></tr></thead>
+      <tbody>
+        <tr><td class="spec">30% or more Black</td><td class="num">426</td><td class="num">$5.24/cwt</td><td class="num">45.1¢</td></tr>
+        <tr><td class="spec">10% or fewer Black</td><td class="num">2,477</td><td class="num">$3.66/cwt</td><td class="num">31.5¢</td></tr>
+        <tr><td class="spec"><strong>Difference</strong></td><td class="num">—</td><td class="num"><strong>+$1.57/cwt</strong></td><td class="num"><strong>+13.5¢</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <h3 class="sub">Where the finding lives, and where it stops</h3>
+    <p>The honest version of this result is not a single number but a ladder. Each rung adds a
+    control; the question is how far up the gradient survives. Standard errors are clustered on
+    state throughout, which is the demanding specification an opposing expert will insist on for
+    a state-level price surface.</p>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <h4>Specification ladder — %Black coefficient on the Class I differential</h4>
+      <span class="note">$/cwt per percentage point; SEs clustered on state (43 clusters)</span>
+    </div>
+    <table>
+      <thead><tr><th>Specification</th><th>Coefficient</th><th class="tcell">|t| &nbsp;·&nbsp; threshold 1.96</th><th>Holds</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="spec">Unadjusted</td><td class="num">+0.0362</td>
+          <td class="tcell"><div class="bar" style="--b:var(--ok)"><i style="width:94%"></i><u style="left:24.5%"></u><span>7.50</span></div></td>
+          <td><span class="sig y">Yes</span></td>
+        </tr>
+        <tr>
+          <td class="spec">+ median income, log population</td><td class="num">+0.0354</td>
+          <td class="tcell"><div class="bar" style="--b:var(--ok)"><i style="width:90%"></i><u style="left:24.5%"></u><span>7.18</span></div></td>
+          <td><span class="sig y">Yes</span></td>
+        </tr>
+        <tr>
+          <td class="spec">+ census-region fixed effects</td><td class="num">+0.0128</td>
+          <td class="tcell"><div class="bar" style="--b:var(--warn)"><i style="width:27%"></i><u style="left:24.5%"></u><span>2.17</span></div></td>
+          <td><span class="sig m">Marginal</span></td>
+        </tr>
+        <tr>
+          <td class="spec">+ state fixed effects</td><td class="num">+0.0022</td>
+          <td class="tcell"><div class="bar" style="--b:var(--no)"><i style="width:23%"></i><u style="left:24.5%"></u><span>1.83</span></div></td>
+          <td><span class="sig n">No</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="padding:12px 20px 16px" class="barkey">Bar length is |t| on a common scale; the
+    vertical rule marks the conventional 1.96 significance threshold.</div>
+  </div>
+
+  <div class="col">
+    <p><strong>Read that ladder carefully, because it is the whole case.</strong> The disparity is
+    large and highly robust to income — adding median income and population moves the coefficient
+    by only 2%. It survives comparison across census regions, marginally. It does
+    <em>not</em> survive comparison within a single state.</p>
+    <p>That pattern is intrinsic to the rule rather than a defect in the analysis:
+    <strong>95% of all variation in the Class I differential is between states</strong>, because
+    it is a national geographic cost surface. There is very little within-state variation for a
+    within-state test to use.</p>
+  </div>
+
+  <div class="callout warn">
+    <div class="lab">The rebuttal counsel should expect</div>
+    <p><em>"This is geography, not race. Black Americans are concentrated in the Southeast, which
+    is far from the Upper Midwest dairy supply. The rule prices distance."</em></p>
+    <p>That rebuttal is partly right, and it can now be tested directly rather than argued
+    around — USDA's own cost model was entered into the rulemaking record, and the section
+    below measures the differential against it. First, the weaker form of the answer: the
+    gradient does not vanish when the South is removed. It appears inside every census region,
+    though only the Northeast is individually significant once errors are clustered.</p>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <h4>Is it only the South? — %Black coefficient within each census region</h4>
+      <span class="note">income and log population controlled; SEs clustered on state</span>
+    </div>
+    <table>
+      <thead><tr><th>Region</th><th>ZIPs</th><th>Mean differential</th><th>Mean %Black</th><th>Coefficient</th><th>t</th></tr></thead>
+      <tbody>
+        <tr><td class="spec">Northeast</td><td class="num">217</td><td class="num">$4.53</td><td class="num">5.2%</td><td class="num">+0.0156</td><td class="num">+3.76</td></tr>
+        <tr><td class="spec">West</td><td class="num">688</td><td class="num">$2.45</td><td class="num">3.9%</td><td class="num">+0.0129</td><td class="num">+2.03</td></tr>
+        <tr><td class="spec">South</td><td class="num">1,913</td><td class="num">$5.06</td><td class="num">17.8%</td><td class="num">+0.0143</td><td class="num">+1.94</td></tr>
+        <tr><td class="spec">Midwest</td><td class="num">950</td><td class="num">$3.25</td><td class="num">6.7%</td><td class="num">+0.0027</td><td class="num">+1.41</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <p>The coefficient is positive in all four regions and of similar size in three of them. That
+    is not what pure Southern concentration would produce. But with only 6 to 16 states per
+    region, the clustered tests are underpowered, and only the Northeast clears the conventional
+    threshold on its own. This design can show that the gradient is not <em>only</em> the South.
+    It cannot show that the gradient is not cost — for that, the cost has to be measured.</p>
+    <p><strong>The defensible claim at this stage is: a real, substantial, income-robust disparity
+    in a federal price floor, operating at the level of states and regions rather than
+    neighborhoods.</strong> The next section asks how much of it a least-cost freight model
+    produces on its own.</p>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <div class="kicker">Finding A · the decisive test</div>
+    <h2>Measured against USDA's own cost model, the geography defense largely holds</h2>
+    <p class="lede">The least-cost freight surface is itself racially graded — and by more than
+    the differentials that were in force before 2025. This is reported first because it is the
+    result that most constrains the case.</p>
+    <p style="margin-top:16px">USDA's Class I differentials are built from the
+    <strong>U.S. Dairy Sector Simulator</strong>, a transshipment model that finds the cheapest
+    way to move raw milk from farms to plants and finished product to consumers, subject to road
+    networks, state truck weight limits, plant capacity, and regional fuel and labor costs. Its
+    output includes a shadow price for milk at every location — a pure cost surface with no
+    demographic input of any kind.</p>
+    <p>That surface was filed at the national rulemaking hearing by the model's own
+    caretaker and <strong>admitted into evidence</strong>: a 3,085-county table of Class I and
+    Class III shadow prices. It can be compared, county by county, against what USDA actually
+    adopted. The comparison is clean, because the statistic used here — the person-weighted
+    Black mean minus the person-weighted White mean — is mathematically unchanged by shifting a
+    whole surface up or down, and a shadow-price surface has no meaningful zero. Only the
+    <em>shape</em> of each surface is being compared, which is the only thing they share.</p>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <h4>Black–White gap in the price of milk, by surface</h4>
+      <span class="note">3,077 counties · 328.4M people · cents per gallon · significance by state-block permutation, 2,000 draws</span>
+    </div>
+    <table>
+      <thead><tr><th>Surface</th><th>Gap</th><th class="tcell">Magnitude</th><th>vs. cost</th><th>p</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="spec">2000 base differentials</td><td class="num">2.91¢</td>
+          <td class="tcell"><div class="bar"><i style="width:52%;background:var(--rule-2)"></i></div></td>
+          <td class="num">−1.77¢</td><td class="num">—</td>
+        </tr>
+        <tr>
+          <td class="spec">Pre-2025 differentials, in force 2008–2025</td><td class="num">3.82¢</td>
+          <td class="tcell"><div class="bar"><i style="width:68%;background:var(--rule-2)"></i></div></td>
+          <td class="num">−0.86¢</td><td><span class="sig m">0.052</span></td>
+        </tr>
+        <tr style="background:var(--accent-soft)">
+          <td class="spec"><strong>USDSS least-cost surface</strong> <span class="cite">benchmark</span></td>
+          <td class="num"><strong>4.68¢</strong></td>
+          <td class="tcell"><div class="bar" style="--b:var(--accent)"><i style="width:84%"></i></div></td>
+          <td class="num">—</td><td><span class="sig n">0.074</span></td>
+        </tr>
+        <tr>
+          <td class="spec">Adopted 2025 differentials</td><td class="num"><strong>5.59¢</strong></td>
+          <td class="tcell"><div class="bar" style="--b:var(--no)"><i style="width:100%"></i></div></td>
+          <td class="num"><strong>+0.91¢</strong></td><td><span class="sig y">0.041</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="padding:12px 20px 16px" class="barkey">Measured against the Class I shadow
+    price. Against the Class I minus Class III &ldquo;give-up charge&rdquo; — the quantity a
+    Class I differential is economically meant to cover — the cost surface carries 4.06¢ and the
+    adopted schedule exceeds it by 1.53¢.</div>
+  </div>
+
+  <div class="callout no">
+    <div class="lab">What this means for the case, stated plainly</div>
+    <p>For the schedule that stood from 2008 to 2025, <strong>the geography defense is not a
+    rationalization — it is correct.</strong> Least-cost dairy logistics, run with no demographic
+    input, produce a larger racial gap (4.68¢) than the differentials actually in force (3.82¢).
+    On this measure the old schedule was <em>less</em> racially graded than freight economics
+    alone would dictate. Counsel should assume the government makes this argument and wins it.</p>
+    <p>What survives is narrower and better aimed at the 2025 amendment, which is the first
+    schedule to price <strong>above</strong> the cost surface in aggregate incidence.</p>
+  </div>
+
+  <div class="col">
+    <h3 class="sub">The 2025 amendment: the increase did not cause the widening</h3>
+    <p>The 2025 amendment raised the population-weighted differential by
+    <strong>$1.27/cwt</strong> and widened the racial gap from 3.82¢ to 5.59¢. Those two facts
+    are unrelated. Because the gap is unchanged by shifting a surface uniformly,
+    <strong>none of the increase in level produced any of the widening.</strong> All 1.78¢ of it
+    came from re-sloping — changing which counties pay more relative to which. And most of the
+    re-sloping has no support in USDA's own model:</p>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <h4>Decomposing the 1.78¢ widening</h4>
+      <span class="note">by which cost benchmark is used</span>
+    </div>
+    <table>
+      <thead><tr><th>Component</th><th>vs. Class I shadow price</th><th>vs. give-up charge</th></tr></thead>
+      <tbody>
+        <tr><td class="spec">Converges toward the cost surface</td><td class="num">+0.87¢ &nbsp;(49%)</td><td class="num">+0.24¢ &nbsp;(14%)</td></tr>
+        <tr><td class="spec"><strong>Goes beyond the cost surface</strong></td><td class="num"><strong>+0.91¢ &nbsp;(51%)</strong></td><td class="num"><strong>+1.53¢ &nbsp;(86%)</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <p>Roughly three quarters of the adopted surface is explained by the cost model
+    (R²&nbsp;0.73). The argument is only ever about the last quarter — and there the record
+    shows the surface was <em>negotiated</em>, not computed. The producer coalition that drafted
+    it describes, in its own hearing exhibit, choosing nineteen &ldquo;anchor cities,&rdquo; then
+    convening regional subgroups instructed to <strong>increase or decrease the model-generated
+    values</strong> using local knowledge, then moving individual counties between price zones to
+    <strong>equalize raw-product costs among named competing bottling plants</strong>, then
+    &ldquo;fine tuning&rdquo; the result into an &ldquo;explainable and contiguous&rdquo; surface.
+    That is a documented fact about the process, and it does not depend on any statistic.</p>
+
+    <h3 class="sub">Where the honest limit of the statistics falls</h3>
+    <p>The 0.91¢–1.53¢ that exceeds the cost surface <strong>is not statistically
+    significant</strong> once errors are handled properly. Under the same state-block permutation
+    that validates the headline gap, the excess-over-cost returns p&nbsp;=&nbsp;0.289 against the
+    shadow price and p&nbsp;=&nbsp;0.106 against the give-up charge. County-level regressions of
+    the departure on percent Black give coefficients that are consistently positive and stable —
+    no single state's removal flips the sign, in 48 leave-one-out runs — but reach only
+    t&nbsp;+1.66 and t&nbsp;+2.09, with permutation p of 0.212 and 0.113.</p>
+    <p><strong>Point estimates consistently positive, never significant</strong> is the accurate
+    summary. Any filing that characterizes the above-cost markup as a demonstrated racial
+    gradient will be impeached on this point.</p>
+
+    <h3 class="sub">And the mechanism is not the intuitive one</h3>
+    <p>The positive gradient is driven by a California-versus-South-and-Northeast contrast rather
+    than a Black-versus-white contrast within cities. USDA prices the California metros far
+    <em>below</em> what its cost model says milk is worth there, and Texas, Florida and New
+    England above it:</p>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <h4>Departure from the cost surface, selected large counties</h4>
+      <span class="note">$/cwt, adopted 2025 schedule minus cost surface at a common mean</span>
+    </div>
+    <table>
+      <thead><tr><th>County</th><th>% Black</th><th>Adopted</th><th>Cost surface</th><th>Departure</th></tr></thead>
+      <tbody>
+        <tr><td class="spec">San Diego, CA</td><td class="num">4.4%</td><td class="num">2.80</td><td class="num">4.41</td><td class="num">−1.61</td></tr>
+        <tr><td class="spec">Los Angeles, CA</td><td class="num">7.4%</td><td class="num">2.80</td><td class="num">4.14</td><td class="num">−1.34</td></tr>
+        <tr><td class="spec">Wayne, MI <span class="cite">Detroit</span></td><td class="num">36.6%</td><td class="num">3.30</td><td class="num">4.05</td><td class="num">−0.75</td></tr>
+        <tr><td class="spec">Cook, IL <span class="cite">Chicago</span></td><td class="num">21.8%</td><td class="num">3.20</td><td class="num">3.91</td><td class="num">−0.71</td></tr>
+        <tr><td class="spec">Philadelphia, PA</td><td class="num">38.3%</td><td class="num">4.60</td><td class="num">4.50</td><td class="num">+0.10</td></tr>
+        <tr><td class="spec">Harris, TX <span class="cite">Houston</span></td><td class="num">18.6%</td><td class="num">4.80</td><td class="num">4.12</td><td class="num">+0.68</td></tr>
+        <tr><td class="spec">Broward, FL</td><td class="num">27.4%</td><td class="num">7.40</td><td class="num">6.71</td><td class="num">+0.69</td></tr>
+        <tr><td class="spec">Middlesex, MA</td><td class="num">4.7%</td><td class="num">5.10</td><td class="num">4.26</td><td class="num">+0.84</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <p>Detroit is 36.6% Black and is priced <strong>$0.75 below</strong> the cost surface;
+    Chicago is 21.8% Black and priced $0.71 below; Philadelphia, at 38.3%, sits within a dime of
+    it. A theory that USDA marked up Black metropolitan areas does not survive contact with this
+    table. Where the gradient genuinely lives is the rural Black Belt — the twenty Blackest
+    counties in the country average a <strong>+$0.57</strong> departure against +$0.16 for the
+    twenty least-Black — but those counties hold few people, which is precisely why the
+    population-weighted aggregate lands at p&nbsp;=&nbsp;0.289.</p>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <div class="kicker">The administrative record</div>
+    <h2>The strongest material is procedural, not statistical</h2>
+    <p class="lede">Four findings from the rulemaking record for the 2025 amendment. None of them
+    requires the racial gradient to clear a significance threshold.</p>
+
+    <h3 class="sub">1 · USDA quantified the transfer and analyzed nobody who pays it</h3>
+    <p>USDA's own Regulatory Economic Impact Analysis puts the amendment's annual transfer at
+    <strong>$4.01 billion</strong>. It declined to model the incidence of that transfer, and
+    contains <strong>no consumer analysis of any kind</strong> — no distributional breakdown by
+    income, geography, or race.</p>
+
+    <h3 class="sub">2 · The Civil Rights Impact Analysis is three sentences</h3>
+    <p>USDA's own directive on civil-rights review covers program beneficiaries, including WIC
+    and SNAP recipients. The certification accompanying this rule disposes of the question in
+    <strong>three sentences</strong>, and addresses only dairy operators — not the households who
+    buy the milk. For comparison, the analysis accompanying Federal Order Reform in 1999–2000 ran
+    to 131 pages, though it too was industry-scoped.</p>
+
+    <h3 class="sub">3 · Consumer incidence was raised on the record and went unanswered</h3>
+    <p>A commenter representing fluid-milk processors put the burden on
+    <strong>lower-income consumers and nutrition-program participants</strong> squarely before
+    the agency. The final rule does not respond to it. Failure to respond to a significant
+    comment is ordinary Administrative Procedure Act territory and does not require proving any
+    disparity at all.</p>
+
+    <h3 class="sub">4 · A less discriminatory alternative was on the table</h3>
+    <p>Four county-level schedules were before USDA. Holding the national average level equal so
+    that only distribution differs, the processor coalition's filed schedule carries a
+    <strong>2.62¢</strong> gap, the pre-existing schedule 3.36¢, the producer proposal 4.60¢, and
+    the schedule <strong>USDA adopted 5.05¢</strong> — the most racially graded of the four
+    options in front of it. USDA also cut the producer proposal down in 2,153 counties and raised
+    it in 419, and its pattern of cuts was smaller where the Black share was higher
+    (t&nbsp;+12.08).</p>
+  </div>
+
+  <div class="callout warn">
+    <div class="lab">The qualification that belongs beside finding 4</div>
+    <p>The alternative schedule is weaker than it first appears. It is the pre-existing surface
+    shifted down by a uniform $1.60, so its <em>shape</em> is the old shape — which, as the
+    section above establishes, is flatter than the cost model implies. USDA has grounds in the
+    record to reject it for under-signaling location. A less discriminatory alternative that
+    tracks the cost surface rather than falling below it would be a materially stronger one, and
+    constructing it is the open analytical task.</p>
+  </div>
+
+  <div class="callout">
+    <div class="lab">One procedural obstacle counsel will already have in mind</div>
+    <p>Under <span class="cite">Block v. Community Nutrition Institute</span>, 467 U.S. 340
+    (1984), judicial review of milk marketing orders is confined to handlers — consumers were
+    held to lack standing to challenge them directly. The commenter who raised consumer
+    incidence represents handlers. That is the procedural vehicle question, and it is a question
+    for counsel.</p>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <div class="kicker">Finding B</div>
+    <h2>The Walmart retail claim does not survive</h2>
+    <p class="lede">It appears under the original design, and disappears under every attempt to
+    control for geography. The strongest available test returns a precise zero.</p>
+    <p style="margin-top:16px">The original analysis compared high-Black and low-Black rural ZIP
+    codes matched on income and population, and found positive gaps in four states. The
+    difficulty is that in those states the two groups almost never share a county — typically 1
+    to 4 counties out of 25 to 39 contain both. The comparison is therefore between different
+    local markets, which differ in freight, store format, and competition as well as race.</p>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <h4>Walmart milk price on %Black, rural ZIPs — with and without a regional control</h4>
+      <span class="note">$/gal per percentage point; income and log population controlled</span>
+    </div>
+    <table>
+      <thead><tr><th>State</th><th>ZIPs</th><th>No geographic control</th><th>Within postal region</th></tr></thead>
+      <tbody>
+        <tr><td class="spec">Louisiana</td><td class="num">71</td><td class="num">+0.0042 &nbsp;<span class="sig y">t 2.72</span></td><td class="num">+0.0003 &nbsp;<span class="sig n">t 0.37</span></td></tr>
+        <tr><td class="spec">Arkansas</td><td class="num">76</td><td class="num">+0.0055 &nbsp;<span class="sig m">t 1.93</span></td><td class="num">−0.0050 &nbsp;<span class="sig n">t −1.40</span></td></tr>
+        <tr><td class="spec">South Carolina</td><td class="num">59</td><td class="num">+0.0016 &nbsp;<span class="sig n">t 0.33</span></td><td class="num">−0.0087 &nbsp;<span class="sig n">t −1.56</span></td></tr>
+        <tr><td class="spec">Mississippi</td><td class="num">61</td><td class="num">+0.0000 &nbsp;<span class="sig n">t 0.01</span></td><td class="num">+0.0017 &nbsp;<span class="sig n">t 0.53</span></td></tr>
+        <tr><td class="spec">North Carolina</td><td class="num">122</td><td class="num">−0.0061 &nbsp;<span class="sig n">t −1.89</span></td><td class="num">−0.0107 &nbsp;<span class="sig n">t −1.85</span></td></tr>
+        <tr><td class="spec">Texas</td><td class="num">207</td><td class="num">−0.0079 &nbsp;<span class="sig n">t −2.75</span></td><td class="num">−0.0094 &nbsp;<span class="sig n">t −3.29</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <h3 class="sub">The decisive test: a single metropolitan market</h3>
+    <p>The objection to every result above is symmetrical — controlling for geography might
+    remove the very mechanism at issue, while not controlling leaves the comparison confounded. A
+    large metro breaks that deadlock. Fulton and Clayton counties in Atlanta are 67–68% Black;
+    Cherokee and Forsyth are under 7%. All sit in one metropolitan market, one labor market, one
+    competitive environment, and two adjacent Class I zones.</p>
+    <p>Running the original matched-pair design inside Atlanta, on 30 pairs:</p>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <h4>Atlanta metropolitan area — original design, applied within one market</h4>
+      <span class="note">71 stores; 30 ZIPs ≥30% Black, 13 ≤10%</span>
+    </div>
+    <table>
+      <thead><tr><th>Quantity</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td class="spec">Price gap, high-Black minus low-Black</td><td class="num">−$0.029 / gal</td></tr>
+        <tr><td class="spec">One-sided permutation p</td><td class="num">0.65</td></tr>
+        <tr><td class="spec">95% confidence interval</td><td class="num">−$0.127 to +$0.068</td></tr>
+        <tr><td class="spec">Minimum detectable effect (80% power)</td><td class="num">$0.124 / gal</td></tr>
+        <tr><td class="spec">Dose–response across %Black sextiles</td><td class="num">flat, non-monotonic</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout no">
+    <div class="lab">Why this null is informative rather than merely inconclusive</div>
+    <p>Atlanta has more high-Black stores (30) than any single state's rural sample in the
+    original analysis, with a matched comparison group in the same market. It would detect a
+    28¢ gap with over 99% power and a 16¢ gap with 95% power. It finds −2.9¢.</p>
+    <p>Across twelve metropolitan areas, <strong>not one shows a significant positive
+    gradient</strong>; pooled with metro fixed effects the coefficient is −0.0007
+    (t&nbsp;−0.88). By county, DeKalb (44% Black), Gwinnett (27%) and Forsyth (7%) price within
+    one cent of each other; Atlanta's expensive stores are its outer exurban ring.</p>
+  </div>
+
+  <div class="col">
+    <p><strong>Recommendation: the retail pricing theory should not be advanced on this
+    evidence.</strong> It fails in the jurisdiction it was built on, fails in the best-powered
+    test available, and fails nationally.</p>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <div class="kicker">Collateral findings</div>
+    <h2>Three things the data does establish</h2>
+    <p class="lede">Each is solid, and none of them is a racial disparity. They matter because
+    they constrain what can be argued.</p>
+
+    <h3 class="sub">1 · Milk is priced differently from everything beside it</h3>
+    <p>Across a 13-item Great Value basket at all 92 South Carolina Walmart stores, whole milk
+    took <strong>25 distinct prices</strong> while sour cream, mozzarella, Greek yogurt, eggs and
+    canned green beans each took <strong>exactly one</strong> statewide. The pattern reproduces
+    in a national Walmart sample and independently at Aldi.</p>
+    <p>This establishes a mechanism — fluid milk is managed store-by-store while adjacent dairy
+    is priced nationally — and forecloses the defense that all traffic-driver goods are priced
+    locally, since bread and eggs are not. It is a necessary predicate for any pricing theory. It
+    is not itself evidence of disparity.</p>
+
+    <h3 class="sub">2 · The affordability gap is real and it is income, not price</h3>
+    <p>Milk cost as a share of household income rises steeply with the Black share of a ZIP:
+    +0.0029 percentage points per point (t&nbsp;+11.9) with state fixed effects. But the price
+    coefficient over the same stores is <strong>negative</strong> (−0.0037, t&nbsp;−7.1), while
+    median income falls by <strong>$359 per percentage point</strong> (t&nbsp;−12.9).</p>
+    <p>The disparity is entirely the denominator. That is a genuine and large finding about a
+    necessity, but bread or rent would produce the same coefficient — it is a statement about
+    income inequality, not about anyone's pricing conduct.</p>
+
+    <h3 class="sub">3 · State regulation moves milk prices more than anything else measured</h3>
+    <p>Pennsylvania and New Jersey set minimum <em>retail</em> milk prices by statute. Stores
+    there average <strong>$4.75/gal</strong> against <strong>$3.47</strong> where no such regime
+    applies — <strong>+$1.28</strong>, three times the largest geographic contrast in this data
+    and sixteen times the retail effect originally claimed. Those states, plus four with
+    classified-pricing programs reaching retail, are excluded from the panel above.</p>
+    <p>Notably, Pennsylvania — the highest-priced state in the country — has a Walmart footprint
+    that is 2.6% Black at the median against a state population near 12%. High milk prices are
+    not, in themselves, a racial phenomenon.</p>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <div class="kicker">Next steps</div>
+    <h2>What would change the picture</h2>
+    <ul class="clean">
+      <li><b>The 2021 model run the adopted schedule was actually built on.</b> The cost surface
+      tested above is a March 2016 run — the one that reached the record. The producer coalition
+      worked from May and October 2021 runs, quotes their results, and did not attach the county
+      table. Obtaining it would replace every vintage caveat in this review and is the single
+      highest-value discovery target.</li>
+      <li><b>Whether a completed civil-rights worksheet exists</b> behind the three-sentence
+      certification. USDA's directive contemplates one. A Freedom of Information Act request
+      would establish either that the analysis was done and not disclosed, or that the
+      certification rests on nothing.</li>
+      <li><b>A less discriminatory alternative that tracks the cost surface.</b> The alternative
+      already in the record falls below it and is rejectable on that ground. A schedule that
+      matches the model's shape at the adopted level would remove the above-cost component
+      without weakening the locational signal — this is constructible from the data in hand.</li>
+      <li><b>The 49-day hearing transcript.</b> Not yet reviewed. It would contain USDA's stated
+      reasons for departing from the model, and any consumer testimony given.</li>
+      <li><b>Walmart's price-zone assignment records.</b> If the retail theory is revisited at
+      all, the challengeable practice is the assignment of stores to price groups — a
+      centralized, documented decision — not store-level pricing conduct, which this analysis
+      finds no racial gradient in.</li>
+      <li><b>Independent verification of the retail price series.</b> The shelf prices analyzed
+      here come from a single collection pipeline that this review was unable to reproduce
+      independently; commercial scraping tools return national online prices rather than shelf
+      prices.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <p><b>Method.</b> Store-level Walmart prices joined to Census ACS tables B03002 (race) and
+  B19013 (median household income) by ZIP, and to the USDA Class I differential by county.
+  Analyses use ordinary least squares with income and log population controls; fixed effects at
+  county, postal-region, state or census-region level as stated; standard errors clustered on
+  state where a state-level surface is the object. Matched-pair tests use nearest-neighbor
+  matching on income and log population with one-sided permutation inference. Eight states are
+  excluded from the national panel: Pennsylvania and New Jersey (statutory minimum retail milk
+  prices), Maine, North Dakota, Virginia and Montana (classified pricing reaching retail), and
+  Alaska and Hawaii (non-contiguous).</p>
+  <p><b>Sources for the federal-rule sections.</b> County differentials, the four competing
+  schedules, and the cost-model shadow prices are all public documents from USDA's national
+  Federal Milk Marketing Order pricing hearing and the resulting 2025 final rule; the cost
+  surface is a hearing exhibit admitted into evidence, sponsored by one of the model's two
+  caretakers. County demographics are ACS 2023 table B03002. Cost and regulatory surfaces are
+  compared only on distributional shape, using a statistic that is mathematically invariant to
+  shifting a surface uniformly — a shadow-price surface has no meaningful zero, so its level is
+  never differenced against a regulatory level.</p>
+  <p><b>Limitations.</b> The retail sample covers only ZIP codes containing a Walmart, which is
+  not a random sample of American neighborhoods and under-represents dense urban areas. Class I
+  results on the Walmart-ZIP sample are corroboration, not a reproduction of a county-universe
+  analysis; the county-universe figures are reported separately and are the ones to quote. The
+  cost-model run in the record is a single month (March 2016) and the adopted schedule was built
+  on 2021 data, so some divergence between them is vintage rather than method — though vintage
+  cannot generate a gradient in racial composition unless freight costs themselves moved with
+  it. Exceeding the cost surface is not unlawful: the governing statute directs USDA to weigh
+  producer returns and orderly marketing alongside cost, so &ldquo;above the model&rdquo; is
+  evidence about the rule's stated rationale, not a legal conclusion. The 49-day hearing
+  transcript has not been reviewed.</p>
+  <p><b>Status.</b> Independent statistical review. Not legal advice, not an expert report, and
+  not a representation about any party's conduct or intent. Figures are current as of September
+  2026 and reflect prices collected in August 2026.</p>
+</footer>
+
+</div>
