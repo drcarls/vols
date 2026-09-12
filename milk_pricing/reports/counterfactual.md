@@ -246,10 +246,21 @@ defend its feasibility. Here it does not:
   text extraction. On this subset the adopted-vs-current widening reads **3.36¢ → 5.05¢** against
   **3.81¢ → 5.59¢** on the fuller set. Same direction, magnitudes ~12% smaller. The fuller
   figures in §1 are the ones to quote; these are for comparing schedules to each other.
-- **Still not the USDSS comparison.** The model's county values remain unobtained — they are
-  hearing exhibits and are not among the 77 files published on the AMS page. MIG's schedule is a
-  *better* legal instrument than a reconstructed USDSS, but USDSS would answer the "this is
-  geography" defence more directly, since it is USDA's own cost surface.
+- **The USDSS comparison — NOW DONE, and it goes partly the other way. See
+  `reports/usdss.md`.** The county values were obtained: **Exhibit MIG-16A**, a 3,085-county
+  table of USDSS Class I and Class III shadow prices, filed by the model's own caretaker and
+  admitted into evidence. Result: the least-cost transport surface *itself* carries a **4.68¢/gal**
+  Black–White gap — *larger* than the 3.82¢ carried by the pre-2025 differentials. The geography
+  defence is substantially correct for the schedule that stood 2008–2025. What survives is
+  narrower: the adopted 2025 schedule is the first to price **above** the cost surface in
+  aggregate incidence (by 0.91¢–1.53¢), and **51%–86% of the widening lies beyond the cost
+  surface USDA's own model produced**. The excess-over-cost is not statistically significant
+  under state-block permutation (*p* .289; *p* .106) — read `usdss.md` before quoting any
+  figure from this section to counsel.
+- **This also weakens MIG's schedule as a less-discriminatory alternative.** MIG's filing is the
+  current surface shifted down a uniform $1.60, so its *shape* carries the current 3.82¢ gap —
+  below what the cost surface implies. USDA has grounds in the record to reject it as
+  under-signalling location.
 
 ## F. The chain, restated
 
