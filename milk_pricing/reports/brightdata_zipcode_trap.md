@@ -290,3 +290,74 @@ verification guard in `src/milk_pricing/sources/walmart_basket.py` already reads
 the page resolved to and raises `StoreMismatch` on a mismatch, so a bad pin fails loudly instead
 of filling a file with proxy-exit prices. Creating such a zone is a billable account change and
 was not made here.
+
+---
+
+## 9. The `/store/{id}` route, tested 2026-09-13 — pins the store, cannot query a product
+
+Asked again whether there is *any* way to get Walmart milk prices by store. §8 tested the two
+routes already known. This tests a third that had never been tried, plus direct access.
+
+**Direct access from this container is blocked by Walmart, not by the environment.** The root
+`walmart.com/` returns 200, but `/ip/{sku}` returns **307 → `/blocked?url=…`** with a `_pxhd`
+cookie set — **PerimeterX**. That is the bot wall Bright Data's Unlocker exists to defeat, and
+it does defeat it. (The local Chromium is not an alternative: its networking fails in this
+container, `ERR_CONNECTION_RESET` on every host including `example.com`.)
+
+**The new finding: `/store/{id}` honours the store ID server-side.** Unlike every product-page
+parameter, the store path resolves to the store asked for regardless of proxy exit:
+
+| requested | store returned | city | ZIP |
+|---|---|---|---|
+| `/store/634` | **634** | Camden | 29020 |
+| `/store/5378` | **5378** | Cayce | — |
+| `/store/4440` | **4440** | Irmo | — |
+
+Against the product page in the same session, which drifts with the exit IP — three consecutive
+`/ip/10450114` calls resolved to St. Petersburg (5218), Sacramento (3081) and Idaho Falls (1902).
+`?athStoreId=`, `?storeId=` and a `Cookie: ASSORTMENT_STORE_ID=` header (the `headers` field
+*is* accepted by `/request`, unlike `cookies`) were all ignored.
+
+**But no sub-path of `/store/{id}` can be queried.** Every variant returns the same store
+landing page — 133–159 product names, of which one or two contain "milk" and none is Great
+Value milk:
+
+| URL | store | names | GV milk |
+|---|---|---|---|
+| `/store/634/search?q=milk` | 634 | 133 | 0 |
+| `/store/634/search?query=milk` | 634 | 159 | 0 |
+| `/store/634/search?q=Great+Value+Whole+Milk` | 634 | 143 | 0 |
+| `/store/634-camden-sc/search?q=milk` | 634 | 142 | 0 |
+| `/store/634/browse/food/milk/976759_976782_9159259` | 634 | 155 | 0 |
+| `/store/634/browse/food/dairy-eggs/976759_976782` | 634 | 145 | 0 |
+| `/browse/food/milk/…?stores=634` | — | 0 | 0 (77 bytes) |
+
+### Why, and what would actually fix it
+
+The returned store HTML contains **no `__NEXT_DATA__`, no `itemStacks`, no `searchResult`, no
+`"products":[`** — zero occurrences of every key a rendered result grid carries. Walmart's
+search and browse grids are **client-rendered**; the Unlocker's `format: "raw"` returns the
+pre-JavaScript document. The `/ip/` product page, by contrast, *is* server-rendered, which is
+exactly why it carries a real shelf price.
+
+So the two halves cannot be joined on this account:
+
+| route | store control | real shelf price |
+|---|---|---|
+| `/ip/{sku}` via Unlocker | ✗ exit IP decides | ✓ server-rendered |
+| `/store/{id}` via Unlocker | ✓ honoured | ✗ no queryable product |
+| Dataset zipcodes template | ✓ honoured | ✗ national online price |
+
+**Two provisioning changes would each close it, and neither is code:**
+
+1. **A JS-executing zone** (Bright Data Scraping Browser). Load `/store/{id}` to set the store,
+   then navigate to `/ip/{sku}` in the same browser context and read the server-rendered price.
+   This is the more likely of the two to work, because `/store/{id}` is already proven to set
+   the store server-side.
+2. **A geo-targeted residential or ISP zone** with `country-state-city`, steering `/ip/` by exit
+   geography. The guard in `walmart_basket.py` already verifies the resolved ZIP and raises
+   `StoreMismatch` on a mismatch.
+
+**Standing answer, unchanged in substance but now for a documented reason: no store-level
+Walmart shelf prices on this account.** The earlier "no" was right; it was right for an
+incomplete reason, and §9 records the complete one.
