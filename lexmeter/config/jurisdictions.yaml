@@ -1,0 +1,172 @@
+# Lexmeter US — drip/junk fee rule configuration.
+#
+# Every rule carries `verification`, which gates whether the flag engine will
+# assert a violation or only record a candidate:
+#   confirmed          -- effective date and core scope checked against a primary
+#                         or first-tier secondary source on `verified_on`
+#   needs_confirmation -- believed correct, NOT safe to put in front of a lawyer
+#
+# `remedy.private_right_of_action` drives which findings are sellable to a
+# plaintiff firm vs. only usable as regulator-exposure in a defendant-side audit.
+
+meta:
+  verified_on: 2026-09-14
+  currency: USD
+
+jurisdictions:
+
+  - id: US-FED
+    name: Federal
+    instrument: Rule on Unfair or Deceptive Fees (16 CFR pt. 464)
+    effective: 2025-05-12
+    verification: confirmed
+    # The rule is sector-limited. Do NOT let the flag engine assert a federal
+    # violation outside these two industries.
+    industries: [live_event_ticketing, short_term_lodging]
+    covers_intermediaries: true   # platforms, resellers, travel agents
+    requirement: total_price_in_initial_display
+    exemptions: []
+    remedy:
+      private_right_of_action: false
+      enforcer: FTC
+      notes: >-
+        No private right of action. Plaintiffs cite the rule to support state-law
+        claims rather than to plead it directly.
+
+  - id: US-CA
+    name: California
+    instrument: SB 478 (Honest Pricing Law), amending the CLRA
+    effective: 2024-07-01
+    verification: confirmed
+    industries: [all]
+    requirement: advertised_price_includes_all_mandatory_fees
+    carve_outs_excluded_from_price: [government_taxes, government_fees, reasonable_shipping]
+    remedy:
+      private_right_of_action: true
+      statute: CLRA
+      statutory_damages_cents: 100000   # min $1,000 per violation in class actions
+      also: [restitution, punitive_damages, injunctive_relief, attorneys_fees]
+
+  - id: US-CA-RESTAURANT
+    name: California (restaurant/food exception)
+    instrument: SB 1524
+    effective: 2024-07-01
+    verification: confirmed
+    parent: US-CA
+    kind: conditional_exemption
+    # NOTE: this is NOT a blanket carve-out. The exemption applies only where the
+    # fee is clearly and conspicuously displayed WITH an explanation of its
+    # purpose. Both limbs are testable from a menu/price-display capture, and a
+    # failure of either drops the business back under SB 478.
+    applies_to_sellers: [restaurant, bar, food_concession, grocery_store, grocery_delivery_service]
+    applies_to_fees: mandatory_fee_on_individual_food_or_beverage_item
+    conditions:
+      - id: clearly_conspicuously_displayed
+        test: fee_present_on_price_display
+      - id: purpose_explained
+        test: purpose_text_present_adjacent_to_fee
+    on_condition_failure:
+      fall_back_to: US-CA
+
+  - id: US-CA-LODGING
+    name: California (lodging pricing)
+    instrument: AB 537
+    effective: 2024-07-01
+    verification: needs_confirmation   # seen only in secondary sources; confirm before use
+    industries: [short_term_lodging]
+    requirement: total_price_in_initial_display
+
+  - id: US-MN
+    name: Minnesota
+    instrument: junk-fee ban (2024 session)
+    effective: 2025-01-01
+    verification: confirmed          # effective month confirmed; exact day + statute cite pending
+    statute_cite: null
+    industries: [all]
+    requirement: advertised_price_includes_all_mandatory_fees
+    remedy:
+      private_right_of_action: null  # needs_confirmation
+
+  - id: US-VA
+    name: Virginia
+    instrument: Va. Code § 59.1-607 et seq.
+    effective: 2025-07-01
+    verification: confirmed
+    industries: [all]
+    requirement: advertised_price_includes_all_mandatory_fees
+    remedy:
+      private_right_of_action: null  # needs_confirmation
+
+  - id: US-MA
+    name: Massachusetts
+    instrument: 940 CMR 38.00 (AG regulation)
+    effective: 2025-09-02
+    verification: confirmed
+    industries: [all]
+    requirement: advertised_price_includes_all_mandatory_fees
+    paired_with: [subscription_disclosure_rules]
+    remedy:
+      private_right_of_action: null  # ch. 93A route needs_confirmation
+
+  - id: US-CO
+    name: Colorado
+    instrument: HB25-1090
+    effective: 2026-01-01
+    verification: confirmed
+    industries: [all]
+    requirement: advertised_price_includes_all_mandatory_fees
+    remedy:
+      private_right_of_action: null  # needs_confirmation
+
+  - id: US-NJ
+    name: New Jersey
+    instrument: AG/Div. Consumer Affairs Junk Fees Enforcement Statement; Exec. Order No. 19
+    effective: 2026-06-15
+    verification: confirmed
+    # Not a new statute. The Consumer Fraud Act already applied; what changed is
+    # the AG's declared enforcement posture. Treat as an enforcement-risk signal,
+    # not as a new cause of action.
+    kind: enforcement_posture
+    underlying_statute: New Jersey Consumer Fraud Act
+    industries: [all]
+    remedy:
+      private_right_of_action: true   # via the CFA
+      civil_penalty_first_cents: 1000000     # $10,000
+      civil_penalty_subsequent_cents: 2000000 # $20,000
+
+  # Present in the statutory landscape but absent from the brief's vantage list.
+  # Cheap to add now, expensive to backfill: a claim needs a resident vantage.
+  - id: US-CT
+    name: Connecticut
+    instrument: cross-sector price transparency statute
+    effective: null
+    verification: needs_confirmation
+    industries: [all]
+
+  - id: US-OR
+    name: Oregon
+    instrument: cross-sector price transparency statute
+    effective: null
+    verification: needs_confirmation
+    industries: [all]
+
+# Control vantage: no cross-sector all-in pricing statute, so a company that
+# renders all-in here is doing it voluntarily or nationally.
+vantages:
+  claim_states: [CA, MN, MA, CO, VA, NJ]
+  observation_states: [NY]
+  control: NY
+  candidate_additions: [CT, OR]
+
+# Excluded: airlines. ADA preemption; DOT holds the field.
+excluded_industries:
+  - id: airlines
+    reason: federally_preempted_ADA_DOT_regime
+
+# The "re-run every flow in the week a law takes effect" trigger fires off this
+# list. Every confirmed effective date above is in the past as of verified_on,
+# so without a legislative-tracker feed this trigger never fires. See plan §2.
+effective_date_triggers:
+  source: legislative_tracker
+  configured: false
+  upcoming: []

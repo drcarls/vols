@@ -1,0 +1,72 @@
+# Collection policy. This file is the operative expression of the robots.txt
+# position recorded in the method statement, and the two must not drift.
+#
+# The declared position is that robots.txt is a crawler convention and does not
+# govern a single user-paced scripted session. That position is only defensible
+# if the observable behaviour matches it, so the constraints below are enforced
+# in code (politeness.py) rather than left to operator discipline.
+
+meta:
+  robots_posture: crawler_convention_not_user_sessions
+  decided_on: 2026-09-14
+  method_statement: METHOD_STATEMENT.md
+
+# Non-negotiable. Violating any of these forfeits the stated position and,
+# separately, moves the conduct toward the CFAA's "bypass of an access control"
+# line that Van Buren and hiQ left standing.
+prohibitions:
+  - captcha_solving
+  - login_or_account_creation
+  - paywall_or_access_control_bypass
+  - user_agent_spoofing_to_disguise_automation
+  - retry_after_an_explicit_block
+  - completing_a_purchase
+  - exceeding_one_concurrent_session_per_host
+
+pacing:
+  max_concurrent_sessions_per_host: 1
+  min_seconds_between_actions: 2.5
+  max_seconds_between_actions: 7.0
+  jitter: true                      # human-paced, not fixed-interval
+  max_steps_per_flow: 12
+  session_timeout_seconds: 300
+
+# On any of these the flow aborts and is recorded as blocked, with the response
+# preserved as evidence of the block. It is never retried within the same sweep.
+block_signals:
+  http_status: [401, 403, 407, 429, 503]
+  body_markers:
+    - "are you a human"
+    - "verify you are human"
+    - "access denied"
+    - "unusual traffic"
+  on_block: record_and_abort
+
+identification:
+  # Honest identification. A real, resolvable contact string is both the polite
+  # posture and the one consistent with not disguising automation.
+  user_agent_suffix: "Lexmeter/1.0 (+https://lexmeter.example/collection; compliance@lexmeter.example)"
+  send_from_header: true
+
+egress:
+  # D2: named vendor with a written provenance attestation. Residential pools are
+  # excluded -- undocumented consent provenance makes the collection method the
+  # story under cross-examination.
+  provider: null                    # PENDING: vendor not yet named
+  provider_class: isp_or_datacenter_with_provenance_attestation
+  attestation_on_file: false
+  forbidden_provider_classes: [residential_consumer_pool]
+  # For delivery/restaurant flows the control variable is the address entered,
+  # not the egress IP -- most platforms geolocate on address. See plan 4.2.
+  address_is_control_variable_for: [food_delivery, restaurants]
+
+evidence:
+  # See plan 4.4. A self-computed hash proves integrity only relative to our own
+  # custody; the external anchor is what converts it into proof of time.
+  artifacts: [screenshot_per_step, dom_snapshot, har_with_response_bodies, video]
+  full_page_screenshots: false      # unreliable on dynamic checkouts
+  viewport_screenshots_with_scroll_position: true
+  hash_algorithm: sha256
+  daily_merkle_root: true
+  timestamp_authority: null         # PENDING: RFC 3161 TSA not yet selected
+  custodian: null                   # PENDING: named human for FRE 902(13)/(14)

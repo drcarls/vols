@@ -1,0 +1,96 @@
+# Fact patterns are first-class records. The pattern-match screen works by
+# matching captured companies against these, then filtering to those with no
+# filed case of their own. Each pattern names the anchor case it derives from so
+# a lawyer reading a hit can see what it resembles without leaving the page.
+
+meta:
+  verified_on: 2026-09-14
+
+patterns:
+
+  - id: last_step_service_charge
+    label: Mandatory service charge first disclosed at the final step
+    industries: [live_event_ticketing, food_delivery, restaurants, attractions]
+    match:
+      all:
+        - flag: MANDATORY_FEE_AT_FINAL_STEP
+        - fee_category_in: [service, convenience, processing, order_processing]
+    anchor_cases:
+      - id: ftc_v_live_nation_ticketmaster
+        caption: FTC and seven states v. Live Nation Entertainment / Ticketmaster
+        filed: 2025-09
+        note: Includes historic drip pricing among the claims.
+        verification: confirmed
+      - id: ftc_stubhub_2026
+        caption: FTC / StubHub
+        announced: 2026-04-09
+        note: >-
+          $10M redress for ticket sales 2025-05-12 to 2025-05-14 where the total
+          price was absent from the initial display. FTC enforcement action, not
+          a private class action -- use as a fact pattern, not a damages model.
+        verification: confirmed
+
+  - id: mandatory_reservation_fee
+    label: Single mandatory reservation fee, presented as if it accrues to the agency
+    industries: [reservation_platforms, campsites, parks, permits, attractions]
+    match:
+      all:
+        - flag: HEADLINE_EXCLUDES_ALL_MANDATORY_FEES
+        - fee_category_in: [reservation, transaction]
+      any:
+        - flag: MANDATORY_FEE_AT_FINAL_STEP
+        - metric: gap_pct
+          gte: 20.0
+    anchor_cases:
+      - id: chowning_v_tyler_technologies
+        caption: Chowning v. Tyler Technologies (ReserveCalifornia)
+        filed: 2025-05-08
+        court: N.D. Cal.
+        note: >-
+          Last-minute mandatory transaction fee, often raising reservation cost by
+          more than 20%, retained by the vendor while consumers were led to believe
+          it went to Cal Parks. $37M projected FY25/26; $398M over contract life.
+          Pleaded under CLRA, Honest Pricing Law, FAL and UCL.
+        verification: confirmed
+    # Highest-yield screen: the defendant is a vendor holding many public-sector
+    # contracts, so one matched pattern replicates across states.
+    screen_hint: enumerate_vendor_operated_public_sector_reservation_systems
+
+  - id: resort_fee_excluded_from_headline
+    label: Resort/destination fee excluded from the headline nightly rate
+    industries: [short_term_lodging]
+    match:
+      all:
+        - flag: HEADLINE_EXCLUDES_ALL_MANDATORY_FEES
+        - fee_category_in: [resort, destination, cleaning, facility]
+    anchor_cases:
+      - id: ftc_udf_rule_lodging
+        caption: FTC Rule on Unfair or Deceptive Fees, lodging limb
+        effective: 2025-05-12
+        note: Regulator exposure only; no private right of action.
+        verification: confirmed
+
+  - id: conditional_restaurant_exemption_failed
+    label: California restaurant fee shown without an explanation of its purpose
+    industries: [restaurants, food_delivery]
+    jurisdiction: US-CA
+    # SB 1524 exempts the fee only if clearly displayed AND its purpose explained.
+    # Failing either limb drops the seller back under SB 478, which carries the
+    # CLRA private right of action.
+    match:
+      all:
+        - flag: RESTAURANT_EXEMPTION_CONDITION_FAILED
+    anchor_cases: []
+    verification: needs_confirmation
+
+  - id: jurisdictional_display_switching
+    label: All-in pricing rendered to claim-state visitors, drip pricing elsewhere
+    industries: [all]
+    # Not drawn from a filed case. It is the strongest available evidence of
+    # knowledge and capability: the company demonstrably can comply and elects
+    # not to where it believes it need not. See plan section 4.2.
+    match:
+      all:
+        - flag: JURISDICTIONAL_DISPLAY_SWITCHING
+    anchor_cases: []
+    novel: true
