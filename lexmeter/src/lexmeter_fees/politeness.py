@@ -45,6 +45,11 @@ class Policy:
     block_markers: tuple[re.Pattern[str], ...]
     user_agent_suffix: str
     forbidden_provider_classes: frozenset[str]
+    default_tier: str | None
+    allowed_tiers: frozenset[str]
+    fallback_tiers: frozenset[str]
+    forbidden_tiers: frozenset[str]
+    forbidden_products: frozenset[str]
     raw: dict[str, Any]
 
     @classmethod
@@ -69,6 +74,11 @@ class Policy:
             forbidden_provider_classes=frozenset(
                 egress.get("forbidden_provider_classes", [])
             ),
+            default_tier=egress.get("default_product_tier"),
+            allowed_tiers=frozenset(egress.get("allowed_product_tiers", [])),
+            fallback_tiers=frozenset(egress.get("fallback_product_tiers", [])),
+            forbidden_tiers=frozenset(egress.get("forbidden_product_tiers", [])),
+            forbidden_products=frozenset(egress.get("forbidden_products", [])),
             raw=doc,
         )
 
@@ -157,6 +167,57 @@ def check_egress(provider_class: str | None, policy: Policy) -> None:
             f"egress provider class {provider_class!r} is excluded: undocumented "
             "consent provenance makes the collection method the story."
         )
+
+
+def check_egress_product(product: str | None, policy: Policy) -> None:
+    """Refuse the vendor's unblocking products.
+
+    Web Unlocker, Scraping Browser and the CAPTCHA solvers are ordinary SKUs from
+    the same vendor as the proxies, and they are exactly what one reaches for when
+    a target blocks the collector. That is the moment the temptation is highest and
+    the cost is largest: they automate CAPTCHA solving and anti-bot circumvention,
+    which forfeits the declared robots.txt position and hands a defendant an
+    argument against the whole dataset rather than one capture.
+
+    A blocked target is logged as blocked.
+    """
+    if product is None:
+        return
+    name = product.strip().lower()
+    if name in policy.forbidden_products:
+        raise PolicyViolation(
+            f"egress product {product!r} is prohibited: it automates CAPTCHA "
+            "solving and anti-bot circumvention, which forfeits the declared "
+            "robots.txt position (METHOD_STATEMENT section 3) and moves the conduct "
+            "toward the CFAA access-control line. A blocked target is logged as "
+            "blocked, not unblocked."
+        )
+
+
+def check_egress_tier(tier: str | None, policy: Policy, *, justification: str | None = None) -> str:
+    """Validate the proxy tier a capture will run on, returning it normalised.
+
+    The ISP tier is the default because its provenance is a commercial contract
+    with an ISP. The residential tier is a permitted fallback where ISP coverage
+    for a claim state does not exist, but only with a recorded reason -- so that a
+    capture on the tier a defendant will probe can always be explained, and so
+    that findings from ISP-sourced captures stand on their own.
+    """
+    if tier is None:
+        raise PolicyViolation("egress tier must be recorded on every capture")
+    name = tier.strip().lower()
+    if name in policy.forbidden_tiers:
+        raise PolicyViolation(f"egress tier {tier!r} is prohibited by collection policy")
+    if name in policy.allowed_tiers:
+        return name
+    if name in policy.fallback_tiers:
+        if not (justification or "").strip():
+            raise PolicyViolation(
+                f"egress tier {tier!r} is a fallback and requires a recorded "
+                "justification (typically: no ISP coverage for this claim state)"
+            )
+        return name
+    raise PolicyViolation(f"egress tier {tier!r} is not permitted by collection policy")
 
 
 def user_agent(base: str, policy: Policy) -> str:

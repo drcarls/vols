@@ -162,6 +162,12 @@ class FlowObservation:
     #: Address entered, where the platform geolocates on address rather than IP.
     delivery_address_state: str | None = None
     egress_provider: str | None = None
+    #: Which proxy tier produced this capture. Recorded per observation, not per
+    #: run: findings from ISP-sourced captures must be able to stand independently
+    #: if the residential-sourced ones are challenged.
+    egress_tier: str | None = None
+    #: Why a fallback tier was used, where one was.
+    egress_tier_justification: str | None = None
     collector_version: str = ""
     extra: dict[str, Any] = field(default_factory=dict)
 

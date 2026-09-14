@@ -84,9 +84,29 @@ The external anchor is what converts it into proof of time, and it is not yet in
 Flows are captured from CA, MN, MA, CO, VA, NJ and NY, with NY as the control. CT and
 OR are candidate additions, as both have cross-sector price transparency statutes.
 
-Egress is through a named commercial ISP or datacenter provider that supplies a written
-consent-provenance attestation. Residential consumer proxy pools are excluded: consent
-provenance that cannot be put in front of a court makes the collection method the story.
+Egress is through Bright Data. The **ISP network is the default tier**: real residential
+IPs contracted directly through ISPs, permanent and non-rotating, so the provenance of a
+vantage IP is a commercial agreement and a stable IP per state makes a week-over-week
+series reproducible.
+
+The **residential network is a permitted fallback** where ISP coverage for a claim state
+does not exist, and only with a recorded reason. Its consent basis is documented rather
+than assumed -- app users opt in through the Bright SDK in exchange for ad-free or premium
+features, may opt out at any time, and no personal data is collected from them -- and is
+supported by PwC compliance and ethics audits, ISO 27001, SOC 2, and a human-reviewed KYC
+gate on access. It remains the tier a defendant will probe, so **every capture records the
+tier that produced it**, and findings drawn from ISP-sourced captures stand independently
+of any residential-sourced ones.
+
+**Bright Data's unblocking products are prohibited outright**: Web Unlocker, Scraping
+Browser, and the CAPTCHA solvers. These are ordinary SKUs from the same vendor as the
+proxies, and they are precisely what an operator reaches for when a target blocks the
+collector. Each automates CAPTCHA solving and anti-bot circumvention, which would violate
+the prohibitions in section 2, forfeit the robots.txt position in section 3, move the
+conduct toward the CFAA access-control line, and hand a defendant an argument against the
+entire dataset rather than one capture. The refusal is enforced in code before any request
+is issued, because a capture made through such a product cannot be repaired afterwards.
+A blocked target is logged as blocked.
 
 For food delivery and restaurant flows the control variable is the delivery address
 entered, not the egress IP, because those platforms geolocate on address.
@@ -95,9 +115,18 @@ entered, not the egress IP, because those platforms geolocate on address.
 
 Tracked in `config/collection_policy.yaml`, all three currently null:
 
-1. **Egress vendor not named.** `egress.provider`. The provider class is constrained and
-   residential pools are refused in code, but no vendor is selected and no attestation
-   is on file.
+1. **Egress attestation not on file.** `egress.attestation_on_file`. The vendor is now
+   Bright Data and the tier and product constraints are enforced in code, but the
+   supporting documents have not been obtained and filed: the PwC compliance and ethics
+   audit report, ISO 27001 certificate, SOC 2 report, residential sourcing and consent
+   policy, acceptable use policy confirming this use case, and our own KYC approval.
+   Publicly available is not the same as in the evidence file -- a declarant has to be
+   able to produce them.
+
+   Separately, **state-level coverage is unverified**. ISP pools are smaller and
+   geographically concentrated; whether the ISP network reaches MN, MA, CO and NJ at
+   state level determines how often the residential fallback is needed. Verify observed
+   geolocation per state rather than trusting the targeting label.
 2. **No RFC 3161 timestamp authority.** `evidence.timestamp_authority`. Until one is
    configured the hash chain is unanchored, and the code raises rather than silently
    producing an anchor that would fail at the point of use.

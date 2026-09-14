@@ -106,6 +106,7 @@ class ProvenanceRecord:
     collector_version: str
     browser_version: str
     egress_provider: str | None
+    egress_tier: str | None
     egress_state: str
     policy_digest: str  # digest of collection_policy.yaml in force at capture
     custodian: str | None = None  # PENDING until a human is named

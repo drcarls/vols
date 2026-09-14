@@ -49,16 +49,71 @@ identification:
   send_from_header: true
 
 egress:
-  # D2: named vendor with a written provenance attestation. Residential pools are
-  # excluded -- undocumented consent provenance makes the collection method the
-  # story under cross-examination.
-  provider: null                    # PENDING: vendor not yet named
+  provider: bright_data
   provider_class: isp_or_datacenter_with_provenance_attestation
+  # Still false: the documents below have not been obtained and filed. Bright Data
+  # publishes them, but "publicly available" is not "in our evidence file", and the
+  # declarant has to be able to produce them.
   attestation_on_file: false
+  attestation_documents_required:
+    - pwc_compliance_and_ethics_audit_report
+    - iso_27001_certificate
+    - soc_2_report
+    - residential_network_sourcing_and_consent_policy
+    - acceptable_use_policy_confirming_this_use_case
+    - kyc_approval_for_our_account
+
+  # PRODUCT TIER MATTERS MORE THAN THE VENDOR NAME.
+  #
+  # Default to the ISP network: real residential IPs contracted directly through
+  # ISPs, permanent and non-rotating. A stable IP per vantage state is both more
+  # defensible (provenance is a commercial contract, not a consumer's bandwidth)
+  # and more reproducible week over week.
+  #
+  # The residential network is permitted as a documented fallback where ISP
+  # coverage for a claim state does not exist. Its consent basis -- app users
+  # opting in for ad-free or premium features via the Bright SDK, able to opt out,
+  # no personal data collected -- is far better evidenced than a generic
+  # residential pool, and is backed by PwC audits and a human-reviewed KYC gate.
+  # It is still the tier a defendant will probe, so captures record which tier
+  # produced them and findings from ISP-sourced captures stand independently.
+  default_product_tier: isp
+  allowed_product_tiers: [isp, datacenter]
+  fallback_product_tiers: [residential]
+  fallback_requires_justification: true
+  forbidden_product_tiers: [mobile]
+
+  # PROHIBITED PRODUCTS. These are ordinary Bright Data SKUs, and they are exactly
+  # what one reaches for when a target blocks the collector -- which is the moment
+  # the temptation is highest and the cost is largest. Each of them automates
+  # CAPTCHA solving and anti-bot circumvention (reCAPTCHA, hCaptcha, Cloudflare
+  # Turnstile, DataDome). Using any of them would:
+  #   1. violate the prohibitions above (captcha_solving, access-control bypass,
+  #      disguising automation),
+  #   2. forfeit the declared robots.txt position in METHOD_STATEMENT section 3,
+  #   3. move the conduct toward the CFAA's "bypass of an access control" line
+  #      that Van Buren and hiQ left standing, and
+  #   4. hand a defendant a motion in limine against the entire dataset, not just
+  #      the capture in question.
+  # A blocked target is logged as blocked. That is the whole rule.
+  forbidden_products:
+    - web_unlocker
+    - scraping_browser
+    - captcha_solver
+    - any_product_marketed_as_unblocking_or_anti_bot_bypass
+
   forbidden_provider_classes: [residential_consumer_pool]
   # For delivery/restaurant flows the control variable is the address entered,
   # not the egress IP -- most platforms geolocate on address. See plan 4.2.
   address_is_control_variable_for: [food_delivery, restaurants]
+
+  # DILIGENCE QUESTION, UNRESOLVED. ISP pools are smaller and geographically
+  # concentrated; residential has far better granularity. Whether the ISP network
+  # actually covers MN, MA, CO and NJ at state level determines how often the
+  # residential fallback is needed, and nobody has checked. Verify observed
+  # geolocation per state rather than trusting the targeting label.
+  state_coverage_verified: false
+  claim_states_requiring_coverage: [CA, MN, MA, CO, VA, NJ, NY]
 
 evidence:
   # See plan 4.4. A self-computed hash proves integrity only relative to our own

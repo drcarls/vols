@@ -9,7 +9,7 @@ from lexmeter_fees.capture import FlowRunner, FlowSpec
 from lexmeter_fees.drivers.fixture_driver import BlockingDriver, FixtureDriver
 from lexmeter_fees.flags import Flag, compute_metrics, evaluate
 from lexmeter_fees.model import Anchor, StepKind
-from lexmeter_fees.politeness import Policy
+from lexmeter_fees.politeness import Policy, PolicyViolation
 from lexmeter_fees.store import LocalArtifactStore
 
 NOW = datetime(2026, 9, 14, 12, 0, tzinfo=timezone.utc)
@@ -166,3 +166,29 @@ def test_provenance_is_written_at_capture_time(runner):
     # visibly than to discover it when a declaration is due.
     assert prov.custodian is None
     assert obs.flow_id == "drip-ticketing"
+
+
+def test_capture_records_the_egress_tier(runner):
+    obs = runner.run(drip_spec(), FixtureDriver(FIXTURES / "drip_ticketing"))
+    assert obs.egress_tier == "isp"
+    assert runner.last_provenance.egress_tier == "isp"
+
+
+def test_capture_on_a_forbidden_product_is_refused_before_any_request(runner):
+    # A capture made through an unblocking product cannot be repaired afterwards,
+    # so the refusal happens before a single request goes out.
+    driver = FixtureDriver(FIXTURES / "drip_ticketing")
+    with pytest.raises(PolicyViolation, match="CAPTCHA"):
+        runner.run(drip_spec(), driver, egress_product="web_unlocker")
+    assert driver.closed is False  # never started
+
+
+def test_residential_capture_carries_its_justification(runner):
+    obs = runner.run(
+        drip_spec(),
+        FixtureDriver(FIXTURES / "drip_ticketing"),
+        egress_tier="residential",
+        egress_tier_justification="no ISP coverage for MN",
+    )
+    assert obs.egress_tier == "residential"
+    assert "no ISP coverage" in obs.egress_tier_justification

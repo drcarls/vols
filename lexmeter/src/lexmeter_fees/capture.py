@@ -24,7 +24,15 @@ from urllib.parse import urlparse
 from .evidence import ProvenanceRecord, record_digest
 from .extract import RawFeeRow, carry_forward, parse_money_cents, to_fee_lines
 from .model import Anchor, Artifact, FlowObservation, Step, StepKind
-from .politeness import Blocked, HostGate, Pacer, Policy, check_response
+from .politeness import (
+    Blocked,
+    HostGate,
+    Pacer,
+    Policy,
+    check_egress_product,
+    check_egress_tier,
+    check_response,
+)
 from .store import ArtifactStore
 
 
@@ -93,6 +101,10 @@ class FlowRunner:
         pacer: Pacer | None = None,
         clock: Callable[[], datetime] = lambda: datetime.now(timezone.utc),
         collector_version: str = "0.1.0",
+        egress_provider: str | None = None,
+        egress_tier: str | None = None,
+        egress_tier_justification: str | None = None,
+        egress_product: str | None = None,
     ) -> None:
         self.policy = policy
         self.artifacts = artifacts
@@ -100,6 +112,14 @@ class FlowRunner:
         self.pacer = pacer or Pacer(policy)
         self.clock = clock
         self.collector_version = collector_version
+        # Egress config lives on the runner so no call site can forget it, while
+        # still being validated per capture and recorded per observation.
+        self.egress_provider = egress_provider
+        # Declared default, never inferred: alphabetical order would silently
+        # pick 'datacenter' over 'isp' and downgrade every capture's provenance.
+        self.egress_tier = egress_tier or policy.default_tier
+        self.egress_tier_justification = egress_tier_justification
+        self.egress_product = egress_product
         self.last_provenance: ProvenanceRecord | None = None
 
     def run(
@@ -108,11 +128,26 @@ class FlowRunner:
         driver: Driver,
         *,
         egress_provider: str | None = None,
+        egress_tier: str | None = None,
+        egress_tier_justification: str | None = None,
+        egress_product: str | None = None,
         policy_digest: str = "",
         browser_version: str = "",
     ) -> FlowObservation:
+        egress_provider = egress_provider or self.egress_provider
+        egress_tier = egress_tier or self.egress_tier
+        egress_tier_justification = (
+            egress_tier_justification or self.egress_tier_justification
+        )
+        egress_product = egress_product or self.egress_product
         # The no-purchase rule is enforced structurally by FlowSpec, which
         # refuses to build a flow that does not terminate at the review step.
+        # Egress is validated before a single request goes out: a capture made on
+        # a prohibited product cannot be repaired afterwards.
+        check_egress_product(egress_product, self.policy)
+        egress_tier = check_egress_tier(
+            egress_tier, self.policy, justification=egress_tier_justification
+        )
         if len(spec.steps) > self.policy.max_steps:
             raise ValueError(
                 f"flow declares {len(spec.steps)} steps, policy caps at "
@@ -126,7 +161,10 @@ class FlowRunner:
         blocked: str | None = None
 
         if not self.gate.acquire(host):
-            return self._observation(spec, started_at, (), "gate_timeout", egress_provider)
+            return self._observation(
+                spec, started_at, (), "gate_timeout", egress_provider,
+                egress_tier, egress_tier_justification,
+            )
 
         try:
             for index, (kind, action) in enumerate(spec.steps):
@@ -163,13 +201,17 @@ class FlowRunner:
             self.gate.release(host)
             driver.close()
 
-        obs = self._observation(spec, started_at, tuple(steps), blocked, egress_provider)
+        obs = self._observation(
+            spec, started_at, tuple(steps), blocked, egress_provider,
+            egress_tier, egress_tier_justification,
+        )
         self.last_provenance = ProvenanceRecord(
             observation_digest=record_digest(obs),
             captured_at=started_at,
             collector_version=self.collector_version,
             browser_version=browser_version,
             egress_provider=egress_provider,
+            egress_tier=egress_tier,
             egress_state=spec.vantage_state,
             policy_digest=policy_digest,
         )
@@ -207,6 +249,8 @@ class FlowRunner:
         steps: tuple,
         blocked: str | None,
         egress_provider: str | None,
+        egress_tier: str | None = None,
+        egress_tier_justification: str | None = None,
     ) -> FlowObservation:
         return FlowObservation(
             flow_id=spec.flow_id,
@@ -220,6 +264,8 @@ class FlowRunner:
             blocked_reason=blocked,
             delivery_address_state=spec.delivery_address_state,
             egress_provider=egress_provider,
+            egress_tier=egress_tier,
+            egress_tier_justification=egress_tier_justification,
             collector_version=self.collector_version,
             extra=dict(spec.extra),
         )

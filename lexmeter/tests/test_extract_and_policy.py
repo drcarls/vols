@@ -163,3 +163,56 @@ def test_pacing_is_jittered_within_the_configured_band(policy):
     assert all(policy.min_delay <= d <= policy.max_delay for d in delays)
     # A constant interval is a bot signature and contradicts the stated posture.
     assert len(set(delays)) > 1
+
+
+# --- egress tier and product enforcement -----------------------------------
+
+def test_default_tier_is_isp_not_alphabetical(policy):
+    # 'datacenter' sorts before 'isp'. The default must come from the declared
+    # value, or every capture silently runs on weaker provenance.
+    assert policy.default_tier == "isp"
+
+
+def test_isp_tier_is_allowed_without_justification(policy):
+    from lexmeter_fees.politeness import check_egress_tier
+
+    assert check_egress_tier("isp", policy) == "isp"
+    assert check_egress_tier("ISP", policy) == "isp"
+
+
+def test_residential_fallback_requires_a_recorded_reason(policy):
+    from lexmeter_fees.politeness import check_egress_tier
+
+    with pytest.raises(PolicyViolation, match="requires a recorded justification"):
+        check_egress_tier("residential", policy)
+    assert check_egress_tier(
+        "residential", policy, justification="no ISP coverage for MN"
+    ) == "residential"
+
+
+def test_unknown_and_forbidden_tiers_are_refused(policy):
+    from lexmeter_fees.politeness import check_egress_tier
+
+    with pytest.raises(PolicyViolation):
+        check_egress_tier("mobile", policy)      # explicitly forbidden
+    with pytest.raises(PolicyViolation):
+        check_egress_tier("whatever", policy)    # not in any list
+    with pytest.raises(PolicyViolation, match="must be recorded"):
+        check_egress_tier(None, policy)
+
+
+@pytest.mark.parametrize("product", ["web_unlocker", "scraping_browser", "captcha_solver"])
+def test_unblocking_products_are_refused(policy, product):
+    # These are ordinary SKUs from the same vendor as the proxies, and they are
+    # what one reaches for exactly when a target blocks the collector.
+    from lexmeter_fees.politeness import check_egress_product
+
+    with pytest.raises(PolicyViolation, match="CAPTCHA"):
+        check_egress_product(product, policy)
+
+
+def test_plain_proxy_use_is_permitted(policy):
+    from lexmeter_fees.politeness import check_egress_product
+
+    check_egress_product(None, policy)
+    check_egress_product("residential_proxy", policy)

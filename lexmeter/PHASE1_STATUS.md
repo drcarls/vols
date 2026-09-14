@@ -24,15 +24,19 @@ environment, not here.**
 **2. Captures made now would not be certifiable.** `preflight` reports three open
 items, unchanged from the Phase 0 hand-off:
 
-    egress.provider              not set   no vantage provenance
+    egress.attestation_on_file   false     vendor named, documents not filed
     evidence.timestamp_authority not set   hash chain unanchored outside our custody
     evidence.custodian           not set   nobody to certify under FRE 902(13)/(14)
 
-The first is the one that actually gates capture: without geolocated egress every
-observation carries a false or unknown vantage state, and vantage is what ties an
-observation to a state-law claim. The other two degrade evidentiary weight rather
-than correctness, but a weekly series is worth most when its *first* point is
-sound, and the first sweep is the baseline everything later is measured against.
+**Bright Data is now the egress vendor** and the hard part of that decision is
+settled: the ISP tier is the default, the residential tier is a fallback requiring
+a recorded reason, and the unblocking products are refused in code. What remains
+is filing the supporting documents and verifying that ISP coverage actually
+reaches MN, MA, CO and NJ at state level.
+
+These three degrade evidentiary weight rather than correctness, but a weekly
+series is worth most when its *first* point is sound, and the first sweep is the
+baseline everything later is measured against.
 
 `sweep` therefore refuses by default. `--uncertified` overrides it, deliberately
 requiring someone to say so out loud.
