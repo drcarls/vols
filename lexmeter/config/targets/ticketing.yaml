@@ -1,0 +1,351 @@
+# Phase 1 target list — live-event ticketing.
+#
+# STRUCTURE: the target unit is the PLATFORM, not the venue.
+#
+# The long tail of American ticketing does not run on bespoke software. Hundreds of
+# independent theatres, fairs, clubs, minor-league clubs and university box offices
+# sit on a dozen or so platforms, and the fee display is the platform's, not the
+# venue's. So a single fee pattern replicates across every venue on that platform --
+# which is precisely the Chowning v. Tyler Technologies shape: one vendor, one
+# mandatory fee, many public-facing deployments, one defendant worth suing.
+#
+# Each platform target therefore carries several `deployments`: representative venues
+# whose flows we actually run. Agreement across deployments is the finding; divergence
+# means the venue configures its own fees and the claim is venue-level instead. Both
+# are useful, and we cannot tell which without capturing more than one.
+#
+# EXPECTED YIELD IS A HYPOTHESIS, NOT A FINDING. Nothing here has been captured.
+# `fee_display` is `unknown` on every row and stays that way until a sweep fills it.
+# The ranking is an ordering of where to spend the first two weeks, and it is designed
+# to be falsified: if Tier A comes back clean, that is a real result about the market.
+
+meta:
+  industry: live_event_ticketing
+  phase: 1
+  built_on: 2026-09-14
+  captured: false
+  # Post-2025-05-12 the FTC rule reaches this industry, and the majors moved to
+  # all-in display. Reporting indicates the display changed while the economics did
+  # not -- fees folded into the listed price rather than removed. That is compliant,
+  # and it also means a zero gap at a Tier B target is the expected reading, not a
+  # collector failure. See plan section 4.1.
+  ftc_rule_applies: true
+
+defaults:
+  device: desktop
+  # Rolling offset keeps week-over-week deltas comparable as dates pass.
+  anchor:
+    date_mode: rolling_offset
+    offset_days: 30
+  vantage_control: NY
+  # Full weekly sweep runs from the control only; the multi-vantage differential
+  # probe runs on a sample, to detect display switching rather than price variance.
+  differential_probe_vantages: [CA, MN, MA, CO, VA, NJ, NY]
+  flow_template:
+    - {kind: search,   note: "event search or browse"}
+    - {kind: listing,  note: "headline price as first displayed"}
+    - {kind: detail,   note: "specific ticket or seat"}
+    - {kind: select,   note: "quantity chosen"}
+    - {kind: checkout, note: "delivery/contact step, pre-payment"}
+    - {kind: review,   note: "final review -- STOP. No purchase."}
+
+# ---------------------------------------------------------------------------
+# TIER A -- platform long tail. Highest expected yield, and the vendor-level
+# claim shape. Start here.
+# ---------------------------------------------------------------------------
+targets:
+
+  - id: etix
+    company: Etix
+    tier: A
+    domain: etix.com
+    role: primary
+    rationale: >-
+      Independent theatres, fairs and arenas. Large venue network, minimal
+      white-label customisation, so the fee display is likely uniform across
+      deployments -- the condition under which a vendor-level pattern holds.
+    deployments: [independent_theatre, county_fair, mid_size_arena]
+    fee_display: unknown
+    robots: unaudited
+    expected_yield: high
+
+  - id: showclix
+    company: ShowClix
+    tier: A
+    domain: showclix.com
+    role: primary
+    rationale: >-
+      Performing arts venues, attractions and large-scale events. Enterprise
+      deployments with season subscriptions and memberships, where a mandatory
+      per-order fee is conventional.
+    deployments: [performing_arts_centre, attraction, convention]
+    fee_display: unknown
+    robots: unaudited
+    expected_yield: high
+
+  - id: tixr
+    company: Tixr
+    tier: A
+    domain: tixr.com
+    role: primary
+    rationale: >-
+      Festivals, clubs and VIP packages. White-label by design, which cuts both
+      ways: the fee display may be venue-configured, in which case divergence
+      across deployments is itself the finding.
+    deployments: [music_festival, nightclub, vip_package]
+    fee_display: unknown
+    robots: unaudited
+    expected_yield: high
+
+  - id: eventbrite
+    company: Eventbrite
+    tier: A
+    domain: eventbrite.com
+    role: primary
+    rationale: >-
+      The largest general-admission long tail. Service fee plus payment
+      processing fee is the standard construction, and the buyer-pays vs
+      organiser-pays setting is per-event -- so the same platform will produce
+      both clean and dripping flows, which makes it a good test of whether the
+      collector attributes correctly.
+    deployments: [ga_concert, community_event, conference]
+    fee_display: unknown
+    robots: unaudited
+    expected_yield: high
+
+  - id: ticketweb
+    company: TicketWeb
+    tier: A
+    domain: ticketweb.com
+    role: primary
+    owned_by: Live Nation Entertainment
+    rationale: >-
+      Live Nation's club-level platform. Ownership matters for the pattern-match
+      screen: the parent is already a defendant in the FTC and seven-state action
+      over drip pricing, so a drip pattern on a subsidiary platform is a
+      materially stronger fact than the same pattern on an unrelated operator.
+    deployments: [club, small_theatre]
+    fee_display: unknown
+    robots: unaudited
+    expected_yield: high
+
+  - id: frontgate
+    company: Front Gate Tickets
+    tier: A
+    domain: frontgatetickets.com
+    role: primary
+    owned_by: Live Nation Entertainment
+    rationale: Festival platform, same ownership argument as TicketWeb.
+    deployments: [music_festival]
+    fee_display: unknown
+    robots: unaudited
+    expected_yield: high
+
+  - id: paciolan
+    company: Paciolan (Learfield)
+    tier: A
+    domain: paciolan.com
+    role: primary
+    serves_via_venue_domains: true
+    rationale: >-
+      Reported to support more than 500 venues and around 120 million tickets a
+      year, concentrated in college athletics and performing arts. Flows run on
+      the venue's own domain rather than the platform's, so deployments must be
+      enumerated venue by venue -- more setup cost, and the widest replication if
+      a pattern holds. Closest structural analogue to the Tyler Technologies case.
+    deployments: [university_athletics, performing_arts_centre]
+    fee_display: unknown
+    robots: unaudited
+    expected_yield: high
+    setup_cost: high
+
+  - id: tickets_com
+    company: Tickets.com
+    tier: A
+    domain: tickets.com
+    role: primary
+    serves_via_venue_domains: true
+    rationale: >-
+      Baseball and venue-direct box offices, largely on club domains. Minor-league
+      clubs are numerous, low-compliance-resource, and each is a separate named
+      seller -- a wide screen if the platform pattern holds.
+    deployments: [minor_league_baseball, venue_box_office]
+    fee_display: unknown
+    robots: unaudited
+    expected_yield: high
+    setup_cost: high
+
+  - id: seetickets_us
+    company: See Tickets US
+    tier: A
+    domain: seetickets.us
+    role: primary
+    rationale: Festivals and clubs; independent operator, no existing US case found.
+    deployments: [music_festival, club]
+    fee_display: unknown
+    robots: unaudited
+    expected_yield: medium
+
+  - id: prekindle
+    company: Prekindle
+    tier: A
+    domain: prekindle.com
+    role: primary
+    rationale: Regional clubs and theatres, smaller operator.
+    deployments: [club, theatre]
+    fee_display: unknown
+    robots: unaudited
+    expected_yield: medium
+
+  - id: purplepass
+    company: Purplepass
+    tier: A
+    domain: purplepass.com
+    role: primary
+    rationale: Small venues and attractions.
+    deployments: [small_venue, attraction]
+    fee_display: unknown
+    robots: unaudited
+    expected_yield: medium
+
+  - id: ticketspice
+    company: TicketSpice (Ticketsauce)
+    tier: A
+    domain: ticketspice.com
+    role: primary
+    rationale: Attractions, haunted houses, fairs; heavy seasonal volume.
+    deployments: [attraction, fair]
+    fee_display: unknown
+    robots: unaudited
+    expected_yield: medium
+
+  - id: simpletix
+    company: SimpleTix
+    tier: A
+    domain: simpletix.com
+    role: primary
+    rationale: Small venues and attractions, low compliance resource.
+    deployments: [attraction, small_venue]
+    fee_display: unknown
+    robots: unaudited
+    expected_yield: medium
+
+  - id: universe
+    company: Universe
+    tier: A
+    domain: universe.com
+    role: primary
+    owned_by: Ticketmaster
+    rationale: Ticketmaster-owned GA platform; same ownership argument as TicketWeb.
+    deployments: [ga_event]
+    fee_display: unknown
+    robots: unaudited
+    expected_yield: medium
+
+# ---------------------------------------------------------------------------
+# TIER B -- majors. Low expected yield post-FTC, captured anyway for three
+# reasons: a compliant baseline to measure Tier A against, the display-switching
+# probe, and because they are the named defendants whose fact patterns anchor
+# the screen.
+# ---------------------------------------------------------------------------
+
+  - id: ticketmaster
+    company: Ticketmaster (Live Nation Entertainment)
+    tier: B
+    domain: ticketmaster.com
+    role: primary_and_resale
+    litigation_status: active_defendant
+    rationale: >-
+      Defendant in the FTC and seven-state action filed 2025-09 including historic
+      drip pricing. Expect enterprise bot management (queue systems, commercial
+      interdiction). Budget for this target to fail and be logged blocked -- per
+      the method statement, a block is recorded, not evaded, and that rule is what
+      protects the two-week date.
+    deployments: [arena_concert, sports]
+    fee_display: unknown
+    robots: unaudited
+    expected_yield: low
+    expected_block_risk: high
+
+  - id: stubhub
+    company: StubHub
+    tier: B
+    domain: stubhub.com
+    role: resale
+    litigation_status: settled_ftc
+    rationale: >-
+      Paid $10M in FTC redress announced 2026-04-09 for a two-day window in which
+      total price was absent from the initial display. Now a compliance baseline,
+      and a demonstration of how narrow a window regulators will act on.
+    deployments: [resale_concert, resale_sports]
+    fee_display: unknown
+    robots: unaudited
+    expected_yield: low
+
+  - id: seatgeek
+    company: SeatGeek
+    tier: B
+    domain: seatgeek.com
+    role: resale
+    rationale: Reported first secondary marketplace to show fee-inclusive totals up front.
+    deployments: [resale_concert]
+    fee_display: unknown
+    robots: unaudited
+    expected_yield: low
+
+  - id: vividseats
+    company: Vivid Seats
+    tier: B
+    domain: vividseats.com
+    role: resale
+    rationale: Announced all-inclusive pricing following the FTC rule.
+    deployments: [resale_concert]
+    fee_display: unknown
+    robots: unaudited
+    expected_yield: low
+
+  - id: axs
+    company: AXS (AEG)
+    tier: B
+    domain: axs.com
+    role: primary
+    rationale: >-
+      The principal reserved-seating competitor to Ticketmaster, and the largest
+      Tier B operator with no filed US drip-pricing action against it. If a pattern
+      appears here it is the highest-value single finding in Phase 1.
+    deployments: [arena_concert, theatre]
+    fee_display: unknown
+    robots: unaudited
+    expected_yield: low
+    note: highest_value_if_positive
+
+  - id: tickpick
+    company: TickPick
+    tier: B
+    domain: tickpick.com
+    role: resale
+    rationale: >-
+      Built on an all-in, no-added-fee proposition predating the FTC rule. Serves
+      as the negative control: if the collector flags TickPick, the collector is
+      wrong, not TickPick.
+    deployments: [resale_concert]
+    fee_display: unknown
+    robots: unaudited
+    expected_yield: none
+    role_in_design: negative_control
+
+# ---------------------------------------------------------------------------
+# Excluded from Phase 1
+# ---------------------------------------------------------------------------
+excluded:
+  - id: dice
+    company: DICE
+    reason: >-
+      All-in by design and primarily mobile-app distribution; web flow is not
+      representative of what buyers see. Revisit if mobile capture is added.
+  - id: airlines
+    reason: ADA preemption, DOT regime. Out of scope for the whole programme.
+  - id: anything_requiring_account
+    reason: >-
+      No account is created and no login performed. Any flow that gates the fee
+      breakdown behind a login is logged as unreachable, not worked around.
