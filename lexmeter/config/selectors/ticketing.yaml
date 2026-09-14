@@ -1,0 +1,119 @@
+# Selector specs for Tier A ticketing targets.
+#
+# STATUS: 14 of 15 are UNAUTHORED. Nothing here was written against a real DOM.
+#
+# Selectors cannot be written without seeing the page. Guessing them produces
+# plausible-looking CSS that matches nothing, and the failure mode is silent --
+# no match, no fee, apparent compliance -- so a guessed spec makes the blindest
+# target look like the cleanest. Every target below is therefore left null rather
+# than filled with something that reads as work.
+#
+# HOW TO AUTHOR ONE (about 30-60 minutes per target):
+#
+#   1. Walk the flow by hand in a browser, from the collection environment so the
+#      vantage matches. Stop at the final review step. Do not purchase.
+#   2. Save each step's HTML:  lexmeter-fees save-page --url ... --out pages/<target>/<step>.html
+#   3. Fill in the `steps:` block below. Per step kind, not one set for the site:
+#      a listing page and a checkout page are different documents, and assuming
+#      otherwise is the most common way these go wrong.
+#   4. Verify:  lexmeter-fees verify-selectors --target <id>
+#      This runs two checks. The structural one asks whether the spec is coherent.
+#      The arithmetic one asks whether `headline x quantity + every displayed fee`
+#      equals the total the page itself shows -- which needs no knowledge of the
+#      site, and is what actually proves the spec reads the page correctly.
+#      A positive discrepancy means a fee line is being missed. That is the
+#      finding-destroying error, so it is the one the check is aimed at.
+#   5. Set `status: verified` only once the arithmetic reconciles on a saved page.
+#
+# FIELD NOTES
+#   - `required: true` (the default) means a non-match aborts the capture. Leave it
+#     true for headline and total. Set it false only where the element genuinely may
+#     not exist, such as a purpose blurb or a remove control.
+#   - `attribute:` reads an attribute instead of text, for prices living in
+#     `content`, `data-price` or `aria-label`.
+#   - `fee_remove_control` is how a fee gets classified mandatory vs optional. With
+#     no selector the fee stays UNKNOWN and does not count toward the gap, which is
+#     the safe default but weakens the finding. Worth the effort to find.
+#   - `quantity` matters. Many sites show a per-ticket headline against a multi-ticket
+#     total; without it the reconciliation fails on a spec that is actually correct.
+
+meta:
+  industry: live_event_ticketing
+  authored: 1
+  unauthored: 14
+  note: >-
+    The single authored spec is against the local test fixture, not a real site.
+    It exists to prove the machinery end to end and to serve as a filled-in
+    template. It is not a ticketing company.
+
+specs:
+
+  # -- worked example, verified against fixtures/drip_ticketing ---------------
+  _fixture_drip:
+    domain: fixture.test
+    status: verified
+    authored_against_url: fixtures/drip_ticketing/*.html
+    authored_on: 2026-09-14
+    notes: >-
+      Template and machinery test. Reconciles: 8900 headline + 1840 service +
+      490 order processing + 821 tax = 12051 displayed total.
+    fallback:
+      headline: '[data-lex="headline"]'
+      total:
+        css: '[data-lex="total"]'
+        required: false      # absent on the first listing step, legitimately
+      fee_row:
+        css: '[data-lex="fee"]'
+        required: false      # no fees shown until the review step
+      fee_label:
+        css: '[data-lex="fee"]'
+        attribute: data-label
+      fee_amount:
+        css: '[data-lex="fee"]'
+        attribute: data-amount
+      fee_purpose:
+        css: '[data-lex="fee"]'
+        attribute: data-purpose
+        required: false
+    steps:
+      review:
+        headline: '[data-lex="headline"]'
+        total: '[data-lex="total"]'
+        fee_row: '[data-lex="fee"]'
+        fee_label:
+          css: '[data-lex="fee"]'
+          attribute: data-label
+        fee_amount:
+          css: '[data-lex="fee"]'
+          attribute: data-amount
+
+  # -- Tier A, all unauthored -------------------------------------------------
+  etix:            {domain: etix.com,              status: unauthored}
+  showclix:        {domain: showclix.com,          status: unauthored}
+  tixr:            {domain: tixr.com,              status: unauthored}
+  eventbrite:
+    domain: eventbrite.com
+    status: unauthored
+    notes: >-
+      Buyer-pays vs organiser-pays is set per event, so the same platform will
+      produce both dripping and clean flows. Author against at least one of each
+      or the spec will look broken on whichever case it was not written for.
+  ticketweb:       {domain: ticketweb.com,         status: unauthored}
+  frontgate:       {domain: frontgatetickets.com,  status: unauthored}
+  paciolan:
+    domain: paciolan.com
+    status: unauthored
+    notes: >-
+      Serves through venue domains, not its own. Author against a specific venue
+      deployment and record which one; whether one spec covers several venues is
+      itself the finding about how uniform the platform is.
+  tickets_com:
+    domain: tickets.com
+    status: unauthored
+    notes: Also venue-domain served. Same caveat as Paciolan.
+  seetickets_us:   {domain: seetickets.us,         status: unauthored}
+  prekindle:       {domain: prekindle.com,         status: unauthored}
+  purplepass:      {domain: purplepass.com,        status: unauthored}
+  ticketspice:     {domain: ticketspice.com,       status: unauthored}
+  simpletix:       {domain: simpletix.com,         status: unauthored}
+  universe:        {domain: universe.com,          status: unauthored}

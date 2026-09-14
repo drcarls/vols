@@ -104,8 +104,57 @@ real result about the market**, and a more interesting one than the alternative.
 1. Name the egress vendor and get the provenance attestation on file.
 2. Run `robots-audit` from the collection environment. It feeds the D4 posture
    decision with evidence instead of assumption, and the current audit read nothing.
-3. Write `SelectorSpec`s per target. This is the real Phase 1 labour — selectors rot,
-   and a rotted selector must fail loudly as a capture error, never silently as a
-   zero fee.
+3. Write `SelectorSpec`s per target. **This is the open work and the real Phase 1
+   labour.** See below.
 4. Pick a TSA and name a custodian, then `preflight` goes clean.
 5. First sweep: Tier A only, control vantage, one deployment each.
+
+
+---
+
+## Selector specs: machinery built, 0/14 authored
+
+Selectors cannot be written without seeing the page, and no Tier A site is
+reachable from the build environment. Guessing them produces plausible CSS that
+matches nothing, and the failure mode is silent — no match, no fee, apparent
+compliance — so a guessed spec makes the blindest target look like the cleanest.
+All 14 are therefore left null rather than filled with something that reads as
+work. `selector-status` prints the gap and `sweep` refuses to run over it.
+
+What is built instead is the machinery that makes authoring fast and checkable:
+
+- **Per-step-kind selectors.** A listing page and a checkout page are different
+  documents; one spec per site is the most common way these go wrong.
+- **Required selectors raise.** A non-match is a capture error, never a zero.
+- **Arithmetic reconciliation** — the useful part. `headline × quantity + every
+  displayed fee` must equal the total the page itself shows. That needs no
+  knowledge of the site, so it verifies a spec written by someone who has never
+  seen its DOM, and it diagnoses directionally: a positive discrepancy means a fee
+  line is being missed, a negative one means a double-count or a headline selector
+  that is matching a total. Quantity is part of it because a per-ticket headline
+  against a multi-ticket total makes a correct spec look broken.
+- **Verification gating.** A spec may only be marked `verified` once at least one
+  step produced a check that actually closed. A spec whose every step returns
+  "not checkable" has proven nothing, and marking it verified is how an unverified
+  spec reaches a live sweep.
+- **Authoring against saved pages**, not the live site: `save-page` stores one
+  rendered page, `verify-selectors` checks the spec against it in the same browser
+  with no network. Repeatedly re-running a live flow to tune a selector is the
+  traffic pattern the declared posture disclaims.
+
+### Authoring procedure, roughly 30–60 minutes per target
+
+1. Walk the flow by hand from the collection environment. Stop at review. No purchase.
+2. `save-page` each step.
+3. Fill the `steps:` block in `config/selectors/ticketing.yaml`.
+4. `verify-selectors --target <id> --pages <dir>` until the arithmetic closes.
+5. Set `status: verified`.
+
+`config/selectors/ticketing.yaml` carries one filled-in worked example against the
+local fixture — machinery proof and template, not a ticketing company.
+
+Two targets need care: **Eventbrite** sets buyer-pays vs organiser-pays per event,
+so author against one of each or the spec looks broken on whichever case it was not
+written for. **Paciolan** and **Tickets.com** serve through venue domains, so author
+against a named venue and record which — whether one spec covers several venues is
+itself the finding about how uniform the platform is.

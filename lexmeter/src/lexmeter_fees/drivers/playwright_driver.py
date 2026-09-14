@@ -4,7 +4,7 @@ Imported only via ``capture.playwright_driver`` so the package works without
 Playwright installed. Chromium is pre-installed in the collection image at
 ``PLAYWRIGHT_BROWSERS_PATH``; never run ``playwright install``.
 
-Three things here are policy, not preference, and should not be "optimised" away:
+Four things here are policy, not preference, and should not be "optimised" away:
 
 * The real user agent is kept and honest identification appended. Disguising
   automation is prohibited and courts read it as bad faith.
@@ -13,35 +13,28 @@ Three things here are policy, not preference, and should not be "optimised" away
   elements, which is precisely the content in dispute.
 * A HAR with response bodies is recorded per flow. A DOM snapshot at the review
   step cannot prove what was rendered at step one; the network record can.
+* A required selector that matches nothing raises. A rotted selector must surface
+  as a capture error, because its silent form -- no match, no fee, apparent
+  compliance -- makes the blindest target look like the cleanest.
 """
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Sequence
 
 from ..capture import PageReading
-from ..extract import RawFeeRow
+from ..extract import RawFeeRow, parse_money_cents
 from ..model import StepKind
 from ..politeness import Policy, user_agent
-
-
-@dataclass(frozen=True)
-class SelectorSpec:
-    """Per-site CSS selectors. One of these per company, held as config.
-
-    Kept as data rather than code because selectors rot weekly and a rotted
-    selector must fail loudly as a capture error, never silently as a zero fee.
-    """
-
-    headline: str
-    total: str | None = None
-    fee_row: str | None = None
-    fee_label: str | None = None
-    fee_amount: str | None = None
-    fee_purpose: str | None = None
-    fee_remove_control: str | None = None
+from ..selectors import (
+    FieldSelector,
+    Reconciliation,
+    SelectorError,
+    SelectorSpec,
+    StepSelectors,
+    reconcile,
+)
 
 
 class PlaywrightDriver:
@@ -50,14 +43,24 @@ class PlaywrightDriver:
     def __init__(
         self,
         page: Any,
-        selectors: SelectorSpec,
+        spec: SelectorSpec,
         policy: Policy,
         actions: dict[str, Any] | None = None,
+        *,
+        quantity: int = 1,
+        reconcile_tolerance_cents: int = 2,
     ) -> None:
         self.page = page
-        self.selectors = selectors
+        self.spec = spec
         self.policy = policy
         self.actions = actions or {}
+        self.quantity = quantity
+        self.tolerance = reconcile_tolerance_cents
+        #: Reconciliation outcome per step, surfaced to the sweep so a suspect
+        #: spec is visible in the run rather than discovered in the report.
+        self.reconciliations: list[tuple[StepKind, Reconciliation]] = []
+
+    # -- selector reading ---------------------------------------------------
 
     @staticmethod
     def launch_context(browser: Any, policy: Policy, har_path: Path | str, **kwargs):
@@ -71,32 +74,47 @@ class PlaywrightDriver:
             **kwargs,
         )
 
-    def _text(self, selector: str | None) -> str | None:
-        if not selector:
+    def _read(self, scope: Any, selector: FieldSelector | None, what: str) -> str | None:
+        if selector is None:
             return None
-        locator = self.page.locator(selector)
+        locator = scope.locator(selector.css)
         if locator.count() == 0:
+            if selector.required:
+                raise SelectorError(
+                    f"{self.spec.target_id}: required selector for {what!r} "
+                    f"({selector.css!r}) matched nothing. Treating this as a capture "
+                    "error rather than an absent fee -- re-author the spec."
+                )
             return None
-        return locator.first.inner_text()
+        first = locator.first
+        if selector.attribute:
+            return first.get_attribute(selector.attribute)
+        return first.inner_text()
 
-    def _fee_rows(self) -> Sequence[RawFeeRow]:
-        spec = self.selectors
-        if not spec.fee_row:
+    def _fee_rows(self, step: StepSelectors) -> Sequence[RawFeeRow]:
+        if step.fee_row is None:
             return []
+        container = self.page.locator(step.fee_row.css)
+        count = container.count()
+        if count == 0:
+            if step.fee_row.required:
+                raise SelectorError(
+                    f"{self.spec.target_id}: fee_row selector "
+                    f"({step.fee_row.css!r}) matched nothing"
+                )
+            return []
+
         rows: list[RawFeeRow] = []
-        container = self.page.locator(spec.fee_row)
-        for i in range(container.count()):
+        for i in range(count):
             row = container.nth(i)
-            label = row.locator(spec.fee_label).first.inner_text() if spec.fee_label else row.inner_text()
-            amount = row.locator(spec.fee_amount).first.inner_text() if spec.fee_amount else ""
-            purpose = None
-            if spec.fee_purpose and row.locator(spec.fee_purpose).count():
-                purpose = row.locator(spec.fee_purpose).first.inner_text()
-            # Removability is only known if we can see a control that removes it.
-            # Absent one it stays None -> Mandatory.UNKNOWN, never a guess.
+            label = self._read(row, step.fee_label, "fee_label") or row.inner_text()
+            amount = self._read(row, step.fee_amount, "fee_amount") or ""
+            purpose = self._read(row, step.fee_purpose, "fee_purpose")
+            # Removability is only known if a control that removes the charge is
+            # visible. Absent one it stays None -> Mandatory.UNKNOWN, never a guess.
             removable: bool | None = None
-            if spec.fee_remove_control:
-                removable = row.locator(spec.fee_remove_control).count() > 0
+            if step.fee_remove_control is not None:
+                removable = row.locator(step.fee_remove_control.css).count() > 0
             rows.append(
                 RawFeeRow(
                     label=label,
@@ -107,6 +125,8 @@ class PlaywrightDriver:
                 )
             )
         return rows
+
+    # -- step ---------------------------------------------------------------
 
     def read(self, step_kind: StepKind, action: str | None) -> PageReading:
         status = 200
@@ -121,18 +141,55 @@ class PlaywrightDriver:
                 status = response.status
             self.page.wait_for_load_state("networkidle")
 
+        step = self.spec.for_step(step_kind)
+        headline_text = self._read(self.page, step.headline, "headline")
+        total_text = self._read(self.page, step.total, "total")
+        fee_rows = self._fee_rows(step)
+
+        quantity = self.quantity
+        if step.quantity is not None:
+            read_qty = self._read(self.page, step.quantity, "quantity")
+            parsed = parse_money_cents(read_qty)
+            if parsed is not None and parsed >= 100:
+                quantity = parsed // 100  # the field is a count, parsed as money
+
+        # Does the page's own arithmetic agree with what we read off it? This
+        # needs no knowledge of the site, so it catches a spec authored by someone
+        # who has never seen its DOM.
+        self.reconciliations.append(
+            (
+                step_kind,
+                reconcile(
+                    parse_money_cents(headline_text),
+                    [
+                        c
+                        for c in (parse_money_cents(r.amount_text) for r in fee_rows)
+                        if c is not None
+                    ],
+                    parse_money_cents(total_text),
+                    quantity=quantity,
+                    tolerance_cents=self.tolerance,
+                ),
+            )
+        )
+
         scroll_y = self.page.evaluate("() => Math.round(window.scrollY)")
+        content = self.page.content()
         return PageReading(
             url=self.page.url,
             status=status,
-            body_text=self.page.content(),
-            headline_text=self._text(self.selectors.headline),
-            total_text=self._text(self.selectors.total),
-            fee_rows=self._fee_rows(),
+            body_text=content,
+            headline_text=headline_text,
+            total_text=total_text,
+            fee_rows=fee_rows,
             screenshot=self.page.screenshot(full_page=False),
-            dom=self.page.content().encode("utf-8"),
+            dom=content.encode("utf-8"),
             scroll_y=scroll_y,
         )
+
+    @property
+    def suspect_steps(self) -> list[tuple[StepKind, Reconciliation]]:
+        return [(k, r) for k, r in self.reconciliations if r.spec_is_suspect]
 
     def close(self) -> None:
         # Context close is what flushes the HAR and video, so it must happen even
