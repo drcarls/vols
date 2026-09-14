@@ -20,6 +20,7 @@ The `data/` directory is gitignored — regenerate it with the collectors in
 | `sc_basket.py` | `reports/brightdata_zipcode_trap.md` §7 — the 13-item Great Value basket across all 92 SC stores; `--build` converts the raw snapshot |
 | `bd_zipcode_probe.py` | `reports/brightdata_zipcode_trap.md` — why Bright Data's Walmart zipcodes template pins the store but returns a national online price; §7 has the full 92-store SC pull |
 | `within_state_zones.py` | `reports/cover_memo_rev2.md` — re-estimates the memo's within-state racial gradients with SEs clustered on the differential zone, the level at which the differential actually varies |
+| `segmented_rural.py` | `reports/segmented_rural.md` — the client's own stratified design: the retail gradient is real in low-income rural cells (+19c, +8.5c within state) and absent or reversed in urban ones, which is why the pooled estimate reads null |
 | `ca_wic.py` | `reports/ca_wic.md` — audits the memo's California WIC section against CDPH's actual participant counts by county and race; every figure reproduces |
 | `above_cost_regional.py` | `reports/above_cost_regional.md` — the above-freight markup by region: +3.92c/gal in the South, −6.58c in the West, and no racial gradient inside any region |
 | `usdss.py` | `reports/usdss.md` — tests the "it's geography" defence against USDA's own cost model (Exhibit MIG-16A, 3,085 counties): the transport surface is itself racially graded, and by more than the pre-2025 differentials |

@@ -1,3 +1,10 @@
+> **SCOPE LIMIT, added 2026-09-14 — read `reports/segmented_rural.md` alongside this.**
+> Every test here is inside a metropolitan area, so it is URBAN BY CONSTRUCTION. In the
+> client's stratified design the racial gradient appears in LOW-INCOME RURAL cells
+> (+19c/gal raw, +8.5c within state, positive in 7 of 9 states) and is absent or
+> reversed in urban ones. The nulls below are correct for metros and must not be
+> generalised to rural areas.
+
 # The within-metro test: Atlanta and eight other metros
 
 **Date:** 2026-08-22 · Branch `claude/walmart-milk-pricing-sc-m7zc99`
