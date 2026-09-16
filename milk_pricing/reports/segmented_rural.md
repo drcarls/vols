@@ -1,3 +1,12 @@
+> **SUPERSEDED, 2026-09-16 — read `reports/within_state_design.md`.** The design below
+> stratifies on NATIONAL income quartiles and absolute racial thresholds, and both select
+> on state: a national income cut keeps 59% of Mississippi's rural ZIPs but 26% of
+> Texas's, and a ≤10% Black threshold is satisfiable by only 4 rural ZIPs in the whole of
+> Mississippi. The two comparison groups are therefore drawn from different states by
+> construction. Re-ranking within each state reverses the sign: **weighted mean −$0.121,
+> positive in 4 of 12 states**, negative in all twelve variants of the cut points. The
+> +19¢ headline below is a between-state composition effect.
+
 # The client was right: the retail finding is not uniformly null
 
 **It is confined to low-income rural areas, where it reproduces — and where the
