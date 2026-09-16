@@ -138,29 +138,84 @@ two deciles — and those two are the positive ones (+0.153, +0.234). The pooled
 +0.043 is not being driven by a handful of thin cells; it is a small positive
 number in the cells that have data and noise elsewhere.
 
-## 6. Aldi does not follow Walmart here
+## 6. Aldi, on the same 1,003 rural ZIPs
 
-Aldi's income slope is −0.038/gal per $10,000, less than half Walmart's −0.110 on
-the same ZIPs. Because income barely predicts Aldi's price, equalising income
-barely moves Aldi's racial gap: +0.174 raw becomes +0.190 by decile and +0.229
-matched. On its face that is a racial gap that income does *not* explain.
+### The exposure mechanism runs at Walmart and barely at Aldi
 
-Three reasons not to lead with it:
+Identical ZIPs, identical demographics, two retailers:
 
-1. **State fixed effects collapse it** to +0.023. Walmart's holds a consistent
-   near-zero across specifications; Aldi's does not.
-2. **It is definition-unstable.** Majority Black vs majority white at Aldi is
-   +0.0¢ (reports/rural_price_by_state.csv); ≥30% vs ≤10% is +17.4¢ raw. A result
-   that swings 17¢ on where a threshold is drawn is a result about the threshold.
-3. **Aldi's price is non-monotone in Black share.** The ≤10% Black group is the
-   cheapest at $2.936 but the 10–30% group is the *most expensive* at $3.146,
-   above both Black-majority groups. That is not a racial gradient; it is Aldi's
-   store footprint.
+| decile | income from | Walmart | Aldi | Walmart − Aldi | % of maj-Black ZIPs | % of maj-white ZIPs |
+|---|---|---|---|---|---|---|
+| 1 | $23,917 | **4.125** | 3.020 | **1.105** | **50.0%** | 5.9% |
+| 2 | $42,885 | 4.102 | 3.155 | 0.947 | 13.5% | 9.0% |
+| 3 | $48,013 | 3.905 | 3.036 | 0.869 | 6.8% | 10.2% |
+| 4 | $51,626 | 3.835 | 3.116 | 0.719 | 9.5% | 9.4% |
+| 5 | $54,955 | 3.786 | 3.101 | 0.684 | 4.1% | 10.7% |
+| 6 | $58,865 | 3.715 | 3.071 | 0.644 | 2.7% | 11.6% |
+| 7 | $63,306 | 3.556 | 3.010 | 0.547 | 1.4% | 11.3% |
+| 8 | $68,770 | 3.496 | 3.123 | 0.374 | 9.5% | 10.3% |
+| 9 | $76,990 | 3.535 | 2.909 | 0.626 | 2.7% | 11.3% |
+| 10 | $89,434 | **3.375** | 2.826 | **0.549** | 0.0% | 10.3% |
 
-Aldi should be reported as what it is — a second retailer over the same geography
-whose racial gap is smaller than Walmart's raw gap, sensitive to specification,
-and not monotone — rather than as a comparison that either confirms or refutes
-Walmart.
+Walmart falls 75¢ from the poorest rural income decile to the richest. Aldi falls
+19¢, non-monotonically. The income slopes on these same ZIPs are −0.110/gal per
+$10,000 at Walmart and **−0.038 at Aldi**, less than half as steep.
+
+The bottom two deciles hold 63.5% of the majority-Black ZIPs and 14.8% of the
+majority-white ones. Milk there costs **+46.3¢** more than the other eight deciles
+at Walmart and **+6.3¢** more at Aldi.
+
+**This is the finding that Aldi contributes.** The exposure argument needs two
+things: a group concentrated in the low-income deciles, and a price that actually
+rises as income falls. The concentration is structural — it is where Black rural
+communities are, and it is the same for both retailers by construction. The
+gradient is not structural. It is a retailer's pricing decision, and Aldi, serving
+the same rural ZIPs, largely does not have one. The Walmart-minus-Aldi spread runs
+$1.105 in the poorest rural decile and $0.549 in the richest: Walmart's premium
+over Aldi is twice as large where rural Black households are concentrated.
+
+### Aldi's own racial gap is specification-unstable
+
+| method | majority Black vs majority white | ≥30% vs ≤10% Black |
+|---|---|---|
+| raw | +0.000 | +0.174 |
+| linear income adjustment | −0.069 | +0.103 |
+| within income decile | −0.032 | +0.190 |
+| matched on income ±$2,000 | −0.210 | +0.229 |
+| linear income + state FE | −0.096 | +0.023 |
+
+Do not lead with either column. Three reasons:
+
+1. **The two definitions disagree in sign** at every adjustment. A result that
+   flips on where a threshold is drawn is a result about the threshold.
+2. **Aldi's price is non-monotone in Black share.** The ≤10% Black group is
+   cheapest at $2.936, but the 10–30% group is the *most expensive* at $3.146,
+   above both Black-majority groups. That is a store-footprint pattern, not a
+   racial gradient.
+3. **State fixed effects move it a lot** (+0.229 to +0.023 on the 30/10
+   definition), where Walmart's near-zero holds across specifications.
+
+The defensible Aldi statement is the flat gradient, not a racial coefficient.
+
+### Coverage
+
+1,003 of 2,248 rural Walmart ZIPs carry an Aldi price (45%).
+
+| | n | mean %Black | majority Black | mean income |
+|---|---|---|---|---|
+| with Aldi | 1,003 | 17.1 | 7.4% | $63,207 |
+| without | 1,245 | 4.2 | 0.4% | $68,401 |
+
+Aldi's rural footprint is not a random sample of rural America — it is four times
+Blacker and $5,200 poorer than the rural ZIPs it does not serve, which follows
+from Aldi being a Southeast and Midwest chain. This does **not** bias the
+Walmart-vs-Aldi contrast, which is run on the shared ZIPs only with Walmart
+measured on those same ZIPs. It does mean the Aldi column on its own describes
+rural ZIPs Aldi chose to enter, not rural America.
+
+Separately, 398 ZIPs in the Aldi collection have no demographics in the panel
+because they carry no Walmart store. Adding ACS data for those would extend the
+Aldi-only analysis; it would not change anything above.
 
 ## What to say
 
@@ -174,6 +229,11 @@ Walmart.
 > rural ZIPs sit in the bottom two income deciles, against 16.6% of majority-white
 > ones, and rural milk in those two deciles averages $3.93 against $3.56
 > everywhere else.
+>
+> On the same rural ZIPs, Aldi's price falls 19 cents from the poorest income
+> decile to the richest where Walmart's falls 75 cents. The concentration of Black
+> rural communities in low-income areas is structural; the price gradient that
+> turns it into a cost is a retailer's choice.
 
 The disparate-impact argument that survives this is about income and rural
 geography, and about the fact that Black rural households are concentrated in the

@@ -237,7 +237,7 @@ def report(S, keys, label):
               f"{(f'{g:+.3f}' if g is not None else 'too few'):>10}")
 
 
-def exposure(S, label):
+def exposure(S, label, keys=(("Walmart", "p"),)):
     """Where each group sits in the rural income distribution.
 
     Equalising income answers "same income, same price?". This answers the
@@ -247,33 +247,75 @@ def exposure(S, label):
     blk = np.array([r["blk"] for r in S])
     wht = np.array([r["wht"] for r in S])
     inc = np.array([r["inc"] for r in S])
-    y = np.array([r["p"] for r in S])
+    ys = {nm: np.array([r[k] for r in S]) for nm, k in keys}
+    y = ys[keys[0][0]]
     q = np.quantile(inc, np.linspace(0, 1, 11))
     q[-1] += 1
     dec = np.searchsorted(q, inc, side="right") - 1
     print(f"\n-- 4. Income-decile exposure, {label} --\n")
-    print(f"  {'decile':<8}{'income from':>13}{'mean price':>12}"
-          f"{'% of maj-Black ZIPs':>22}{'% of maj-white ZIPs':>22}")
+    print(f"  {'decile':<8}{'income from':>13}"
+          + "".join(f"{nm:>11}" for nm, _ in keys)
+          + f"{'% of maj-Black ZIPs':>22}{'% of maj-white ZIPs':>22}")
     mb, mw = blk >= 50, wht >= 50
     for i in range(10):
         m = dec == i
-        print(f"  {i+1:<8}{q[i]:>13,.0f}{y[m].mean():>12.3f}"
-              f"{100*(m & mb).sum()/mb.sum():>21.1f}%"
+        print(f"  {i+1:<8}{q[i]:>13,.0f}"
+              + "".join(f"{ys[nm][m].mean():>11.3f}" for nm, _ in keys)
+              + f"{100*(m & mb).sum()/mb.sum():>21.1f}%"
               f"{100*(m & mw).sum()/mw.sum():>21.1f}%")
     b2 = dec <= 1
     print(f"\n  bottom two deciles hold {100*(b2 & mb).sum()/mb.sum():.1f}% of "
-          f"majority-Black rural ZIPs and {100*(b2 & mw).sum()/mw.sum():.1f}% of "
-          f"majority-white ones,")
-    print(f"  and rural milk there averages {y[b2].mean():.3f} against "
-          f"{y[~b2].mean():.3f} in the other eight.")
+          f"majority-Black ZIPs and {100*(b2 & mw).sum()/mw.sum():.1f}% of "
+          f"majority-white ones.")
+    for nm, _ in keys:
+        print(f"  {nm}: {ys[nm][b2].mean():.3f} there against "
+              f"{ys[nm][~b2].mean():.3f} in the other eight "
+              f"({ys[nm][b2].mean() - ys[nm][~b2].mean():+.3f}).")
+    if len(keys) == 2:
+        a, b = (ys[nm] for nm, _ in keys)
+        print(f"\n  {keys[0][0]} minus {keys[1][0]}, by decile:")
+        print("  " + "".join(f"{(a[dec==i]).mean()-(b[dec==i]).mean():>8.3f}"
+                             for i in range(10)))
+        print(f"  The spread is {a[dec==0].mean()-b[dec==0].mean():.3f} in the "
+              f"poorest decile and {a[dec==9].mean()-b[dec==9].mean():.3f} in the "
+              f"richest, on the same ZIPs.")
+    print("\n  The exposure argument needs BOTH: a group concentrated in the low")
+    print("  deciles, and a price that actually rises as income falls. The second")
+    print("  condition is a property of the retailer, not of the geography.")
+
+
+def coverage():
+    """Which rural Walmart ZIPs got an Aldi price, and are they a racial sample?
+
+    The Walmart-vs-Aldi contrast is run on identical ZIPs, so this does not bias
+    it. It does bound what the Aldi column alone can be read as describing.
+    """
+    full, both = rural(), rural(both=True)
+    have = {r["zip"] for r in both}
+    miss = [r for r in full if r["zip"] not in have]
+    print(f"\n-- 5. Aldi coverage of the rural Walmart panel --\n")
+    print(f"  {len(both)} of {len(full)} rural Walmart ZIPs carry an Aldi price "
+          f"({100*len(both)/len(full):.0f}%).")
+    for lab, rows in (("with Aldi", both), ("without", miss)):
+        b = np.array([r["blk"] for r in rows])
+        print(f"  {lab:<10}n {len(rows):>5}   mean %Black {b.mean():>5.1f}"
+              f"   majority Black {100*(b>=50).mean():>4.1f}%"
+              f"   mean income {np.mean([r['inc'] for r in rows]):>8,.0f}")
+    print("  Aldi's own footprint is not a random sample of rural America, so the")
+    print("  Aldi column describes rural ZIPs Aldi chose to enter. Every")
+    print("  Walmart/Aldi comparison above is run on the shared ZIPs only.")
 
 
 def main():
     report(rural(), [("Walmart", "p")],
            "RURAL, full Walmart panel")
     exposure(rural(), "rural Walmart panel")
-    report(rural(both=True), [("Walmart", "p"), ("Aldi", "aldi")],
+    both = rural(both=True)
+    report(both, [("Walmart", "p"), ("Aldi", "aldi")],
            "RURAL, ZIPs carrying both retailers")
+    exposure(both, "rural ZIPs carrying both retailers",
+             keys=(("Walmart", "p"), ("Aldi", "aldi")))
+    coverage()
 
 
 if __name__ == "__main__":
