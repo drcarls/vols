@@ -71,6 +71,14 @@ def groups(blk):
             ("10-30% Black", (blk >= 10) & (blk < 30)), ("<=10% Black", blk <= 10)]
 
 
+# The contrasts run through every method. "majority" is the definition the cover
+# memo leads with; the 30/10 pair is the wider-net version kept for continuity.
+CONTRASTS = [
+    ("majority Black vs majority white", lambda b, w: (b >= 50, w >= 50)),
+    (">=30% Black vs <=10% Black", lambda b, w: (b >= 30, b <= 10)),
+]
+
+
 def adjusted_levels(y, inc, st, blk, fe=False):
     """Group mean prices after removing the income gradient.
 
@@ -88,7 +96,7 @@ def adjusted_levels(y, inc, st, blk, fe=False):
     return resid, b[1]
 
 
-def decile_gap(y, inc, blk, hi_t=30.0, lo_t=10.0, q=10):
+def decile_gap(y, inc, hi, lo, q=10):
     """Within-income-decile Black-minus-white gap, pooled by decile size.
 
     Only deciles holding at least three ZIPs on each side contribute; the weight
@@ -100,22 +108,22 @@ def decile_gap(y, inc, blk, hi_t=30.0, lo_t=10.0, q=10):
     detail = []
     for i in range(q):
         m = (inc >= edges[i]) & (inc < edges[i + 1])
-        hi, lo = m & (blk >= hi_t), m & (blk <= lo_t)
-        if hi.sum() < 3 or lo.sum() < 3:
-            detail.append((i + 1, edges[i], hi.sum(), lo.sum(), None))
+        h, l = m & hi, m & lo
+        if h.sum() < 3 or l.sum() < 3:
+            detail.append((i + 1, edges[i], h.sum(), l.sum(), None))
             continue
-        g = y[hi].mean() - y[lo].mean()
-        w = hi.sum() + lo.sum()
+        g = y[h].mean() - y[l].mean()
+        w = h.sum() + l.sum()
         num += g * w
         den += w
-        detail.append((i + 1, edges[i], hi.sum(), lo.sum(), g))
+        detail.append((i + 1, edges[i], h.sum(), l.sum(), g))
     return (num / den if den else float("nan")), detail
 
 
-def matched_gap(y, inc, blk, hi_t=30.0, lo_t=10.0):
+def matched_gap(y, inc, hi_m, lo_m):
     """Nearest-neighbour income match, with replacement, inside a $2,000 caliper."""
-    hi = np.where(blk >= hi_t)[0]
-    lo = np.where(blk <= lo_t)[0]
+    hi = np.where(hi_m)[0]
+    lo = np.where(lo_m)[0]
     d, n = [], 0
     for i in hi:
         j = lo[np.argmin(np.abs(inc[lo] - inc[i]))]
@@ -143,6 +151,7 @@ def decile_levels(y, inc, q=10):
 
 def report(S, keys, label):
     blk = np.array([r["blk"] for r in S])
+    wht = np.array([r["wht"] for r in S])
     inc = np.array([r["inc"] for r in S])
     st = np.array([r["st"] for r in S])
     print(f"\n{'='*74}\n{label}  ({len(S)} ZIPs, {len(set(st))} states)\n{'='*74}")
@@ -175,53 +184,94 @@ def report(S, keys, label):
             continue
         print(f"  {gname:<15}{m.sum():>5}"
               + "".join(f"{dec[nm][m].mean():>18.3f}" for nm, _ in keys))
-    hi30, lo10 = blk >= 30, blk <= 10
-    for nm, _ in keys:
-        g = dec[nm][hi30].mean() - dec[nm][lo10].mean()
-        d = np.where(hi30, 1.0, 0.0)[hi30 | lo10]
-        b, se = ols(dec[nm][hi30 | lo10], np.column_stack([d]), st[hi30 | lo10])
-        print(f"\n  {nm} >=30% vs <=10%, decile-adjusted: {g:+.3f} "
-              f"(clustered t {b[1]/se[1]:+.2f})")
+    for cname, sel in CONTRASTS:
+        hi, lo = sel(blk, wht)
+        print()
+        for nm, _ in keys:
+            g = dec[nm][hi].mean() - dec[nm][lo].mean()
+            d = np.where(hi, 1.0, 0.0)[hi | lo]
+            b, se = ols(dec[nm][hi | lo], np.column_stack([d]), st[hi | lo])
+            print(f"  {nm}, {cname}, decile-adjusted: {g:+.3f} "
+                  f"(clustered t {b[1]/se[1]:+.2f})")
 
     print("\n  'adj' is the price the group would pay at the sample-average income")
     print(f"  of ${inc.mean():,.0f}. Raw and adjusted columns are on the same scale.")
 
-    print("\n-- 2. The >=30% vs <=10% gap, four ways of equalising income --\n")
-    print(f"  {'method':<34}" + "".join(f"{nm:>16}" for nm, _ in keys))
-    hi, lo = blk >= 30, blk <= 10
-    rows = {}
-    for nm, key in keys:
-        y = np.array([r[key] for r in S])
-        raw = y[hi].mean() - y[lo].mean()
-        a1, slope = adjusted_levels(y, inc, st, blk)
-        lin = a1[hi].mean() - a1[lo].mean()
-        dec, detail = decile_gap(y, inc, blk)
-        mat, nm_, nh = matched_gap(y, inc, blk)
-        a4, _ = adjusted_levels(y, inc, st, blk, fe=True)
-        fe = a4[hi].mean() - a4[lo].mean()
-        rows[nm] = (raw, lin, dec, mat, fe, slope, nm_, nh, detail)
-    for i, lab in enumerate(["raw, no adjustment",
-                             "1. linear income adjustment",
-                             "2. within income decile",
-                             "3. matched on income (+/-$2k)",
-                             "4. linear income + state FE"]):
-        print(f"  {lab:<34}" + "".join(f"{rows[nm][i]:>+16.3f}" for nm, _ in keys))
-    print()
-    for nm, _ in keys:
-        r = rows[nm]
-        print(f"  {nm}: income slope {r[5]:+.4f}/gal per $10k; "
-              f"{r[6]} of {r[7]} high-Black ZIPs found a match inside the caliper")
+    print("\n-- 2. Four ways of equalising income, both definitions --\n")
+    detail = None
+    for cname, sel in CONTRASTS:
+        hi, lo = sel(blk, wht)
+        print(f"  {cname}   (n {hi.sum()} vs {lo.sum()})")
+        print(f"  {'method':<34}" + "".join(f"{nm:>16}" for nm, _ in keys))
+        rows = {}
+        for nm, key in keys:
+            y = np.array([r[key] for r in S])
+            raw = y[hi].mean() - y[lo].mean()
+            a1, slope = adjusted_levels(y, inc, st, blk)
+            dec, det = decile_gap(y, inc, hi, lo)
+            mat, matched, nh = matched_gap(y, inc, hi, lo)
+            a4, _ = adjusted_levels(y, inc, st, blk, fe=True)
+            rows[nm] = (raw, a1[hi].mean() - a1[lo].mean(), dec, mat,
+                        a4[hi].mean() - a4[lo].mean(), slope, matched, nh)
+            if nm == keys[0][0] and detail is None:
+                detail = det
+        for i2, lab in enumerate(["raw, no adjustment",
+                                  "1. linear income adjustment",
+                                  "2. within income decile",
+                                  "3. matched on income (+/-$2k)",
+                                  "4. linear income + state FE"]):
+            print(f"  {lab:<34}"
+                  + "".join(f"{rows[nm][i2]:>+16.3f}" for nm, _ in keys))
+        print(f"  {'income gap between groups':<34}"
+              f"{inc[hi].mean() - inc[lo].mean():>+16,.0f}")
+        for nm, _ in keys:
+            r = rows[nm]
+            print(f"    {nm}: income slope {r[5]:+.4f}/gal per $10k; "
+                  f"{r[6]} of {r[7]} high-Black ZIPs matched inside the caliper")
+        print()
 
-    print("\n-- 3. Within-decile detail (Walmart) --\n")
+    print("\n-- 3. Within-decile detail (Walmart, majority definition) --\n")
     print(f"  {'decile':<8}{'income from':>13}{'n hi':>7}{'n lo':>7}{'gap':>10}")
-    for d, e, nh, nl, g in rows[keys[0][0]][8]:
+    for d, e, nh, nl, g in detail:
         print(f"  {d:<8}{e:>13,.0f}{nh:>7}{nl:>7}"
               f"{(f'{g:+.3f}' if g is not None else 'too few'):>10}")
+
+
+def exposure(S, label):
+    """Where each group sits in the rural income distribution.
+
+    Equalising income answers "same income, same price?". This answers the
+    question that makes the first one matter: the groups are not at the same
+    income, and the high-price end of the distribution is where one of them is.
+    """
+    blk = np.array([r["blk"] for r in S])
+    wht = np.array([r["wht"] for r in S])
+    inc = np.array([r["inc"] for r in S])
+    y = np.array([r["p"] for r in S])
+    q = np.quantile(inc, np.linspace(0, 1, 11))
+    q[-1] += 1
+    dec = np.searchsorted(q, inc, side="right") - 1
+    print(f"\n-- 4. Income-decile exposure, {label} --\n")
+    print(f"  {'decile':<8}{'income from':>13}{'mean price':>12}"
+          f"{'% of maj-Black ZIPs':>22}{'% of maj-white ZIPs':>22}")
+    mb, mw = blk >= 50, wht >= 50
+    for i in range(10):
+        m = dec == i
+        print(f"  {i+1:<8}{q[i]:>13,.0f}{y[m].mean():>12.3f}"
+              f"{100*(m & mb).sum()/mb.sum():>21.1f}%"
+              f"{100*(m & mw).sum()/mw.sum():>21.1f}%")
+    b2 = dec <= 1
+    print(f"\n  bottom two deciles hold {100*(b2 & mb).sum()/mb.sum():.1f}% of "
+          f"majority-Black rural ZIPs and {100*(b2 & mw).sum()/mw.sum():.1f}% of "
+          f"majority-white ones,")
+    print(f"  and rural milk there averages {y[b2].mean():.3f} against "
+          f"{y[~b2].mean():.3f} in the other eight.")
 
 
 def main():
     report(rural(), [("Walmart", "p")],
            "RURAL, full Walmart panel")
+    exposure(rural(), "rural Walmart panel")
     report(rural(both=True), [("Walmart", "p"), ("Aldi", "aldi")],
            "RURAL, ZIPs carrying both retailers")
 

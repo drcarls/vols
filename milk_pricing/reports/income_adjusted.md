@@ -26,7 +26,74 @@ all three columns are on the price scale and directly comparable.
 The ordering survives — the gradient is still monotone in Black share after income
 is equalised — but the magnitude does not. A 33.6¢ spread becomes 7.2¢.
 
-## 2. Four ways of equalising income, ≥30% vs ≤10% Black
+## 2. Majority Black vs majority white, four ways of equalising income
+
+The definition the cover memo leads with. Full rural Walmart panel: 79
+majority-Black ZIPs against 1,892 majority-white ones, a $20,377 income gap.
+
+| method | Walmart (full panel) | Walmart (both-retailer) | Aldi |
+|---|---|---|---|
+| raw, no adjustment | **+0.321** | +0.223 | +0.000 |
+| 1. linear income adjustment | +0.160 | +0.025 | −0.069 |
+| 2. within income decile | **+0.060** | −0.018 | −0.032 |
+| 3. matched on income ±$2,000 | **+0.050** | −0.065 | −0.210 |
+| 4. linear income + state FE | −0.023 | −0.078 | −0.096 |
+
+Decile-adjusted and clustered on state: **+0.070 (t +0.42)**. Same shape as the
+30/10 definition and a slightly larger residual — 5–7¢ rather than 4¢ — but on
+either definition the adjusted gap is a few cents and nowhere near significant.
+All 79 majority-Black ZIPs matched inside the $2,000 caliper.
+
+**The limit of the majority definition.** Holding income equal requires
+majority-white ZIPs at the same income *and* majority-Black ZIPs at the same
+income, and above the fourth income decile the second condition barely holds:
+
+| decile | income from | n majority Black | n majority white |
+|---|---|---|---|
+| 1 | $22,221 | 46 | 134 |
+| 2 | $45,516 | 9 | 181 |
+| 3 | $50,627 | 6 | 186 |
+| 4 | $54,351 | 5 | 183 |
+| 5–6 | $58,204 | 1, 1 | 201, 208 |
+| 7 | $65,937 | 4 | 196 |
+| 8 | $71,300 | 5 | 201 |
+| 9–10 | $79,669 | 1, 1 | 203, 199 |
+
+Four deciles drop out for want of ZIPs on the Black side. The majority-definition
+decile estimate is really deciles 1–4 plus 7–8, weighted heavily toward decile 1.
+The 30/10 definition is the better-supported version of the same comparison, which
+is why it is the one to put in front of counsel; the majority numbers agree with
+it, which is the point of running both.
+
+## 3. Where the two groups actually sit
+
+This is the table that matters, and it is not an adjustment — it is the reason
+adjusting changes the answer so much.
+
+| decile | income from | mean rural price | % of majority-Black ZIPs | % of majority-white ZIPs |
+|---|---|---|---|---|
+| 1 | $22,221 | **4.000** | **58.2%** | 7.1% |
+| 2 | $45,516 | 3.866 | 11.4% | 9.6% |
+| 3 | $50,627 | 3.729 | 7.6% | 9.8% |
+| 4 | $54,351 | 3.740 | 6.3% | 9.7% |
+| 5 | $58,204 | 3.676 | 1.3% | 10.6% |
+| 6 | $61,780 | 3.464 | 1.3% | 11.0% |
+| 7 | $65,937 | 3.564 | 5.1% | 10.4% |
+| 8 | $71,300 | 3.497 | 6.3% | 10.6% |
+| 9 | $79,669 | 3.414 | 1.3% | 10.7% |
+| 10 | $93,452 | 3.392 | 1.3% | 10.5% |
+
+Majority-white rural ZIPs are spread almost uniformly across the income
+distribution — 7% to 11% in every decile, which is what "no relationship" looks
+like. Majority-Black rural ZIPs are not: **69.6% sit in the bottom two deciles,
+against 16.6% of majority-white ones.** Rural milk in those two deciles averages
+$3.933 against $3.559 in the other eight.
+
+That is the finding. Not a per-ZIP racial premium — an exposure difference. Black
+rural communities are four times as concentrated in the income deciles where rural
+milk is most expensive.
+
+## 4. ≥30% vs ≤10% Black, four ways of equalising income
 
 | method | Walmart (full panel) | Walmart (both-retailer) | Aldi |
 |---|---|---|---|
@@ -49,7 +116,7 @@ part of the income effect sitting in the race coefficient. Anyone replicating th
 with a plain OLS income control will get the larger, more favourable number for
 the wrong reason.
 
-## 3. Within-decile detail, Walmart full panel
+## 5. Within-decile detail, Walmart full panel
 
 | decile | income from | n ≥30% Black | n ≤10% Black | gap |
 |---|---|---|---|---|
@@ -71,7 +138,7 @@ two deciles — and those two are the positive ones (+0.153, +0.234). The pooled
 +0.043 is not being driven by a handful of thin cells; it is a small positive
 number in the cells that have data and noise elsewhere.
 
-## 4. Aldi does not follow Walmart here
+## 6. Aldi does not follow Walmart here
 
 Aldi's income slope is −0.038/gal per $10,000, less than half Walmart's −0.110 on
 the same ZIPs. Because income barely predicts Aldi's price, equalising income
@@ -97,12 +164,16 @@ Walmart.
 
 ## What to say
 
-> Rural ZIPs that are majority Black pay $3.93/gal at Walmart; rural ZIPs under
-> 10% Black pay $3.60. Set both to the same income and the prices are $3.70 and
-> $3.63 — a 7¢ difference that is not statistically distinguishable from zero.
-> Income, not race, is what predicts the rural Walmart price: 7.9¢/gal for every
-> $10,000 of median household income, and more steeply than that at the bottom of
-> the distribution.
+> Rural ZIPs that are majority Black pay $3.93/gal at Walmart; rural ZIPs that are
+> majority white pay $3.61. Set both to the same income and the gap falls to 5-7¢,
+> which is not statistically distinguishable from zero. Income, not race, is what
+> predicts the rural Walmart price: 7.9¢/gal for every $10,000 of median household
+> income, and more steeply than that at the bottom of the distribution.
+>
+> The disparity is in the exposure, not the per-ZIP price. 69.6% of majority-Black
+> rural ZIPs sit in the bottom two income deciles, against 16.6% of majority-white
+> ones, and rural milk in those two deciles averages $3.93 against $3.56
+> everywhere else.
 
 The disparate-impact argument that survives this is about income and rural
 geography, and about the fact that Black rural households are concentrated in the

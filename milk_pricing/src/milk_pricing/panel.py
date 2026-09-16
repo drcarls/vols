@@ -50,6 +50,7 @@ def load(path: str = DEFAULT_PATH, *, exclude: bool = True) -> list[dict]:
             "z3": r["zip"].zfill(5)[:3], "geo": r["geo"],
             "p": float(r["whole_milk"]),
             "blk": float(r["pct_black"]),
+            "wht": float(r["pct_white"]) if r["pct_white"] else 0.0,
             "hisp": float(r["pct_hisp"]) if r["pct_hisp"] else 0.0,
             "inc": float(r["median_income"]),
             "pop": float(r["population"]),
