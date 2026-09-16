@@ -67,10 +67,10 @@ def parse(html: str, expected_zip: str) -> dict:
     state = json.loads(urllib.parse.unquote(m.group(1)))
 
     items: dict[tuple[str, str], float] = {}
-    zone = shop = None
+    zones: set[str] = set()
+    shops: set[str] = set()
 
     def walk(o):
-        nonlocal zone, shop
         if isinstance(o, dict):
             name, size = o.get("name"), o.get("size")
             if isinstance(name, str) and isinstance(size, str) and "price" in o:
@@ -78,20 +78,29 @@ def parse(html: str, expected_zip: str) -> dict:
                 if p is not None:
                     items.setdefault((name, size), p)
             for k, v in o.items():
-                # the Apollo cache key carries the resolved zone and store
-                if zone is None and isinstance(k, str) and '"zoneId"' in k:
+                # Apollo cache keys carry the resolved store and zone. Collect both
+                # independently: some keys carry zoneId without shopId, and an earlier
+                # version that stopped at the first zoneId never captured the shop.
+                if isinstance(k, str) and '"' in k and "{" in k:
                     try:
                         meta = json.loads(k[k.index("{"):])
-                        zone, shop = meta.get("zoneId"), meta.get("shopId")
                     except Exception:
-                        pass
+                        meta = None
+                    if isinstance(meta, dict):
+                        if meta.get("zoneId"):
+                            zones.add(str(meta["zoneId"]))
+                        if meta.get("shopId"):
+                            shops.add(str(meta["shopId"]))
                 walk(v)
         elif isinstance(o, list):
             for v in o:
                 walk(v)
 
     walk(state)
-    return {"zip": expected_zip, "zone": zone, "shop": shop, "items": items}
+    return {"zip": expected_zip,
+            "zone": sorted(zones)[0] if zones else None,
+            "shop": sorted(shops)[0] if shops else None,
+            "zones": sorted(zones), "shops": sorted(shops), "items": items}
 
 
 WHOLE_GAL = (re.compile(r"whole milk", re.I), re.compile(r"^1 gal$", re.I))
