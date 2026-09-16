@@ -13,12 +13,23 @@ controls. Aldi prices are joined to the SAME ZIP-level demographics used for Wal
 (data/national_walmart_official.csv), so the two retailers are measured on one
 demographic basis and any difference is the retailer, not the covariates.
 
-CAVEAT THAT GOVERNS EVERYTHING BELOW. Aldi prices by ZONE: 1,886 ZIPs resolve to 570
-zones and only 64 distinct prices, with a median of 2 ZIPs per zone and one zone
-spanning 122. Walmart's pricing unit is at or below the county. So a ZIP-level
-regression on Aldi has far less independent variation than the same regression on
-Walmart, and its effective sample is the zone count, not the ZIP count. Zone-clustered
-errors are therefore the honest ones and are reported alongside.
+CORRECTION, 2026-09-16. An earlier version of this script and of the report it backs
+asserted that Aldi prices by ZONE and that every ZIP inside a zone pays an identical
+price, making a racial gradient impossible by construction. THAT IS FALSE. Tested
+against the collection itself, 172 of 530 zones (32%) carry more than one price, one
+zone spans $2.56, and 1,128 of 1,886 ZIPs sit in a multi-price zone. The live
+storefront confirms why: ZIPs 29201 and 29063 share zoneId 348 but resolve to shopId
+16596 and 408312 and to $2.85 and $5.85. The `zone` field is a service/delivery zone.
+The pricing unit is the SHOP, which the August collection did not record.
+
+The two chains in fact disperse almost identically -- a median of 21 distinct prices
+per state each, sd $0.597 for Aldi against $0.588 for Walmart. Zone-clustered standard
+errors have been removed from this script because they clustered on a unit that does
+not set price. State clustering is retained.
+
+This correction does not touch the matched-ZIP comparison in `matched()`, which never
+used the zone field. If anything it sharpens it: both chains can vary price store by
+store, and they still move in opposite directions on racial composition.
 """
 import csv
 import json
@@ -114,28 +125,26 @@ def main():
                   f"{p[hi].mean():>10.3f}{p[lo].mean():>11.3f}{p[hi].mean()-p[lo].mean():>+9.3f}")
 
     print("\n=== 2. Pooled regression, Aldi ===")
-    print(f"  {'specification':<40}{'coef':>12}{'t naive':>10}{'t state':>10}{'t zone':>10}")
+    print(f"  {'specification':<40}{'coef':>12}{'t naive':>10}{'t state':>10}")
     for lab, X in (("%Black alone", np.column_stack([blk])),
                    ("+ income + urbanicity", np.column_stack([blk, inc, urb])),
                    ("+ log population", np.column_stack([blk, inc, urb, pop]))):
         b, t0 = ols(p, X)
         _, t1 = ols(p, X, cluster=st)
-        _, t2 = ols(p, X, cluster=zone)
-        print(f"  {lab:<40}{b:>+12.5f}{t0:>+10.2f}{t1:>+10.2f}{t2:>+10.2f}")
+        print(f"  {lab:<40}{b:>+12.5f}{t0:>+10.2f}{t1:>+10.2f}")
 
     m = (iq == 0) & (urb == 0)
     print(f"\n=== 3. The segment where Walmart's gradient lives: low-income rural, n={m.sum()} ===")
     if m.sum() >= 30:
         base = np.column_stack([blk[m], inc[m], pop[m]])
-        print(f"  {'geographic control':<28}{'coef':>12}{'t naive':>10}{'t state':>10}{'t zone':>10}")
+        print(f"  {'geographic control':<28}{'coef':>12}{'t naive':>10}{'t state':>10}")
         for lab, X in (("none", base),
                        ("state fixed effects", np.column_stack([base, D(st[m])])),
                        ("ZIP3 fixed effects", np.column_stack([base, D(z3[m])])),
                        ("county fixed effects", np.column_stack([base, D(cty[m])]))):
             b, t0 = ols(p[m], X)
             _, t1 = ols(p[m], X, cluster=st[m])
-            _, t2 = ols(p[m], X, cluster=zone[m])
-            print(f"  {lab:<28}{b:>+12.5f}{t0:>+10.2f}{t1:>+10.2f}{t2:>+10.2f}")
+            print(f"  {lab:<28}{b:>+12.5f}{t0:>+10.2f}{t1:>+10.2f}")
         hi, lo = m & (blk >= 30), m & (blk <= 10)
         print(f"\n  high-Black n={hi.sum()} mean ${p[hi].mean():.3f} | "
               f"low-Black n={lo.sum()} mean ${p[lo].mean():.3f} | "
@@ -145,21 +154,20 @@ def main():
         print(f"  counties: high {len(set(cty[hi]))}, low {len(set(cty[lo]))}, "
               f"shared {len(set(cty[hi]) & set(cty[lo]))}")
 
-    print("\n=== 4. Do Aldi's own zones sort on race? ===")
-    print("  If Aldi assigns Blacker ZIPs to higher-priced zones, that is a zone-assignment")
-    print("  question; if not, the zone structure is racially flat by construction.")
-    zp = {}
+    print("\n=== 4. Is the zone field the pricing unit? (it is not) ===")
+    from collections import defaultdict
+    bz = defaultdict(set)
     for r in rows:
-        zp.setdefault(r["zone"], []).append(r)
-    big = {z: v for z, v in zp.items() if len(v) >= 3}
-    zb = np.array([np.mean([r["blk"] for r in v]) for v in big.values()])
-    zpr = np.array([v[0]["p"] for v in big.values()])
-    zn = np.array([len(v) for v in big.values()])
-    b, t = ols(zpr, np.column_stack([zb]))
-    print(f"  {len(big)} zones with >=3 ZIPs: zone price on zone mean %Black "
-          f"{b:+.5f}/pt (t {t:+.2f})")
-    print(f"  within-zone %Black spread: mean {np.mean([np.std([r['blk'] for r in v]) for v in big.values()]):.1f} pts "
-          f"-- Blacker and whiter ZIPs share zones, and inside a zone the price is identical")
+        bz[r["zone"]].add(round(r["p"], 2))
+    multi = {z: v for z, v in bz.items() if len(v) > 1}
+    print(f"  zones {len(bz)}, carrying more than one price {len(multi)} "
+          f"({100*len(multi)/len(bz):.0f}%), largest within-zone spread "
+          f"${max(max(v)-min(v) for v in bz.values()):.2f}")
+    print("  The zone field is a service zone, not a price zone. The pricing unit is the")
+    print("  shop, which the August collection did not record. Aldi and Walmart disperse")
+    print("  almost identically: a median of 21 distinct prices per state each.")
+    print("  So the two chains have the SAME capacity to vary price store by store --")
+    print("  which is what makes their opposite movement on race worth reporting.")
 
 
 def matched():

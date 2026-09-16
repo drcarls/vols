@@ -77,36 +77,66 @@ fixed effects is **−0.00781 (t −2.08 naive, −3.14 state-clustered, −2.87
 zone-clustered)** — significantly *negative*. Wherever Aldi moves, it moves the other
 way.
 
-## 4. The mechanism, which is the durable finding here
+## 4. CORRECTED — the mechanism claim was wrong
 
-**Aldi prices by zone, and its zones are racially flat by construction.** 1,333 ZIPs
-resolve to 522 zones carrying only 63 distinct prices. Among the 170 zones with three
-or more ZIPs:
+**An earlier version of this report claimed that Aldi prices by zone, that every ZIP
+inside a zone pays an identical price, and that a racial gradient is therefore close to
+arithmetically impossible at Aldi. That is false, and it was published.**
 
-- Zone price regressed on zone mean %Black: **+0.00394/pt, t +1.16** — no sorting.
-- **Mean within-zone spread in %Black: 7.0 points.** Blacker and whiter ZIPs sit inside
-  the same zone, and inside a zone the price is *identical*.
+Tested directly against the collection:
 
-So a racial gradient is close to arithmetically impossible at Aldi: to produce one, the
-chain would have to sort ZIPs into zones on race, and it does not. Walmart's pricing
-unit is at or below the county (`reports/walmart_pricing_geography.md`), which makes a
-gradient possible — and fluid milk is the one product Walmart varies store by store
-while pricing adjacent dairy nationally (`reports/walmart_basket_national.md`).
+| | |
+|---|---|
+| Zones in the August data | 530 |
+| **Zones carrying more than one price** | **172 (32%)** |
+| ZIPs sitting in a multi-price zone | **1,128 of 1,886** |
+| Largest within-zone spread | **$2.56** |
 
-**That is the connective finding: architecture determines whether a disparity can
-occur, and the two chains differ in architecture.** It does not establish that one
-occurred.
+The live storefront shows why. ZIPs **29201** and **29063** share **zoneId 348** but
+resolve to **shopId 16596** and **shopId 408312**, and to **$2.85** and **$5.85**. Both
+are genuine Aldi (retailer slug `aldi`, store configuration `aldi-us-sfp`). **The zone
+field is a service and delivery zone. The pricing unit is the shop**, which the August
+collection did not capture.
+
+The zone-price-on-%Black statistic previously reported (+0.0039/pt, t +1.16) took one
+price per zone and is therefore mis-specified. It is withdrawn.
+
+### What is true instead — and it is a better comparison
+
+The two chains disperse **almost identically**:
+
+| | distinct prices nationally | median per state | sd |
+|---|---|---|---|
+| Aldi (1,333 ZIPs, 12 states) | 63 | **21** | **$0.597** |
+| Walmart (3,768 ZIPs, 43 states) | 177 | **21** | **$0.588** |
+
+Aldi varies its milk price store by store just as freely as Walmart does. So the
+retailer difference in §2 cannot be explained by one chain being structurally unable to
+price on geography — **both can, and they still move in opposite directions on racial
+composition.** That is a stronger comparison than the architectural story it replaces,
+because it removes a competing explanation rather than relying on one.
+
+**What is unaffected:** the matched-ZIP comparison in §2 never used the zone field. The
++$0.244 difference, and the regressions behind it, stand exactly as reported. Only
+the zone-clustered standard errors have been removed from `analysis/aldi_comparison.py`,
+since they clustered on a unit that does not set price; state clustering is retained and
+is what the significance statements rest on.
+
+**Also unaffected:** the Walmart milk carve-out (`reports/walmart_basket_national.md`)
+is a comparison *across products within Walmart* — milk taking 17–25 prices while
+mozzarella and canned green beans take one. Nothing here bears on it.
 
 ## 5. What this does and does not support
 
 **Supports:** the rural gradient is not simply "the rural South." The same ZIP codes,
 same demographics, same design, produce a positive gap at Walmart and a negative one at
-Aldi. Whatever drives it is not a location factor common to both retailers.
+Aldi — and, per §4, not because Aldi is structurally unable to do otherwise. Whatever
+drives it is not a location factor common to both retailers.
 
 **Does not support:** a statistically demonstrated difference. The difference-in-
 differences is +24¢ with t = +0.96 clustered. Nor does it support any claim about
-conduct, intent or policy — an architecture that *permits* variation is not evidence
-that race drove it.
+conduct, intent or policy. And it no longer supports any argument from pricing
+architecture — see §4.
 
 **The assumption the design rests on,** which should be stated whenever it is used:
 absent any racial gradient, the Walmart-minus-Aldi spread would be constant across
