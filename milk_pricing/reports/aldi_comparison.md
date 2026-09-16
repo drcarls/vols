@@ -1,4 +1,11 @@
-> **SUPERSEDED IN PART, 2026-09-16 — read `reports/aldi_2026_09.md` first.** A fresh,
+> **WITHDRAWN, 2026-09-16 — read `reports/aldi_2026_09.md` instead.** The comparison
+> below is an artifact of race-correlated missing data. The August collection failed to
+> price 149 of its 1,886 ZIPs; those failures averaged 5.0% Black against 16.3% for the
+> ZIPs it did price, and ran at 20% in Texas and 25% in California. Holding September
+> prices constant and changing only the sample, the retailer difference falls from +17.5¢
+> to +3.2¢. The document is kept for the record of how the error was found.
+>
+> *(Earlier note, itself now superseded:)* A fresh,
 > shop-identified Aldi collection reproduces the direction of the comparison below on
 > matched ZIPs (Aldi −$0.026 against Walmart +$0.133) but attenuates it from +22¢ to
 > +16¢, and on the fuller September sample it collapses to +3¢ because fourteen
