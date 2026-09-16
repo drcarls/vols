@@ -1,3 +1,11 @@
+> **SUPERSEDED IN PART, 2026-09-16 — read `reports/aldi_2026_09.md` first.** A fresh,
+> shop-identified Aldi collection reproduces the direction of the comparison below on
+> matched ZIPs (Aldi −$0.026 against Walmart +$0.133) but attenuates it from +22¢ to
+> +16¢, and on the fuller September sample it collapses to +3¢ because fourteen
+> predominantly Texan low-Black ZIPs enter the comparison group. **The claim that this
+> is "the strongest evidence in this analysis" is withdrawn.** The §4 correction below
+> is now proven: all 641 shops carry exactly one price, zone 22% multi-price.
+
 # Aldi as a control: the same design, a different chain, the opposite sign
 
 **In the exact segment where Walmart's racial gradient appears, Aldi's runs the other
