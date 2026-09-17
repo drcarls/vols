@@ -78,6 +78,70 @@ def decile_adjust(y, inc, q=10):
     return out + y.mean()
 
 
+def counterfactual_gradient():
+    """Walmart at Aldi's slope, shown decile by decile rather than in aggregate.
+
+    Two versions, because the aggregate number hides a choice about where the
+    flattened line is anchored:
+
+      pivot at mean income - the line rotates about the average-income ZIP, so the
+        unweighted average price is unchanged and the poorest deciles fall while
+        the richest rise. This is the revenue-neutral reading and the one behind
+        the 96% figure in section 3.
+      anchor at the top decile - the line is flattened downward from the richest
+        decile's fitted price, so no ZIP pays more than it does now. This is the
+        "remedy" reading: what it would cost Walmart to take the gradient out.
+
+    Neither is a claim about what Walmart would do. They bracket the arithmetic.
+    """
+    B = rural(both=True)
+    inc = np.array([r["inc"] for r in B])
+    yw = np.array([r["p"] for r in B])
+    ya = np.array([r["aldi"] for r in B])
+    wb, ww = weights(B)
+    x = inc / 10000.0
+    sw, iw = np.polyfit(x, yw, 1)
+    sa = np.polyfit(x, ya, 1)[0]
+
+    pivot = yw + (sa - sw) * (x - x.mean())
+    top = np.quantile(x, 0.95)
+    anchor = yw + (sa - sw) * (x - top)
+
+    e = np.quantile(inc, np.linspace(0, 1, 11))
+    e[-1] += 1
+    d = np.searchsorted(e, inc, side="right") - 1
+    print("\n=== 5. Walmart at Aldi's slope, decile by decile ===\n")
+    print(f"  slope {sw:+.4f} -> {sa:+.4f} per $10k, on {len(B)} shared rural ZIPs\n")
+    print(f"  {'decile':<8}{'income from':>13}{'Walmart':>10}{'Aldi':>9}"
+          f"{'pivot':>9}{'vs now':>9}{'anchored':>11}{'vs now':>9}"
+          f"{'% Black res':>13}")
+    for i in range(10):
+        m = d == i
+        print(f"  {i+1:<8}{e[i]:>13,.0f}{yw[m].mean():>10.3f}{ya[m].mean():>9.3f}"
+              f"{pivot[m].mean():>9.3f}{pivot[m].mean()-yw[m].mean():>+9.3f}"
+              f"{anchor[m].mean():>11.3f}{anchor[m].mean()-yw[m].mean():>+9.3f}"
+              f"{100*wb[m].sum()/wb.sum():>12.1f}%")
+    print(f"\n  {'':<22}{'Black':>10}{'white':>10}{'gap':>10}{'avg price':>12}")
+    for lab, v in (("as posted", yw), ("pivot at mean", pivot),
+                   ("anchored at top", anchor)):
+        print(f"  {lab:<22}{pw(v, wb):>10.3f}{pw(v, ww):>10.3f}"
+              f"{pw(v, wb)-pw(v, ww):>+10.3f}{v.mean():>12.3f}")
+    g0 = pw(yw, wb) - pw(yw, ww)
+    for lab, v in (("pivot at mean", pivot), ("anchored at top", anchor)):
+        g = pw(v, wb) - pw(v, ww)
+        d_blk = pw(v, wb) - pw(yw, wb)
+        print(f"\n  {lab}: incidence {g0*100:.1f}c -> {g*100:.1f}c "
+              f"({100*(g0-g)/g0:.0f}% removed); the average Black rural resident")
+        d_wht = pw(v, ww) - pw(yw, ww)
+        print(f"    pays {d_blk*100:+.1f}c/gal, {d_blk*GAL_PERSON_YR:+.2f}/yr, "
+              f"and Walmart's average rural price moves "
+              f"{(v.mean()-yw.mean())*100:+.1f}c.")
+        print(f"    White rural residents get {d_wht*100:+.1f}c of that, so only "
+              f"{(d_blk-d_wht)*100:+.1f}c is disparity-specific")
+        print(f"    ({(d_blk-d_wht)*GAL_PERSON_YR:+.2f}/yr); the rest is a general "
+              f"price cut that is not a remedy for anything.")
+
+
 def main():
     S = rural()
     inc = np.array([r["inc"] for r in S])
@@ -143,6 +207,7 @@ def main():
     print(f"\n  {GAL_PERSON_YR:.0f} gal/person/yr (USDA ERS per-capita fluid milk),")
     print(f"  {n_blk/1e6:.2f}M Black residents in the rural panel. Milk alone; the")
     print("  same gradient runs through the rest of the basket, untested here.")
+    counterfactual_gradient()
 
 
 if __name__ == "__main__":

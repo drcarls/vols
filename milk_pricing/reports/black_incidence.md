@@ -90,7 +90,67 @@ It is also the most useful exhibit for a causation argument, because the
 counterfactual is not hypothetical: a competitor operating the same rural ZIPs
 already prices that way.
 
-## 4. What it costs, on milk
+## 4. Walmart at Aldi's slope, decile by decile
+
+Section 3 gives the counterfactual in aggregate. Here it is across the gradient.
+The slope moves from −0.1095 to −0.0383 per $10,000, on the 1,003 shared rural
+ZIPs. Two anchorings, because the aggregate number hides a choice about where the
+flattened line is pinned:
+
+- **pivot at mean income** — the line rotates about the average-income ZIP, so
+  Walmart's average rural price is unchanged and the poorest deciles fall while
+  the richest rise. Revenue-neutral. This is what produces the 96% figure.
+- **anchored at the top** — the line is flattened downward from the richest
+  decile, so no ZIP pays more than it does now. This is the remedy reading.
+
+| decile | income from | Walmart | Aldi | pivot | vs now | anchored | vs now | % of Black rural res. |
+|---|---|---|---|---|---|---|---|---|
+| 1 | $23,917 | 4.125 | 3.020 | 3.944 | **−0.181** | 3.680 | **−0.445** | 15.9% |
+| 2 | $42,885 | 4.102 | 3.155 | 3.977 | −0.125 | 3.714 | −0.388 | 14.2% |
+| 3 | $48,013 | 3.905 | 3.036 | 3.810 | −0.094 | 3.547 | −0.358 | 9.0% |
+| 4 | $51,626 | 3.835 | 3.116 | 3.763 | −0.071 | 3.500 | −0.335 | 8.1% |
+| 5 | $54,955 | 3.786 | 3.101 | 3.742 | −0.044 | 3.478 | −0.307 | 8.4% |
+| 6 | $58,865 | 3.715 | 3.071 | 3.698 | −0.017 | 3.434 | −0.281 | 9.1% |
+| 7 | $63,306 | 3.556 | 3.010 | 3.575 | +0.019 | 3.311 | −0.245 | 8.6% |
+| 8 | $68,770 | 3.496 | 3.123 | 3.562 | +0.066 | 3.298 | −0.198 | 9.7% |
+| 9 | $76,990 | 3.535 | 2.909 | 3.674 | +0.138 | 3.410 | −0.125 | 9.6% |
+| 10 | $89,434 | 3.375 | 2.826 | 3.683 | **+0.308** | 3.419 | +0.044 | 7.4% |
+
+| | Black | white | gap | Walmart avg |
+|---|---|---|---|---|
+| as posted | 3.659 | 3.596 | +0.063 | 3.743 |
+| pivot at mean | 3.636 | 3.633 | **+0.003** | 3.743 |
+| anchored at top | 3.372 | 3.369 | **+0.003** | 3.479 |
+
+### The number that does not move
+
+| | Black saves | white saves | disparity-specific |
+|---|---|---|---|
+| pivot at mean | −2.3¢ | +3.7¢ | **−6.1¢/gal, −$1.03/yr** |
+| anchored at top | −28.7¢ | −22.6¢ | **−6.1¢/gal, −$1.03/yr** |
+
+Both anchorings remove 96% of the incidence, but they deliver very different
+headline savings to Black residents — 40¢ a year against $4.88 — and **the
+difference between them is not a remedy for anything**. The anchored version is a
+26.4¢ across-the-board price cut that white rural residents receive too. Strip
+that out and the disparity-specific value is identical under both: **6.1¢/gal,
+$1.03/person/year.**
+
+That invariance is not a coincidence. A level shift cancels out of a
+Black-minus-white difference — the same property that made the USDSS cost surface
+comparable to the regulatory surface despite having no meaningful zero
+(`reports/usdss.md`). Only the *slope* affects the gap. Anyone proposing a remedy
+that lowers prices generally will appear to deliver a large benefit while removing
+none of the disparity, and the arithmetic here separates the two cleanly.
+
+Note also what the pivot column shows about decile 1: flattening the gradient is
+worth **18.1¢/gal** to the poorest rural decile, where 15.9% of Black rural
+residents live — a much larger per-ZIP effect than the 6.1¢ average. The average
+is small because most Black rural residents are *not* in decile 1. That is the
+same person-versus-place distinction as in section 1, and it cuts both ways: the
+communities most exposed are hit much harder than the average suggests.
+
+## 5. What it costs, on milk
 
 | | per person/yr | aggregate |
 |---|---|---|
@@ -109,7 +169,7 @@ the open question is whether the same gradient runs through the rest of the
 basket. If it does, the per-household number is one or two orders of magnitude
 larger. If it does not, milk is idiosyncratic and this is not a case.
 
-## What to do next
+## 6. What to do next
 
 The basket data on hand (`data/walmart_basket_national.csv`, 248 rows) is far too
 small to test this. The single highest-value collection now is a **multi-item
