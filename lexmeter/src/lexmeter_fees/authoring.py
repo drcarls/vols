@@ -55,6 +55,33 @@ class Verification:
         return not self.structural_problems and all(s.ok for s in self.steps)
 
     @property
+    def headline_inconsistency(self) -> str | None:
+        """Did the headline reading jump between steps?
+
+        Reconciliation cannot tell a genuine all-in display from a headline
+        selector that grabbed the total -- the arithmetic is identical. This can:
+        a grabbed total reads differently at steps where no total is shown, while
+        a real headline holds steady across the flow.
+
+        A genuine change is also worth surfacing. A headline that moves while the
+        buyer walks the funnel is a worse practice than a late fee, not a bug.
+        """
+        readings = {
+            s.step.value: s.headline_text
+            for s in self.steps
+            if s.error is None and s.headline_text
+        }
+        distinct = set(readings.values())
+        if len(distinct) <= 1:
+            return None
+        return (
+            "headline differs across steps ("
+            + ", ".join(f"{k}={v!r}" for k, v in readings.items())
+            + ") -- either the selector is matching a total on some steps, or the "
+            "displayed price genuinely changes through the flow"
+        )
+
+    @property
     def may_be_marked_verified(self) -> bool:
         """Verified requires at least one step where the arithmetic actually closed.
 
@@ -62,14 +89,18 @@ class Verification:
         on any page means no check ran. Marking that verified is how an unverified
         spec reaches a live sweep.
         """
-        return self.ok and any(
-            s.reconciliation.verdict is Verdict.OK for s in self.steps
+        return (
+            self.ok
+            and self.headline_inconsistency is None
+            and any(s.reconciliation.verdict is Verdict.OK for s in self.steps)
         )
 
     def summary(self) -> str:
         lines = [f"{self.target_id}:"]
         for problem in self.structural_problems:
             lines.append(f"  STRUCTURE  {problem}")
+        if self.headline_inconsistency:
+            lines.append(f"  HEADLINE   {self.headline_inconsistency}")
         for step in self.steps:
             if step.error:
                 lines.append(f"  ERROR      {step.step.value}: {step.error}")

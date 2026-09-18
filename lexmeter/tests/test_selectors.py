@@ -40,10 +40,33 @@ def test_double_counting_is_detected():
     assert "double-counted" in result.detail
 
 
-def test_headline_selector_grabbing_the_total_is_detected():
-    # A classic authoring error: the "headline" selector matches the total block.
-    result = reconcile(12051, [1840, 490, 821], 12051)
-    assert result.verdict is Verdict.OVER_COUNTED
+def test_all_in_display_reconciles_as_inclusive():
+    # Eventbrite, 2026-09-18: headline $215.26 "incl. $15.26 Fee", total $215.26.
+    # The fees are already inside the headline, so adding them again would report
+    # a correct spec as double-counting.
+    from lexmeter_fees.selectors import FeeTreatment
+
+    result = reconcile(21526, [1526], 21526)
+    assert result.verdict is Verdict.OK
+    assert result.fee_treatment is FeeTreatment.INCLUSIVE
+
+
+def test_arithmetic_cannot_distinguish_all_in_from_a_grabbed_total():
+    """An honest limit, recorded rather than papered over.
+
+    A headline selector that mistakenly matched the total produces exactly the
+    arithmetic of a genuine all-in display: headline == total, with fee lines
+    shown. No sum can separate them, so reconciliation reports both as INCLUSIVE.
+
+    The real mis-grab is caught by cross-step consistency instead -- a spec that
+    grabs the total will read a different headline at steps where no total is
+    displayed. See `Verification.headline_inconsistency`.
+    """
+    from lexmeter_fees.selectors import FeeTreatment
+
+    genuine_all_in = reconcile(21526, [1526], 21526)
+    grabbed_total = reconcile(12051, [1840, 490, 821], 12051)
+    assert genuine_all_in.fee_treatment is grabbed_total.fee_treatment is FeeTreatment.INCLUSIVE
 
 
 def test_quantity_multiplies_the_headline():

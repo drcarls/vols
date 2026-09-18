@@ -168,6 +168,24 @@ class SelectorSpec:
 # Reconciliation
 # ---------------------------------------------------------------------------
 
+class FeeTreatment(enum.Enum):
+    """How the displayed fee lines relate to the displayed headline.
+
+    Not a workaround for two possible arithmetics -- it *is* the compliance
+    question. A headline that already contains the mandatory fees is an all-in
+    display; one the fees are added to is not. Resolving which closes the books
+    therefore answers the thing the collector exists to measure.
+    """
+
+    #: total = headline x quantity + fees. Fees sit on top.
+    EXCLUSIVE = "exclusive"
+    #: total = headline x quantity. Fees are already inside the headline.
+    INCLUSIVE = "inclusive"
+    #: Both close, because the fees sum to nothing. Nothing to distinguish.
+    INDETERMINATE = "indeterminate"
+    UNRESOLVED = "unresolved"
+
+
 class Verdict(enum.Enum):
     OK = "ok"
     #: Total exceeds what we accounted for: a fee line was missed.
@@ -185,6 +203,8 @@ class Reconciliation:
     total_cents: int | None
     discrepancy_cents: int | None
     detail: str = ""
+    #: Which arithmetic closed, and so whether the headline was all-in.
+    fee_treatment: FeeTreatment = FeeTreatment.UNRESOLVED
 
     @property
     def ok(self) -> bool:
@@ -224,11 +244,41 @@ def reconcile(
     if quantity < 1:
         raise ValueError("quantity must be at least 1")
 
-    expected = headline_cents * quantity + sum(fee_amounts_cents)
-    discrepancy = total_cents - expected
+    base = headline_cents * quantity
+    fees = sum(fee_amounts_cents)
 
-    if abs(discrepancy) <= tolerance_cents:
-        return Reconciliation(Verdict.OK, expected, total_cents, discrepancy)
+    # Two readings are possible and only one is right for a given page. Testing
+    # both is not hedging: the one that closes says whether the headline already
+    # contained the mandatory fees, which is the compliance question itself.
+    exclusive = base + fees
+    inclusive = base
+    exclusive_gap = total_cents - exclusive
+    inclusive_gap = total_cents - inclusive
+
+    exclusive_ok = abs(exclusive_gap) <= tolerance_cents
+    inclusive_ok = abs(inclusive_gap) <= tolerance_cents
+
+    if exclusive_ok and inclusive_ok:
+        # Only happens when the fees sum to nothing, so there is nothing to tell
+        # apart and no reason to prefer either reading.
+        return Reconciliation(
+            Verdict.OK, exclusive, total_cents, exclusive_gap,
+            fee_treatment=FeeTreatment.INDETERMINATE,
+        )
+    if exclusive_ok:
+        return Reconciliation(
+            Verdict.OK, exclusive, total_cents, exclusive_gap,
+            fee_treatment=FeeTreatment.EXCLUSIVE,
+        )
+    if inclusive_ok:
+        return Reconciliation(
+            Verdict.OK, inclusive, total_cents, inclusive_gap,
+            detail="headline already includes the displayed fees (all-in display)",
+            fee_treatment=FeeTreatment.INCLUSIVE,
+        )
+
+    expected = exclusive
+    discrepancy = exclusive_gap
 
     if discrepancy > 0:
         detail = (
@@ -236,14 +286,18 @@ def reconcile(
             f"line(s) by {discrepancy} cents -- a fee is displayed that the spec "
             "does not capture, which is the failure mode that reads as compliance"
         )
-        return Reconciliation(Verdict.UNDER_COUNTED, expected, total_cents, discrepancy, detail)
+        return Reconciliation(
+            Verdict.UNDER_COUNTED, expected, total_cents, discrepancy, detail
+        )
 
     detail = (
-        f"accounted amount exceeds the displayed total by {-discrepancy} cents -- "
-        "a fee is double-counted, or the headline selector is matching a total "
-        "rather than a headline"
+        f"accounted amount exceeds the displayed total by {-discrepancy} cents, and "
+        "an all-in reading does not close either -- a fee is double-counted, or the "
+        "headline selector is matching a total rather than a headline"
     )
-    return Reconciliation(Verdict.OVER_COUNTED, expected, total_cents, discrepancy, detail)
+    return Reconciliation(
+        Verdict.OVER_COUNTED, expected, total_cents, discrepancy, detail
+    )
 
 
 # ---------------------------------------------------------------------------
