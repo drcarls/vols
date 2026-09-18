@@ -61,13 +61,31 @@ targets:
     domain: etix.com
     role: primary
     rationale: >-
-      Independent theatres, fairs and arenas. Large venue network, minimal
-      white-label customisation, so the fee display is likely uniform across
-      deployments -- the condition under which a vendor-level pattern holds.
+      Independent theatres, fairs and arenas. Large venue network on shared
+      checkout paths, so one selector spec should cover many venues.
     deployments: [independent_theatre, county_fair, mid_size_arena]
-    fee_display: unknown
+    fee_display: unknown          # unchanged: no evidence-grade capture exists
     robots: unaudited
-    expected_yield: high
+    # Revised DOWN from high. A hand-walked flow at Zanies Chicago on 2026-09-18
+    # showed an all-in price with a zero gap and an explicit disclosure. That is
+    # one venue, one event, one day, from a screenshot -- not a capture -- so it
+    # cannot move fee_display. It is enough to move an expectation.
+    expected_yield: medium
+    scouting:
+      note: scouting/2026-09-18-etix-zanies-chicago.md
+      observed_all_in_banner: true
+      banner_wording_implies_per_venue_setting: true
+      # If all-in is a per-venue toggle, the platform-level claim weakens for
+      # Etix and is replaced by a survey: what share of venues have it off?
+      open_question: what_proportion_of_etix_venues_disable_all_in_pricing
+    flow_paths:
+      listing: /ticket/e/{event_id}/{slug}
+      detail: /ticket/p/{performance_id}/{slug}
+      cart: /ticket/mvc/legacyOnlineSale/performance/sale/viewShoppingCart
+      checkout: /ticket/mvc/legacyOnlineSale/performance/sale/displayPrice
+    # "legacyOnlineSale" names a legacy checkout, so a newer one exists and some
+    # venues will be on it. Expect two spec variants; record which each capture used.
+    expect_multiple_checkout_variants: true
 
   - id: showclix
     company: ShowClix
