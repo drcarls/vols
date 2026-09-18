@@ -17,7 +17,7 @@ from __future__ import annotations
 import enum
 from dataclasses import dataclass
 
-from .model import FlowObservation, Mandatory, Step, StepKind
+from .model import FlowObservation, Mandatory, PriceBasis, Step, StepKind
 
 #: Seller types SB 1524's conditional exemption can attach to. The flag is
 #: meaningless outside them -- a ticketing flow cannot fail a restaurant
@@ -44,6 +44,11 @@ class Metrics:
     """Per-observation derived measures."""
 
     headline_cents: int | None
+    #: What kind of number the headline was. A gap computed against a floor is an
+    #: artefact of the comparison, so the gap is withheld unless this is EXACT.
+    headline_basis: PriceBasis
+    #: Units the total covers. The gap is total minus headline x quantity.
+    quantity: int
     total_cents: int | None
     mandatory_fee_cents: int
     gap_abs_cents: int | None
@@ -55,19 +60,33 @@ class Metrics:
     fee_categories: tuple[str, ...]
 
 
-def _first_headline(obs: FlowObservation) -> tuple[int | None, int | None]:
-    """Headline price as first displayed, with the step index it came from."""
+def _first_headline(obs: FlowObservation) -> tuple[int | None, PriceBasis, int | None]:
+    """Headline as first displayed, preferring the first price of the actual item.
+
+    Resale marketplaces open with a floor across all listings ("From $307+"). That
+    is not the price of anything a buyer can select, and comparing it to a checkout
+    total invents a gap: on a real TickPick flow it produced 556% against a site
+    that charges no fees at all. So an exact price is taken where the flow provides
+    one, and a floor is only reported when nothing better exists -- carrying its
+    basis so the gap can be withheld rather than published.
+    """
+    fallback: tuple[int | None, PriceBasis, int | None] = (None, PriceBasis.UNKNOWN, None)
     for step in obs.steps:
-        if step.headline_price_cents is not None:
-            return step.headline_price_cents, step.index
-    return None, None
+        if step.headline_price_cents is None:
+            continue
+        if step.headline_basis is PriceBasis.EXACT:
+            return step.headline_price_cents, PriceBasis.EXACT, step.index
+        if fallback[0] is None:
+            fallback = (step.headline_price_cents, step.headline_basis, step.index)
+    return fallback
 
 
-def _final_total(obs: FlowObservation) -> int | None:
+def _final_total(obs: FlowObservation) -> tuple[int | None, int]:
+    """Last displayed total, with the quantity in effect where it was displayed."""
     for step in reversed(obs.steps):
         if step.displayed_total_cents is not None:
-            return step.displayed_total_cents
-    return None
+            return step.displayed_total_cents, max(1, step.quantity)
+    return None, 1
 
 
 def _mandatory_lines(obs: FlowObservation):
@@ -83,22 +102,29 @@ def _mandatory_lines(obs: FlowObservation):
 
 
 def compute_metrics(obs: FlowObservation) -> Metrics:
-    headline, _ = _first_headline(obs)
-    total = _final_total(obs)
+    headline, basis, _ = _first_headline(obs)
+    total, quantity = _final_total(obs)
     lines = _mandatory_lines(obs)
     mandatory_cents = sum(line.amount_cents for line in lines)
 
     gap_abs: int | None = None
     gap_pct: float | None = None
-    if headline is not None and total is not None:
-        gap_abs = total - headline
-        if headline > 0:
-            gap_pct = round(100.0 * gap_abs / headline, 4)
+    # Two conditions, both learned from a real capture that got them wrong:
+    # the headline must be this item's price, and it must be scaled to the units
+    # the total covers. $1,008 each against a $2,016 two-ticket total is a zero
+    # gap, not a 100% one.
+    if headline is not None and total is not None and basis is PriceBasis.EXACT:
+        expected_headline = headline * quantity
+        gap_abs = total - expected_headline
+        if expected_headline > 0:
+            gap_pct = round(100.0 * gap_abs / expected_headline, 4)
 
     latest = max((line.first_seen_step_index for line in lines), default=None)
 
     return Metrics(
         headline_cents=headline,
+        headline_basis=basis,
+        quantity=quantity,
         total_cents=total,
         mandatory_fee_cents=mandatory_cents,
         gap_abs_cents=gap_abs,
@@ -121,7 +147,10 @@ def _all_in_before_final(obs: FlowObservation, mandatory_cents: int) -> bool:
     for step in obs.steps[:-1]:
         if step.displayed_total_cents is None or step.headline_price_cents is None:
             continue
-        if step.displayed_total_cents >= step.headline_price_cents + mandatory_cents:
+        if step.headline_basis is not PriceBasis.EXACT:
+            continue
+        unit_total = step.headline_price_cents * max(1, step.quantity)
+        if step.displayed_total_cents >= unit_total + mandatory_cents:
             return True
     return False
 

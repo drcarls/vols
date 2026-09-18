@@ -45,6 +45,25 @@ class Mandatory(enum.Enum):
     UNKNOWN = "unknown"
 
 
+class PriceBasis(enum.Enum):
+    """What kind of number a displayed price actually is.
+
+    Resale marketplaces lead with a floor across all listings ("From $307+"),
+    which is not the price of any item a buyer can select. Treating it as the
+    headline and comparing it to a checkout total manufactures an enormous gap out
+    of nothing -- the observed failure was a 556% gap on a site that charges no
+    fees at all. A floor is therefore recorded and kept out of the item-level gap.
+    """
+
+    #: The price of the specific item being bought.
+    EXACT = "exact"
+    #: A "from"/"starting at" floor across many items.
+    FLOOR = "floor"
+    #: A span ("$300-$900").
+    RANGE = "range"
+    UNKNOWN = "unknown"
+
+
 class FeeCategory(enum.Enum):
     """Canonical fee taxonomy. ``OTHER`` is a work queue, not a resting place."""
 
@@ -118,8 +137,14 @@ class Step:
     observed_at: datetime  # UTC
     #: Price shown most prominently at this step, as a buyer would read it.
     headline_price_cents: int | None = None
+    #: Whether that price is this item's price or a floor across many.
+    headline_basis: PriceBasis = PriceBasis.EXACT
     #: Total the page itself displays, where it displays one.
     displayed_total_cents: int | None = None
+    #: Units in the order at this step. A per-unit headline against a multi-unit
+    #: total is the other half of the same false-positive: $1,008 each against a
+    #: $2,016 total is a zero gap, not a 100% one.
+    quantity: int = 1
     fee_lines: tuple[FeeLine, ...] = ()
     artifacts: tuple[Artifact, ...] = ()
     notes: str | None = None

@@ -12,7 +12,7 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 
-from .model import FeeLine, Mandatory
+from .model import FeeLine, Mandatory, PriceBasis
 from .taxonomy import classify
 
 #: Matches the money shapes checkout pages actually use: "$1,234.56", "USD 12.50",
@@ -59,6 +59,30 @@ def parse_money_cents(text: str | None) -> int | None:
     if match.group("sign") in {"-", "−"}:
         cents = -cents
     return cents
+
+
+#: Wording that marks a price as a floor rather than this item's price.
+_FLOOR_WORDING = re.compile(
+    r"\b(from|starting\s+at|as\s+low\s+as|prices?\s+from)\b", re.IGNORECASE
+)
+#: A trailing "+" does the same job without words: "$307+".
+_TRAILING_PLUS = re.compile(r"\d\s*\+")
+_RANGE = re.compile(r"\d\s*(?:-|\u2013|to)\s*(?:US\$|USD|\$)?\s*\d")
+
+
+def classify_price_basis(text: str | None) -> PriceBasis:
+    """Is this the price of the item, or a floor across many?
+
+    Cheap to get wrong and expensive when wrong: a floor compared against a
+    checkout total produces a gap that is entirely an artefact of the comparison.
+    """
+    if text is None or not text.strip():
+        return PriceBasis.UNKNOWN
+    if _RANGE.search(text):
+        return PriceBasis.RANGE
+    if _FLOOR_WORDING.search(text) or _TRAILING_PLUS.search(text):
+        return PriceBasis.FLOOR
+    return PriceBasis.EXACT
 
 
 def label_reads_optional(label: str, nearby_text: str | None = None) -> bool:
