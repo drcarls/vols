@@ -157,3 +157,41 @@ def test_a_genuine_multi_quantity_drip_is_still_caught():
     m = compute_metrics(obs)
     assert m.gap_abs_cents == 4000  # $240 total vs $100 x 2
     assert Flag.MANDATORY_FEE_AT_FINAL_STEP in evaluate(obs)
+
+
+# --- block detection, from an observed interstitial -------------------------
+
+def test_observed_tickpick_block_page_is_detected():
+    """TickPick interstitial, 2026-09-18, served to a datacenter IP.
+
+    This page returned a normal status with normal-looking prose, and the original
+    marker list missed it entirely. An undetected block is the worse failure: the
+    required selectors then fail, the run is filed as a spec error, and someone is
+    sent to re-author a spec that was never wrong.
+    """
+    import pytest
+    from conftest import CONFIG
+    from lexmeter_fees.politeness import Blocked, Policy, check_response
+
+    policy = Policy.load(CONFIG / "collection_policy.yaml")
+    body = (
+        "Something's not right. We couldn't verify your session, which helps us "
+        "fight bots that make tickets harder to get. We've blocked access to this "
+        "page for now."
+    )
+    with pytest.raises(Blocked):
+        check_response(200, body, policy)
+
+
+def test_ordinary_pages_still_pass_the_widened_markers():
+    # Guards against the wider marker list swallowing real captures.
+    from conftest import CONFIG
+    from lexmeter_fees.politeness import Policy, check_response
+
+    policy = Policy.load(CONFIG / "collection_policy.yaml")
+    for body in (
+        "<html><body>Service Fee $18.40 Total $120.51</body></html>",
+        "This venue uses All-In Pricing. The total price listed includes ticket fees and taxes.",
+        "The price you see is the price you pay",
+    ):
+        check_response(200, body, policy)  # no raise

@@ -35,11 +35,28 @@ pacing:
 # preserved as evidence of the block. It is never retried within the same sweep.
 block_signals:
   http_status: [401, 403, 407, 429, 503]
+  # Observed phrasings, not invented ones. A block page that goes undetected is
+  # worse than one that is caught: required selectors then fail, the run is
+  # recorded as a spec error, and someone is sent to re-author a spec that was
+  # fine. The diagnosis matters as much as the abort.
   body_markers:
     - "are you a human"
     - "verify you are human"
     - "access denied"
     - "unusual traffic"
+    # TickPick interstitial, observed 2026-09-18 from a datacenter IP.
+    - "couldn't verify your session"
+    - "could not verify your session"
+    - "we've blocked access"
+    - "we have blocked access"
+    - "something's not right"
+    # Common commercial bot-management interstitials.
+    - "fight bots"
+    - "checking your browser"
+    - "enable javascript and cookies to continue"
+    - "request blocked"
+    - "suspicious activity"
+    - "rate limit"
   on_block: record_and_abort
 
 identification:
