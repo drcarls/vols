@@ -29,7 +29,6 @@ MODERN = [
     ("ukraine-2022-essay.md",                 "Russia–Ukraine, 2022"),
     ("modern_iran_2026_prediction_markets.md", "Iran, 2025–26 — the Prediction-Market Era"),
     ("modern_contemporaneous_sources.md",     "Note on Contemporaneous Sources"),
-    ("synthesis_and_lessons.md",              "Synthesis & Lessons"),
 ]
 
 BOOK_CHAPTERS = [
@@ -87,6 +86,21 @@ def build_balkans_chapter() -> str:
         + essay + "\n\n"
         "*Full workings and reproduce steps: `crisis_deviation_five_cases.md`, "
         "`continental_press_warscares.md`, `lansburgh_other_crises_1914.md`.*\n"
+    )
+
+
+def build_july1914_chapter() -> str:
+    """The real Chapter V: the full 'Quiet' essay (Berlin and London, July 1914), whose own NOTES
+    carry the intent-vs-mechanism discipline and the London sources. Replaces the summary stub."""
+    essay = read("july-1914-essay.md")
+    essay = re.sub(r"(?m)\A#\s+.*\n", "", essay, count=1)        # drop "# THE QUIET"
+    essay = re.sub(r"(?m)\A\s*###\s+.*\n", "", essay, count=1)   # drop subtitle
+    essay = demote(essay.strip(), 1)
+    return (
+        "## V. July 1914 — The Quiet\n\n"
+        "*The full chapter — Berlin and London, July 1914.*\n\n"
+        + essay + "\n\n"
+        "*The quiet-weeks archival test and sources: `july1914_mechanism_and_archival_test.md`.*\n"
     )
 
 
@@ -226,6 +240,7 @@ def main():
     parts.append(_para(inline("**Part II — The Later Risk Episodes, 1938–2026**")))
     for _, t in MODERN:
         parts.append(_para(inline(t), "ListParagraph", ind=360, bullet="•  "))
+    parts.append(_para(inline("**Part III — Synthesis: What the Market Knows About War**")))
 
     # --- Introduction ---
     parts.append(_para(inline("Introduction"), "Heading1", page_break=True))
@@ -241,13 +256,15 @@ def main():
     s, e = book.find("## IV. The Balkans"), book.find("## V. July 1914")
     if s != -1 and e != -1:  # replace the Chapter IV status-stub with the full chapter
         book = book[:s] + build_balkans_chapter() + "\n\n" + book[e:]
+    s, e = book.find("## V. July 1914"), book.find("## THE ENGINE")
+    if s != -1 and e != -1:  # replace the Chapter V status-stub with the full chapter
+        book = book[:s] + build_july1914_chapter() + "\n\n" + book[e:]
 
-    # Bring the other chapters up to Chapter III's depth: attach a chapter-specific evidence brief,
+    # Bring the remaining summary chapters up to depth: a chapter-specific evidence brief,
     # inserted just before the following chapter heading.
     fin = strip_first_h1(read("finance_diplomacy_1905_1906.md"))
     cd = read("crisis_deviation_five_cases.md")
     lb = read("lansburgh_other_crises_1914.md")
-    jul = strip_first_h1(read("july1914_mechanism_and_archival_test.md"))
 
     brief_I = method_note(
         "Chapter I — Sources & method: the Russian loan (Le Temps) and the 1905 bond test",
@@ -257,16 +274,11 @@ def main():
         "Chapter II — Sources & method: Lansburgh's near-silence, 1908–09",
         [section(lb, "Bosnian crisis")],
         ["lansburgh_other_crises_1914.md"])
-    brief_V = method_note(
-        "Chapter V — Sources & method: mechanism, not motive, and the archival test",
-        [jul],
-        ["july1914_mechanism_and_archival_test.md"])
 
     book = book.replace("## II. Bosnia, 1908–09 — the empty treasury",
                         brief_I + "## II. Bosnia, 1908–09 — the empty treasury", 1)
     book = book.replace("## III. Agadir, 1911 — The Squeeze",
                         brief_II + "## III. Agadir, 1911 — The Squeeze", 1)
-    book = book.replace("## THE ENGINE", brief_V + "## THE ENGINE", 1)
 
     parts.append(blocks_to_xml(demote(book, 1)))  # book headings nest under the Part
 
@@ -277,6 +289,13 @@ def main():
         parts.append(_para(inline(title), "Heading2", page_break=True))
         b = demote(strip_first_h1(read(fname)), 1)
         parts.append(blocks_to_xml(b, page_break_headings=()))  # cases already broken by their H2
+
+    # --- Part III — the synthesis ---
+    parts.append(_para(inline("Part III — Synthesis"), "Heading1", page_break=True))
+    parts.append(_para(inline("What the Market Knows About War"), "Heading2", page_break=True))
+    syn = strip_first_h1(read("synthesis-essay.md"))
+    syn = re.sub(r"(?m)\A\s*###\s+.*\n", "", syn, count=1)  # drop the subtitle line
+    parts.append(blocks_to_xml(demote(syn, 1)))
 
     build_docx("".join(parts), str(OUT))
     print("DOCX written:", OUT)
