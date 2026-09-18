@@ -42,6 +42,12 @@ class Flag(enum.Enum):
     #: that cannot be evaluated from the page alone, which is what makes it worth
     #: collecting rather than asserting.
     REFERENCE_PRICE_BASIS_UNDISCLOSED = "reference_price_basis_undisclosed"
+    #: A mandatory fee on an agency-branded, vendor-operated site where the page
+    #: never says who keeps it. Narrow and factual: it records an absent
+    #: disclosure, not a finding that anyone was misled. It matters because the
+    #: statutory government-fee exclusion turns on who actually receives the
+    #: money, and a page that does not say invites the reader to assume the agency.
+    VENDOR_FEE_BENEFICIARY_UNDISCLOSED = "vendor_fee_beneficiary_undisclosed"
 
 
 @dataclass(frozen=True)
@@ -186,6 +192,11 @@ def evaluate(obs: FlowObservation) -> set[Flag]:
         for claim in step.reference_claims:
             if not claim.basis_disclosed:
                 flags.add(Flag.REFERENCE_PRICE_BASIS_UNDISCLOSED)
+
+    if obs.agency_branded_vendor_operated:
+        for line in _mandatory_lines(obs):
+            if not line.beneficiary_disclosed:
+                flags.add(Flag.VENDOR_FEE_BENEFICIARY_UNDISCLOSED)
 
     is_food_seller = obs.industry in FOOD_SELLER_INDUSTRIES
 

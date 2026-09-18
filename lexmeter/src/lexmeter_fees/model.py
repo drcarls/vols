@@ -118,6 +118,17 @@ class FeeLine:
     #: True where the label reads as optional but the fee could not be removed
     #: without abandoning the purchase.
     label_says_optional: bool = False
+    #: Who the page says keeps this fee, where it says at all. Usually nothing,
+    #: which is the point: on a government-branded site operated under contract by
+    #: a private vendor, a mandatory fee with no stated beneficiary reads as though
+    #: it accrues to the agency. That inference is the gravamen of Chowning, and
+    #: it is also what takes the fee outside the statutory government-fee
+    #: exclusion -- a vendor's revenue is not a government fee.
+    stated_beneficiary: str | None = None
+
+    @property
+    def beneficiary_disclosed(self) -> bool:
+        return bool((self.stated_beneficiary or "").strip())
 
     @property
     def counts_toward_mandatory_total(self) -> bool:
@@ -214,6 +225,10 @@ class FlowObservation:
     blocked_reason: str | None = None
     #: Address entered, where the platform geolocates on address rather than IP.
     delivery_address_state: str | None = None
+    #: True where the site carries a government agency's branding but is operated
+    #: under contract by a private vendor. Set from the target list, not inferred
+    #: from the page -- who holds the contract is a procurement fact.
+    agency_branded_vendor_operated: bool = False
     egress_provider: str | None = None
     #: Which proxy tier produced this capture. Recorded per observation, not per
     #: run: findings from ISP-sourced captures must be able to stand independently

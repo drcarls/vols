@@ -1,0 +1,205 @@
+# Phase 3 target list — reservation platforms (promoted ahead of food delivery).
+#
+# WHY THIS SECTOR, AFTER TICKETING CAME BACK CLEAN
+#
+# Ticketing converged on all-in display because two conditions held: a federal
+# rule in force since 2025-05-12, and a concentrated platform layer for which
+# compliance is one engineering change amortised across hundreds of venues.
+#
+# Here, neither holds -- and the second one inverts.
+#
+# There is no federal fee rule for this sector. And the vendor's incentive runs
+# the other way: in ticketing the platform competes for venues and buyers, so a
+# visible fee is a competitive cost. In public-sector reservations the vendor wins
+# a government contract and is paid **by the citizen, per transaction**, not by the
+# agency. The fee is not an add-on to the business model; it IS the business model.
+# That is why it survived where ticketing's did not, and it predicts the fee will
+# be defended rather than quietly removed.
+#
+# THE UNIT IS THE VENDOR, AND HERE THAT ACTUALLY HOLDS
+#
+# The same argument failed for Etix because venues could configure their own
+# display. It holds here for a harder reason: the agency is the vendor's customer
+# and the fee is set in the contract. Deployments are not free to differ much, and
+# where they do differ the contract says why.
+#
+# Critically, contracts are **public**. Unlike ticketing venues, a complete target
+# list can be built from procurement records, and the per-transaction fee is often
+# already disclosed in state audit or journalism sources -- so part of the damages
+# model exists before any capture.
+#
+# THE GOVERNMENT-FEE DISTINCTION IS LOAD-BEARING
+#
+# SB 478 and its analogues exclude government-imposed taxes and fees from the
+# all-in requirement. A fee **retained by a private vendor** is not a government
+# fee -- and that is exactly the Chowning theory: consumers were led to believe the
+# reservation fee went to Cal Parks when the vendor kept it. So the measurement
+# here is not only "when did the fee appear" but "who does the page imply it goes
+# to". See flag VENDOR_FEE_PRESENTED_AS_GOVERNMENT.
+
+meta:
+  industry: reservation_platforms
+  phase: 3
+  built_on: 2026-09-18
+  captured: false
+  ftc_rule_applies: false        # sector-limited to tickets and lodging
+  sources: secondary             # every state-vendor pairing below needs confirming
+
+anchor_case:
+  caption: Chowning and Fitzgerald v. Tyler Technologies, Inc.
+  court: N.D. Cal.
+  case_no: 25-cv-04009
+  filed: 2025-05-08
+  status_checked: 2026-09-18
+  status: live                   # MTD opposition filed as of June 2026; no resolution found
+  claims: [CLRA, Honest_Pricing_Law, FAL, UCL]
+  facts: >-
+    Last-minute mandatory transaction fee on ReserveCalifornia, often raising the
+    reservation cost by more than 20%, retained by the vendor while consumers were
+    led to believe it was paid to and kept by Cal Parks.
+  quantum:
+    fy2025_26_cents: 3700000000        # $37M projected
+    contract_life_cents: 39800000000   # $398M
+  verification: confirmed
+
+defaults:
+  device: desktop
+  anchor:
+    date_mode: rolling_offset
+    offset_days: 30
+    # Parks are violently seasonal and fee practice at peak may differ from
+    # off-peak. Carry fixed summer-weekend anchors alongside the rolling one.
+    fixed_anchors: [summer_weekend, holiday_weekend]
+  vantage_control: NY
+  flow_template:
+    - {kind: search,   note: "park or date search"}
+    - {kind: listing,  note: "sites listed with nightly rate -- headline as first displayed"}
+    - {kind: detail,   note: "specific site"}
+    - {kind: select,   note: "dates and party size"}
+    - {kind: cart,     note: "reservation held"}
+    - {kind: review,   note: "final review -- STOP. No purchase."}
+
+# ---------------------------------------------------------------------------
+# TIER A -- the vendors. This is the whole thesis.
+# ---------------------------------------------------------------------------
+targets:
+
+  - id: tyler_usedirect
+    company: Tyler Technologies (US eDirect)
+    tier: A
+    domain: usedirect.com
+    serves_via_agency_domains: true
+    litigation_status: active_defendant      # California only
+    expected_yield: high
+    rationale: >-
+      The anchor defendant. Tyler acquired US eDirect, which is reported to run
+      park reservation systems in roughly ten states. California is in litigation
+      over a pattern that, if it is the product's standard behaviour rather than
+      one contract's quirk, replicates across every other deployment.
+      This is the highest-value screen in the programme: a defendant already in
+      litigation, an identical fact pattern, and a list of unlitigated states.
+    deployments:
+      # Every pairing below is from secondary sources and needs confirming
+      # against the agency's own site and its procurement record before use.
+      - {state: CA, system: ReserveCalifornia, status: in_litigation, verification: confirmed}
+      - {state: MN, system: state_parks, verification: needs_confirmation, note: "claim state -- junk-fee law in force since 2025-01"}
+      - {state: VA, system: Virginia_State_Parks, verification: needs_confirmation, note: "claim state -- Va. Code 59.1-607 in force since 2025-07-01"}
+      - {state: OH, system: state_parks, verification: needs_confirmation}
+      - {state: FL, system: Florida_State_Parks, verification: needs_confirmation}
+      - {state: NV, system: ReserveNevada, verification: needs_confirmation}
+      - {state: WY, system: reserve.wyoming.gov, verification: needs_confirmation}
+      - {state: ND, system: ND_Parks_and_Recreation, verification: needs_confirmation}
+    # MN and VA are the two that matter most and should be captured first.
+    priority_deployments: [MN, VA]
+
+  - id: aspira
+    company: Aspira (ReserveAmerica)
+    tier: A
+    domain: reserveamerica.com
+    serves_via_agency_domains: true
+    litigation_status: none_found
+    expected_yield: high
+    rationale: >-
+      Reported as the largest provider of outdoor recreation software, operating
+      through ReserveAmerica across a wide set of state agencies. No US
+      drip-pricing action against it was found, which makes it the highest-value
+      target in the sector if the Chowning pattern appears: a large unlitigated
+      vendor exhibiting a fact pattern already before a court.
+    deployments:
+      - {state: MA, system: state_parks, verification: needs_confirmation, note: "claim state -- 940 CMR 38.00 in force since 2025-09-02; relationship reported at 25+ years"}
+      - {state: NY, system: newyorkstateparks.reserveamerica.com, reported_fee_cents: 725, verification: needs_confirmation}
+      - {state: TX, system: texasstateparks.reserveamerica.com, verification: needs_confirmation}
+      - {state: NH, system: state_parks, verification: needs_confirmation}
+      - {state: KY, system: state_parks, verification: needs_confirmation}
+      - {state: MD, system: Maryland_Park_Service, verification: needs_confirmation}
+      - {state: GA, system: gastateparks.org, verification: needs_confirmation}
+      - {state: NC, system: ncparks.gov, verification: needs_confirmation}
+      - {state: OK, system: state_parks, verification: needs_confirmation, note: "recent implementation, 35 parks"}
+      - {state: UT, reported_vendor_share_cents: 575, verification: needs_confirmation}
+      - {state: ID, reported_vendor_share_cents: 900, verification: needs_confirmation}
+      - {state: NM, reported_vendor_share_cents: 400, verification: needs_confirmation}
+      - {state: WY, reported_vendor_share_cents: 400, verification: needs_confirmation}
+    priority_deployments: [MA, NY]
+    # Per-transaction vendor shares above come from journalism and audit
+    # reporting, not from capture. They are useful because they mean part of the
+    # quantum is public before a single flow is run -- and because they vary by
+    # state, which is itself the "fee varies by vantage" pattern at contract level.
+    note: reported_fees_vary_by_state_4_to_9_dollars
+
+  - id: booz_allen_recreation_gov
+    company: Booz Allen Hamilton (Recreation.gov)
+    tier: A
+    domain: recreation.gov
+    expected_yield: medium
+    litigation_status: prior_suit_dismissed
+    rationale: >-
+      The federal recreation booking system. A 2023 class action over its fees was
+      voluntarily dismissed, so the theory is untested rather than rejected. Federal
+      contracting raises different questions than state-law claims and the FTC fee
+      rule does not reach this sector, so treat as lower priority than the two
+      state-facing vendors.
+    deployments:
+      - {scope: federal, system: Recreation.gov, verification: needs_confirmation}
+
+# ---------------------------------------------------------------------------
+# TIER B -- adjacent, same fee shape, unscouted
+# ---------------------------------------------------------------------------
+
+  - id: municipal_facility_booking
+    company: various
+    tier: B
+    expected_yield: unknown
+    rationale: >-
+      Municipal park, pavilion, pitch and community-facility booking. Same vendor
+      contract shape, far more numerous, individually small. Worth a survey only
+      once a vendor pattern is established at state level.
+    deployments: []
+
+  - id: permits_and_licences
+    company: various
+    tier: B
+    expected_yield: unknown
+    rationale: >-
+      Hunting and fishing licences, backcountry and river permits, timed-entry
+      passes. Caution: many of these fees are set by statute and would fall within
+      the government-fee exclusion. The vendor-retained share is the measurable
+      part, and it is not always visible on the page.
+    deployments: []
+
+excluded:
+  - id: anything_requiring_account
+    reason: >-
+      Several agency systems require an account before the fee breakdown is shown.
+      No account is created; such flows are logged unreachable, not worked around.
+  - id: statutory_fees
+    reason: >-
+      Fees imposed by statute and collected for the agency fall within the
+      government-fee exclusion in SB 478 and its analogues. They are recorded for
+      completeness but must not be counted toward the mandatory-fee gap.
+
+# What would falsify the thesis, stated in advance so the answer is not chosen
+# after the fact: if the first two Tyler deployments outside California show the
+# fee in the initial display, then ReserveCalifornia is a contract-specific
+# practice rather than a product behaviour, the vendor-level screen collapses, and
+# this sector becomes a state-by-state survey instead.
+falsification: tyler_deployments_outside_CA_show_fee_in_initial_display

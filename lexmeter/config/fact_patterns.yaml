@@ -43,9 +43,12 @@ patterns:
           gte: 20.0
     anchor_cases:
       - id: chowning_v_tyler_technologies
-        caption: Chowning v. Tyler Technologies (ReserveCalifornia)
+        caption: Chowning and Fitzgerald v. Tyler Technologies, Inc.
         filed: 2025-05-08
         court: N.D. Cal.
+        case_no: 25-cv-04009
+        status: live            # MTD opposition filed as of June 2026
+        status_checked: 2026-09-18
         note: >-
           Last-minute mandatory transaction fee, often raising reservation cost by
           more than 20%, retained by the vendor while consumers were led to believe
@@ -55,6 +58,28 @@ patterns:
     # Highest-yield screen: the defendant is a vendor holding many public-sector
     # contracts, so one matched pattern replicates across states.
     screen_hint: enumerate_vendor_operated_public_sector_reservation_systems
+    # The vendor operates in roughly ten states; one is in litigation. The screen
+    # is the other nine.
+    vendor_footprint_is_the_screen: true
+
+  - id: vendor_fee_read_as_a_government_charge
+    label: Mandatory fee on an agency-branded site with no disclosed beneficiary
+    industries: [reservation_platforms, permits, parks, campsites]
+    # Distinct from a late fee, and in some ways stronger: the statutory
+    # government-fee exclusion turns on who receives the money, so a fee the page
+    # lets a reader attribute to the agency is both outside the exclusion and
+    # misattributed.
+    match:
+      all:
+        - flag: VENDOR_FEE_BENEFICIARY_UNDISCLOSED
+    anchor_cases:
+      - id: chowning_v_tyler_technologies
+        caption: Chowning and Fitzgerald v. Tyler Technologies, Inc.
+        case_no: 25-cv-04009
+        note: >-
+          Pleaded on exactly this: consumers led to believe the reservation fee was
+          paid to and kept by Cal Parks when the vendor retained it.
+        verification: confirmed
 
   - id: resort_fee_excluded_from_headline
     label: Resort/destination fee excluded from the headline nightly rate
