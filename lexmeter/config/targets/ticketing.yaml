@@ -78,7 +78,7 @@ targets:
       observed_all_in_banner: true
       banner_wording_implies_per_venue_setting: true
       venue_survey_2026_09_18: all_checked_venues_use_all_in_pricing
-      sample_size: unrecorded        # ask before leaning hard on this
+      sample_size: a_few_venues      # enough to retire Etix, not to generalise
       # Answered, negatively. Etix is not a ticketing target.
       open_question: resolved_no_yield
     # One angle survives all-in pricing here, and it is the reason Etix is

@@ -78,10 +78,42 @@ Lodging (industry 2) is the weaker alternative — the federal rule covers it, s
 same compliance dynamic that appears to have cleaned ticketing applies, except for
 vacation rentals and property managers, which are not platform-concentrated.
 
-## Open
+## The sample: a few Etix venues
 
-**How many Etix venues were checked?** The finding is being treated as decisive for
-that platform. If the sample was three, it supports retiring Etix but not the
-generalisation above. If it was ten across venue types, the generalisation is
-reasonable and the remaining Tier A platforms can be retired on inference rather
-than scouted one by one — which is the difference between a day's work and a week's.
+That is enough to retire Etix. It is **not** enough to retire the other twelve,
+and the reason is worth being precise about, because it is easy to mistake this
+sample for stronger evidence than it is.
+
+**Venues on one platform are not independent observations.** They all inherit a
+single engineering decision made once by the platform. Checking five Etix venues
+and finding all-in pricing five times is close to checking it once — the second
+through fifth venues could hardly have come out differently. For the question
+"are ticketing platforms compliant", this sample is effectively **n = 1**.
+
+The relevant n is the number of **platforms**, not venues. Which means the two
+claims above have to be kept apart:
+
+- **Empirical:** a few venues on one platform. Supports retiring Etix. Nothing more.
+- **Structural:** platform compliance is one change amortised across hundreds of
+  venues, under a rule in force sixteen months. This does not depend on the sample
+  at all — it is an argument, not evidence, and it is the stronger of the two. But
+  an untested argument is what produced the original wrong ranking.
+
+## The cheap test
+
+Do not scout more Etix venues; they cannot tell you anything new. Check **one venue
+each on two or three different platforms**. That tests the actual hypothesis, and
+it is about fifteen minutes.
+
+Suggested, in order of how informative a negative result would be:
+
+1. **Eventbrite** — the case most likely to break the pattern, because fees are
+   configured per event by the organiser rather than set once by the platform. If
+   even Eventbrite displays all-in, the structural argument is strong.
+2. **ShowClix** — a different platform of similar scale to Etix. Independent
+   confirmation.
+3. **Tixr** — white-label by design, so the display may genuinely be venue-configured.
+
+All three all-in → retire the remaining Tier A platforms on inference and move to
+reservation platforms. Any one of them not → the structural argument is wrong,
+Tier A is back, and that platform is the target.
