@@ -14,6 +14,7 @@ saved HTML in the same browser the collector uses, with no network involved.
 
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -145,6 +146,19 @@ def _verify_step(page, spec: SelectorSpec, kind: StepKind, quantity: int) -> Ste
     )
 
 
+def _launch(pw):
+    """Launch Chromium, honouring a pinned binary where one is provided.
+
+    Set ``LEXMETER_CHROMIUM`` when the image ships a browser whose build does not
+    match the installed Playwright package -- launching the existing binary is
+    correct there, and downloading another one is not.
+    """
+    executable = os.environ.get("LEXMETER_CHROMIUM")
+    if executable:
+        return pw.chromium.launch(executable_path=executable)
+    return pw.chromium.launch()
+
+
 def verify_spec(
     spec: SelectorSpec,
     pages: dict[StepKind, str],
@@ -165,7 +179,7 @@ def verify_spec(
     from playwright.sync_api import sync_playwright  # noqa: PLC0415
 
     with sync_playwright() as pw:
-        browser = pw.chromium.launch()
+        browser = _launch(pw)
         page = browser.new_page()
         try:
             for kind, html in pages.items():
@@ -203,7 +217,7 @@ def save_page(url: str, out: Path | str, policy, *, wait: str = "networkidle") -
     out = Path(out)
     out.parent.mkdir(parents=True, exist_ok=True)
     with sync_playwright() as pw:
-        browser = pw.chromium.launch()
+        browser = _launch(pw)
         context = browser.new_context(
             user_agent=user_agent(
                 "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like "

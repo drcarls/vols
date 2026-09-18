@@ -34,6 +34,10 @@
 #   - `fee_remove_control` is how a fee gets classified mandatory vs optional. With
 #     no selector the fee stays UNKNOWN and does not count toward the gap, which is
 #     the safe default but weakens the finding. Worth the effort to find.
+#   - Fee label/amount selectors are scoped INSIDE each fee row. Where the row
+#     element itself carries the value (a `data-` attribute on the row, or the row
+#     is the price node), use `:scope` -- a descendant selector will match nothing
+#     and abort the capture. This is the first mistake the verifier catches.
 #   - `quantity` matters. Many sites show a per-ticket headline against a multi-ticket
 #     total; without it the reconciliation fails on a spec that is actually correct.
 
@@ -66,13 +70,13 @@ specs:
         css: '[data-lex="fee"]'
         required: false      # no fees shown until the review step
       fee_label:
-        css: '[data-lex="fee"]'
+        css: ':scope'          # the row element itself carries the data
         attribute: data-label
       fee_amount:
-        css: '[data-lex="fee"]'
+        css: ':scope'
         attribute: data-amount
       fee_purpose:
-        css: '[data-lex="fee"]'
+        css: ':scope'
         attribute: data-purpose
         required: false
     steps:
@@ -81,10 +85,10 @@ specs:
         total: '[data-lex="total"]'
         fee_row: '[data-lex="fee"]'
         fee_label:
-          css: '[data-lex="fee"]'
+          css: ':scope'
           attribute: data-label
         fee_amount:
-          css: '[data-lex="fee"]'
+          css: ':scope'
           attribute: data-amount
 
   # -- Tier A, all unauthored -------------------------------------------------
