@@ -18,7 +18,7 @@ OUT = DOCS / "What-Really-Matters.docx"
 
 MODERN = [
     ("modern_arc_companion.md",               "The Modern Arc — Companion"),
-    ("munich-1938-essay.md",                  "Munich, 1938"),
+    ("munich-1938-essay.md",                  "Munich, 1938 — The Relief"),
     ("modern_wwii_outbreak_1939_1940.md",     "The Outbreak of WWII, 1939–1940"),
     ("modern_pearl_harbor_1941.md",           "Pearl Harbor & the 1941 Freeze"),
     ("modern_berlin_airlift_1948.md",         "The Berlin Airlift, 1948"),
@@ -26,8 +26,8 @@ MODERN = [
     ("modern_suez_1956.md",                   "Suez, 1956"),
     ("modern_nuclear_limits.md",              "Cuba & Berlin — the Nuclear Limits, 1961–62"),
     ("modern_gulf_wars.md",                   "The Gulf Wars, 1991 & 2003"),
-    ("ukraine-2022-essay.md",                 "Russia–Ukraine, 2022"),
-    ("modern_iran_2026_prediction_markets.md", "Iran, 2025–26 — the Prediction-Market Era"),
+    ("ukraine-2022-essay.md",                 "Russia–Ukraine, 2022 — The Shrug"),
+    ("iran-2026-essay.md",                     "Iran, 2025–26 — The Strait"),
     ("modern_contemporaneous_sources.md",     "Note on Contemporaneous Sources"),
 ]
 
