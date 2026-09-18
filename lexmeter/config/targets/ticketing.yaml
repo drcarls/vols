@@ -70,14 +70,24 @@ targets:
     # showed an all-in price with a zero gap and an explicit disclosure. That is
     # one venue, one event, one day, from a screenshot -- not a capture -- so it
     # cannot move fee_display. It is enough to move an expectation.
-    expected_yield: medium
+    # Revised to none. A venue survey on 2026-09-18 found all-in pricing on every
+    # venue checked. The toggle may exist; in practice it appears to be on.
+    expected_yield: none
     scouting:
       note: scouting/2026-09-18-etix-zanies-chicago.md
       observed_all_in_banner: true
       banner_wording_implies_per_venue_setting: true
-      # If all-in is a per-venue toggle, the platform-level claim weakens for
-      # Etix and is replaced by a survey: what share of venues have it off?
-      open_question: what_proportion_of_etix_venues_disable_all_in_pricing
+      venue_survey_2026_09_18: all_checked_venues_use_all_in_pricing
+      sample_size: unrecorded        # ask before leaning hard on this
+      # Answered, negatively. Etix is not a ticketing target.
+      open_question: resolved_no_yield
+    # One angle survives all-in pricing here, and it is the reason Etix is
+    # retired rather than deleted: the banner promises "ticket fees and taxes",
+    # which does not cover delivery. A venue charging an electronic or will-call
+    # delivery fee would show it only at checkout -- a mandatory fee first
+    # appearing at the final step, on top of an all-in ticket price. Zanies
+    # showed that line at $0.00. A venue showing it at $4.95 is a live claim.
+    residual_angle: delivery_fee_on_top_of_all_in_price
     flow_paths:
       listing: /ticket/e/{event_id}/{slug}
       detail: /ticket/p/{performance_id}/{slug}
