@@ -37,6 +37,11 @@ class Flag(enum.Enum):
     #: under SB 478 and its private right of action.
     RESTAURANT_EXEMPTION_CONDITION_FAILED = "restaurant_exemption_condition_failed"
     JURISDICTIONAL_DISPLAY_SWITCHING = "jurisdictional_display_switching"
+    #: A savings claim whose reference price the page never explains. Not an
+    #: accusation -- a substantiated, disclosed basis is lawful. It marks a claim
+    #: that cannot be evaluated from the page alone, which is what makes it worth
+    #: collecting rather than asserting.
+    REFERENCE_PRICE_BASIS_UNDISCLOSED = "reference_price_basis_undisclosed"
 
 
 @dataclass(frozen=True)
@@ -176,6 +181,11 @@ def evaluate(obs: FlowObservation) -> set[Flag]:
 
     if metrics.mandatory_fee_cents > 0 and not metrics.all_in_shown_before_final_step:
         flags.add(Flag.HEADLINE_EXCLUDES_ALL_MANDATORY_FEES)
+
+    for step in obs.steps:
+        for claim in step.reference_claims:
+            if not claim.basis_disclosed:
+                flags.add(Flag.REFERENCE_PRICE_BASIS_UNDISCLOSED)
 
     is_food_seller = obs.industry in FOOD_SELLER_INDUSTRIES
 

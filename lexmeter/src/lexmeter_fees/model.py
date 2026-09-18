@@ -128,6 +128,33 @@ class FeeLine:
 
 
 @dataclass(frozen=True)
+class ReferencePriceClaim:
+    """A "you save $X" or struck-through price shown next to the real one.
+
+    A different claim family from drip pricing, and one the fee machinery cannot
+    express: nothing is being added to the price, a counterfactual is being
+    asserted about it. Captured because the counterfactual is the regulated part --
+    a savings figure is only meaningful if the reference it implies is a price
+    someone could actually have paid.
+
+    Recording it is not an accusation. A disclosed, substantiated methodology is
+    lawful; the point is that the claim is measurable and currently unmeasured.
+    """
+
+    raw_text: str
+    savings_cents: int | None = None
+    #: Price implied by the claim: what the buyer is being told they avoided.
+    implied_reference_cents: int | None = None
+    #: Text the page offered explaining what the reference is. Usually absent,
+    #: which is the whole question.
+    stated_basis: str | None = None
+
+    @property
+    def basis_disclosed(self) -> bool:
+        return bool((self.stated_basis or "").strip())
+
+
+@dataclass(frozen=True)
 class Step:
     """One page state in the flow."""
 
@@ -146,6 +173,7 @@ class Step:
     #: $2,016 total is a zero gap, not a 100% one.
     quantity: int = 1
     fee_lines: tuple[FeeLine, ...] = ()
+    reference_claims: tuple[ReferencePriceClaim, ...] = ()
     artifacts: tuple[Artifact, ...] = ()
     notes: str | None = None
 

@@ -117,3 +117,62 @@ Both were served to a non-US datacenter visitor. The arithmetic stands and the
 regressions built on it are sound, but the **vantage was wrong**, so neither
 should be treated as a US observation of TickPick's pricing. Re-run from a pinned
 US ISP vantage before either is cited.
+
+---
+
+## Addendum: the savings figures
+
+Both checkouts carried a savings badge:
+
+| Listing | Total | Savings | % of total | Implied reference |
+|---|---|---|---|---|
+| Sec 110 | $2,016.00 | $212 | **10.516%** | $2,228.00 |
+| Sec 108 | $2,380.00 | $250 | **10.504%** | $2,630.00 |
+
+Agreement to two decimal places across two unrelated listings. That points at a
+**fixed uplift applied to the order total** — roughly 10.5% — rather than a live
+comparison against competitor listings, which would show scatter.
+
+So the figure most likely answers "what would this order cost somewhere that
+charges fees", using a modelled rate. It is a **counterfactual**, not an observed
+price.
+
+Two data points is weak and any two points fit something. The arithmetic is locked
+in a test so a third observation either corroborates or breaks it.
+
+### Why it matters: a second claim family
+
+This is not drip pricing. Nothing is added to the price; a claim is made *about*
+the price. The fee machinery cannot express it — there is no fee, no step index,
+no gap — so it was invisible to the collector.
+
+The regulated part is the reference. A savings figure means something only if the
+reference it implies is a price someone could actually have paid. That is the
+fictitious-former-price pattern, governed here by FTC guidance on comparative
+price claims and by state UDAP, and it is **the same question the EU
+reference-price work asks** under the prior-price rule. The two product lines meet
+at this measurement.
+
+**This is not an allegation about TickPick.** A disclosed, substantiated
+methodology is lawful, and a marketplace that genuinely charges no buyer fees has
+an obvious basis for the claim. What is recorded is that the page states a savings
+figure and does not, on its face, explain the reference — so the claim cannot be
+evaluated from the capture alone.
+
+### Built
+
+- `ReferencePriceClaim` on each step: raw text, savings, implied reference, and
+  any stated basis.
+- `REFERENCE_PRICE_BASIS_UNDISCLOSED` — narrow by design. It marks a claim that
+  cannot be evaluated from the page, not a finding of deception. A disclosed basis
+  does not flag, and that is tested.
+
+### Open
+
+- **A third listing** would settle whether 10.5% is a constant. Cheap: one more
+  checkout, note total and savings.
+- **Does TickPick publish the methodology** anywhere — FAQ, terms, a tooltip
+  behind the "Service Fees" link? If so the claim is substantiated and the flag
+  should not fire; the collector should capture that text as `stated_basis`.
+- **Does the rate vary by category or price band?** Sports at 10.5% may not be
+  concerts at 10.5%.

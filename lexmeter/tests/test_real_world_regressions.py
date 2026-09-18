@@ -195,3 +195,75 @@ def test_ordinary_pages_still_pass_the_widened_markers():
         "The price you see is the price you pay",
     ):
         check_response(200, body, policy)  # no raise
+
+
+# --- reference price claims, TickPick 2026-09-18 ---------------------------
+
+def test_tickpick_savings_claims_imply_a_consistent_uplift():
+    """Both observed savings figures sit at ~10.5% of the order total.
+
+    212/2016 = 10.516%, 250/2380 = 10.504%. Agreement that tight across two
+    unrelated listings points at a formula applied to the total, not a live
+    comparison against competitor listings -- scatter would be expected if the
+    figure came from actually observed prices.
+
+    Two points is weak evidence and any two points fit something. The test locks
+    the arithmetic so a third observation either corroborates or breaks it.
+    """
+    from lexmeter_fees.extract import to_reference_claim
+
+    for savings_text, total, unit_price in (("$212 SAVINGS", 201600, 100800),
+                                            ("$250 SAVINGS", 238000, 119000)):
+        claim = to_reference_claim(savings_text, total)
+        assert claim is not None
+        assert total == unit_price * 2
+        ratio = claim.savings_cents / total
+        assert 0.104 < ratio < 0.106, (savings_text, ratio)
+        assert claim.implied_reference_cents == total + claim.savings_cents
+
+
+def test_undisclosed_savings_basis_flags():
+    from lexmeter_fees.extract import to_reference_claim
+    from lexmeter_fees.flags import Flag
+
+    claim = to_reference_claim("$212 SAVINGS", 201600)
+    obs = observation(
+        "TickPick",
+        [
+            step(0, StepKind.DETAIL, "$1,008 each"),
+            step(1, StepKind.REVIEW, "$1,008 each", "$2,016.00", quantity=2),
+        ],
+    )
+    obs = FlowObservation(
+        **{**obs.__dict__,
+           "steps": obs.steps[:-1] + (
+               Step(**{**obs.steps[-1].__dict__, "reference_claims": (claim,)}),)}
+    )
+    assert Flag.REFERENCE_PRICE_BASIS_UNDISCLOSED in evaluate(obs)
+
+
+def test_disclosed_basis_does_not_flag():
+    # A substantiated, disclosed methodology is lawful and must not be flagged.
+    from lexmeter_fees.extract import to_reference_claim
+    from lexmeter_fees.flags import Flag
+    from lexmeter_fees.model import ReferencePriceClaim
+
+    claim = to_reference_claim(
+        "$212 SAVINGS", 201600,
+        stated_basis="Compared to average fees charged by other major marketplaces",
+    )
+    assert isinstance(claim, ReferencePriceClaim)
+    obs = observation("TickPick", [
+        step(0, StepKind.DETAIL, "$1,008 each"),
+        step(1, StepKind.REVIEW, "$1,008 each", "$2,016.00", quantity=2),
+    ])
+    obs = FlowObservation(**{**obs.__dict__, "steps": obs.steps[:-1] + (
+        Step(**{**obs.steps[-1].__dict__, "reference_claims": (claim,)}),)})
+    assert Flag.REFERENCE_PRICE_BASIS_UNDISCLOSED not in evaluate(obs)
+
+
+def test_ordinary_text_is_not_read_as_a_savings_claim():
+    from lexmeter_fees.extract import to_reference_claim
+
+    assert to_reference_claim("Service Fee $18.40", 201600) is None
+    assert to_reference_claim("Total (USD) $2,016.00", 201600) is None

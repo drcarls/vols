@@ -12,7 +12,7 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 
-from .model import FeeLine, Mandatory, PriceBasis
+from .model import FeeLine, Mandatory, PriceBasis, ReferencePriceClaim
 from .taxonomy import classify
 
 #: Matches the money shapes checkout pages actually use: "$1,234.56", "USD 12.50",
@@ -131,6 +131,39 @@ def to_fee_line(row: RawFeeRow, step_index: int) -> FeeLine | None:
 def to_fee_lines(rows: list[RawFeeRow], step_index: int) -> tuple[FeeLine, ...]:
     lines = (to_fee_line(row, step_index) for row in rows)
     return tuple(line for line in lines if line is not None)
+
+
+_SAVINGS = re.compile(
+    r"(?:you\s+save|savings?|save)\b", re.IGNORECASE
+)
+
+
+def to_reference_claim(
+    raw_text: str,
+    total_cents: int | None,
+    stated_basis: str | None = None,
+) -> ReferencePriceClaim | None:
+    """Read a savings claim and work out the reference price it implies.
+
+    The implied reference is what the buyer is told they would otherwise have
+    paid. Deriving it makes the claim testable: a reference nobody could have
+    paid is the fictitious-former-price pattern, and it is the same question the
+    EU reference-price work asks under the prior-price rule.
+    """
+    if not _SAVINGS.search(raw_text):
+        return None
+    savings = parse_money_cents(raw_text)
+    implied = (
+        total_cents + savings
+        if total_cents is not None and savings is not None
+        else None
+    )
+    return ReferencePriceClaim(
+        raw_text=raw_text.strip(),
+        savings_cents=savings,
+        implied_reference_cents=implied,
+        stated_basis=stated_basis,
+    )
 
 
 def carry_forward(
